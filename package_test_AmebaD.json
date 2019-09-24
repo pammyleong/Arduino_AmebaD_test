@@ -19,12 +19,11 @@
             "online": "http://www.amebaiot.com/"
           },
           "url": "https://github.com/Ameba8195/Arduino/raw/master/release/ameba-2.0.5.tar.gz",
-          "archiveFileName": "ameba-2.0.5.tar.gz",
-          "checksum": "SHA-256:d40bac42d72a7c1fa0292cc7e4c3528692d593c3887faa8cd12a016b18e5911e",
-          "size": "28108728",
+          "archiveFileName": "ameba-D-test-01.tar.gz",
+          "checksum": "c6fcc1c7d290965ebbce844e9feb7e157d54817993cbe6c81257f290fe64adf4",
+          "size": "28096727",
           "boards": [
-            {"name": "Ameba RTL8195A"},
-            {"name": "Ameba RTL8710"}
+            {"name": "Ameba RTLxx1"}
           ],
           "toolsDependencies": [
             {
