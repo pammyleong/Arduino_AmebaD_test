@@ -20,7 +20,7 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/ameba-0.0.1.tar.gz",
           "archiveFileName": "ameba-0.0.1.tar.gz",
-          "checksum": "c6fcc1c7d290965ebbce844e9feb7e157d54817993cbe6c81257f290fe64adf4",
+          "checksum": "8080ed1e8131885983078b60a1730e47e2462e6115a838c7bc5763762968626f",
           "size": "28096727",
           "boards": [
             {"name": "Ameba RTL8722DM"}
