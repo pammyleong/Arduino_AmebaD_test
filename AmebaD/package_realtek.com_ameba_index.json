@@ -12,7 +12,7 @@
       "platforms": [
       {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M23 & ARM Cortex-M33)",
-          "architecture": "ameba",
+          "architecture": "AmebaD",
           "version": "0.0.1",
           "category": "Contributed",
           "help": {
