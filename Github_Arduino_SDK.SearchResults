@@ -1,0 +1,190 @@
+---- path Matches (189 in 42 files) ----
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int sha2_file( const char *path, unsigned char output[32], int is224 ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return sha256_file( path, output, is224 );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int sha4_file( const char *path, unsigned char output[64], int is384 ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return sha512_file( path, output, is384 );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_crtfile( x509_cert *chain, const char *path ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return x509_crt_parse_file( chain, path );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_crtpath( x509_cert *chain, const char *path ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return x509_crt_parse_path( chain, path );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_crlfile( x509_crl *chain, const char *path ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return x509_crl_parse_file( chain, path );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_csrfile( x509_csr *csr, const char *path ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    return x509_csr_parse_file( csr, path );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_keyfile( rsa_context *rsa, const char *path,
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    ret = pk_parse_keyfile( &pk, path, pwd );
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):static inline int x509parse_public_keyfile( rsa_context *rsa, const char *path ) {
+Compat-1.2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    ret = pk_parse_public_keyfile( &pk, path );
+Ctr_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Ctr_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int ctr_drbg_write_seed_file( ctr_drbg_context *ctx, const char *path );
+Ctr_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Ctr_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int ctr_drbg_update_seed_file( ctr_drbg_context *ctx, const char *path );
+Dhcps.h (amebad\hardware\system\libameba\sdk\component\common\network\dhcp):			           null in DHCPDISCOVER, fully qualified directory-path name in DHCPOFFER.*/
+Dhm.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     filename to read the DHM Parameters from
+Dhm.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int dhm_parse_dhmfile( dhm_context *dhm, const char *path );
+Dwc_otg_cil.h (amebad\hardware\system\libameba\sdk\component\soc\realtek\8195a\fwlib\ram_lib\usb_otg\include):	 * configured to work at either data path width.
+Dwc_otg_core_if.h (amebad\hardware\system\libameba\sdk\component\soc\realtek\8195a\fwlib\ram_lib\usb_otg\include): * configured to work at either data path width.
+Entropy.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Entropy.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int entropy_write_seed_file( entropy_context *ctx, const char *path );
+Entropy.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Entropy.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int entropy_update_seed_file( entropy_context *ctx, const char *path );
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):/* Type of path name strings on FatFs API */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):	FR_NO_PATH,				/* (5) Could not find the path */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):	FR_INVALID_NAME,		/* (6) The path name format is invalid */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_open (FIL* fp, const TCHAR* path, BYTE mode);				/* Open or create a file */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_opendir (DIR* dp, const TCHAR* path);						/* Open a directory */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_mkdir (const TCHAR* path);								/* Create a sub directory */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_unlink (const TCHAR* path);								/* Delete an existing file or directory */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_rename (const TCHAR* path_old, const TCHAR* path_new);	/* Rename/Move a file or directory */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_stat (const TCHAR* path, FILINFO* fno);					/* Get file status */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_chmod (const TCHAR* path, BYTE value, BYTE mask);			/* Change attribute of the file/dir */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_utime (const TCHAR* path, const FILINFO* fno);			/* Change times-tamp of the file/dir */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_chdir (const TCHAR* path);								/* Change current directory */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_chdrive (const TCHAR* path);								/* Change current drive */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_getfree (const TCHAR* path, DWORD* nclst, FATFS** fatfs);	/* Get number of free clusters on the drive */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_getlabel (const TCHAR* path, TCHAR* label, DWORD* vsn);	/* Get volume label */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_mount (FATFS* fs, const TCHAR* path, BYTE opt);			/* Mount/Unmount a logical drive */
+Ff.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):FRESULT f_mkfs (const TCHAR* path, BYTE sfd, UINT au);				/* Create a file system on the volume */
+Ffconf.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):/* The _FS_RPATH option configures relative path feature.
+Ffconf.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):/   0: Disable relative path feature and remove related functions.
+Ffconf.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):/   1: Enable relative path. f_chdrive() and f_chdir() function are available.
+Ffconf.h (amebad\hardware\system\libameba\sdk\component\common\file_system\fatfs\r0.10c\include):/  number in the path name. _VOLUME_STRS defines the drive ID strings for each logical
+FreeRTOS.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include): *   + Ensure the project's include path includes the directory in which your
+Hmac_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Hmac_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int hmac_drbg_write_seed_file( hmac_drbg_context *ctx, const char *path );
+Hmac_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path          Name of the file
+Hmac_drbg.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int hmac_drbg_update_seed_file( hmac_drbg_context *ctx, const char *path );
+HttpClient.cpp (amebad\hardware\libraries\http):    // Send the HTTP command, i.e. "GET /somepath/ HTTP/1.0"
+Libwsclient.h (amebad\hardware\system\libameba\sdk\component\common\network\websocket):	char path[128];
+Md.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    int (*file_func)( const char *path, unsigned char *output );
+Md.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Md.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int md_file( const md_info_t *md_info, const char *path,
+Md2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Md2.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int md2_file( const char *path, unsigned char output[16] );
+Md4.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Md4.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int md4_file( const char *path, unsigned char output[16] );
+Md5.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Md5.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int md5_file( const char *path, unsigned char output[16] );
+Opt.h (amebad\hardware\system\libameba\sdk\component\common\network\lwip\lwip_v1.4.1\src\include\lwip): * inlude path somewhere. 
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * os_rel2abs_path - Get an absolute path for a file
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * @rel_path: Relative path to a file
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * Returns: Absolute path for the file or %NULL on failure
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * This function tries to convert a relative path of a file to an absolute path
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * freeing it. It is acceptable to just return the same path in an allocated
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * buffer, e.g., return strdup(rel_path). This function is only used to find
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils): * directory and relative path would be pointing to a different location.
+Os.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wpa_supplicant\src\utils):char * os_rel2abs_path(const char *rel_path);
+Pk.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path      filename to read the private key from
+Pk.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):                      const char *path, const char *password );
+Pk.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path      filename to read the private key from
+Pk.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int pk_parse_public_keyfile( pk_context *ctx, const char *path );
+Platform.txt (amebad\hardware):ameba.sdkpath={build.system.path}/libameba/sdk
+Platform.txt (amebad\hardware):compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
+Platform.txt (amebad\hardware):# Ameba include path
+Platform.txt (amebad\hardware):compiler.ameba.c.include="-I{ameba.sdkpath}/project/{ameba.project}/inc" "-I{ameba.sdkpath}/component/soc/realtek/common/bsp" "-I{ameba.sdkpath}/component/os/freertos" "-I{ameba.sdkpath}/component/os/freertos/freertos_v8.1.2/Source/include" "-I{ameba.sdkpath}/component/os/freertos/freertos_v8.1.2/Source/portable/GCC/ARM_CM3" "-I{ameba.sdkpath}/component/os/os_dep/include" "-I{ameba.sdkpath}/component/soc/realtek/8195a/misc/driver" "-I{ameba.sdkpath}/component/common/api/network/include" "-I{ameba.sdkpath}/component/common/api" "-I{ameba.sdkpath}/component/common/api/platform" "-I{ameba.sdkpath}/component/common/api/wifi" "-I{ameba.sdkpath}/component/common/api/wifi/rtw_wpa_supplicant/src" "-I{ameba.sdkpath}/component/common/application" "-I{ameba.sdkpath}/component/common/media/framework" "-I{ameba.sdkpath}/component/common/example" "-I{ameba.sdkpath}/component/common/example/wlan_fast_connect" "-I{ameba.sdkpath}/component/common/mbed/api" "-I{ameba.sdkpath}/component/common/mbed/hal" "-I{ameba.sdkpath}/component/common/mbed/hal_ext" "-I{ameba.sdkpath}/component/common/mbed/targets/hal/rtl8195a" "-I{ameba.sdkpath}/component/common/network" "-I{ameba.sdkpath}/component/common/network/lwip/lwip_v1.4.1/port/realtek/freertos" "-I{ameba.sdkpath}/component/common/network/lwip/lwip_v1.4.1/src/include" "-I{ameba.sdkpath}/component/common/network/lwip/lwip_v1.4.1/src/include/lwip" "-I{ameba.sdkpath}/component/common/network/lwip/lwip_v1.4.1/src/include/ipv4" "-I{ameba.sdkpath}/component/common/network/lwip/lwip_v1.4.1/port/realtek" "-I{ameba.sdkpath}/component/common/test" "-I{ameba.sdkpath}/component/soc/realtek/8195a/cmsis" "-I{ameba.sdkpath}/component/soc/realtek/8195a/cmsis/device" "-I{ameba.sdkpath}/component/soc/realtek/8195a/fwlib" "-I{ameba.sdkpath}/component/soc/realtek/8195a/fwlib/rtl8195a" "-I{ameba.sdkpath}/component/soc/realtek/8195a/misc/rtl_std_lib/include" "-I{ameba.sdkpath}/component/common/drivers/wlan/realtek/include" "-I{ameba.sdkpath}/component/common/drivers/wlan/realtek/src/osdep" "-I{ameba.sdkpath}/component/common/drivers/wlan/realtek/src/hci" "-I{ameba.sdkpath}/component/common/drivers/wlan/realtek/src/hal" "-I{ameba.sdkpath}/component/common/drivers/wlan/realtek/src/hal/OUTSRC" "-I{ameba.sdkpath}/component/soc/realtek/8195a/fwlib/ram_lib/wlan/realtek/wlan_ram_map/rom" "-I{ameba.sdkpath}/component/common/network/ssl/polarssl-1.3.8/include" "-I{ameba.sdkpath}/component/common/network/ssl/ssl_ram_map/rom" "-I{ameba.sdkpath}/component/common/utilities" "-I{ameba.sdkpath}/component/soc/realtek/8195a/misc/rtl_std_lib/include" "-I{ameba.sdkpath}/component/soc/realtek/8195a/fwlib/ram_lib/usb_otg/include" "-I{ameba.sdkpath}/component/common/video/v4l2/inc" "-I{ameba.sdkpath}/component/common/media/codec" "-I{ameba.sdkpath}/component/common/drivers/usb_class/host/uvc/inc" "-I{ameba.sdkpath}/component/common/drivers/usb_class/device" "-I{ameba.sdkpath}/component/common/drivers/usb_class/device/class" "-I{ameba.sdkpath}/component/common/file_system/fatfs" "-I{ameba.sdkpath}/component/common/file_system/fatfs/r0.10c/include" "-I{ameba.sdkpath}/component/common/drivers/sdio/realtek/sdio_host/inc" "-I{ameba.sdkpath}/component/common/audio" "-I{ameba.sdkpath}/component/common/drivers/i2s" "-I{ameba.sdkpath}/component/common/application/xmodem" "-I{ameba.sdkpath}/component/common/network/mDNS"
+Platform.txt (amebad\hardware):compiler.arduino.c.include="-I{build.core.path}"
+Platform.txt (amebad\hardware):compiler.ameba.ar.list="{build.variant.path}/lib_ameba.a" "{build.variant.path}/lib_mmf.a" "{build.variant.path}/lib_p2p.a" "{build.variant.path}/lib_platform.a" "{build.variant.path}/lib_rtlstd.a" "{build.variant.path}/lib_rtsp.a" "{build.variant.path}/lib_sdcard.a" "{build.variant.path}/lib_usbd.a" "{build.variant.path}/lib_usbh.a" "{build.variant.path}/lib_websocket.a" "{build.variant.path}/lib_wlan.a" "{build.variant.path}/lib_wps.a" "{build.variant.path}/lib_xmodem.a" "{build.variant.path}/lib_mdns.a" "{build.variant.path}/lib_http.a" "{build.variant.path}/lib_codec.a" "{build.variant.path}/lib_alexa.a" "{build.variant.path}/lib_google_cloud_iot.a"
+Platform.txt (amebad\hardware):recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.ameba.c.flags} {includes} "{source_file}" -o "{object_file}"
+Platform.txt (amebad\hardware):recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {compiler.ameba.c.flags} {includes} "{source_file}" -o "{object_file}"
+Platform.txt (amebad\hardware):recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
+Platform.txt (amebad\hardware):recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+Platform.txt (amebad\hardware):recipe.nm.pattern=cp "{build.path}/{build.project_name}.axf" "{build.path}/application.axf"
+Platform.txt (amebad\hardware):recipe.strip.pattern="{compiler.path}{compiler.strip.cmd}" "{build.path}/{build.project_name}.axf"
+Platform.txt (amebad\hardware):recipe.objcopy.hex.imagepath={build.path}\application.axf
+Platform.txt (amebad\hardware):recipe.objcopy.hex.imagepath.macosx="{build.path}/application.axf"
+Platform.txt (amebad\hardware):recipe.objcopy.hex.imagepath.linux="{build.path}/application.axf"
+Platform.txt (amebad\hardware):recipe.objcopy.hex.pattern="{runtime.tools.ameba_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
+Platform.txt (amebad\hardware):recipe.size.pattern.windows="{runtime.tools.ameba_tools.path}/amebasize.exe" "{runtime.tools.ameba_tools.path}"
+Platform.txt (amebad\hardware):recipe.size.pattern.macosx="{runtime.tools.ameba_tools.path}/amebasize" "{runtime.tools.ameba_tools.path}"
+Platform.txt (amebad\hardware):recipe.size.pattern.linux="{runtime.tools.ameba_tools.path}/amebasize" "{runtime.tools.ameba_tools.path}"
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.pattern="{runtime.tools.ameba_tools.path}/upload_dap.sh" {upload.verbose}
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.pattern.windows="{runtime.tools.ameba_tools.path}/upload_dap.exe" "{runtime.tools.ameba_tools.path}\ram_all.bin"{upload.verbose}
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.pattern.macosx="{runtime.tools.ameba_tools.path}/upload_dap_macosx" "{runtime.tools.ameba_tools.path}/ram_all.bin"{upload.verbose}
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.pattern.linux="{runtime.tools.ameba_tools.path}/upload_dap_linux" "{runtime.tools.ameba_tools.path}/ram_all.bin"{upload.verbose}
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.network_pattern="{runtime.tools.ameba_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_tools.path}\ota.bin"
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.network_pattern.windows="{runtime.tools.ameba_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_tools.path}\ota.bin"
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.network_pattern.macosx="{runtime.tools.ameba_tools.path}/upload_ota_macosx" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_tools.path}/ota.bin"
+Platform.txt (amebad\hardware):tools.ameba_tools.upload.network_pattern.linux="{runtime.tools.ameba_tools.path}/upload_ota_linux" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_tools.path}/ota.bin"
+Portable.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include):just add the path to the correct portmacro.h header file to the compiler's
+Portable.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include):include path. */
+Portable.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include):have the path as part of the project options, rather than as relative from
+Portable.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include):to find the path to the correct portmacro.h file. */
+Ripemd160.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Ripemd160.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int ripemd160_file( const char *path, unsigned char output[20] );
+Rtl_gdb_flash_write_jlink.txt (amebad\hardware\system\libameba\sdk\component\soc\realtek\8195a\misc\gcc_utility):#set file path
+Rtl_gdb_flash_write_openocd.txt (amebad\hardware\system\libameba\sdk\component\soc\realtek\8195a\misc\gcc_utility):#set file path
+Rtw_debug.h (amebad\hardware\system\libameba\sdk\component\common\drivers\wlan\realtek\include):	int proc_get_two_path_rssi(char *page, char **start,
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::readDir(char *path, char *result_buf, unsigned int bufsize) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_opendir(&dir, path);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::mkdir(char *absolute_path) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_mkdir(absolute_path);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::rm(char *absolute_path) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_unlink(absolute_path);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):unsigned char SdFatFs::isDir(char *absolute_path) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):    if ( getAttribute(absolute_path, &attr) >= 0) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):unsigned char SdFatFs::isFile(char *absolute_path) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):    if ( getAttribute(absolute_path, &attr) >= 0) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):SdFatFile SdFatFs::open(char *absolute_path) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_open((FIL *)file.m_file, absolute_path, FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):            printf("open file (%s) fail. (ret=%d)\n", absolute_path, ret);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::getLastModTime(char *absolute_path, uint16_t *year, uint16_t *month, uint16_t *date, uint16_t *hour, uint16_t *minute, uint16_t *second) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_stat(absolute_path, &fno);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::setLastModTime(char *absolute_path, uint16_t year, uint16_t month, uint16_t date, uint16_t hour, uint16_t minute, uint16_t second) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_utime(absolute_path, &fno);
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):int SdFatFs::getAttribute(char *absolute_path, unsigned char *attr) {
+SdFatFs.cpp (amebad\hardware\libraries\fatfs):        ret = f_stat(absolute_path, &fno);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @brief Get root path of the SD FAT File System
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * The logical volum character is start from '0', so the root path would like "0:/"
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @return root path
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] path The absolute directory path to be listed
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int readDir(char *path, char *result_buf, unsigned int bufsize);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute directory path to be created.
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int mkdir(char *absolute_path);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute directory or file path to be deleted.
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int rm(char *absolute_path);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @brief Check if a specific path is a directory
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute path to be queried
+SdFatFs.h (amebad\hardware\libraries\fatfs):    unsigned char isDir(char *absolute_path);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @brief Check if a specific path is a file
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute path to be queried
+SdFatFs.h (amebad\hardware\libraries\fatfs):    unsigned char isFile(char *absolute_path);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute path to be queried
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int getLastModTime(char *absolute_path, uint16_t *year, uint16_t *month, uint16_t *date, uint16_t *hour, uint16_t *minute, uint16_t *second);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path The absolute path to be changed
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int setLastModTime(char *absolute_path, uint16_t year, uint16_t month, uint16_t date, uint16_t hour, uint16_t minute, uint16_t second);
+SdFatFs.h (amebad\hardware\libraries\fatfs):     * @param[in] absolute_path the path to a file
+SdFatFs.h (amebad\hardware\libraries\fatfs):    SdFatFile open(char *absolute_path);
+SdFatFs.h (amebad\hardware\libraries\fatfs):    int getAttribute(char *absolute_path, unsigned char *attr);
+Sgtl5000.h (amebad\hardware\system\libameba\sdk\component\common\drivers\i2s)://				can be slightly higher than other paths- typically around
+Sgtl5000.h (amebad\hardware\system\libameba\sdk\component\common\drivers\i2s)://				still operating an analog signal path. This bit can be kept
+Sha1.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Sha1.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int sha1_file( const char *path, unsigned char output[20] );
+Sha256.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Sha256.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int sha256_file( const char *path, unsigned char output[32], int is224 );
+Sha512.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     input file name
+Sha512.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int sha512_file( const char *path, unsigned char output[64], int is384 );
+Task.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include): * of controlling the frequency of a periodic task as the path taken through the
+Task.h (amebad\hardware\system\libameba\sdk\component\os\freertos\freertos_v8.1.2\source\include): * calling vTaskDelay () may not be fixed [the task may take a different path though the
+Update.h (amebad\hardware\system\libameba\sdk\component\common\utilities):and add this path to the project.
+Wifi_wowlan.h (amebad\hardware\system\libameba\sdk\component\common\api\wifi\rtw_wowlan): * this function is called in rx path and wifi_inidication when wowlan service is running
+Wsclient_api.h (amebad\hardware\system\libameba\sdk\component\common\network\websocket):wsclient_context *create_wsclient(char *url, int port,char *path, char* origin);
+X509.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int x509_load_file( const char *path, unsigned char **buf, size_t *n );
+X509_crl.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     filename to read the CRLs from
+X509_crl.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int x509_crl_parse_file( x509_crl *chain, const char *path );
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):    int max_pathlen;            /**< Optional Basic Constraint extension value: The maximum path length to the root certificate. Path length is 1 higher than RFC 5280 'meaning', so 1+ */
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     filename to read the certificates from
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int x509_crt_parse_file( x509_crt *chain, const char *path );
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \brief          Load one or more certificate files from a path and add them
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     directory / folder to read the certificate files from
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int x509_crt_parse_path( x509_crt *chain, const char *path );
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param max_pathlen   maximum length of certificate chains below this
+X509_crt.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):                                         int is_ca, int max_pathlen );
+X509_csr.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl): * \param path     filename to read the CSR from
+X509_csr.h (amebad\hardware\system\libameba\sdk\component\common\network\ssl\polarssl-1.3.8\include\polarssl):int x509_csr_parse_file( x509_csr *csr, const char *path );
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	char path[30];
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	buildPath(path, aFeed.id(), "json");
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	int ret = http.put("api.xively.com", path);
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	char path[30];
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	buildPath(path, aFeed.id(), "csv");
+XivelyClient.cpp (amebad\hardware\libraries\xively):  	int ret = http.get("api.xively.com", path);
+Xml.h (amebad\hardware\system\libameba\sdk\component\common\utilities):struct xml_node_set* xml_find_path(struct xml_node *root, char *path);

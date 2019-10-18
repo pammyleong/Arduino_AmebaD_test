@@ -11,7 +11,7 @@
 
       "platforms": [
       {
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M23 & ARM Cortex-M33)",
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
           "version": "0.0.1",
           "category": "Contributed",
@@ -23,7 +23,7 @@
           "checksum": "SHA-256:e051b5775a50f3842c4cc3dbc446c4226777bcb479c56618f511c61647a5e7fe",
           "size": "28096727",
           "boards": [
-            {"name": "Ameba RTL8722DM"}
+            {"name": "Ameba RTL8722D"}
           ],
           "toolsDependencies": [
             {
