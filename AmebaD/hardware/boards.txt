@@ -2,7 +2,7 @@
 ameba_rtl8722dm.name=Ameba RTL8722D
 ameba_rtl8722dm.vid.0=0x2341
 ameba_rtl8722dm.pid.0=0x003d
-ameba_rtl8722dm.upload.tool=ameba_tools
+ameba_rtl8722dm.upload.tool=ameba_d_tools
 ameba_rtl8722dm.upload.protocol=mbed_dap
 ameba_rtl8722dm.upload.maximum_size=2097152
 ameba_rtl8722dm.upload.use_1200bps_touch=false
