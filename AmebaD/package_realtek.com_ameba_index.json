@@ -5,7 +5,7 @@
       "maintainer": "Realtek",
       "websiteURL": "http://www.amebaiot.com/",
       "email": "ameba.arduino@gmail.com",
-      "help":{
+      "help": {
         "online": "http://www.amebaiot.com/"
       },
 
@@ -18,10 +18,10 @@
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.1.tar.gz",
-          "archiveFileName": "ameba-0.0.1.tar.gz",
-          "checksum": "SHA-256:e051b5775a50f3842c4cc3dbc446c4226777bcb479c56618f511c61647a5e7fe",
-          "size": "28096727",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.2.tar.gz",
+          "archiveFileName": "ameba-0.0.2.tar.gz",
+          "checksum": "SHA-256:c3e04c416df9c69f52d960bf621dca1c6c8adcec4c53222c1ea9591d2cfbafe1",
+          "size": "28095817",
           "boards": [
             {
               "name": "Ameba RTL8722D"
