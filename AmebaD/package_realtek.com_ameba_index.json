@@ -30,8 +30,8 @@
           "toolsDependencies": [
             {
               "packager": "realtek",
-              "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
+              "name": "amebad-asdk-toolchain",
+              "version": "0.0.1"
             },
             {
               "packager": "realtek",
@@ -44,15 +44,15 @@
 
       "tools": [
         {
-          "name":"arm-none-eabi-gcc",
-          "version":"4.8.3-2014q1",
+          "name":"amebad-asdk-toolchain",
+          "version":"0.0.1",
           "systems": [
             {
               "host":"i686-mingw32",
-              "archiveFileName":"gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz",
-              "url":"http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz",
-              "checksum":"SHA-256:fd8c111c861144f932728e00abd3f7d1107e186eb9cd6083a54c7236ea78b7c2",
-              "size":"84537449"
+              "archiveFileName":"ameba_d_toolchain_windows-0.0.1.tar.gz",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_toolchain_windows-0.0.1.tar.gz",
+              "checksum":"SHA-256:0836a001a75c0cab48d01e67ced5e9d581e06849e027b19abc0f892c0d95cd75",
+              "size":"346646584"
             }
           ]
         },
