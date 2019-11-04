@@ -14,5 +14,5 @@ ameba_rtl8722dm.build.usb_product="Ameba RTL8722D"
 ameba_rtl8722dm.build.board=AMEBA
 ameba_rtl8722dm.build.core=arduino
 ameba_rtl8722dm.build.extra_flags=-mthumb -DBOARD_RTL8722D {build.usb_flags}
-#ameba_rtl8722dm.build.ldscript=linker_scripts/gcc/rtl8195a-symbol-v03-img2_arduino_arduino.ld
+#ameba_rtl8722dm.build.ldscript=linker_scripts/gcc/rtl8722d-symbol-v03-img2_arduino_arduino.ld
 ameba_rtl8722dm.build.variant=rtl8722d
