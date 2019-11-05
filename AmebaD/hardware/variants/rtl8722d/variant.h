@@ -23,5 +23,69 @@
 #include <stdarg.h>
 
 
+
+
+#if 0
+
+
+
+#ifdef __cplusplus
+#include "LOGUARTClass.h"
+#endif
+
+#define MAIN_THREAD_STACK_SIZE (4096*4)
+
+#define TOTAL_GPIO_PIN_NUM	(19)
+#define TOTAL_PWM_PIN_NUM   ( 4)
+
+#define LED_BUILTIN 13
+
+#define FEATURE_ADC
+#define FEATURE_DAC
+
+/* Analog pin mapping */
+#define A0 1
+#define A1 2
+#define A2 3
+
+/* DAC pin mapping */
+#define DAC0 36
+
+#define SS 10
+
+#ifdef __cplusplus
+extern "C"{
+#endif // __cplusplus
+
+#define portOutputRegister(P) ( (volatile uint32_t *)( 0x40001000 + (P) * 0x0C ) )
+#define portInputRegister(P)  ( (volatile uint32_t *)( 0x40001050 + (P) * 4 ) )
+#define portModeRegister(P)   ( (volatile uint32_t *)( 0x40001004 + (P) * 0x0C ) )
+
+/*
+ * Wait until enter debug mode
+ *
+ * Check DHCSR(0xE000EDF0) register and hold until bit C_DEBUGEN is set.
+ * Use this function along with J-LINK or other debug tool
+ **/
+extern void wait_for_debug();
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+
+extern LOGUARTClass Serial;
+
+#endif
+
+
+
+#endif
+
+
+
+
 #endif /* _VARIANT_ARDUINO_AMEBA_ */
 
