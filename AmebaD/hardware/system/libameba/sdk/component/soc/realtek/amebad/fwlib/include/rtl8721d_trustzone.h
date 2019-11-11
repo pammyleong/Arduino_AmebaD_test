@@ -85,7 +85,8 @@ __STATIC_INLINE u32 TrustZone_IsSecure(void)
 {
 #if defined (ARM_CORE_CM4)
 	cmse_address_info_t cmse_address_info = cmse_TT((void *)DiagPrintf);
-	return cmse_address_info.flags.secure;
+	// zzw 
+	//return cmse_address_info.flags.secure;
 #else
 	return 0;
 #endif

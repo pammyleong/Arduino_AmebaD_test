@@ -25,7 +25,7 @@
 
 
 
-#if 0
+#if 1
 
 
 
@@ -41,7 +41,7 @@
 #define LED_BUILTIN 13
 
 #define FEATURE_ADC
-#define FEATURE_DAC
+//#define FEATURE_DAC
 
 /* Analog pin mapping */
 #define A0 1
