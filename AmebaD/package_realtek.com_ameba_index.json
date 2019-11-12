@@ -18,9 +18,9 @@
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.4.tar.gz",
-          "archiveFileName": "ameba-0.0.4.tar.gz",
-          "checksum": "SHA-256:892ba870ed455202ccdee84fb00332213fe2a052ab14787af7147d90b2c484fb",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.5.tar.gz",
+          "archiveFileName": "ameba-0.0.5.tar.gz",
+          "checksum": "SHA-256:e8cac8684f4fc5b375f23beaa02dbd8aa7217674fcd34a0a8c089cdd58fe6e4c",
           "size": "89799569",
           "boards": [
             {
@@ -30,8 +30,8 @@
           "toolsDependencies": [
             {
               "packager": "realtek",
-              "name": "amebad_asdk_toolchain",
-              "version": "0.0.1"
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
             },
             {
               "packager": "realtek",

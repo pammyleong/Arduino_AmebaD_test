@@ -29,10 +29,10 @@
 extern "C" {
 #endif
 
-#include "log_uart_api.h"
-#include "hal_irqn.h"
+#include "serial_api.h"
+#include "rtl8721d_vector.h"
 
-log_uart_t log_uart_obj;
+serial_t log_uart_obj;
 
 #ifdef __cplusplus
 }
@@ -40,13 +40,13 @@ log_uart_t log_uart_obj;
 
 RingBuffer rx_buffer0;
 
-void arduino_loguart_irq_handler(uint32_t id, LOG_UART_INT_ID event)
+void arduino_loguart_irq_handler(uint32_t id, SerialIrq event)
 {
     char c;
     RingBuffer *pRxBuffer = (RingBuffer *)id;
 
-    if (event == IIR_RX_RDY || IIR_CHAR_TIMEOUT) {
-        c = log_uart_getc(&log_uart_obj);
+    if (event == RxIrq) {
+        c = char(serial_getc(&log_uart_obj));
         pRxBuffer->store_char(c);
     }
 }
@@ -70,31 +70,42 @@ void LOGUARTClass::IrqHandler( void )
 
     uint8_t     data = 0;
     BOOL    	PullMode = _FALSE;
-    uint32_t 	IrqEn = DiagGetIsrEnReg();
 
-    DiagSetIsrEnReg(0);
+    //UART_TypeDef * pLOG_UART = UART2_DEV;
+    uint32_t 	IrqEn;
+	IrqEn = UART_IntStatus(UART2_DEV);
+
+    //DiagSetIsrEnReg(0);
+
+	serial_irq_set(&log_uart_obj, RxIrq, 0);
+	//serial_irq_set(&log_uart_obj, TxIrq, 0);
 
     data = DiagGetChar(PullMode);
 	if ( data > 0 ) 
 		_rx_buffer->store_char(data);
 
-    DiagSetIsrEnReg(IrqEn);
+    //DiagSetIsrEnReg(IrqEn);
+	serial_irq_set(&log_uart_obj, RxIrq, IrqEn);
 
 }
 
 
 void LOGUARTClass::begin( const uint32_t dwBaudRate )
 {
+
+    serial_init(&log_uart_obj, PA_7, PA_8);
+    serial_format(&log_uart_obj, 8, ParityNone, 1);
+
 #if LOG_UART_MODIFIABLE_BAUD_RATE
     /* log uart initialize in 38400 baud rate.
      * If we change baud rate here, Serail Monitor would not detect this change and show nothing on screen.
      */
-    log_uart_init(&log_uart_obj, dwBaudRate, 8, ParityNone, 1);
+    serial_baud(&log_uart_obj, dwBaudRate);
 #else
-    log_uart_init(&log_uart_obj, 38400, 8, ParityNone, 1);
+    serial_baud(&log_uart_obj, 38400);
 #endif
-    log_uart_irq_set(&log_uart_obj, IIR_RX_RDY, 1);
-    log_uart_irq_handler(&log_uart_obj, arduino_loguart_irq_handler, (uint32_t)_rx_buffer);
+    serial_irq_set(&log_uart_obj, RxIrq, 1);
+    serial_irq_handler(&log_uart_obj, arduino_loguart_irq_handler, (uint32_t)_rx_buffer);
 }
 
 void LOGUARTClass::end( void )
@@ -102,7 +113,7 @@ void LOGUARTClass::end( void )
     // clear any received data
     _rx_buffer->_iHead = _rx_buffer->_iTail ;
 
-    log_uart_free(&log_uart_obj);
+    serial_free(&log_uart_obj);
 }
 
 int LOGUARTClass::available( void )
@@ -145,7 +156,7 @@ void LOGUARTClass::flush( void )
 
 size_t LOGUARTClass::write( const uint8_t uc_data )
 {
-    log_uart_putc(&log_uart_obj, uc_data);
+    serial_putc(&log_uart_obj, uc_data);
   	return 1;
 }
 
