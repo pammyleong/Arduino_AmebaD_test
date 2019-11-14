@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Ameba ARM (32-bits) Boards
-version=0.0.1
+version=0.0.7
 
 # Ameba project settings
 # ----------------------
@@ -58,7 +58,9 @@ compiler.ameba.c.flags= -DCONFIG_PLATFORM_8721D -DARDUINO_SDK {compiler.arduino.
 
 # Ameba archieve list
 # -------------------
-compiler.ameba.ar.list="{build.variant.path}/lib_ameba.a" "{build.variant.path}/lib_cmsis_dsp.a" "{build.variant.path}/lib_dct.a" "{build.variant.path}/lib_httpc.a" "{build.variant.path}/lib_httpd.a" "{build.variant.path}/lib_m4a_self.a" "{build.variant.path}/lib_mdns.a" "{build.variant.path}/lib_tftp.a" "{build.variant.path}/lib_usbd.a" "{build.variant.path}/lib_websocket.a" "{build.variant.path}/lib_wlan.a" "{build.variant.path}/lib_wps.a" "{build.variant.path}/lib_user.a"
+compiler.ameba.ar.list= "{build.variant.path}/lib_cmsis_dsp.a" "{build.variant.path}/lib_dct.a" "{build.variant.path}/lib_httpc.a" "{build.variant.path}/lib_httpd.a" "{build.variant.path}/lib_m4a_self.a" "{build.variant.path}/lib_mdns.a" "{build.variant.path}/lib_tftp.a" "{build.variant.path}/lib_usbd.a" "{build.variant.path}/lib_websocket.a" "{build.variant.path}/lib_wlan.a" "{build.variant.path}/lib_wps.a" 
+#"{build.variant.path}/lib_user.a"
+#"{build.variant.path}/lib_ameba.a"
 
 # USB Flags
 # ---------

@@ -243,34 +243,34 @@
 #if defined (ARM_CORE_CM4)
 #define SYSTEM_CTRL_BASE		0x40000000
 #define PERI_ON_BASE			0x40000000
-#define VENDOR_REG_BASE             0x40002800
+#define VENDOR_REG_BASE			0x40002800
 #else
 #define SYSTEM_CTRL_BASE		0x48000000
 #define PERI_ON_BASE			0x48000000
 #define VENDOR_REG_BASE			0x48002800
 #endif
-#define LP_RW_HSYSON_OFFSET	0x00000800 //use LP_RW_HSYSON_OFFSET can access HS SYSON directly when KM4 power gate
-#define SYSTEM_CTRL_BASE_HP	0x40000000
+#define LP_RW_HSYSON_OFFSET		0x00000800			//use LP_RW_HSYSON_OFFSET can access HS SYSON directly when KM4 power gate
+#define SYSTEM_CTRL_BASE_HP		0x40000000
 #define SYSTEM_CTRL_BASE_HP_S	0x50000000
-#define SYSTEM_CTRL_BASE_LP	0x48000000
-#define PINMUX_REG_BASE		0x48000400	/* 0x0400~0x05FF */
-#define RSIP_REG_BASE			0x48000600	/* 0x0600~0x07FF */
+#define SYSTEM_CTRL_BASE_LP		0x48000000
+#define PINMUX_REG_BASE			0x48000400			/* 0x0400~0x05FF */
+#define RSIP_REG_BASE			0x48000600			/* 0x0600~0x07FF */
 
 #define TIMERM4_REG_BASE		0x40002000
-#define TIMERM0_REG_BASE		0x48002000		/*KM0 LTimer */
+#define TIMERM0_REG_BASE		0x48002000			/*KM0 LTimer */
 
-#define UART0_REG_BASE			0x40004000		/*KM4 uart0 */
-#define UART1_REG_BASE			0x4000A000		/*KM4 uart1_bt */
-#define UART2_REG_BASE			0x48012000		/*KM0 log uart */
-#define UART3_REG_BASE			0x4800E000		/*KM0 luart */
+#define UART0_REG_BASE			0x40004000			/*KM4 uart0 */
+#define UART1_REG_BASE			0x4000A000			/*KM4 uart1_bt */
+#define UART2_REG_BASE			0x48012000			/*KM0 log uart */
+#define UART3_REG_BASE			0x4800E000			/*KM0 luart */
 #define UARTLOG_REG_BASE		UART2_REG_BASE		/*KM0 log uart */
 
 #define IPCM4_REG_BASE			0x40006000
-#define IPCM0_REG_BASE			0x48006000		/*KM0 IPC */
+#define IPCM0_REG_BASE			0x48006000			/*KM0 IPC */
 
 #define USI_REG_BASE			0x40008000
 #define RXI300M4_REG_BASE		0x4000C000
-#define RXI300M0_REG_BASE		0x48018000		/*KM0 RXI300 */
+#define RXI300M0_REG_BASE		0x48018000			/*KM0 RXI300 */
 #define SPI1_REG_BASE			0x4000E000
 #define SPI0_REG_BASE			0x40078000
 
@@ -281,15 +281,15 @@
 #define PSRAM_BASE				0x02000000
 
 #define I2S0_REG_BASE			0x40020000
-#define CRYPTO_REG_BASE		0x40022000
+#define CRYPTO_REG_BASE			0x40022000
 #define CRYPTOS_REG_BASE		0x50022000
 #define SDIOH_REG_BASE			0x40026000
 #if defined (ARM_CORE_CM4)
-#define GDMA0_REG_BASE			0x4002A000		/*KM4 GDMA */
+#define GDMA0_REG_BASE			0x4002A000			/*KM4 GDMA */
 #else
-#define GDMA0_REG_BASE			0x48010000		/*KM0 GDMA */
+#define GDMA0_REG_BASE			0x48010000			/*KM0 GDMA */
 #endif
-#define GDMA0S_REG_BASE		0x5002A000		/*KM4 GDMAS */
+#define GDMA0S_REG_BASE			0x5002A000			/*KM4 GDMAS */
 
 #define SDIO_DEVICE_REG_BASE	0x4002C000
 #define USB_OTG_REG_BASE		0x40040000
@@ -299,29 +299,29 @@
 #define WIFI_BB_REG_BASE		0x40082800
 #define WIFI_RF_REG_BASE		0x40083800
 
-#define SPI_FLASH_CTRL_BASE	0x48080000
+#define SPI_FLASH_CTRL_BASE		0x48080000
 #define SPI_FLASH_BASE			0x08000000
 
-#define RTC_BASE				0x48004000		/*KM0 RTC */
-#define CTC_REG_BASE			0x4801c000		/*KM0 Cap-Touch */
-#define KEYSCAN_REG_BASE		0x4800A000		/*KM0 Key-Scan */
-#define I2C0_REG_BASE			0x4800C000		/*KM0 I2C0 */
+#define RTC_BASE				0x48004000			/*KM0 RTC */
+#define CTC_REG_BASE			0x4801c000			/*KM0 Cap-Touch */
+#define KEYSCAN_REG_BASE		0x4800A000			/*KM0 Key-Scan */
+#define I2C0_REG_BASE			0x4800C000			/*KM0 I2C0 */
 
-#define GPIO_REG_BASE			0x48014000		/*KM0 GPIO */
-#define SGPIO_REG_BASE			0x4801A000		/*KM0 SGPIO */
-#define ADC_REG_BASE			0x4801C800		/*KM0 ADC */
-#define CMP_REG_BASE			0x4801CC00		/*KM0 COMPARE*/
-#define QDEC_REG_BASE			0x4801E000		/*KM0 QDEC */
+#define GPIO_REG_BASE			0x48014000			/*KM0 GPIO */
+#define SGPIO_REG_BASE			0x4801A000			/*KM0 SGPIO */
+#define ADC_REG_BASE			0x4801C800			/*KM0 ADC */
+#define CMP_REG_BASE			0x4801CC00			/*KM0 COMPARE*/
+#define QDEC_REG_BASE			0x4801E000			/*KM0 QDEC */
 
 #define KM4_IDAU_BASE			0x5000C100
 
-#define BACKUP_REG_BASE		0x480003C0		/*KM0 BACKUP REG */
+#define BACKUP_REG_BASE			0x480003C0			/*KM0 BACKUP REG */
 #define WDG_REG_BASE			VENDOR_REG_BASE
 
 /* 1024B Retention Ram base address */
 #define RETENTION_RAM_BASE				0x000C0000
 #define RETENTION_RAM_SYS_OFFSET		0x80
-#define RETENTION_RAM_WIFI_FW_OFFSET	0x130 /* 0x000C_0130~0x000C_0400-1: 720B for wifi firmware */
+#define RETENTION_RAM_WIFI_FW_OFFSET	0x130		/* 0x000C_0130~0x000C_0400-1: 720B for wifi firmware */
 #define RETENTION_RAM_WIFI_FW_SIZE		720
 
 /** @} End of group AmebaD_Address_Map */
@@ -1528,6 +1528,66 @@ typedef struct {
  * @defgroup AmebaD_Peripheral_Declaration  AmebaD HS/LP Peripheral Declarations
  * @{
  *****************************************************************************/
+
+#if __cplusplus
+
+#define UART0_DEV			UART0_REG_BASE		/*KM4 uart0 */
+#define UART1_DEV			UART1_REG_BASE		/*KM4 uart1_bt */
+#define UART2_DEV			UART2_REG_BASE		/*KM0 log uart */
+#define UART3_DEV			UART3_REG_BASE		/*KM0 luart*/
+
+#define SPI0_DEV			SPI0_REG_BASE		/*KM4 */
+#define SPI1_DEV			SPI1_REG_BASE		/*KM4 */
+
+#define I2S_DEV				((I2S_TypeDef			*) I2S0_REG_BASE)
+#define AUDIO_SI_DEV		((AUDIO_SI_TypeDef		*) AUDIO_SI_REG_BASE)			/*KM4 */
+#define AUDIO_SPORT_DEV	((AUDIO_SPORT_TypeDef	*) AUDIO_SPORT_REG_BASE)		/*KM4 */
+#define USI0_DEV			((USI_TypeDef			*) USI_REG_BASE)					/*KM4 */
+#define LCDC					((LCDC_TypeDef 			*) LCDC_REG_BASE)				/*KM4 */
+#define PSRAM_DEV			((PCTL_TypeDef 			*) PSRAM_REG_BASE)				/*KM4 */
+
+#define SPIC					((SPIC_TypeDef			*) SPI_FLASH_CTRL_BASE)
+#define ADC					((ADC_TypeDef			*) ADC_REG_BASE)
+#define COMPARATOR				((CMP_TypeDef			*) CMP_REG_BASE)
+#define I2C0_DEV			 I2C0_REG_BASE
+
+#define TIM0					((RTIM_TypeDef			*) TIMERM4_REG_BASE)
+#define TIM1					((RTIM_TypeDef			*) (TIMERM4_REG_BASE + 0x080))
+#define TIM2					((RTIM_TypeDef			*) (TIMERM4_REG_BASE + 0x100))
+#define TIM3					((RTIM_TypeDef			*) (TIMERM4_REG_BASE + 0x180))
+#define TIM4					((RTIM_TypeDef			*) (TIMERM4_REG_BASE + 0x200))
+#define TIM5					((RTIM_TypeDef			*) (TIMERM4_REG_BASE + 0x280))
+#define TIMM00				((RTIM_TypeDef			*) TIMERM0_REG_BASE)			/*KM0 */
+#define TIMM01				((RTIM_TypeDef			*) (TIMERM0_REG_BASE + 0x080))	/*KM0 */
+#define TIMM02				((RTIM_TypeDef			*) (TIMERM0_REG_BASE + 0x100))	/*KM0 */
+#define TIMM03				((RTIM_TypeDef			*) (TIMERM0_REG_BASE + 0x180))	/*KM0 */
+#define TIMM04				((RTIM_TypeDef			*) (TIMERM0_REG_BASE + 0x200))	/*KM0 */
+#define TIMM05				((RTIM_TypeDef			*) (TIMERM0_REG_BASE + 0x280))	/*KM0 */
+
+#define KEYSCAN_DEV		((KEYSCAN_TypeDef		*) KEYSCAN_REG_BASE)			/*KM0 */
+#define SGPIO_DEV			((SGPIO_TypeDef			*) SGPIO_REG_BASE)			/*KM0 */
+#define CAPTOUCH_DEV		((CAPTOUCH_TypeDef		*) CTC_REG_BASE)				/*KM0 */
+#define IR_DEV				((IR_TypeDef 				*) IR_REG_BASE)				/*KM0 */
+#define QDEC_DEV			((QDEC_TypeDef			*) QDEC_REG_BASE)			/*KM0 */
+#define RTC_DEV				((RTC_TypeDef			*) (RTC_BASE - 0x08000000); 	/*KM0 */
+#define PINMUX				((PINMUX_TypeDef			*) PINMUX_REG_BASE)			/*KM0 */
+#define GPIOA_BASE			((GPIO_TypeDef			*) GPIO_REG_BASE)			/*KM0 */
+#define GPIOB_BASE			((GPIO_TypeDef			*) (GPIO_REG_BASE + 0x400))	/*KM0 */
+#define BACKUP_REG			((BACKUP_REG_TypeDef	*) BACKUP_REG_BASE)			/*KM0 */
+
+#define KM4_IDAU			((IDAU_TypeDef			*) KM4_IDAU_BASE)			/*KM4 */
+#define IPCM4_DEV 			((IPC_TypeDef 			*) IPCM4_REG_BASE)				/*KM4 */
+#define IPCM0_DEV 			((IPC_TypeDef			*) IPCM0_REG_BASE)				/*KM0 */
+
+#define GDMA_BASE			((GDMA_TypeDef			*) (GDMA0_REG_BASE))
+
+#define WDG_BASE			((WDG_TypeDef			*) (VENDOR_REG_BASE))
+#define RSIP_BASE			((RSIP_REG_TypeDef		*) (RSIP_REG_BASE))
+#define SDIOH_BASE			((SDIOH_TypeDef			*) (SDIOH_REG_BASE))
+
+#define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
+
+#else
 #define UART0_DEV			((UART_TypeDef			*) UART0_REG_BASE)		/*KM4 uart0 */
 #define UART1_DEV			((UART_TypeDef			*) UART1_REG_BASE)		/*KM4 uart1_bt */
 #define UART2_DEV			((UART_TypeDef			*) UART2_REG_BASE)		/*KM0 log uart */
@@ -1583,6 +1643,8 @@ typedef struct {
 
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
 /** @} End of group AmebaD_Peripheral_Declaration */
+#endif
+
 
 /** @} End of group AmebaD_Outline */
 #endif //_HAL_PLATFORM_

@@ -67,26 +67,24 @@ LOGUARTClass::LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer )
 
 void LOGUARTClass::IrqHandler( void )
 {
-
     uint8_t     data = 0;
-    BOOL    	PullMode = _FALSE;
+    BOOL        PullMode = _FALSE;
 
     //UART_TypeDef * pLOG_UART = UART2_DEV;
-    uint32_t 	IrqEn;
-	IrqEn = UART_IntStatus(UART2_DEV);
+    uint32_t    IrqEn;
+	IrqEn = UART_IntStatus((UART_TypeDef*)UART2_DEV);
 
     //DiagSetIsrEnReg(0);
 
-	serial_irq_set(&log_uart_obj, RxIrq, 0);
+    serial_irq_set(&log_uart_obj, RxIrq, 0);
 	//serial_irq_set(&log_uart_obj, TxIrq, 0);
 
     data = DiagGetChar(PullMode);
-	if ( data > 0 ) 
-		_rx_buffer->store_char(data);
+    if (data > 0)
+        _rx_buffer->store_char(data);
 
     //DiagSetIsrEnReg(IrqEn);
-	serial_irq_set(&log_uart_obj, RxIrq, IrqEn);
-
+    serial_irq_set(&log_uart_obj, RxIrq, IrqEn);
 }
 
 

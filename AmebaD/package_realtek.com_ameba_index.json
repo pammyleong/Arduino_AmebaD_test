@@ -43,15 +43,15 @@
         {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "0.0.6",
+          "version": "0.0.7",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.5.tar.gz",
-          "archiveFileName": "ameba-0.0.5.tar.gz",
-          "checksum": "SHA-256:e8cac8684f4fc5b375f23beaa02dbd8aa7217674fcd34a0a8c089cdd58fe6e4c",
-          "size": "89799569",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.7.tar.gz",
+          "archiveFileName": "ameba-0.0.7.tar.gz",
+          "checksum": "SHA-256:0fcf6d31232351d9e1d0b4892dbcb4ebf6ac6a0b37c05c10fd3ced0e34d21bec",
+          "size": "89806730",
           "boards": [
             {
               "name": "Ameba RTL8722D"
