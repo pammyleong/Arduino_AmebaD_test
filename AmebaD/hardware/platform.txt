@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Ameba ARM (32-bits) Boards
-version=0.0.7
+version=0.0.8
 
 # Ameba project settings
 # ----------------------
@@ -21,7 +21,10 @@ compiler.path={runtime.tools.amebad_asdk_toolchain.path}/bin/
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c -g -w -mcpu=cortex-m33 -mthumb -Os -std=c++11 -fno-short-enums -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-short-enums -MMD
 compiler.c.elf.cmd=arm-none-eabi-gcc
-compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb --specs=nano.specs
+
+##zzw##compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb --specs=nano.specs
+compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb -specs nosys.specs
+
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=arm-none-eabi-g++
 compiler.cpp.flags=-c -g -w -Os -std=gnu++11 -mcpu=cortex-m33 -mthumb -fno-short-enums -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-rtti -fno-short-enums -MMD
@@ -86,6 +89,7 @@ recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compil
 ## Combine gc-sections, archives, and objects
 recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
+
 ## Create nm map
 recipe.nm.pattern=cp "{build.path}/{build.project_name}.axf" "{build.path}/application.axf"
 
@@ -96,22 +100,19 @@ recipe.strip.pattern="{compiler.path}{compiler.strip.cmd}" "{build.path}/{build.
 recipe.objcopy.hex.cmd=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.cmd.windows=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.imagepath={build.path}\application.axf
-recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_d_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
+#zzw###recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_d_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
 
 ## Compute size
-##recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"
-##recipe.size.regex=^(?:bootloader|image2|image3)\s+([0-9]+).*
+recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"
+recipe.size.regex=^(?:bootloader|image2|image3)\s+([0-9]+).*
 
 # Ameba Uploader tools
 # -------------------
 
-#tools.ameba_d_tools.upload.params.verbose=
-#tools.ameba_d_tools.upload.params.quiet=
-#tools.ameba_d_tools.upload.pattern="{runtime.tools.ameba_d_tools.path}/upload_dap.sh" {upload.verbose}
-#tools.ameba_d_tools.upload.pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_dap.exe" "{runtime.tools.ameba_d_tools.path}\ram_all.bin"{upload.verbose}
-#tools.ameba_d_tools.upload.pattern.macosx="{runtime.tools.ameba_d_tools.path}/upload_dap_macosx" "{runtime.tools.ameba_d_tools.path}/ram_all.bin"{upload.verbose}
-#tools.ameba_d_tools.upload.pattern.linux="{runtime.tools.ameba_d_tools.path}/upload_dap_linux" "{runtime.tools.ameba_d_tools.path}/ram_all.bin"{upload.verbose}
-#tools.ameba_d_tools.upload.network_pattern="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
-#tools.ameba_d_tools.upload.network_pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
-#tools.ameba_d_tools.upload.network_pattern.macosx="{runtime.tools.ameba_d_tools.path}/upload_ota_macosx" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}/ota.bin"
-#tools.ameba_d_tools.upload.network_pattern.linux="{runtime.tools.ameba_d_tools.path}/upload_ota_linux" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}/ota.bin"
+#zzw###tools.ameba_d_tools.upload.params.verbose=
+#zzw###tools.ameba_d_tools.upload.params.quiet=
+#zzw###tools.ameba_d_tools.upload.pattern="{runtime.tools.ameba_d_tools.path}/upload_dap.sh" {upload.verbose}
+#zzw###tools.ameba_d_tools.upload.pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_dap.exe" "{runtime.tools.ameba_d_tools.path}\ram_all.bin"{upload.verbose}
+#zzw###tools.ameba_d_tools.upload.network_pattern="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
+#zzw###tools.ameba_d_tools.upload.network_pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
+

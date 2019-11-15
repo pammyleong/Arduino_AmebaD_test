@@ -18,35 +18,34 @@ using namespace std;
 void replaceAll( string& source, const string& from, const string& to )
 {
     string newString;
-    newString.reserve( source.length() );  // avoids a few memory allocations
+    newString.reserve(source.length()); //avoids a few memory allocations
 
     string::size_type lastPos = 0;
     string::size_type findPos;
 
-    while( string::npos != ( findPos = source.find( from, lastPos )))
-    {
-        newString.append( source, lastPos, findPos - lastPos );
+    while (string::npos != (findPos = source.find(from, lastPos))) {
+        newString.append( source, lastPos, (findPos - lastPos));
         newString += to;
         lastPos = findPos + from.length();
     }
 
     // Care for the rest after last occurrence
-    newString += source.substr( lastPos );
+    newString += source.substr(lastPos);
 
-    source.swap( newString );
+    source.swap(newString);
 }
 
 int main(int argc, char *argv[]) {
 
-	int ret = 0;
+    int ret = 0;
     stringstream cmdss;
     string cmd, line, msg;
-	vector<string> lines;
-	vector<string>::iterator iter;
+    vector<string> lines;
+    vector<string>::iterator iter;
     string path_tool;
     string path_arm_none_eabi_gcc;
-	string path_symbol_black_list;
-	string bksym;
+    string path_symbol_black_list;
+    string bksym;
     ifstream fin;
     ofstream fout;
 
@@ -90,7 +89,7 @@ int main(int argc, char *argv[]) {
     system(cmd.c_str());
 
     fin.open("application.map");
-    while( getline(fin, line) ) {
+    while (getline(fin, line)) {
         lines.push_back(line);
     }
     fin.close();
@@ -101,60 +100,61 @@ int main(int argc, char *argv[]) {
     cout << cmd << endl;
     system(cmd.c_str());
 
-	// 3.1 check if any forbidden symbols
-	path_symbol_black_list.assign(argv[4]);
-	replaceAll(path_symbol_black_list, "/", "\\");
-	fin.open(path_symbol_black_list.c_str(), ifstream::in);
-	cout << path_symbol_black_list << endl;
-	ret = 0;
-	if (fin) {
-		while ( !fin.eof() && ret == 0) {
-			fin >> bksym;
-			getline(fin, msg);
+    // 3.1 check if any forbidden symbols
+    path_symbol_black_list.assign(argv[4]);
+    replaceAll(path_symbol_black_list, "/", "\\");
+    fin.open(path_symbol_black_list.c_str(), ifstream::in);
+    cout << path_symbol_black_list << endl;
+    ret = 0;
+    if (fin) {
+        while (!fin.eof() && ret == 0) {
+            fin >> bksym;
+            getline(fin, msg);
 
-			// check if this symbole appears in the map file
-			for (iter = lines.begin(); iter != lines.end(); ++iter) {
-				if ( (iter->find(bksym)) != string::npos ) {
-					cerr << "ERROR: " << msg << endl;
-					ret = -1;
-					break;
-				}
-			}
-		}
-	}
-	fin.close();
+            // check if this symbole appears in the map file
+            for (iter = lines.begin(); iter != lines.end(); ++iter) {
+                if ((iter->find(bksym)) != string::npos) {
+                    cerr << "ERROR: " << msg << endl;
+                    ret = -1;
+                    break;
+                }
+            }
+        }
+    }
+    fin.close();
 
-	if (ret != 0) {
-		return -1;
-	}
+    if (ret != 0) {
+        return -1;
+    }
 
+#if 0
     // 4. grep sram and sdram information
-	fout.open("application.map");
+    fout.open("application.map");
     for (iter = lines.begin(); iter != lines.end(); ++iter) {
-		fout << *iter << endl;
+        fout << *iter << endl;
         line = *iter;
         pos = line.find("__ram_image2_text_start__");
-        if ( pos != string::npos ) {
-            sram_start_st = line.substr(0, pos-3);
+        if (pos != string::npos) {
+            sram_start_st = line.substr(0, (pos - 3));
             sram_start = strtol(sram_start_st.c_str(), NULL, 16);
         }
         pos = line.find("__ram_image2_text_end__");
-        if ( pos != string::npos ) {
-            sram_end_st = line.substr(0, pos-3);
+        if (pos != string::npos) {
+            sram_end_st = line.substr(0, (pos - 3));
             sram_end = strtol(sram_end_st.c_str(), NULL, 16);
         }
         pos = line.find("__sdram_data_start__");
-        if ( pos != string::npos ) {
-            sdram_start_st = line.substr(0, pos-3);
+        if (pos != string::npos) {
+            sdram_start_st = line.substr(0, (pos - 3));
             sdram_start = strtol(sdram_start_st.c_str(), NULL, 16);
         }
         pos = line.find("__sdram_data_end__");
-        if ( pos != string::npos ) {
-            sdram_end_st = line.substr(0, pos-3);
+        if (pos != string::npos) {
+            sdram_end_st = line.substr(0, (pos - 3));
             sdram_end = strtol(sdram_end_st.c_str(), NULL, 16);
         }
     }
-	fout.close();
+    fout.close();
 
     if (sdram_start > 0 && sdram_end > 0) {
         has_sdram = true;
@@ -164,7 +164,9 @@ int main(int argc, char *argv[]) {
     if (has_sdram) {
         cout << "sdram " << sdram_start_st << " ~ " << sdram_end_st << endl;
     }
+#endif
 
+#if 0
     // 5. generate image 2 and image 3
     cmdss.clear();
     cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
@@ -226,11 +228,15 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
+#endif
 
+
+#if 0
     // 9. add checksum
     cmd = ".\\tools\\windows\\checksum.exe ota.bin";
     cout << cmd << endl;
     system(cmd.c_str());
+#endif
 
     return 0;
 }
