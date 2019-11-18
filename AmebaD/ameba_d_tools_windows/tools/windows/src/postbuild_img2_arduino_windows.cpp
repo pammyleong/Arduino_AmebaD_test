@@ -49,9 +49,11 @@ int main(int argc, char *argv[]) {
     ifstream fin;
     ofstream fout;
 
-    bool has_sdram = false;
-    string sram_start_st = "", sram_end_st = "", sdram_start_st = "", sdram_end_st = "";
-    unsigned int sram_start = 0, sram_end = 0, sdram_start = 0, sdram_end = 0;
+    bool has_xip = false;
+    bool has_psram = false;
+
+    string sram_start_st = "", sram_end_st = "", xip_start_st = "", xip_end_st = "", psram_start_st = "", psram_end_st = "";
+    unsigned int sram_start = 0, sram_end = 0, xip_start = 0, xip_end = 0, psram_start = 0, psram_end = 0;
 
     size_t pos;
 
@@ -127,8 +129,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-#if 0
-    // 4. grep sram and sdram information
+    // 4. grep sram, xip/flash and psram information
     fout.open("application.map");
     for (iter = lines.begin(); iter != lines.end(); ++iter) {
         fout << *iter << endl;
@@ -143,45 +144,81 @@ int main(int argc, char *argv[]) {
             sram_end_st = line.substr(0, (pos - 3));
             sram_end = strtol(sram_end_st.c_str(), NULL, 16);
         }
-        pos = line.find("__sdram_data_start__");
+
+        pos = line.find("__flash_text_start__");
         if (pos != string::npos) {
-            sdram_start_st = line.substr(0, (pos - 3));
-            sdram_start = strtol(sdram_start_st.c_str(), NULL, 16);
+            xip_start_st = line.substr(0, (pos - 3));
+            xip_start = strtol(xip_start_st.c_str(), NULL, 16);
         }
-        pos = line.find("__sdram_data_end__");
+        pos = line.find("__flash_text_end__");
         if (pos != string::npos) {
-            sdram_end_st = line.substr(0, (pos - 3));
-            sdram_end = strtol(sdram_end_st.c_str(), NULL, 16);
+            xip_end_st = line.substr(0, (pos - 3));
+            xip_end = strtol(xip_end_st.c_str(), NULL, 16);
+        }
+
+        pos = line.find("__psram_image2_text_start__");
+        if (pos != string::npos) {
+            psram_start_st = line.substr(0, (pos - 3));
+            psram_start = strtol(psram_start_st.c_str(), NULL, 16);
+        }
+        pos = line.find("__psram_image2_text_end__");
+        if (pos != string::npos) {
+            psram_end_st = line.substr(0, (pos - 3));
+            psram_end = strtol(psram_end_st.c_str(), NULL, 16);
         }
     }
     fout.close();
 
-    if (sdram_start > 0 && sdram_end > 0) {
-        has_sdram = true;
+    if (xip_start > 0 && xip_end > 0) {
+        has_xip = true;
+    }
+    if (psram_start > 0 && psram_end > 0) {
+        has_psram = true;
     }
 
     cout << "sram  " << sram_start_st << " ~ " << sram_end_st << endl;
-    if (has_sdram) {
-        cout << "sdram " << sdram_start_st << " ~ " << sdram_end_st << endl;
+    if (has_xip) {
+        cout << "xip " << xip_start_st << " ~ " << xip_end_st << endl;
     }
-#endif
+    if (has_psram) {
+        cout << "psram " << psram_start_st << " ~ " << psram_end_st << endl;
+    }
 
-#if 0
-    // 5. generate image 2 and image 3
+#if 1
+    // 5. generate image 2, image xip and image psram
     cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
+    
+    //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.bin";
+
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
-    if (has_sdram) {
+    if (has_xip) {
         cmdss.clear();
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\sdram.bin";
+
+        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\xip_image2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application.axf .\\xip_image2.bin";
+
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
     }
 
+    if (has_psram) {
+        cmdss.clear();
+
+        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\psram_2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.bin";
+
+        getline(cmdss, cmd);
+        cout << cmd << endl;
+        system(cmd.c_str());
+    }
+#endif
+
+#if 0
     // 6. fulfill header
     cmdss.clear();
     cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin body+reset_offset+sig";
@@ -202,7 +239,9 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
+#endif
 
+#if 0
     // 7. prepare image 1
     cmd = "copy bsp\\image\\ram_1.p.bin .\\";
     cout << cmd << endl;
@@ -211,7 +250,9 @@ int main(int argc, char *argv[]) {
     cmd = ".\\tools\\windows\\padding.exe 44k 0xFF ram_1.p.bin";
     cout << cmd << endl;
     system(cmd.c_str());
+#endif 
 
+#if 0
     // 8. generate ram_all.bin
     if (has_sdram) {
         cmd = "copy /b ram_1.p.bin+ram_2.p.bin+ram_3.p.bin ram_all.bin";
