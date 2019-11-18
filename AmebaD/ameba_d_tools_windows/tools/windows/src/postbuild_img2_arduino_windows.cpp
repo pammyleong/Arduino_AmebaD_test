@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
     cmdss.clear();
     
     //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.bin";
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.r.bin";
 
     getline(cmdss, cmd);
     cout << cmd << endl;
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]) {
         cmdss.clear();
 
         //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\psram_2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.r.bin";
 
         getline(cmdss, cmd);
         cout << cmd << endl;
@@ -218,8 +218,9 @@ int main(int argc, char *argv[]) {
     }
 #endif
 
-#if 0
+
     // 6. fulfill header
+#if 0
     cmdss.clear();
     cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin body+reset_offset+sig";
     getline(cmdss, cmd);
@@ -239,7 +240,49 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
+#else
+    // 6.1 remove bss sections
+    cmdss.clear();
+    cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.r.bin ram_2.bin raw";
+    getline(cmdss, cmd);
+    cout << cmd << endl;
+    system(cmd.c_str());
+
+    if (has_psram) {
+        cmdss.clear();
+        cmdss << ".\\tools\\windows\\pick.exe " << psram_start << " " << psram_end << " psram_2.r.bin psram_2.bin raw";
+        getline(cmdss, cmd);
+        cout << cmd << endl;
+        system(cmd.c_str());
+    }
+
+    // 6.2 add header
+    cmdss.clear();
+    cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin";
+    getline(cmdss, cmd);
+    cout << cmd << endl;
+    system(cmd.c_str());
+
+    if (has_xip) {
+        cmdss.clear();
+        cmdss << ".\\tools\\windows\\pick.exe " << psram_start << " " << psram_end << " xip_image2.bin xip_image2.p.bin";
+        getline(cmdss, cmd);
+        cout << cmd << endl;
+        system(cmd.c_str());
+    }
+
+    if (has_psram) {
+        cmdss.clear();
+        cmdss << ".\\tools\\windows\\pick.exe " << psram_start << " " << psram_end << " psram_2.bin psram_2.p.bin";
+        getline(cmdss, cmd);
+        cout << cmd << endl;
+        system(cmd.c_str());
+    }
 #endif
+
+
+
+
 
 #if 0
     // 7. prepare image 1
@@ -250,6 +293,8 @@ int main(int argc, char *argv[]) {
     cmd = ".\\tools\\windows\\padding.exe 44k 0xFF ram_1.p.bin";
     cout << cmd << endl;
     system(cmd.c_str());
+#else
+    
 #endif 
 
 #if 0
@@ -269,6 +314,8 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
+#else
+    
 #endif
 
 

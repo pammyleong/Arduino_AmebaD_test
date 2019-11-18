@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Ameba ARM (32-bits) Boards
-version=0.0.8
+version=0.0.9
 
 # Ameba project settings
 # ----------------------
@@ -100,7 +100,7 @@ recipe.strip.pattern="{compiler.path}{compiler.strip.cmd}" "{build.path}/{build.
 recipe.objcopy.hex.cmd=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.cmd.windows=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.imagepath={build.path}\application.axf
-#zzw###recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_d_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
+recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_d_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
 
 ## Compute size
 recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"

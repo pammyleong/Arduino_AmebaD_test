@@ -43,15 +43,15 @@
         {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "0.0.8",
+          "version": "0.0.9",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.8.tar.gz",
-          "archiveFileName": "ameba-0.0.8.tar.gz",
-          "checksum": "SHA-256:acfd6658b46c798b3ab1bbcef921335e0529e42fa02c0b7163ffedcc1b073062",
-          "size": "89807766",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.9.tar.gz",
+          "archiveFileName": "ameba-0.0.9.tar.gz",
+          "checksum": "SHA-256:fc1ab28b3d64110f653c0f9d20fa99a84069c7b8d4287ded972de56e5959c61f",
+          "size": "89629951",
           "boards": [
             {
               "name": "Ameba RTL8722D"
@@ -66,7 +66,7 @@
             {
               "packager": "realtek",
               "name": "ameba_d_tools",
-              "version": "0.0.2"
+              "version": "0.0.3"
             }
           ]
         }
@@ -88,14 +88,14 @@
         },
         {
           "name": "ameba_d_tools",
-          "version": "0.0.2",
+          "version": "0.0.3",
           "systems": [
             {
               "host": "i686-mingw32",
-              "archiveFileName": "ameba_d_tools_windows-0.0.2.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.2.tar.gz",
-              "checksum": "SHA-256:16d2ebcbffc549851007d6adcfd15916638a6ee203f190eb405a849e432b6138",
-              "size": "1348877"
+              "archiveFileName": "ameba_d_tools_windows-0.0.3.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.3.tar.gz",
+              "checksum": "SHA-256:2f6bb305746f2d155fe653a1fb08f2b228ad86c531a04d536ae6692b82da6430",
+              "size": "1449704"
             }
           ]
         },
