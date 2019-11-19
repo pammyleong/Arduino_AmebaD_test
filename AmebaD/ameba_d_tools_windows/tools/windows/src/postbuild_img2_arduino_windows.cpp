@@ -3,6 +3,8 @@
 Compile command:
 	mingw32-g++.exe -o postbuild_img2_arduino_windows.exe tools\windows\src\postbuild_img2_arduino_windows.cpp -static
 
+	mingw32-g++.exe -o postbuild_img2_arduino_windows.exe postbuild_img2_arduino_windows.cpp -static
+
 */
 
 #include <iostream>
@@ -84,23 +86,39 @@ int main(int argc, char *argv[]) {
     path_arm_none_eabi_gcc.assign(argv[3]);
     replaceAll(path_arm_none_eabi_gcc, "/", "\\");
 
+#if 0
     cmdss.clear();
     cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" --numeric-sort application.axf > application.map";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
+#else
+    cmdss.clear();
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" application_zzw.axf | sort > application_zzw.map";
+    getline(cmdss, cmd);
+    cout << cmd << endl;
+    system(cmd.c_str());
+#endif
 
-    fin.open("application.map");
+    fin.open("application_zzw.map");
     while (getline(fin, line)) {
         lines.push_back(line);
     }
     fin.close();
 
+#if 0
     cmdss.clear();
     cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application.axf > application.asm";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
+#else
+    cmdss.clear();
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application_zzw.axf > application_zzw.asm";
+    getline(cmdss, cmd);
+    cout << cmd << endl;
+    system(cmd.c_str());
+#endif
 
     // 3.1 check if any forbidden symbols
     path_symbol_black_list.assign(argv[4]);
@@ -130,7 +148,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 4. grep sram, xip/flash and psram information
-    fout.open("application.map");
+    fout.open("application_zzw.map");
     for (iter = lines.begin(); iter != lines.end(); ++iter) {
         fout << *iter << endl;
         line = *iter;
@@ -187,20 +205,16 @@ int main(int argc, char *argv[]) {
 #if 1
     // 5. generate image 2, image xip and image psram
     cmdss.clear();
-    
     //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.r.bin";
-
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application_zzw.axf .\\ram_2.r.bin";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     if (has_xip) {
         cmdss.clear();
-
         //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\xip_image2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application.axf .\\xip_image2.bin";
-
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application_zzw.axf .\\xip_image2.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -208,10 +222,8 @@ int main(int argc, char *argv[]) {
 
     if (has_psram) {
         cmdss.clear();
-
-        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\psram_2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.r.bin";
-
+        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application_zzw.axf .\\psram_2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application_zzw.axf .\\psram_2.r.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -265,7 +277,7 @@ int main(int argc, char *argv[]) {
 
     if (has_xip) {
         cmdss.clear();
-        cmdss << ".\\tools\\windows\\pick.exe " << psram_start << " " << psram_end << " xip_image2.bin xip_image2.p.bin";
+        cmdss << ".\\tools\\windows\\pick.exe " << xip_start << " " << xip_end << " xip_image2.bin xip_image2.p.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -278,6 +290,17 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
+
+    // 6.3 generate km4_image2_all
+    cmd = "copy /b xip_image2.p.bin+ram_2.p.bin+psram_2.p.bin km4_image2_all.bin";
+    cout << cmd << endl;
+    system(cmd.c_str());
+
+    cmdss.clear();
+    cmdss << ".\\tools\\windows\\pad.exe " << "km4_image2_all.bin 4096";
+    getline(cmdss, cmd);
+    cout << cmd << endl;
+    system(cmd.c_str());
 #endif
 
 
@@ -294,7 +317,17 @@ int main(int argc, char *argv[]) {
     cout << cmd << endl;
     system(cmd.c_str());
 #else
-    
+    cmd = "copy bsp\\image\\km0_boot_all.bin .\\";
+    cout << cmd << endl;
+    system(cmd.c_str());
+
+    cmd = "copy bsp\\image\\km4_boot_all.bin .\\";
+    cout << cmd << endl;
+    system(cmd.c_str());
+
+    cmd = "copy bsp\\image\\km0_image2_all.bin .\\";
+    cout << cmd << endl;
+    system(cmd.c_str());
 #endif 
 
 #if 0
@@ -315,7 +348,9 @@ int main(int argc, char *argv[]) {
         system(cmd.c_str());
     }
 #else
-    
+    cmd = "copy /b km0_image2_all.bin+km4_image2_all.bin km0_km4_image2.bin";
+    cout << cmd << endl;
+    system(cmd.c_str());
 #endif
 
 

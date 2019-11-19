@@ -13,36 +13,6 @@
         {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "0.0.5",
-          "category": "Contributed",
-          "help": {
-            "online": "http://www.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.0.5.tar.gz",
-          "archiveFileName": "ameba-0.0.5.tar.gz",
-          "checksum": "SHA-256:e8cac8684f4fc5b375f23beaa02dbd8aa7217674fcd34a0a8c089cdd58fe6e4c",
-          "size": "89799569",
-          "boards": [
-            {
-              "name": "Ameba RTL8722D"
-            }
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_d_tools",
-              "version": "0.0.3"
-            }
-          ]
-        },
-        {
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
-          "architecture": "AmebaD",
           "version": "0.0.9",
           "category": "Contributed",
           "help": {
@@ -66,7 +36,7 @@
             {
               "packager": "realtek",
               "name": "ameba_d_tools",
-              "version": "0.0.3"
+              "version": "0.0.4"
             }
           ]
         }
@@ -88,14 +58,14 @@
         },
         {
           "name": "ameba_d_tools",
-          "version": "0.0.3",
+          "version": "0.0.4",
           "systems": [
             {
               "host": "i686-mingw32",
-              "archiveFileName": "ameba_d_tools_windows-0.0.3.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.3.tar.gz",
-              "checksum": "SHA-256:2f6bb305746f2d155fe653a1fb08f2b228ad86c531a04d536ae6692b82da6430",
-              "size": "1449704"
+              "archiveFileName": "ameba_d_tools_windows-0.0.4.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.4.tar.gz",
+              "checksum": "SHA-256:2e29ddf7e7cbf43cfd43084c6bb0138a90079f6f6b9345bcf2ac26902a82e860",
+              "size": "1160076"
             }
           ]
         },
