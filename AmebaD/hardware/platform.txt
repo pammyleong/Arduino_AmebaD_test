@@ -22,8 +22,12 @@ compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c -g -w -mcpu=cortex-m33 -mthumb -Os -std=c++11 -fno-short-enums -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-short-enums -MMD
 compiler.c.elf.cmd=arm-none-eabi-gcc
 
+
 ##zzw##compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb --specs=nano.specs
-compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb -specs nosys.specs
+##zzw##compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb -specs nosys.specs
+
+compiler.c.elf.flags= -O2 -march=armv8-m.main+dsp -mthumb -mcmse -mfloat-abi=hard -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections -Wl,--warn-section-align "-Wl,-Map={build.path}/application.map" -Wl,--cref -Wl,--build-id=none -save-temps -Wl,--no-enum-size-warning -Wl,--warn-common -o 
+
 
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=arm-none-eabi-g++
@@ -87,7 +91,11 @@ recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -m
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+
+##zzw##recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{runtime.tools.amebad_asdk_toolchain.path}/lib/" "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" {compiler.c.elf.flags} "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group "{runtime.tools.ameba_d_tools.path}/bsp/cmse_implib.lib" -lm -lstdc++
 
 
 ## Create nm map
