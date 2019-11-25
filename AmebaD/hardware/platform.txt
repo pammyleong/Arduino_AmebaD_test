@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Ameba ARM (32-bits) Boards
-version=0.0.9
+version=0.1.1
 
 # Ameba project settings
 # ----------------------
@@ -26,12 +26,17 @@ compiler.c.elf.cmd=arm-none-eabi-gcc
 ##zzw##compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb --specs=nano.specs
 ##zzw##compiler.c.elf.flags= -mcpu=cortex-m33 -Os -Wl,--gc-sections -mcpu=cortex-m33 -mthumb -specs nosys.specs
 
-compiler.c.elf.flags= -O2 -march=armv8-m.main+dsp -mthumb -mcmse -mfloat-abi=hard -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections -Wl,--warn-section-align "-Wl,-Map={build.path}/application.map" -Wl,--cref -Wl,--build-id=none -save-temps -Wl,--no-enum-size-warning -Wl,--warn-common -o 
+##zzw##compiler.c.elf.flags= -O2 -march=armv8-m.main+dsp -mthumb -mcmse -mfloat-abi=hard -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections -Wl,--warn-section-align "-Wl,-Map={build.path}/application.map" -Wl,--cref -Wl,--build-id=none -save-temps -Wl,--no-enum-size-warning -Wl,--warn-common -o 
+
+compiler.c.elf.flags= -mcpu=cortex-m33 -O2 -mthumb -mcmse -mfloat-abi=hard -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections -Wl,--warn-section-align "-Wl,-Map={build.path}/application.map" -Wl,--cref -Wl,--build-id=none -save-temps -Wl,--no-enum-size-warning -Wl,--warn-common -o 
+
 
 
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=arm-none-eabi-g++
 compiler.cpp.flags=-c -g -w -Os -std=gnu++11 -mcpu=cortex-m33 -mthumb -fno-short-enums -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-rtti -fno-short-enums -MMD
+
+
 compiler.ar.cmd=arm-none-eabi-ar
 compiler.ar.flags=rcs
 compiler.strip.cmd=arm-none-eabi-strip
@@ -95,7 +100,11 @@ recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compil
 
 ##zzw##recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{runtime.tools.amebad_asdk_toolchain.path}/lib/" "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" {compiler.c.elf.flags} "{build.path}/application.axf" "-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group "{runtime.tools.ameba_d_tools.path}/bsp/cmse_implib.lib" -lm -lstdc++
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{runtime.tools.amebad_asdk_toolchain.path}/lib/" "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" -O2 -march=armv8-m.main+dsp -mthumb -mcmse -mfloat-abi=softfp -mfpu=fpv5-sp-d16 -nostartfiles -specs nosys.specs -Wl,--gc-sections -Wl,--warn-section-align "-Wl,-Map={build.path}/application.map" -Wl,--cref -Wl,--build-id=none -save-temps -Wl,--no-enum-size-warning -Wl,--warn-common -o "{build.path}/application.axf" {compiler.ameba.ar.list} "{build.path}/sketch/Blink.ino.cpp.o" "{build.path}/core/WString.cpp.o" "{build.path}/core/WMath.cpp.o" "{build.path}/core/wiring_watchdog.c.o" "{build.path}/core/wiring_shift.c.o" "{build.path}/core/wiring_pulse.cpp.o" "{build.path}/core/wiring_os.c.o" "{build.path}/core/wiring_digital.c.o" "{build.path}/core/wiring_analog.c.o" "{build.path}/core/wiring.c.o" "{build.path}/core/WInterrupts.c.o" "{build.path}/core/variant.cpp.o" "{build.path}/core/Stream.cpp.o" "{build.path}/core/RingBuffer.cpp.o" "{build.path}/core/Print.cpp.o" "{build.path}/core/main.cpp.o" "{build.path}/core/LOGUARTClass.cpp.o" "{build.path}/core/itoa.c.o"  "{runtime.tools.ameba_d_tools.path}/bsp/image/cmse_implib.lib" -lm -lstdc++
+
+
+
+##"-L{build.path}" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group "{build.path}/{archive_file}" {compiler.ameba.ar.list} -Wl,--end-group "{runtime.tools.ameba_d_tools.path}/bsp/image/cmse_implib.lib" -lm -lstdc++
 
 
 ## Create nm map
@@ -112,7 +121,7 @@ recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.h
 
 ## Compute size
 recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"
-recipe.size.regex=^(?:bootloader|image2|image3)\s+([0-9]+).*
+recipe.size.regex=^(?:bootloader_km0|bootloader_km0|image2)\s+([0-9]+).*
 
 # Ameba Uploader tools
 # -------------------
