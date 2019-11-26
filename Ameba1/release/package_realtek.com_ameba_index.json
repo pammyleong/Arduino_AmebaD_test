@@ -23,8 +23,9 @@
           "checksum": "SHA-256:d40bac42d72a7c1fa0292cc7e4c3528692d593c3887faa8cd12a016b18e5911e",
           "size": "28108728",
           "boards": [
-            {"name": "Ameba RTL8195A"},
-            {"name": "Ameba RTL8710"}
+            {"name": "Ameba RTL8195A(zzw)"},
+            {"name": "Ameba RTL8710(DSI5168)"},
+            {"name": "Ameba RTL8711AM(DSI5168)"}
           ],
           "toolsDependencies": [
             {
