@@ -94,13 +94,13 @@ int main(int argc, char *argv[]) {
     system(cmd.c_str());
 #else
     cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" application_zzw.axf | sort > application_zzw.map";
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" application.axf | sort > application.map";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 #endif
 
-    fin.open("application_zzw.map");
+    fin.open("application.map");
     while (getline(fin, line)) {
         lines.push_back(line);
     }
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     system(cmd.c_str());
 #else
     cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application_zzw.axf > application_zzw.asm";
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application.axf > application.asm";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 4. grep sram, xip/flash and psram information
-    fout.open("application_zzw.map");
+    fout.open("application.map");
     for (iter = lines.begin(); iter != lines.end(); ++iter) {
         fout << *iter << endl;
         line = *iter;
@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
     // 5. generate image 2, image xip and image psram
     cmdss.clear();
     //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application_zzw.axf .\\ram_2.r.bin";
+    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.r.bin";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
     if (has_xip) {
         cmdss.clear();
         //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\xip_image2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application_zzw.axf .\\xip_image2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application.axf .\\xip_image2.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -222,8 +222,8 @@ int main(int argc, char *argv[]) {
 
     if (has_psram) {
         cmdss.clear();
-        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application_zzw.axf .\\psram_2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application_zzw.axf .\\psram_2.r.bin";
+        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\psram_2.bin";
+        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.r.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());

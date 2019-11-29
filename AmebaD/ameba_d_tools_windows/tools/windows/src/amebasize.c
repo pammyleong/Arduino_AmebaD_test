@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 		fseek(fp_bootloader_km4, 0L, SEEK_END);
 		size = ftell(fp_bootloader_km4);
 		fclose(fp_bootloader_km4);
-		printf("bootloader_km0 %d\n", size);
+		printf("bootloader_km4 %d\n", size);
 	}
 
 	sprintf(filename, "%s\\km0_km4_image2.bin", argv[1]);

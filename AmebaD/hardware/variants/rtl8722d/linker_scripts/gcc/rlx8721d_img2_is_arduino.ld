@@ -146,7 +146,37 @@ SECTIONS
 		__exidx_start = .;
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
 		__exidx_end = .;
+		end = .;
 	} > KM4_IMG2
+
+	__wrap_printf = 0x1010a3f5;
+	__wrap_sprintf = 0x1010a471;
+	__wrap_strcat = 0x10111635;
+	__wrap_strchr = 0x10111745;
+	__wrap_strcmp = 0x10111745;
+	__wrap_strncmp = 0x101118f9;
+	__wrap_strlen = 0x10111839;
+	__wrap_strnlen = 0x10111a05;
+	__wrap_strncat = 0x1011189d;
+	__wrap_strpbrk = 0x10111a39;
+	__wrap_strstr = 0x10111d25;
+	__wrap_strtok = 0x1011201d;
+	__wrap_strsep = 0x10111a65;
+	__wrap_strtoll = 0x10111ffd;
+	__wrap_strtoul = 0x101122e9;
+	__wrap_strtoull = 0x10111f3d;
+	__wrap_atoi = 0x101115e1;
+	__wrap_strcpy = 0x101117b9;
+	__wrap_strncpy = 0x1011199d;
+	__wrap_memset = 0x10110ea1;
+	__wrap_memcpy = 0x10110d2d;
+	__wrap_memcmp = 0x10110cc9;
+	__wrap_memmove = 0x10110dd9;
+	__wrap_snprintf = 0x1010a49d;
+	__wrap_malloc = pvPortMalloc;
+	__wrap_realloc = pvPortMalloc;
+	__wrap_free = vPortFree;
+
 	/*-----------------*/
 
 	.bluetooth_trace.text :
