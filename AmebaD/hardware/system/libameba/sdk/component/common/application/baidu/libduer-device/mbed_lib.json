@@ -1,5 +1,0 @@
-{
-     "name":"libduer-device",
-     "macros":["DUER_HM_MODULE_NAME=DUER_HM_MBED"]
-}
-
