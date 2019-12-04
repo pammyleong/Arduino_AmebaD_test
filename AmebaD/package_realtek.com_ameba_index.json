@@ -142,7 +142,6 @@
           ]
         },
         {
-        {
           "name":"amebad_asdk_toolchain",
           "version":"0.0.1",
           "systems": [
