@@ -22,21 +22,14 @@
 #include "Arduino.h"
 #include <stdarg.h>
 
-
-
-
-#if 1
-
-
-
 #ifdef __cplusplus
 #include "LOGUARTClass.h"
 #endif
 
 #define MAIN_THREAD_STACK_SIZE (4096*4)
 
-#define TOTAL_GPIO_PIN_NUM	(19)
-#define TOTAL_PWM_PIN_NUM   ( 4)
+#define TOTAL_GPIO_PIN_NUM      (19)
+#define TOTAL_PWM_PIN_NUM       (4)
 
 #define LED_BUILTIN 13
 
@@ -81,11 +74,4 @@ extern LOGUARTClass Serial;
 #endif
 
 
-
-#endif
-
-
-
-
 #endif /* _VARIANT_ARDUINO_AMEBA_ */
-

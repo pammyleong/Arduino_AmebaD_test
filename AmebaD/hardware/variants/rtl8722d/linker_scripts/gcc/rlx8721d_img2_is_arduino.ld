@@ -174,7 +174,7 @@ SECTIONS
 	__wrap_memmove = 0x10110dd9;
 	__wrap_snprintf = 0x1010a49d;
 	__wrap_malloc = pvPortMalloc;
-	__wrap_realloc = pvPortMalloc;
+	__wrap_realloc = pvPortReAlloc;
 	__wrap_free = vPortFree;
 
 	/*-----------------*/

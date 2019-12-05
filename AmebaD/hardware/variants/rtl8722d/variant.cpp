@@ -30,7 +30,6 @@ void __libc_init_array(void);
  */
 PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
 {
-
   {PB_2, NOT_INITIAL, PIO_GPIO          , NOT_INITIAL}, //D0
   {PB_1, NOT_INITIAL, PIO_GPIO          , NOT_INITIAL}, //D1
   {PB_3, NOT_INITIAL, PIO_GPIO          , NOT_INITIAL}, //D2
@@ -50,7 +49,6 @@ PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
   {PA_21, NOT_INITIAL, PIO_GPIO         , NOT_INITIAL}, //D16
   {PA_20, NOT_INITIAL, PIO_GPIO         , NOT_INITIAL}, //D17
   {PA_19, NOT_INITIAL, PIO_GPIO         , NOT_INITIAL}  //D18
-
 };
 
 void *gpio_pin_struct[TOTAL_GPIO_PIN_NUM] = {NULL};
@@ -73,8 +71,6 @@ void init( void )
 {
     uint8_t *regionAddr;
     size_t regionSize;
-
-
 
     // Initialize C library
     __libc_init_array();

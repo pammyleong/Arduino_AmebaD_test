@@ -47,37 +47,38 @@ extern int rtl_printf(const char *fmt, ...);
 extern int rtl_sprintf(char* str, const char* fmt, ...);
 
 #ifndef printf
-#define printf                  	rtl_printf
+#define printf                      _rtl_printf
 #endif
 #ifndef sprintf
-#define sprintf						rtl_sprintf
+#define sprintf                     _rtl_sprintf
 #endif
 
-extern void *pvPortMalloc( size_t xWantedSize );
-extern void vPortFree( void *pv );
-extern void *pvPortReAlloc( void *pv,  size_t xWantedSize );
+
+extern void *pvPortMalloc(size_t xWantedSize);
+extern void vPortFree(void *pv);
+extern void *pvPortReAlloc(void *pv, size_t xWantedSize);
 
 #ifndef malloc
-#define malloc                  pvPortMalloc
+#define malloc                      pvPortMalloc
 #endif
 #ifndef free
-#define free                    vPortFree
+#define free                        vPortFree
 #endif
 #ifndef realloc
-#define realloc                 pvPortReAlloc
+#define realloc                     pvPortReAlloc
 #endif
 
 /* sketch */
 extern void setup( void );
 extern void loop( void );
 
-#define NOT_INITIAL  (1UL<<0)
-#define PIO_GPIO     (1UL<<1)
-#define PIO_PWM	     (1UL<<2)
-#define PIO_I2C	     (1UL<<3)
-#define PIO_ADC      (1UL<<4)
-#define PIO_DAC      (1UL<<5)
-#define PIO_GPIO_IRQ (1UL<<6)
+#define NOT_INITIAL     (1UL<<0)
+#define PIO_GPIO        (1UL<<1)
+#define PIO_PWM         (1UL<<2)
+#define PIO_I2C         (1UL<<3)
+#define PIO_ADC         (1UL<<4)
+#define PIO_DAC         (1UL<<5)
+#define PIO_GPIO_IRQ    (1UL<<6)
 
 #define PWM_MODE_ENABLED  1
 #define PWM_MODE_DISABLED 0

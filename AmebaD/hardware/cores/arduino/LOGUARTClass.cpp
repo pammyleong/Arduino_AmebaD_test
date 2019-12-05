@@ -88,19 +88,19 @@ void LOGUARTClass::IrqHandler( void )
 }
 
 
-void LOGUARTClass::begin( const uint32_t dwBaudRate )
+void LOGUARTClass::begin(const uint32_t dwBaudRate)
 {
 
     serial_init(&log_uart_obj, PA_7, PA_8);
     serial_format(&log_uart_obj, 8, ParityNone, 1);
 
 #if LOG_UART_MODIFIABLE_BAUD_RATE
-    /* log uart initialize in 38400 baud rate.
+    /* log uart initialize in 115200 baud rate.
      * If we change baud rate here, Serail Monitor would not detect this change and show nothing on screen.
      */
     serial_baud(&log_uart_obj, dwBaudRate);
 #else
-    serial_baud(&log_uart_obj, 38400);
+    serial_baud(&log_uart_obj, 115200);
 #endif
     serial_irq_set(&log_uart_obj, RxIrq, 1);
     serial_irq_handler(&log_uart_obj, arduino_loguart_irq_handler, (uint32_t)_rx_buffer);

@@ -90,8 +90,8 @@ void pinMode( uint32_t ulPin, uint32_t ulMode)
     switch ( ulMode )
     {
         case INPUT:
-            gpio_dir( (gpio_t *)pGpio_t, PIN_INPUT );
-            gpio_mode( (gpio_t *)pGpio_t, PullDown );
+            gpio_dir((gpio_t *)pGpio_t, PIN_INPUT);
+            gpio_mode((gpio_t *)pGpio_t, PullDown);
             break;
 
         case INPUT_PULLNONE:
@@ -178,7 +178,7 @@ int digitalRead( uint32_t ulPin )
 
     pGpio_t = (gpio_t *)gpio_pin_struct[ulPin];
 
-    pin_status = gpio_read( pGpio_t );
+    pin_status = gpio_read(pGpio_t);
 
     return pin_status;
 }
