@@ -24,35 +24,40 @@
 
 #ifdef __cplusplus
 #include "LOGUARTClass.h"
+extern "C"{
+#include "PinNames.h"
+}
 #endif
 
-#define MAIN_THREAD_STACK_SIZE (4096*4)
+#define MAIN_THREAD_STACK_SIZE        (4096 * 4)
 
-#define TOTAL_GPIO_PIN_NUM      (19)
-#define TOTAL_PWM_PIN_NUM       (4)
+#define TOTAL_GPIO_PIN_NUM            (19)
+#define TOTAL_PWM_PIN_NUM             (4)
 
-#define LED_BUILTIN 13
+#define LED_BUILTIN                   PB_20
 
 #define FEATURE_ADC
 //#define FEATURE_DAC
 
 /* Analog pin mapping */
-#define A0 1
-#define A1 2
-#define A2 3
+#define A0                            AD_0
+#define A1                            AD_1
+#define A2                            AD_2
+#define A3                            AD_3
+
 
 /* DAC pin mapping */
-#define DAC0 36
+//#define DAC0    AD_3
 
-#define SS 10
+#define SS                            10
 
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
 
-#define portOutputRegister(P) ( (volatile uint32_t *)( 0x40001000 + (P) * 0x0C ) )
-#define portInputRegister(P)  ( (volatile uint32_t *)( 0x40001050 + (P) * 4 ) )
-#define portModeRegister(P)   ( (volatile uint32_t *)( 0x40001004 + (P) * 0x0C ) )
+#define portOutputRegister(P) ((volatile uint32_t *)(0x40001000 + (P) * 0x0C))
+#define portInputRegister(P)  ((volatile uint32_t *)(0x40001050 + (P) * 4))
+#define portModeRegister(P)   ((volatile uint32_t *)(0x40001004 + (P) * 0x0C))
 
 /*
  * Wait until enter debug mode
@@ -68,9 +73,7 @@ extern void wait_for_debug();
 #endif
 
 #ifdef __cplusplus
-
 extern LOGUARTClass Serial;
-
 #endif
 
 

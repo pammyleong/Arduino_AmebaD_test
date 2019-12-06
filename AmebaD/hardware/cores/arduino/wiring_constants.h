@@ -27,43 +27,43 @@ extern "C"{
 #define LOW  0x0
 
 #define INPUT_PULLDOWN      0x00
-#define INPUT 				INPUT_PULLDOWN
-#define OUTPUT 				0x01
-#define INPUT_PULLUP 		0x02
-#define INPUT_PULLNONE 		0x03
-#define OUTPUT_OPENDRAIN 	0x04 
+#define INPUT               INPUT_PULLDOWN
+#define OUTPUT              0x01
+#define INPUT_PULLUP        0x02
+#define INPUT_PULLNONE      0x03
+#define OUTPUT_OPENDRAIN    0x04
 #define INPUT_IRQ_FALL      0x05
 #define INPUT_IRQ_RISE      0x06
 #define INPUT_IRQ_LOW       0x07
 #define INPUT_IRQ_HIGH      0x08
 
 
-#define true 0x1
-#define false 0x0
+#define true                0x1
+#define false               0x0
 
-#define PI 3.1415926535897932384626433832795
-#define HALF_PI 1.5707963267948966192313216916398
-#define TWO_PI 6.283185307179586476925286766559
-#define DEG_TO_RAD 0.017453292519943295769236907684886
-#define RAD_TO_DEG 57.295779513082320876798154814105
-#define EULER 2.718281828459045235360287471352
+#define PI                  3.1415926535897932384626433832795
+#define HALF_PI             1.5707963267948966192313216916398
+#define TWO_PI              6.283185307179586476925286766559
+#define DEG_TO_RAD          0.017453292519943295769236907684886
+#define RAD_TO_DEG          57.295779513082320876798154814105
+#define EULER               2.718281828459045235360287471352
 
-#define SERIAL  0x0
-#define DISPLAY 0x1
+#define SERIAL              0x0
+#define DISPLAY             0x1
 
 enum BitOrder {
-	LSBFIRST = 0,
-	MSBFIRST = 1
+    LSBFIRST = 0,
+    MSBFIRST = 1
 };
 
 //      LOW 0
 //      HIGH 1
-#define CHANGE 2
-#define FALLING 3
-#define RISING 4
+#define CHANGE              2
+#define FALLING             3
+#define RISING              4
 
-#define DEFAULT 1
-#define EXTERNAL 0
+#define DEFAULT             1
+#define EXTERNAL            0
 
 // undefine stdlib's abs if encountered
 #ifdef abs
