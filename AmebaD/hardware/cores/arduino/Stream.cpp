@@ -156,40 +156,49 @@ float Stream::parseFloat()
 // as above but the given skipChar is ignored
 // this allows format characters (typically commas) in values to be ignored
 float Stream::parseFloat(char skipChar){
-  bool isNegative = false;
-  bool isFraction = false;
-  long value = 0;
-  char c;
-  float fraction = 1.0;
+    bool isNegative = false;
+    bool isFraction = false;
+    long value = 0;
+    char c;
+    float fraction = 1.0;
 
-  c = peekNextDigit();
+    c = peekNextDigit();
     // ignore non numeric leading characters
-  if(c < 0)
-    return 0; // zero returned if timeout
 
-  do{
-    if(c == skipChar)
-      ; // ignore
-    else if(c == '-')
-      isNegative = true;
-    else if (c == '.')
-      isFraction = true;
-    else if(c >= '0' && c <= '9')  {      // is c a digit?
-      value = value * 10 + c - '0';
-      if(isFraction)
-         fraction *= 0.1;
+// zzw 
+//    if (c < 0) {
+//        return 0; // zero returned if timeout
+//    }
+
+    do {
+        if (c == skipChar) {
+              // ignore
+        } else if(c == '-') {
+              isNegative = true;
+        } else if (c == '.') {
+              isFraction = true;
+        } else if (c >= '0' && c <= '9') {      // is c a digit?
+            value = value * 10 + c - '0';
+            if (isFraction) {
+                fraction *= 0.1;
+            }
+        }
+
+        read();  // consume the character we got with peek
+
+        c = timedPeek();
     }
-    read();  // consume the character we got with peek
-    c = timedPeek();
-  }
-  while( (c >= '0' && c <= '9')  || c == '.' || c == skipChar );
 
-  if(isNegative)
-    value = -value;
-  if(isFraction)
-    return value * fraction;
-  else
-    return value;
+    while((c >= '0' && c <= '9') || (c == '.') || c == (skipChar));
+
+    if (isNegative) {
+        value = -value;
+    }
+    if (isFraction) {
+        return (value * fraction);
+    } else {
+        return value;
+    }
 }
 
 // read characters from stream into buffer

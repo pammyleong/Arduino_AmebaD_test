@@ -7,9 +7,9 @@ extern "C" {
 #include "wiring_os.h"
 #include "cmsis_os.h"
 
-extern size_t xPortGetFreeHeapSize( void );
+extern size_t xPortGetFreeHeapSize(void);
 
-uint32_t os_thread_create( void (*task)(const void *argument), void *argument, int priority, uint32_t stack_size ) {
+uint32_t os_thread_create(void(* task)(const void *argument), void *argument, int priority, uint32_t stack_size) {
 
     osThreadDef_t thread_def;
 
@@ -21,35 +21,35 @@ uint32_t os_thread_create( void (*task)(const void *argument), void *argument, i
     return (uint32_t)osThreadCreate(&thread_def, argument);
 }
 
-uint32_t os_thread_get_id( void ) {
-    return osThreadGetId();
+uint32_t os_thread_get_id(void) {
+    return (uint32_t)(osThreadGetId());
 }
 
-uint32_t os_thread_terminate( uint32_t thread_id ) {
-    return (uint32_t)osThreadTerminate(thread_id);
+uint32_t os_thread_terminate(uint32_t thread_id) {
+    return (uint32_t)(osThreadTerminate((osThreadId)thread_id));
 }
 
-uint32_t os_thread_yield( void ) {
+uint32_t os_thread_yield(void) {
     return (uint32_t)osThreadYield();
 }
 
-uint32_t os_thread_set_priority( uint32_t thread_id, int priority ) {
-    return (uint32_t)osThreadSetPriority(thread_id, (osPriority)priority);
+uint32_t os_thread_set_priority(uint32_t thread_id, int priority) {
+    return (uint32_t)osThreadSetPriority((osThreadId)thread_id, (osPriority)priority);
 }
 
-int os_thread_get_priority( uint32_t thread_id ) {
-    return (int)osThreadGetPriority(thread_id);
+int os_thread_get_priority(uint32_t thread_id) {
+    return (int)osThreadGetPriority((osThreadId)thread_id);
 }
 
-int32_t os_signal_set( uint32_t thread_id, int32_t signals ) {
-    return osSignalSet(thread_id, signals);
+int32_t os_signal_set(uint32_t thread_id, int32_t signals) {
+    return osSignalSet((osThreadId)thread_id, signals);
 }
 
-int32_t os_signal_clear( uint32_t thread_id, int32_t signals ) {
-    return osSignalClear(thread_id, signals);
+int32_t os_signal_clear(uint32_t thread_id, int32_t signals) {
+    return osSignalClear((osThreadId)thread_id, signals);
 }
 
-os_event_t os_signal_wait( int32_t signals, uint32_t millisec ) {
+os_event_t os_signal_wait(int32_t signals, uint32_t millisec) {
 
     osEvent evt;
     os_event_t ret;
@@ -64,34 +64,34 @@ os_event_t os_signal_wait( int32_t signals, uint32_t millisec ) {
 
 typedef void (*os_ptimer) (void const *argument);
 
-uint32_t os_timer_create(void (*callback)(void const *argument), uint8_t isPeriodic, void *argument) {
+uint32_t os_timer_create(void(* callback)(void const *argument), uint8_t isPeriodic, void *argument) {
 
     osTimerDef_t *pTimerDef;
 
-    pTimerDef = (osTimerDef_t *) malloc ( sizeof(osTimerDef_t) );
+    pTimerDef = (osTimerDef_t *)(malloc(sizeof(osTimerDef_t)));
     pTimerDef->ptimer = callback;
-    pTimerDef->custom = (struct os_timer_custom *) malloc ( sizeof (struct os_timer_custom) );
+    pTimerDef->custom = (struct os_timer_custom *)(malloc(sizeof(struct os_timer_custom)));
 
-    return osTimerCreate(pTimerDef, (isPeriodic ? osTimerPeriodic : osTimerOnce), argument);
+    return (uint32_t)(osTimerCreate(pTimerDef, (isPeriodic ? osTimerPeriodic : osTimerOnce), argument));
 }
 
 uint32_t os_timer_start (uint32_t timer_id, uint32_t millisec) {
-    return osTimerStart (timer_id, millisec);
+    return osTimerStart((osTimerId)timer_id, millisec);
 }
 
 uint32_t os_timer_stop (uint32_t timer_id) {
-    return osTimerStop(timer_id);
+    return osTimerStop((osTimerId)timer_id);
 }
 
 uint32_t os_timer_delete(uint32_t timer_id) {
 
     osTimerDef_t *pTimerDef;
 
-    pTimerDef = (osTimerDef_t *) pvTimerGetTimerID(timer_id);
+    pTimerDef = (osTimerDef_t *)(pvTimerGetTimerID((const TimerHandle_t)timer_id));
     free (pTimerDef->custom);
     free (pTimerDef);
 
-    return osTimerDelete(timer_id);
+    return (uint32_t)(osTimerDelete((osTimerId)timer_id));
 }
 
 uint32_t os_semaphore_create(int32_t count) {
@@ -114,7 +114,7 @@ uint32_t os_semaphore_delete(uint32_t semaphore_id) {
     return (uint32_t)osSemaphoreDelete((osSemaphoreId)semaphore_id);
 }
 
-size_t os_get_free_heap_size() {
+size_t os_get_free_heap_size(void) {
     return xPortGetFreeHeapSize();
 }
 

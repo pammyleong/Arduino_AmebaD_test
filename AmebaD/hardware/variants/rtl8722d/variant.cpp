@@ -67,10 +67,12 @@ void serialEventRun(void)
     if (Serial_available && serialEvent && Serial_available()) serialEvent();
 }
 
-void init( void )
+void init(void)
 {
-    uint8_t *regionAddr;
-    size_t regionSize;
+
+// zzw
+//    uint8_t *regionAddr;
+//    size_t regionSize;
 
     // Initialize C library
     __libc_init_array();
@@ -78,7 +80,7 @@ void init( void )
 
 // ----------------------------------------------------------------------------
 
-void wait_for_debug() {
+void wait_for_debug(void) {
     while (((CoreDebug->DHCSR) & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0) {
         asm("nop");
     }

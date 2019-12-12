@@ -8,7 +8,7 @@ extern "C" {
 
 extern uint32_t ConfigDebugErr;
 
-void wdt_reset() {
+void wdt_reset(void) {
     watchdog_refresh();
 }
 
@@ -28,7 +28,7 @@ void wdt_enable(uint32_t timeout_ms) {
     ConfigDebugErr = backup_ConfigDebugErr;
 }
 
-void wdt_disable() {
+void wdt_disable(void) {
     watchdog_stop();
 }
 

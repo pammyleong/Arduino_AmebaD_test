@@ -38,16 +38,20 @@ void initVariant() { }
 /*
  * \brief handle sketch
  */
-void main_task( void const *arg )
+
+// zzw 
+//void main_task(void const *arg)
+void main_task(void)
 {
     delay(1);
 
     setup();
 
-    for (;;)
-    {
+    for (;;) {
         loop();
-        if (serialEventRun) serialEventRun();
+        if (serialEventRun) {
+            serialEventRun();
+        }
         osThreadYield();
     }
 }
@@ -55,14 +59,14 @@ void main_task( void const *arg )
 /*
  * \brief Main entry point of Arduino application
  */
-int main( void )
+int main(void)
 {
     init();
- 
+
     initVariant();
 
     osThreadDef(main_task, osPriorityRealtime, 1, MAIN_THREAD_STACK_SIZE);
-    main_tid = osThreadCreate (osThread (main_task), NULL);
+    main_tid = osThreadCreate(osThread(main_task), NULL);
 
     osKernelStart();
 

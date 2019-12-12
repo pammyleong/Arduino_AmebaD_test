@@ -35,17 +35,15 @@ extern "C" {
 
 extern uint32_t SystemCoreClock;
 
-#define clockCyclesPerMicrosecond() ( SystemCoreClock / 1000000L )
-#define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (SystemCoreClock / 1000L) )
-#define microsecondsToClockCycles(a) ( (a) * (SystemCoreClock / 1000000L) )
+#define clockCyclesPerMicrosecond() (SystemCoreClock / 1000000L)
+#define clockCyclesToMicroseconds(a) (((a) * 1000L) / (SystemCoreClock / 1000L))
+#define microsecondsToClockCycles(a) ((a) * (SystemCoreClock / 1000000L))
 
 void yield(void);
 
-extern uint32_t DiagPrintf(const char *fmt, ...);
-
-extern int rtl_printf(const char *fmt, ...);
-extern int rtl_sprintf(char* str, const char* fmt, ...);
-
+extern uint32_t                     DiagPrintf(const char *fmt, ...);
+extern int                          _rtl_printf(const char *fmt, ...);
+extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
 #ifndef printf
 #define printf                      _rtl_printf
 #endif
@@ -53,11 +51,9 @@ extern int rtl_sprintf(char* str, const char* fmt, ...);
 #define sprintf                     _rtl_sprintf
 #endif
 
-
 extern void *pvPortMalloc(size_t xWantedSize);
 extern void vPortFree(void *pv);
 extern void *pvPortReAlloc(void *pv, size_t xWantedSize);
-
 #ifndef malloc
 #define malloc                      pvPortMalloc
 #endif
@@ -86,20 +82,18 @@ extern void loop( void );
 /* Types used for the tables below */
 typedef struct _PinDescription
 {
+    // HW PinNames
+    uint32_t    pinname;
 
-  // HW PinNames
-  uint32_t 	pinname;
+    // Current Pin Type
+    uint32_t    ulPinType;
 
-  // Current Pin Type
-  uint32_t 	ulPinType;
+    // Supported Pin Function
+    uint32_t    ulPinAttribute;
 
-  // Supported Pin Function
-  uint32_t  ulPinAttribute;
-
-  // Current Pin Mode
-  uint32_t  ulPinMode;
-
-} PinDescription ;
+    // Current Pin Mode
+    uint32_t    ulPinMode;
+} PinDescription;
 
 /* Pins table to be instanciated into variant.cpp */
 extern PinDescription g_APinDescription[];
@@ -117,7 +111,6 @@ extern PinDescription g_APinDescription[];
 
 // Include board variant
 #include "variant.h"
-
 #include "wiring.h"
 #include "wiring_digital.h"
 #include "wiring_analog.h"

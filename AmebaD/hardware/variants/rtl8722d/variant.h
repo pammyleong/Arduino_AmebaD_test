@@ -34,16 +34,16 @@ extern "C"{
 #define TOTAL_GPIO_PIN_NUM            (19)
 #define TOTAL_PWM_PIN_NUM             (4)
 
-#define LED_BUILTIN                   PB_20
+#define LED_BUILTIN                   (13)
 
 #define FEATURE_ADC
 //#define FEATURE_DAC
 
 /* Analog pin mapping */
-#define A0                            AD_0
-#define A1                            AD_1
-#define A2                            AD_2
-#define A3                            AD_3
+#define A0                            0
+#define A1                            1
+#define A2                            2
+#define A3                            3
 
 
 /* DAC pin mapping */
@@ -65,7 +65,7 @@ extern "C"{
  * Check DHCSR(0xE000EDF0) register and hold until bit C_DEBUGEN is set.
  * Use this function along with J-LINK or other debug tool
  **/
-extern void wait_for_debug();
+extern void wait_for_debug(void);
 
 
 #ifdef __cplusplus

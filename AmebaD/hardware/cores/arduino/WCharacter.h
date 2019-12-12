@@ -89,7 +89,7 @@ inline boolean isControl(int c)
 // Checks for a digit (0 through 9).
 inline boolean isDigit(int c)
 {
-  return ( isdigit (c) == 0 ? false : true);
+    return (isdigit(c) == 0 ? false : true);
 }
 
 

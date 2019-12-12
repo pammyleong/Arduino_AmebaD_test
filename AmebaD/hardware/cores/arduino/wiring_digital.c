@@ -27,6 +27,7 @@ extern "C" {
 #include "gpio_irq_ex_api.h"
 #include "pwmout_api.h"
 
+extern void gpio_deinit(gpio_t *obj);
 extern void *gpio_pin_struct[TOTAL_GPIO_PIN_NUM];
 extern void *gpio_irq_handler_list[TOTAL_GPIO_PIN_NUM];
 
@@ -40,7 +41,8 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
 {
     void *pGpio_t;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         // Invalid pin
         return;
@@ -92,9 +94,6 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
         case INPUT:
             gpio_dir((gpio_t *)pGpio_t, PIN_INPUT);
             gpio_mode((gpio_t *)pGpio_t, PullDown);
-
-			
-			printf("    zzw gpio in    pinMode      %x    \r\n", ulMode);
             break;
 
         case INPUT_PULLNONE:
@@ -112,11 +111,10 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
             gpio_mode((gpio_t *)pGpio_t, PullNone);
             break;
 
-// zzw 
-#if 0
         case OUTPUT_OPENDRAIN:
-            gpio_dir((gpio_t *)pGpio_t, PIN_OUTPUT);
-            gpio_mode((gpio_t *)pGpio_t, OpenDrain);
+// zzw
+            //gpio_dir((gpio_t *)pGpio_t, PIN_OUTPUT);
+            //gpio_mode((gpio_t *)pGpio_t, OpenDrain);
             break;
 
         case INPUT_IRQ_FALL:
@@ -138,7 +136,6 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
             gpio_irq_set((gpio_irq_t *)pGpio_t, IRQ_HIGH, 1);
             gpio_irq_enable((gpio_irq_t *)pGpio_t);
             break;
-#endif
 
         default:
             break ;
@@ -149,7 +146,8 @@ void digitalWrite(uint32_t ulPin, uint32_t ulVal)
 {
     gpio_t *pGpio_t;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         return;
     }
@@ -168,7 +166,8 @@ int digitalRead(uint32_t ulPin)
     gpio_t *pGpio_t;
     int pin_status;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         return -1;
     }
@@ -186,9 +185,10 @@ int digitalRead(uint32_t ulPin)
 void digitalChangeDir(uint32_t ulPin, uint8_t direction)
 {
     gpio_t *pGpio_t;
-    u32 RegValue;
+    //u32 RegValue;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         return;
     }
@@ -204,12 +204,14 @@ void digitalChangeDir(uint32_t ulPin, uint8_t direction)
 }
 
 /**************************** Extend API by RTK ***********************************/
-
+// zzw
+#if 0
 uint32_t digitalPinToPort(uint32_t ulPin)
 {
     uint32_t pin_name;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         return 0xFFFFFFFF;
     }
@@ -222,7 +224,8 @@ uint32_t digitalPinToBitMask(uint32_t ulPin)
 {
     uint32_t pin_name;
 
-    if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
+    if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
         return 0xFFFFFFFF;
     }
@@ -231,26 +234,38 @@ uint32_t digitalPinToBitMask(uint32_t ulPin)
 
     return 1 << (HAL_GPIO_GET_PIN_BY_NAME(pin_name));
 }
+#endif
 
 uint32_t digitalSetIrqHandler(uint32_t ulPin, void (*handler)(uint32_t id, uint32_t event)) {
     gpio_irq_handler_list[ulPin] = (void *) handler;
+
+    // zzw 
+    return 0;
 }
 
 uint32_t digitalClearIrqHandler(uint32_t ulPin) {
     gpio_irq_handler_list[ulPin] = NULL;
+
+    // zzw 
+    return 0;
 }
 
 void pinRemoveMode(uint32_t ulPin) {
     if (g_APinDescription[ulPin].ulPinType == PIO_PWM) {
         // The PWM pin can only be disabled
         pwmout_t *obj = (pwmout_t *)gpio_pin_struct[ulPin];
-
-// zzw
-//        HAL_Pwm_Disable(&obj->pwm_hal_adp);
+        pwmout_free(obj);
+        free(obj);
+        g_APinDescription[ulPin].ulPinType = NOT_INITIAL;
         g_APinDescription[ulPin].ulPinMode = PWM_MODE_DISABLED;
     }
     if (g_APinDescription[ulPin].ulPinType == PIO_GPIO) {
-        gpio_deinit((gpio_t *)gpio_pin_struct[ulPin], g_APinDescription[ulPin].pinname);
+        //gpio_deinit((gpio_t *)gpio_pin_struct[ulPin], g_APinDescription[ulPin].pinname);
+        //gpio_t *gpio_obj = (gpio_t *)gpio_pin_struct[ulPin];
+        //gpio_deinit(gpio_obj);
+
+        gpio_deinit((gpio_t *)gpio_pin_struct[ulPin]);
+
         free((gpio_t *)gpio_pin_struct[ulPin]);
         gpio_pin_struct[ulPin] = NULL;
         g_APinDescription[ulPin].ulPinType = NOT_INITIAL;
@@ -268,4 +283,3 @@ void pinRemoveMode(uint32_t ulPin) {
 #ifdef __cplusplus
 }
 #endif
-

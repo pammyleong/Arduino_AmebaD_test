@@ -28,23 +28,23 @@ extern "C" {
 #define portNVIC_SYSTICK_CURRENT_VALUE_REG	( * ( ( volatile uint32_t * ) 0xe000e018 ) )
 #endif
 
-extern uint32_t xTaskGetTickCount();
-extern uint32_t xTaskGetTickCountFromISR();
+extern uint32_t xTaskGetTickCount(void);
+extern uint32_t xTaskGetTickCountFromISR(void);
 
 static __inline uint32_t __get_ipsr__(void)
 {
-  volatile uint32_t __regIPSR          __asm("ipsr");
-  return(__regIPSR);
+    volatile uint32_t __regIPSR     __asm("ipsr");
+    return(__regIPSR);
 }
 
-void delay( uint32_t ms )
+void delay(uint32_t ms)
 {
-	osStatus ret;
+    osStatus ret;
 
-	ret = osDelay(ms);
-	if ( (ret != osEventTimeout) && (ret != osOK) ) {
-		//printf("delay : ERROR : 0x%x \n", ret);
-	}
+    ret = osDelay(ms);
+    if ((ret != osEventTimeout) && (ret != osOK)) {
+        //printf("delay : ERROR : 0x%x \n", ret);
+    }
 }
 
 void delayMicroseconds(uint32_t us)
@@ -61,7 +61,7 @@ void delayMicroseconds(uint32_t us)
     dfactor = 20 * us - 10 + (81 * us / 100);
 #endif
 
-    if ( us > 100 ) {
+    if (us > 100) {
         t0 = micros();
         do {
             tn = micros();
@@ -73,12 +73,12 @@ void delayMicroseconds(uint32_t us)
     }
 }
 
-uint32_t millis( void )
+uint32_t millis(void)
 {
     return (__get_ipsr__() == 0) ? xTaskGetTickCount() : xTaskGetTickCountFromISR();
 }
 
-uint32_t micros( void ) 
+uint32_t micros(void)
 {
     uint32_t tick1, tick2;
     uint32_t us;
@@ -88,6 +88,8 @@ uint32_t micros( void )
     tick_per_us = 83333;
 #elif defined(BOARD_RTL8195A)
     tick_per_us = 166666;
+#elif defined(BOARD_RTL8722D)
+    tick_per_us = 200000;
 #else
     tick_per_us = 166666;
 #endif

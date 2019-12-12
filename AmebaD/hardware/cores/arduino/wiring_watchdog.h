@@ -19,7 +19,7 @@ extern "C" {
  * @ingroup watchdog
  * Feed watchdog to avoid it barks
  */
-extern void wdt_reset();
+extern void wdt_reset(void);
 
 /**
  * @ingroup watchdog
@@ -35,7 +35,7 @@ extern void wdt_enable(uint32_t timeout_ms);
  * @ingroup watchdog
  * Disable watchdog
  */
-extern void wdt_disable();
+extern void wdt_disable(void);
 
 #ifdef __cplusplus
 }

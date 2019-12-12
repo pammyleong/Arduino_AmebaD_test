@@ -65,7 +65,7 @@ LOGUARTClass::LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer )
 // Public Methods //////////////////////////////////////////////////////////////
 
 
-void LOGUARTClass::IrqHandler( void )
+void LOGUARTClass::IrqHandler(void)
 {
     uint8_t     data = 0;
     BOOL        PullMode = _FALSE;
@@ -94,54 +94,57 @@ void LOGUARTClass::begin(const uint32_t dwBaudRate)
     serial_init(&log_uart_obj, PA_7, PA_8);
     serial_format(&log_uart_obj, 8, ParityNone, 1);
 
+    uint32_t LOGUART_BaudRate = dwBaudRate;
+
 #if LOG_UART_MODIFIABLE_BAUD_RATE
     /* log uart initialize in 115200 baud rate.
      * If we change baud rate here, Serail Monitor would not detect this change and show nothing on screen.
      */
-    serial_baud(&log_uart_obj, dwBaudRate);
+    //serial_baud(&log_uart_obj, dwBaudRate);
+    serial_baud(&log_uart_obj, LOGUART_BaudRate);
 #else
-    serial_baud(&log_uart_obj, 115200);
+    LOGUART_BaudRate = 115200;
+    serial_baud(&log_uart_obj, LOGUART_BaudRate);
 #endif
+
     serial_irq_set(&log_uart_obj, RxIrq, 1);
     serial_irq_handler(&log_uart_obj, arduino_loguart_irq_handler, (uint32_t)_rx_buffer);
 }
 
-void LOGUARTClass::end( void )
+void LOGUARTClass::end(void)
 {
     // clear any received data
-    _rx_buffer->_iHead = _rx_buffer->_iTail ;
+    _rx_buffer->_iHead = _rx_buffer->_iTail;
 
     serial_free(&log_uart_obj);
 }
 
-int LOGUARTClass::available( void )
+int LOGUARTClass::available(void)
 {
-  return (uint32_t)(SERIAL_BUFFER_SIZE + _rx_buffer->_iHead - _rx_buffer->_iTail) % SERIAL_BUFFER_SIZE ;
+  return (uint32_t)(SERIAL_BUFFER_SIZE + _rx_buffer->_iHead - _rx_buffer->_iTail) % SERIAL_BUFFER_SIZE;
 }
 
-int LOGUARTClass::peek( void )
+int LOGUARTClass::peek(void)
 {
+  if (_rx_buffer->_iHead == _rx_buffer->_iTail)
+    return -1;
 
-  if ( _rx_buffer->_iHead == _rx_buffer->_iTail )
-    return -1 ;
-
-  return _rx_buffer->_aucBuffer[_rx_buffer->_iTail] ;
-
+  return _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
 }
 
-int LOGUARTClass::read( void )
+int LOGUARTClass::read(void)
 {
   // if the head isn't ahead of the tail, we don't have any characters
-  if ( _rx_buffer->_iHead == _rx_buffer->_iTail )
-    return -1 ;
+  if (_rx_buffer->_iHead == _rx_buffer->_iTail)
+    return -1;
 
-  uint8_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail] ;
-  _rx_buffer->_iTail = (unsigned int)(_rx_buffer->_iTail + 1) % SERIAL_BUFFER_SIZE ;
-  return uc ;
+  uint8_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
+  _rx_buffer->_iTail = (unsigned int)(_rx_buffer->_iTail + 1) % SERIAL_BUFFER_SIZE;
+  return uc;
 
 }
 
-void LOGUARTClass::flush( void )
+void LOGUARTClass::flush(void)
 {
 // TODO: 
 // while ( serial_writable(&(this->sobj)) != 1 );
@@ -152,10 +155,10 @@ void LOGUARTClass::flush( void )
 */
 }
 
-size_t LOGUARTClass::write( const uint8_t uc_data )
+size_t LOGUARTClass::write(const uint8_t uc_data)
 {
-    serial_putc(&log_uart_obj, uc_data);
-  	return 1;
+    serial_putc(&log_uart_obj, (int)(uc_data));
+    return 1;
 }
 
 LOGUARTClass Serial(UART_LOG_IRQ, &rx_buffer0);

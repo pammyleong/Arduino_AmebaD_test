@@ -87,11 +87,11 @@ void analogReference(eAnalogReference ulMode)
 
 uint32_t analogRead(uint32_t ulPin)
 {
-    uint32_t ulValue = 0;
-    uint32_t ulChannel;
+    //uint32_t ulValue = 0;
+    //uint32_t ulChannel;
     uint16_t ret = 0;
     float    voltage;
-    float    adc_value;
+    //float    adc_value;
 
     switch (ulPin) {
         case A0:
@@ -127,7 +127,7 @@ uint32_t analogRead(uint32_t ulPin)
             ret = analogin_read_u16(&adc3);
             break;
         default:
-            printf("%s : ulPin %d wrong\n", __FUNCTION__, ulPin);
+            printf("%s : ulPin %d wrong\n", __FUNCTION__, ((int)ulPin));
             return 0;
     }
 
@@ -167,7 +167,7 @@ void analogOutputInit(void) {
 // to digital output.
 void analogWrite(uint32_t ulPin, uint32_t ulValue) 
 {
-    pwmout_t *obj;
+    //pwmout_t *obj;
 
 #ifdef FEATURE_DAC
     if (ulPin == DAC0)
@@ -211,25 +211,24 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue)
 typedef struct _tone_argument {
     uint32_t ulPin;
     uint32_t timer_id;
-};
+}tone_argument;
 
 void _tone_timer_handler(void const *argument)
 {
-    struct _tone_argument *arg = (struct _tone_argument *)argument;
+    tone_argument *arg = (tone_argument *)argument;
 
-    uint32_t ulPin = (uint32_t) argument;
+    //uint32_t ulPin = (uint32_t)argument;
 
     noTone(arg->ulPin);
 
     os_timer_delete(arg->timer_id);
 
-    free((struct _tone_argument *) arg);
+    free((tone_argument *)arg);
 }
 
 void _tone(uint32_t ulPin, unsigned int frequency, unsigned long duration)
 {
-    pwmout_t *obj;
-
+    //pwmout_t *obj;
     if ((g_APinDescription[ulPin].ulPinAttribute & PIO_PWM) != PIO_PWM) {
         return;
     }
@@ -239,32 +238,31 @@ void _tone(uint32_t ulPin, unsigned int frequency, unsigned long duration)
         if ((g_APinDescription[ulPin].ulPinType == PIO_GPIO) || (g_APinDescription[ulPin].ulPinType == PIO_GPIO_IRQ)) {
             pinRemoveMode(ulPin);
         }
-        gpio_pin_struct[ulPin] = malloc (sizeof(pwmout_t));
+        gpio_pin_struct[ulPin] = malloc(sizeof(pwmout_t));
         pwmout_t *obj = (pwmout_t *)gpio_pin_struct[ulPin];
         pwmout_init(obj, g_APinDescription[ulPin].pinname);
         pwmout_period(obj, 1.0/frequency);
         pwmout_pulsewidth(obj, 1.0/(frequency * 2));
         g_APinDescription[ulPin].ulPinType = PIO_PWM;
         g_APinDescription[ulPin].ulPinMode = PWM_MODE_ENABLED;
-
     } else {
         // There is already a PWM configured
         pwmout_t *obj = (pwmout_t *)gpio_pin_struct[ulPin];
         pwmout_period(obj, 1.0/frequency);
         pwmout_pulsewidth(obj, 1.0/(frequency * 2));
         if (g_APinDescription[ulPin].ulPinMode == PWM_MODE_DISABLED) {
-
-// zzw
-//            HAL_Pwm_Enable(&obj->pwm_hal_adp);
+            pwmout_free(obj);
         }
     }
 
     if (duration > 0) {
-        struct _tone_argument *arg = (struct _tone_argument *) malloc (sizeof(struct _tone_argument));
+        tone_argument *arg = (tone_argument *)(malloc(sizeof(tone_argument)));
+
         arg->ulPin = ulPin;
         arg->timer_id = os_timer_create(_tone_timer_handler, 0, arg);
         os_timer_start(arg->timer_id, duration);
     }
+    delay(5);
 }
 
 void noTone(uint32_t ulPin)

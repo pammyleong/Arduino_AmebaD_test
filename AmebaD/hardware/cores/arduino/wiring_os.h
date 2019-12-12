@@ -87,16 +87,16 @@ extern "C" {
  * Redefine osEvent in cmsis_os.h
  */
 typedef struct {
-  uint32_t                 status;     ///< status code: event or error information
-  union  {
-    uint32_t                    v;     ///< message as 32-bit value
-    void                       *p;     ///< message or mail as void pointer
-    int32_t               signals;     ///< signal flags
-  } value;                             ///< event value
-  union  {
-    void                 *mail_id;     ///< mail id obtained by osMailCreate
-    void              *message_id;     ///< message id obtained by osMessageCreate
-  } def;                               ///< event definition
+    uint32_t        status;         ///< status code: event or error information
+    union {
+        uint32_t    v;              ///< message as 32-bit value
+        void        *p;             ///< message or mail as void pointer
+        int32_t     signals;        ///< signal flags
+    } value;                        ///< event value
+    union {
+        void        *mail_id;       ///< mail id obtained by osMailCreate
+        void        *message_id;    ///< message id obtained by osMessageCreate
+    } def;                          ///< event definition
 } os_event_t;
 
 /**
@@ -124,7 +124,7 @@ extern uint32_t os_thread_create(void (*task)(const void *argument), void *argum
  *
  * @return Current thread id which calls os_thread_get_id
  */
-extern uint32_t os_thread_get_id( void );
+extern uint32_t os_thread_get_id(void);
 
 /**
  * @ingroup thread_management
@@ -312,7 +312,7 @@ extern uint32_t os_semaphore_delete(uint32_t semaphore_id);
  *
  * @return current free heap size
  */
-extern size_t os_get_free_heap_size();
+extern size_t os_get_free_heap_size(void);
 
 #ifdef __cplusplus
 }

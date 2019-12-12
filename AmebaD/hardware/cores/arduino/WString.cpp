@@ -122,7 +122,7 @@ String::String(double value, unsigned char decimalPlaces)
 	*this = dtostrf(value, (decimalPlaces + 2), decimalPlaces, buf);
 }
 
-String::~String()
+String::~String(void)
 {
 	free(buffer);
 }
