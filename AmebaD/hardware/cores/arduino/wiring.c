@@ -33,7 +33,8 @@ extern uint32_t xTaskGetTickCountFromISR(void);
 
 static __inline uint32_t __get_ipsr__(void)
 {
-    volatile uint32_t __regIPSR     __asm("ipsr");
+    //volatile uint32_t __regIPSR     __asm("ipsr");
+    static uint32_t __regIPSR     __asm("ipsr");
     return(__regIPSR);
 }
 

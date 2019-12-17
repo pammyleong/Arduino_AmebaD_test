@@ -86,19 +86,11 @@ int main(int argc, char *argv[]) {
     path_arm_none_eabi_gcc.assign(argv[3]);
     replaceAll(path_arm_none_eabi_gcc, "/", "\\");
 
-#if 0
-    cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" --numeric-sort application.axf > application.map";
-    getline(cmdss, cmd);
-    cout << cmd << endl;
-    system(cmd.c_str());
-#else
     cmdss.clear();
     cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" application.axf | sort > application.map";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
-#endif
 
     fin.open("application.map");
     while (getline(fin, line)) {
@@ -106,19 +98,11 @@ int main(int argc, char *argv[]) {
     }
     fin.close();
 
-#if 0
     cmdss.clear();
     cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application.axf > application.asm";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
-#else
-    cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application.axf > application.asm";
-    getline(cmdss, cmd);
-    cout << cmd << endl;
-    system(cmd.c_str());
-#endif
 
     // 3.1 check if any forbidden symbols
     path_symbol_black_list.assign(argv[4]);
@@ -202,7 +186,6 @@ int main(int argc, char *argv[]) {
         cout << "psram " << psram_start_st << " ~ " << psram_end_st << endl;
     }
 
-#if 1
     // 5. generate image 2, image xip and image psram
     cmdss.clear();
     //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
@@ -228,31 +211,9 @@ int main(int argc, char *argv[]) {
         cout << cmd << endl;
         system(cmd.c_str());
     }
-#endif
 
 
     // 6. fulfill header
-#if 0
-    cmdss.clear();
-    cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin body+reset_offset+sig";
-    getline(cmdss, cmd);
-    cout << cmd << endl;
-    system(cmd.c_str());
-
-    cmdss.clear();
-    cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.ns.bin body+reset_offset";
-    getline(cmdss, cmd);
-    cout << cmd << endl;
-    system(cmd.c_str());
-
-    if (has_sdram) {
-        cmdss.clear();
-        cmdss << ".\\tools\\windows\\pick.exe " << sdram_start << " " << sdram_end << " sdram.bin ram_3.p.bin body+reset_offset";
-        getline(cmdss, cmd);
-        cout << cmd << endl;
-        system(cmd.c_str());
-    }
-#else
     // 6.1 remove bss sections
     cmdss.clear();
     cmdss << ".\\tools\\windows\\pick.exe " << sram_start << " " << sram_end << " ram_2.r.bin ram_2.bin raw";
@@ -301,22 +262,9 @@ int main(int argc, char *argv[]) {
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
-#endif
 
 
-
-
-
-#if 0
     // 7. prepare image 1
-    cmd = "copy bsp\\image\\ram_1.p.bin .\\";
-    cout << cmd << endl;
-    system(cmd.c_str());
-
-    cmd = ".\\tools\\windows\\padding.exe 44k 0xFF ram_1.p.bin";
-    cout << cmd << endl;
-    system(cmd.c_str());
-#else
     cmd = "copy bsp\\image\\km0_boot_all.bin .\\";
     cout << cmd << endl;
     system(cmd.c_str());
@@ -328,31 +276,11 @@ int main(int argc, char *argv[]) {
     cmd = "copy bsp\\image\\km0_image2_all.bin .\\";
     cout << cmd << endl;
     system(cmd.c_str());
-#endif 
 
-#if 0
-    // 8. generate ram_all.bin
-    if (has_sdram) {
-        cmd = "copy /b ram_1.p.bin+ram_2.p.bin+ram_3.p.bin ram_all.bin";
-        cout << cmd << endl;
-        system(cmd.c_str());
-        cmd = "copy /b ram_2.ns.bin+ram_3.p.bin ota.bin";
-        cout << cmd << endl;
-        system(cmd.c_str());
-    } else {
-        cmd = "copy /b ram_1.p.bin+ram_2.p.bin ram_all.bin";
-        cout << cmd << endl;
-        system(cmd.c_str());
-        cmd = "copy /b ram_2.ns.bin ota.bin";
-        cout << cmd << endl;
-        system(cmd.c_str());
-    }
-#else
+    // 8. generate .bin
     cmd = "copy /b km0_image2_all.bin+km4_image2_all.bin km0_km4_image2.bin";
     cout << cmd << endl;
     system(cmd.c_str());
-#endif
-
 
 #if 0
     // 9. add checksum
