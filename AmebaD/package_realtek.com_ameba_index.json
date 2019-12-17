@@ -24,7 +24,9 @@
           "size": "44822642",
           "boards": [
             {
-              "name": "Ameba RTL8721D"
+              "name": "Ameba RTL8721D",
+              "name": "Ameba RTL8722DM",
+              "name": "Ameba RTL8722CSM"
             }
           ],
           "toolsDependencies": [
