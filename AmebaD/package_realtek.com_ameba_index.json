@@ -23,11 +23,9 @@
           "checksum": "SHA-256:9568a17ba7e3855a09196d27a9f4eead86c7ad7c74faae0256bff62f8e444c83",
           "size": "44822642",
           "boards": [
-            {
-              {"name": "Ameba RTL8721D"},
-              {"name": "Ameba RTL8722DM"},
-              {"name": "Ameba RTL8722CSM"}
-            }
+            {"name": "Ameba RTL8721D"},
+            {"name": "Ameba RTL8722DM"},
+            {"name": "Ameba RTL8722CSM"}
           ],
           "toolsDependencies": [
             {
