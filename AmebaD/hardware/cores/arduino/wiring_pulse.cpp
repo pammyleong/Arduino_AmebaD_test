@@ -48,8 +48,7 @@ extern uint32_t pulseIn(uint32_t ulPin, uint32_t state, uint32_t timeout)
     if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC)) return 0;
 
     /* Handle */
-    if (g_APinDescription[ulPin].ulPinType != PIO_GPIO)
-    {
+    if (g_APinDescription[ulPin].ulPinType != PIO_GPIO) {
         return 0;
     }
 
@@ -59,7 +58,7 @@ extern uint32_t pulseIn(uint32_t ulPin, uint32_t state, uint32_t timeout)
     start_ticks = us_ticker_read();
     while (gpio_read(pGpio_t) == ((int)state)) {
         cur_ticks = us_ticker_read();
-            if (cur_ticks - start_ticks > timeout) return 0;
+        if (cur_ticks - start_ticks > timeout) return 0;
     }
 
     // wait for the pulse to start

@@ -31,7 +31,6 @@ extern "C" {
  */
 extern uint32_t pulseIn( uint32_t ulPin, uint32_t ulState, uint32_t ulTimeout = 1000000L );
 
-
 #ifdef __cplusplus
 }
 #endif

@@ -1,7 +1,7 @@
 /*
 
 Compile under windows (using mingw):
-    mingw32-gcc.exe -o amebasize.exe tools\windows\src\amebasize.c -static
+mingw32-gcc.exe -o amebasize.exe tools\windows\src\amebasize.c -static
 
 */
 

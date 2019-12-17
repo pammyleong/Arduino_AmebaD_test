@@ -70,12 +70,14 @@ void analogWritePeriod(int us) {
 }
 
 static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to) {
-    if (from == to)
+    if (from == to) {
         return value;
-    if (from > to)
+    }
+    if (from > to) {
         return value >> (from-to);
-    else
+    } else {
         return value << (to-from);
+    }
 }
 
 eAnalogReference analog_reference = AR_DEFAULT;

@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Ameba ARM (32-bits) Boards
-version=0.1.6
+version=0.2.2
 
 # Ameba project settings
 # ----------------------
@@ -120,4 +120,3 @@ tools.ameba_d_tools.upload.params.quiet=
 tools.ameba_d_tools.upload.pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_image_tool.exe" "{runtime.tools.ameba_d_tools.path}" "{serial.port}" {upload.verbose}
 #tools.ameba_d_tools.upload.network_pattern="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
 #tools.ameba_d_tools.upload.network_pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
-

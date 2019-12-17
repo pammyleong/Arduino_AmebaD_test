@@ -66,9 +66,9 @@ void delayMicroseconds(uint32_t us)
         t0 = micros();
         do {
             tn = micros();
-        } while ( tn >= t0 && tn < (t0 + us - 1) );
+        } while (tn >= t0 && tn < (t0 + us - 1));
     } else {
-        for (i=0; i<dfactor; i++) {
+        for (i = 0; i < dfactor; i++) {
             asm("nop");
         }
     }

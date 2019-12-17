@@ -72,16 +72,17 @@ void LOGUARTClass::IrqHandler(void)
 
     //UART_TypeDef * pLOG_UART = UART2_DEV;
     uint32_t    IrqEn;
-	IrqEn = UART_IntStatus((UART_TypeDef*)UART2_DEV);
+    IrqEn = UART_IntStatus((UART_TypeDef*)UART2_DEV);
 
     //DiagSetIsrEnReg(0);
 
     serial_irq_set(&log_uart_obj, RxIrq, 0);
-	//serial_irq_set(&log_uart_obj, TxIrq, 0);
+    //serial_irq_set(&log_uart_obj, TxIrq, 0);
 
     data = DiagGetChar(PullMode);
-    if (data > 0)
+    if (data > 0) {
         _rx_buffer->store_char(data);
+    }
 
     //DiagSetIsrEnReg(IrqEn);
     serial_irq_set(&log_uart_obj, RxIrq, IrqEn);
@@ -126,21 +127,21 @@ int LOGUARTClass::available(void)
 
 int LOGUARTClass::peek(void)
 {
-  if (_rx_buffer->_iHead == _rx_buffer->_iTail)
-    return -1;
+    if (_rx_buffer->_iHead == _rx_buffer->_iTail)
+        return -1;
 
-  return _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
+    return _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
 }
 
 int LOGUARTClass::read(void)
 {
-  // if the head isn't ahead of the tail, we don't have any characters
-  if (_rx_buffer->_iHead == _rx_buffer->_iTail)
-    return -1;
+    // if the head isn't ahead of the tail, we don't have any characters
+    if (_rx_buffer->_iHead == _rx_buffer->_iTail)
+        return -1;
 
-  uint8_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
-  _rx_buffer->_iTail = (unsigned int)(_rx_buffer->_iTail + 1) % SERIAL_BUFFER_SIZE;
-  return uc;
+    uint8_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail];
+    _rx_buffer->_iTail = (unsigned int)(_rx_buffer->_iTail + 1) % SERIAL_BUFFER_SIZE;
+    return uc;
 
 }
 

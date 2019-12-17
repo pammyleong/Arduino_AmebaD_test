@@ -13,7 +13,6 @@ void wdt_reset(void) {
 }
 
 void wdt_enable(uint32_t timeout_ms) {
-
     uint32_t backup_ConfigDebugErr;
 
     backup_ConfigDebugErr = ConfigDebugErr;

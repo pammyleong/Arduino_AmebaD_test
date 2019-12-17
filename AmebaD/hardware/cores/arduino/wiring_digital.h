@@ -29,7 +29,7 @@
  * \param ulPin The number of the pin whose mode you wish to set
  * \param ulMode Either INPUT or OUTPUT
  */
-extern void pinMode( uint32_t dwPin, uint32_t dwMode ) ;
+extern void pinMode(uint32_t dwPin, uint32_t dwMode);
 
 /**
  * \brief Write a HIGH or a LOW value to a digital pin.
@@ -51,7 +51,7 @@ extern void pinMode( uint32_t dwPin, uint32_t dwMode ) ;
  * \param dwPin the pin number
  * \param dwVal HIGH or LOW
  */
-extern void digitalWrite( uint32_t dwPin, uint32_t dwVal ) ;
+extern void digitalWrite(uint32_t dwPin, uint32_t dwVal);
 
 /**
  * \brief Reads the value from a specified digital pin, either HIGH or LOW.
@@ -60,14 +60,14 @@ extern void digitalWrite( uint32_t dwPin, uint32_t dwVal ) ;
  *
  * \return HIGH or LOW
  */
-extern int digitalRead( uint32_t ulPin ) ;
+extern int digitalRead(uint32_t ulPin);
 
-extern void digitalChangeDir( uint32_t ulPin, uint8_t direction);
+extern void digitalChangeDir(uint32_t ulPin, uint8_t direction);
 /**************************** Extend API by RTK ***********************************/
-extern uint32_t digitalPinToPort( uint32_t ulPin );
-extern uint32_t digitalPinToBitMask( uint32_t ulPin );
-extern uint32_t digitalSetIrqHandler( uint32_t ulPin, void (*handler)(uint32_t id, uint32_t event) );
-extern uint32_t digitalClearIrqHandler( uint32_t ulPin );
+extern uint32_t digitalPinToPort(uint32_t ulPin);
+extern uint32_t digitalPinToBitMask(uint32_t ulPin);
+extern uint32_t digitalSetIrqHandler(uint32_t ulPin, void (*handler)(uint32_t id, uint32_t event));
+extern uint32_t digitalClearIrqHandler(uint32_t ulPin);
 extern void pinRemoveMode(uint32_t ulPin);
 
 #ifdef __cplusplus

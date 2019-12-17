@@ -13,18 +13,18 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "0.2.1",
+          "version": "0.2.2",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.2.1.tar.gz",
-          "archiveFileName": "ameba-0.2.1.tar.gz",
-          "checksum": "SHA-256:65adb484feaaf5ecbb0b1dbcf2ac12d719d363eaeb3587cd34426804c2aedcae",
-          "size": "44816122",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba-0.2.2.tar.gz",
+          "archiveFileName": "ameba-0.2.2.tar.gz",
+          "checksum": "SHA-256:9568a17ba7e3855a09196d27a9f4eead86c7ad7c74faae0256bff62f8e444c83",
+          "size": "44822642",
           "boards": [
             {
-              "name": "Ameba RTL8722D"
+              "name": "Ameba RTL8721D"
             }
           ],
           "toolsDependencies": [
@@ -36,7 +36,7 @@
             {
               "packager": "realtek",
               "name": "ameba_d_tools",
-              "version": "0.0.8"
+              "version": "0.0.9"
             }
           ]
         }
@@ -58,14 +58,14 @@
         },
         {
           "name": "ameba_d_tools",
-          "version": "0.0.8",
+          "version": "0.0.9",
           "systems": [
             {
               "host": "i686-mingw32",
-              "archiveFileName": "ameba_d_tools_windows-0.0.8.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.8.tar.gz",
-              "checksum": "SHA-256:8468af3702eef7b327215b9bb976b1f02a92754cf8572c2db8375b2dc42462b2",
-              "size": "1374316"
+              "archiveFileName": "ameba_d_tools_windows-0.0.9.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_tools_windows-0.0.9.tar.gz",
+              "checksum": "SHA-256:fcd592f9e983bf6016d1909ea07bbf770f983041e380d15da4c3c66514f4a8f3",
+              "size": "1374277"
             }
           ]
         }

@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	system(cmd.c_str());
 
 	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set baudrate 115200";
+	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set baudrate 1500000";
 	getline(cmdss, cmd);
 	//cout << cmd << endl;
 	system(cmd.c_str());
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 	//cout << cmd << endl;
 	system(cmd.c_str());
 
-	cmd = "    Download km0_boot_all done. ";
+	cmd = "    Upload km0_boot_all done. ";
 	cout << cmd << endl;
 
 // km4_boot_all
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
 	//cout << cmd << endl;
 	system(cmd.c_str());
 
-	cmd = "    Download km4_boot_all done. ";
+	cmd = "    Upload km4_boot_all done. ";
 	cout << cmd << endl;
 
 // km0_km4_image2
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 	//cout << cmd << endl;
 	system(cmd.c_str());
 
-	cmd = "    Download km0_km4_image2 done. ";
+	cmd = "    Upload km0_km4_image2 done. ";
 	cout << cmd << endl;
 
 	return 0;
