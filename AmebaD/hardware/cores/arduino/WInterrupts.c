@@ -3,7 +3,6 @@
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode) {
     if (g_APinDescription[pin].ulPinType != PIO_GPIO_IRQ) {
         pinRemoveMode(pin);
-        
     }
 
     switch(mode) {

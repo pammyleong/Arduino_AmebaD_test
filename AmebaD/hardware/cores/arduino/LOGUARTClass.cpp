@@ -116,9 +116,8 @@ void LOGUARTClass::begin(const uint32_t dwBaudRate)
     LOGUART_BaudRate = 115200;
     serial_baud(&log_uart_obj, LOGUART_BaudRate);
 #endif
-
-    serial_irq_set(&log_uart_obj, RxIrq, 1);
     serial_irq_handler(&log_uart_obj, arduino_loguart_irq_handler, (uint32_t)_rx_buffer);
+    serial_irq_set(&log_uart_obj, RxIrq, 1);
 }
 
 void LOGUARTClass::end(void)
@@ -167,7 +166,7 @@ void LOGUARTClass::flush(void)
 
 size_t LOGUARTClass::write(const uint8_t uc_data)
 {
-    serial_putc(&log_uart_obj, (int)(uc_data));
+    serial_putc(&log_uart_obj, ((int)uc_data));
     return 1;
 }
 

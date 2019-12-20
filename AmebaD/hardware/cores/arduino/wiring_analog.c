@@ -36,7 +36,6 @@ analogin_t   adc4;
 analogin_t   adc5;
 analogin_t   adc6;
 
-
 static const float ADC_slope1 = (3.3)/(255.0 - 16.0);
 //static const float ADC_slope2 = (3.3 - 3.12)/(3454.0-3410.0);
 
@@ -54,9 +53,7 @@ bool g_dac_enabled[] = {
 #endif
 
 static int _readResolution = 10;
-
 extern void *gpio_pin_struct[];
-
 static int _writeResolution = 8;
 static int _writePeriod = 20000;
 

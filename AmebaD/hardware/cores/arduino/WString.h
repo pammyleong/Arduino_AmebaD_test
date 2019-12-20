@@ -151,7 +151,7 @@ public:
     unsigned char operator <= (const String &rhs) const;
     unsigned char operator >= (const String &rhs) const;
     unsigned char equalsIgnoreCase(const String &s) const;
-    unsigned char startsWith( const String &prefix) const;
+    unsigned char startsWith(const String &prefix) const;
     unsigned char startsWith(const String &prefix, unsigned int offset) const;
     unsigned char endsWith(const String &suffix) const;
 
@@ -166,16 +166,16 @@ public:
     const char * c_str() const { return buffer; }
 
     // search
-    int indexOf( char ch ) const;
-    int indexOf( char ch, unsigned int fromIndex ) const;
-    int indexOf( const String &str ) const;
-    int indexOf( const String &str, unsigned int fromIndex ) const;
-    int lastIndexOf( char ch ) const;
-    int lastIndexOf( char ch, unsigned int fromIndex ) const;
-    int lastIndexOf( const String &str ) const;
-    int lastIndexOf( const String &str, unsigned int fromIndex ) const;
-    String substring( unsigned int beginIndex ) const { return substring(beginIndex, len); };
-    String substring( unsigned int beginIndex, unsigned int endIndex ) const;
+    int indexOf(char ch) const;
+    int indexOf(char ch, unsigned int fromIndex) const;
+    int indexOf(const String &str) const;
+    int indexOf(const String &str, unsigned int fromIndex) const;
+    int lastIndexOf(char ch) const;
+    int lastIndexOf(char ch, unsigned int fromIndex) const;
+    int lastIndexOf(const String &str) const;
+    int lastIndexOf(const String &str, unsigned int fromIndex) const;
+    String substring(unsigned int beginIndex) const { return substring(beginIndex, len); };
+    String substring(unsigned int beginIndex, unsigned int endIndex) const;
 
     // modification
     void replace(char find, char replace);

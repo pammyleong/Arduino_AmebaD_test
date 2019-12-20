@@ -42,13 +42,13 @@ extern "C"{
 //#define FEATURE_DAC
 
 /* Analog pin mapping */
-#define A0                            0 //PB_4
-#define A1                            1 //PB_5
-#define A2                            2 //PB_6
-#define A3                            3 //PB_7
-#define A4                            4 //PB_1
-#define A5                            5 //PB_2
-#define A6                            6 //PB_3
+#define A0                            0 //PB_4    3.3V
+#define A1                            1 //PB_5    3.3V
+#define A2                            2 //PB_6    3.3V
+#define A3                            3 //PB_7    3.3V
+#define A4                            4 //PB_1    3.3V
+#define A5                            5 //PB_2    3.3V
+#define A6                            6 //PB_3    3.3V
 
 /* DAC pin mapping */
 //#define DAC0    AD_3
