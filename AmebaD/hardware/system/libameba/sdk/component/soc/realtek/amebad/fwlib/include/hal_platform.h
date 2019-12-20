@@ -1529,6 +1529,7 @@ typedef struct {
  * @{
  *****************************************************************************/
 
+#ifdef __cplusplus
 #if __cplusplus
 
 #define UART0_DEV			UART0_REG_BASE		/*KM4 uart0 */
@@ -1586,6 +1587,7 @@ typedef struct {
 #define SDIOH_BASE			((SDIOH_TypeDef			*) (SDIOH_REG_BASE))
 
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
+#endif
 
 #else
 #define UART0_DEV			((UART_TypeDef			*) UART0_REG_BASE)		/*KM4 uart0 */

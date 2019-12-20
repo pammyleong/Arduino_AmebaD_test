@@ -32,13 +32,16 @@ analogin_t   adc0;
 analogin_t   adc1;
 analogin_t   adc2;
 analogin_t   adc3;
+analogin_t   adc4;
+analogin_t   adc5;
+analogin_t   adc6;
 
 
 static const float ADC_slope1 = (3.3)/(255.0 - 16.0);
 //static const float ADC_slope2 = (3.3 - 3.12)/(3454.0-3410.0);
 
 bool g_adc_enabled[] = {
-    false, false, false, false
+    false, false, false, false, false, false, false
 };
 
 #ifdef FEATURE_DAC
@@ -128,6 +131,30 @@ uint32_t analogRead(uint32_t ulPin)
             }
             ret = analogin_read_u16(&adc3);
             break;
+        case A4:
+            if (g_adc_enabled[4] == false)
+            {
+                analogin_init(&adc4, AD_4);
+                g_adc_enabled[4] = true;
+            }
+            ret = analogin_read_u16(&adc4);
+            break;
+        case A5:
+            if (g_adc_enabled[5] == false)
+            {
+                analogin_init(&adc5, AD_5);
+                g_adc_enabled[5] = true;
+            }
+            ret = analogin_read_u16(&adc5);
+            break;
+        case A6:
+            if (g_adc_enabled[6] == false)
+            {
+                analogin_init(&adc6, AD_6);
+                g_adc_enabled[6] = true;
+            }
+            ret = analogin_read_u16(&adc6);
+            break;
         default:
             printf("%s : ulPin %d wrong\n", __FUNCTION__, ((int)ulPin));
             return 0;
@@ -153,7 +180,7 @@ uint32_t analogRead(uint32_t ulPin)
         voltage = (float)(ret - 16) * ADC_slope1;
     }
 
-    ret = round((1<<_readResolution)*voltage/3.3);
+    ret = round((1<<_readResolution) * voltage / 3.3);
     if (ret >= (1<<_readResolution)) ret = (1<<_readResolution) - 1;
 
     return ret;

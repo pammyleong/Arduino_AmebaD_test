@@ -45,6 +45,18 @@ int main(int argc, char *argv[]) {
 	//cout << cmd << endl;
 	system(cmd.c_str());
 
+	cmdss.clear();
+	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -remove device COM0";
+	getline(cmdss, cmd);
+	//cout << cmd << endl;
+	system(cmd.c_str());
+
+	cmdss.clear();
+	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -add device " << argv[2];
+	getline(cmdss, cmd);
+	//cout << cmd << endl;
+	system(cmd.c_str());
+
 	cmd = "Please enter the upload mode (wait 5s)";
 	cout << cmd << endl;
 	for (int i = 5; i > 0; i--)
@@ -69,18 +81,6 @@ int main(int argc, char *argv[]) {
 
 	cmdss.clear();
 	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set image km0_boot_all.bin";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -remove device COM0";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -add device " << argv[2];
 	getline(cmdss, cmd);
 	//cout << cmd << endl;
 	system(cmd.c_str());

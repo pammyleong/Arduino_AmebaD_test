@@ -26,6 +26,7 @@ extern "C" {
 #include "gpio_irq_api.h"
 #include "gpio_irq_ex_api.h"
 #include "pwmout_api.h"
+#include "sys_api.h"
 
 extern void gpio_deinit(gpio_t *obj);
 extern void *gpio_pin_struct[TOTAL_GPIO_PIN_NUM];
@@ -40,6 +41,8 @@ void gpioIrqHandler(uint32_t id, gpio_irq_event event) {
 void pinMode(uint32_t ulPin, uint32_t ulMode)
 {
     void *pGpio_t;
+
+    sys_jtag_off();
 
     //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))

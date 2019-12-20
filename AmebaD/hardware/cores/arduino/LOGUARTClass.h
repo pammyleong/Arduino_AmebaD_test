@@ -25,7 +25,7 @@
 class LOGUARTClass : public HardwareSerial
 {
     public:
-        LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer );
+        LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer);
         void begin(const uint32_t dwBaudRate);
         void end(void);
         int available(void);

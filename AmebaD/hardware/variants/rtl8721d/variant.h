@@ -24,6 +24,8 @@
 
 #ifdef __cplusplus
 #include "LOGUARTClass.h"
+#include "UARTClassOne.h"
+#include "UARTClassTwo.h"
 extern "C"{
 #include "PinNames.h"
 }
@@ -31,19 +33,22 @@ extern "C"{
 
 #define MAIN_THREAD_STACK_SIZE        (4096 * 4)
 
-#define TOTAL_GPIO_PIN_NUM            (19)
-#define TOTAL_PWM_PIN_NUM             (4)
+#define TOTAL_GPIO_PIN_NUM            (29)
+#define TOTAL_PWM_PIN_NUM             (13)
 
-#define LED_BUILTIN                   (13)
+#define LED_BUILTIN                   (8)
 
 #define FEATURE_ADC
 //#define FEATURE_DAC
 
 /* Analog pin mapping */
-#define A0                            0
-#define A1                            1
-#define A2                            2
-#define A3                            3
+#define A0                            0 //PB_4
+#define A1                            1 //PB_5
+#define A2                            2 //PB_6
+#define A3                            3 //PB_7
+#define A4                            4 //PB_1
+#define A5                            5 //PB_2
+#define A6                            6 //PB_3
 
 /* DAC pin mapping */
 //#define DAC0    AD_3
@@ -73,6 +78,8 @@ extern void wait_for_debug(void);
 
 #ifdef __cplusplus
 extern LOGUARTClass Serial;
+extern UARTClassOne Serial1;
+extern UARTClassTwo Serial2;
 #endif
 
 #endif /* _VARIANT_ARDUINO_AMEBA_ */

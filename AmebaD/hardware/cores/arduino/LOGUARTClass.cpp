@@ -51,7 +51,7 @@ void arduino_loguart_irq_handler(uint32_t id, SerialIrq event)
     }
 }
 
-LOGUARTClass::LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer )
+LOGUARTClass::LOGUARTClass(int dwIrq, RingBuffer* pRx_buffer)
 {
     _rx_buffer = pRx_buffer;
     _dwIrq = dwIrq;
@@ -91,8 +91,17 @@ void LOGUARTClass::IrqHandler(void)
 
 void LOGUARTClass::begin(const uint32_t dwBaudRate)
 {
-
+    // UART2
     serial_init(&log_uart_obj, PA_7, PA_8);
+
+    // UART3
+    //serial_init(&log_uart_obj, PB_1, PB_2);
+    //serial_init(&log_uart_obj, PA_26, PA_25);
+
+    // UART0
+    //serial_init(&log_uart_obj, PB_19, PB_18);
+    //serial_init(&log_uart_obj, PA_21, PA_22);
+
     serial_format(&log_uart_obj, 8, ParityNone, 1);
 
     uint32_t LOGUART_BaudRate = dwBaudRate;
