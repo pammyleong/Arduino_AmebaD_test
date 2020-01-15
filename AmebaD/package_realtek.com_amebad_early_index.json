@@ -40,7 +40,7 @@
             }
           ]
         },
-		{
+        {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
           "version": "1.0.0",
@@ -70,7 +70,7 @@
             }
           ]
         },
-		{
+        {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
           "version": "0.0.1",
@@ -103,7 +103,7 @@
       ],
 
       "tools": [
-		{
+        {
           "name": "ameba_d_asdk_toolchain",
           "version":"1.0.1",
           "systems": [
@@ -116,7 +116,7 @@
             }
           ]
         },
-		{
+        {
           "name": "ameba_d_asdk_toolchain",
           "version":"1.0.0",
           "systems": [
@@ -129,7 +129,7 @@
             }
           ]
         },
-		{
+        {
           "name": "ameba_d_asdk_toolchain",
           "version":"0.0.1",
           "systems": [
