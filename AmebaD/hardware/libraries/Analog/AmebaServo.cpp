@@ -75,8 +75,8 @@ void AmebaServo::write(int value)
 
 void AmebaServo::writeMicroseconds(int value)
 {
-    if (value < min) value = min;
-    if (value > max) value = max;
+    if (value < (int)min) value = min;
+    if (value > (int)max) value = max;
 
     currentWidth = 180 * (value - min) / (max - min);
 
@@ -95,5 +95,5 @@ int AmebaServo::readMicroseconds()
 
 bool AmebaServo::attached()
 {
-    return servoPin == 0xFFFFFFFF;
+    return (servoPin == 0xFFFFFFFF);
 }

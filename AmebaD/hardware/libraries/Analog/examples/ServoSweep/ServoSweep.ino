@@ -11,29 +11,43 @@
 
 #include <AmebaServo.h>
 
-AmebaServo myservo;  // create servo object to control a servo
+// create servo object to control a servo
 // 4 servo objects can be created correspond to PWM pins
+AmebaServo myservo;
 
-int pos = 0;    // variable to store the servo position
+// variable to store the servo position
+int pos = 0;
 
 void setup() {
 #if defined(BOARD_RTL8195A)
-  myservo.attach(9); // attaches the servo on pin 9 to the servo object
+    // attaches the servo on pin 9 to the servo object
+    myservo.attach(9);
 #elif defined(BOARD_RTL8710)
-  myservo.attach(13); // attaches the servo on pin 13 to the servo object
+    // attaches the servo on pin 13 to the servo object
+    myservo.attach(13);
+#elif defined(BOARD_RTL8721D)
+    // attaches the servo on pin 8 to the servo object
+    myservo.attach(8);
 #else
-  myservo.attach(9); // attaches the servo on pin 9 to the servo object
+    // attaches the servo on pin 9 to the servo object
+    myservo.attach(9);
 #endif
 }
 
 void loop() {
-  for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-    delay(15);                       // waits 15ms for the servo to reach the position
-  }
+    // goes from 0 degrees to 180 degrees in steps of 1 degree
+    for (pos = 0; pos <= 180; pos += 1) {
+        // tell servo to go to position in variable 'pos'
+        myservo.write(pos);
+        // waits 15ms for the servo to reach the position
+        delay(15);
+    }
+
+    // goes from 180 degrees to 0 degrees
+    for (pos = 180; pos >= 0; pos -= 1) {
+        // tell servo to go to position in variable 'pos'
+        myservo.write(pos);
+        // waits 15ms for the servo to reach the position
+        delay(15);
+    }
 }

@@ -94,32 +94,35 @@
 #define NOTE_DS8 4978
 
 int melody[] = {
-  NOTE_G4, NOTE_G4, NOTE_E4, NOTE_D4, NOTE_E4, NOTE_D4, NOTE_C4, 
-  NOTE_E4, NOTE_D4, NOTE_C4, NOTE_A3, NOTE_G3, NOTE_A3, NOTE_G3, 
-  NOTE_A3, NOTE_A3, NOTE_C4, NOTE_A3, NOTE_C4, NOTE_D4, NOTE_E4, 
-  NOTE_D4, NOTE_D4, NOTE_G4, NOTE_G4, NOTE_E4, NOTE_D4, NOTE_C4, 
+    NOTE_G4, NOTE_G4, NOTE_E4, NOTE_D4, NOTE_E4, NOTE_D4, NOTE_C4, 
+    NOTE_E4, NOTE_D4, NOTE_C4, NOTE_A3, NOTE_G3, NOTE_A3, NOTE_G3, 
+    NOTE_A3, NOTE_A3, NOTE_C4, NOTE_A3, NOTE_C4, NOTE_D4, NOTE_E4, 
+    NOTE_D4, NOTE_D4, NOTE_G4, NOTE_G4, NOTE_E4, NOTE_D4, NOTE_C4
 };
 
 int noteDurations[] = {
-  6, 16, 8, 8, 8, 8, 4, 
-  6, 16, 8, 8, 8, 8, 4, 
-  6, 16, 8, 8, 8, 8, 4,
-  6, 16, 8, 8, 8, 8, 4,
+    6, 16, 8, 8, 8, 8, 4, 
+    6, 16, 8, 8, 8, 8, 4, 
+    6, 16, 8, 8, 8, 8, 4, 
+    6, 16, 8, 8, 8, 8, 4
 };
 
-void play(int *melody, int *noteDurations, int num){
-  for(int note = 0; note < num; note++){
-    int noteDuration = 3000 / noteDurations[note];
+void play(int *melody, int *noteDurations, int num) {
+    for (int note = 0; note < num; note++) {
+        int noteDuration = 3000 / noteDurations[note];
+
 #if defined(BOARD_RTL8195A)
-    tone(8, melody[note], noteDuration);
+        tone(8, melody[note], noteDuration);
 #elif defined(BOARD_RTL8710)
-    tone(10, melody[note], noteDuration);
+        tone(10, melody[note], noteDuration);
+#elif defined(BOARD_RTL8721D)
+        tone(8, melody[note], noteDuration);
 #else
-    tone(8, melody[note], noteDuration);
+        tone(8, melody[note], noteDuration);
 #endif
 
-    delay(noteDuration * 1.30);
-  }
+        delay(noteDuration * 1.30);
+    }
 }
 
 void setup(){
@@ -127,7 +130,6 @@ void setup(){
 }
 
 void loop(){
-  play(melody, noteDurations, sizeof(melody) / sizeof(int));
-  
-  delay(2000);
+    play(melody, noteDurations, (sizeof(melody) / sizeof(int)));
+    delay(2000);
 }
