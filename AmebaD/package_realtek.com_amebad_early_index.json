@@ -13,6 +13,37 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
+          "version": "1.0.1",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d-1.0.0-build20200107.tar.gz",
+          "archiveFileName": "ameba_d-1.0.0-build20200107.tar.gz",
+          "checksum": "SHA-256:995c208c178ba7df3a19c43e1d41689c1f29db8f6c2b60f2f63c793851b6c1ca",
+          "size": "44819711",
+          "boards": [
+            {"name": "Ameba RTL8721D"},
+            {"name": "Ameba RTL8722DM"},
+            {"name": "Ameba RTL8722CSM"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_d_asdk_toolchain",
+              "version": "1.0.1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_d_tools",
+              "version": "1.0.0"
+            }
+          ]
+        }
+      ],
+        {
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
+          "architecture": "AmebaD",
           "version": "1.0.0",
           "category": "Contributed",
           "help": {
@@ -43,6 +74,19 @@
       ],
 
       "tools": [
+		{
+          "name": "ameba_d_asdk_toolchain",
+          "version":"1.0.1",
+          "systems": [
+            {
+              "host":"i686-mingw32",
+              "archiveFileName":"ameba_d_toolchain_windows-1.0.0.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_toolchain_windows-1.0.0.tar.bz2",
+              "checksum":"SHA-256:4c57aa1d3ecc07abdce3e8fc60a8656e4657aa2f463c48122b951b432a5e2c05",
+              "size":"97057369"
+            }
+          ]
+        },
         {
           "name": "ameba_d_asdk_toolchain",
           "version":"1.0.0",
@@ -56,7 +100,7 @@
             }
           ]
         },
-        {
+		{
           "name": "ameba_d_tools",
           "version": "1.0.0",
           "systems": [
