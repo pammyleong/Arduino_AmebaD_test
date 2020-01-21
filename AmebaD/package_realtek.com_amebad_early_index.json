@@ -81,8 +81,8 @@
               "host":"i686-mingw32",
               "archiveFileName":"ameba_d_toolchain_windows-1.0.0.tar.bz2",
               "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d_toolchain_windows-1.0.0.tar.bz2",
-              "checksum":"SHA-256:4c57aa1d3ecc07abdce3e8fc60a8656e4657aa2f463c48122b951b432a5e2c05",
-              "size":"97057369"
+              "checksum":"SHA-256:fa3c9d6e41acc9c4c3f223ac3f7394b6b43df942c5de02588c222d7fe8326af2",
+              "size":"99699540"
             }
           ]
         },
