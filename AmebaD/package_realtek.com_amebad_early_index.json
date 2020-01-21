@@ -39,8 +39,7 @@
               "version": "1.0.0"
             }
           ]
-        }
-      ],
+        },
         {
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
