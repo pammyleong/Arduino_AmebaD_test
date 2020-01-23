@@ -29,9 +29,8 @@ extern "C" {
 #include "PinNames.h"
 #include "i2c_api.h"
 
-i2c_t i2cwire1;
 i2c_t i2cwire0;
-i2c_t i2cwire3;
+i2c_t i2cwire1;
 
 #ifdef __cplusplus
 }
@@ -41,12 +40,10 @@ TwoWire::TwoWire (uint32_t dwSDAPin, uint32_t dwSCLPin) {
     this->SDA_pin = dwSDAPin;
     this->SCL_pin = dwSCLPin;
 
-    if (((dwSDAPin == PD_7) && (dwSCLPin == PD_6)) || ((dwSDAPin == PC_4) && (dwSCLPin == PC_5))) {
-        this->pI2C = (void *)&i2cwire1;
-    } else if ((dwSDAPin == PD_4) && (dwSCLPin == PD_5)) {
+    if ((dwSDAPin == PA_26) && (dwSCLPin == PA_25)) {
         this->pI2C = (void *)&i2cwire0;
-    } else if ((dwSDAPin == PB_3) && (dwSCLPin == PB_2)) {
-        this->pI2C = (void *)&i2cwire3;
+    } else if ((dwSDAPin == PB_6) && (dwSCLPin == PB_5)) {
+        this->pI2C = (void *)&i2cwire1;
     } else {
         printf("Invalid I2C pin\r\n");
     }
@@ -242,24 +239,30 @@ void TwoWire::onRequest (void(*function)(void)) {
     onRequestCallback = function;
 }
 
-#if defined(BOARD_RTL8195A)
-#if defined(BOARD_RTL8711AM)
-TwoWire Wire = TwoWire(PD_4, PD_5);
-#else
-// HW: I2C1
-TwoWire Wire  = TwoWire(PD_7, PD_6);
-//TwoWire Wire  = TwoWire(PC_4, PC_5);
-
-// HW: I2C0
-TwoWire Wire1 = TwoWire(PD_4, PD_5);
-
+//#if defined(BOARD_RTL8195A)
+//#if defined(BOARD_RTL8711AM)
+//TwoWire Wire = TwoWire(PD_4, PD_5);
+//#else
+//// HW: I2C1
+//TwoWire Wire  = TwoWire(PD_7, PD_6);
+////TwoWire Wire  = TwoWire(PC_4, PC_5);
+//// HW: I2C0
+//TwoWire Wire1 = TwoWire(PD_4, PD_5);
 // HW: I2C3
-TwoWire Wire2 = TwoWire(PB_3, PB_2);
-#endif
+//TwoWire Wire2 = TwoWire(PB_3, PB_2);
+//#endif
+//#elif defined(BOARD_RTL8710)
+//TwoWire Wire  = TwoWire(PC_4, PC_5);
+//#else
+//#endif
 
-#elif defined(BOARD_RTL8710)
+#if defined(BOARD_RTL8721D)
 
-TwoWire Wire  = TwoWire(PC_4, PC_5);
+// SDA SCL
+// HW: I2C0
+TwoWire Wire  = TwoWire(PA_26, PA_25);
 
-#else
+// HW: I2C1
+TwoWire Wire1 = TwoWire(PB_6, PB_5);
+
 #endif

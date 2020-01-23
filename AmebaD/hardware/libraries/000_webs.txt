@@ -21,12 +21,20 @@ GPIO
     HCSR04Ultrasonic
         https://www.amebaiot.com/en/ameba-arduino-gpio-ultrasonic/
     InterruptCtrlLed
-    
+
 
 Wire
     LcdHelloWorld
-    
+        https://www.amebaiot.com/en/ameba-arduino-i2c-lcd/
     master_reader
-    
+        https://www.amebaiot.com/en/ameba-arduino-i2c-2/
     master_writer
-    
+        https://www.amebaiot.com/en/ameba-arduino-i2c-1/
+
+
+SPI
+    ILI9341_TFT_LCD_basic
+        https://www.amebaiot.com/en/ameba-arduino-spi-lcd/
+    PM25_on_ILI9341_TFT_LCD
+        https://www.amebaiot.com/en/ameba-arduino-spi-lcd-pm2-5/
+
