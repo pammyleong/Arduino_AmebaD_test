@@ -40,27 +40,27 @@
 #define SPI_MODE3 0x03
 
 enum SPITransferMode {
-	SPI_CONTINUE,
-	SPI_LAST
+    SPI_CONTINUE,
+    SPI_LAST
 };
 
 class SPISettings {
 public:
-	SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
+    SPISettings(uint32_t clock, BitOrder bitOrder, uint8_t dataMode) {
         _clock = clock;
         _bitOrder = bitOrder;
         _dataMode = dataMode;
-	}
-	SPISettings() {
+    }
+    SPISettings() {
         SPISettings(4000000, MSBFIRST, SPI_MODE0);
     }
 
 private:
     uint32_t _clock;
-	BitOrder _bitOrder;
-	uint8_t _dataMode;
+    BitOrder _bitOrder;
+    uint8_t _dataMode;
 
-	friend class SPIClass;
+    friend class SPIClass;
 };
 
 class SPIClass {
@@ -88,7 +88,7 @@ public:
     void setDataMode(uint8_t _pin, uint8_t _mode);
     void setClockDivider(uint8_t _pin, uint8_t _divider);
 
-	void setBitOrder(BitOrder _order);
+    void setBitOrder(BitOrder _order);
     void setDataMode(uint8_t _mode);
     void setClockDivider(uint8_t _div);
 

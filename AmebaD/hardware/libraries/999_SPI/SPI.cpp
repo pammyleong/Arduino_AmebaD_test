@@ -20,14 +20,15 @@ extern "C" {
 #include "PinNames.h"
 #include "cmsis_os.h"
 
-extern void log_uart_enable_printf(void);
-extern void log_uart_disable_printf(void);
+//extern void log_uart_enable_printf(void);
+//extern void log_uart_disable_printf(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-spi_t spi_obj;
+spi_t spi_obj0;
+spi_t spi_obj1;
 
 SPIClass::SPIClass(void *pSpiObj, int mosi, int miso, int clk, int ss)
 {
@@ -39,7 +40,7 @@ SPIClass::SPIClass(void *pSpiObj, int mosi, int miso, int clk, int ss)
     pinCLK = clk;
     pinSS = ss;
 
-    pinUserSS == -1;
+    pinUserSS = -1;
 
     defaultFrequency = 20000000;
 }
@@ -48,15 +49,15 @@ void SPIClass::beginTransaction(uint8_t pin, SPISettings settings)
 {
     bitOrder = settings._bitOrder;
     spi_format((spi_t *)pSpiMaster, 8, settings._dataMode, 0);
-	spi_frequency((spi_t *)pSpiMaster, settings._clock);
+    spi_frequency((spi_t *)pSpiMaster, settings._clock);
 
-    log_uart_disable_printf();
+    //log_uart_disable_printf();
 
     pinUserSS = pin;
     pinMode(pinUserSS, OUTPUT);
     digitalWrite(pinUserSS, 0);
 
-    log_uart_enable_printf();
+    //log_uart_enable_printf();
 }
 
 void SPIClass::beginTransaction(SPISettings settings)
@@ -74,6 +75,15 @@ void SPIClass::endTransaction(void)
 
 void SPIClass::begin(void)
 {
+    if (pinMOSI == 11) {
+        ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI0;
+    } else if (pinMOSI == 21) {
+        ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI1;
+    } else {
+        printf("spi_init: error, wrong spi_idx \r\n");
+        return;
+    }
+    
     spi_init(
         (spi_t *)pSpiMaster, 
         (PinName)g_APinDescription[pinMOSI].pinname, 
@@ -82,11 +92,20 @@ void SPIClass::begin(void)
         (PinName)g_APinDescription[pinSS].pinname
     );
     spi_format((spi_t *)pSpiMaster, 8, 0, 0);
-	spi_frequency((spi_t *)pSpiMaster, defaultFrequency);
+    spi_frequency((spi_t *)pSpiMaster, defaultFrequency);
 }
 
 void SPIClass::begin(int ss)
 {
+    if (pinMOSI == 11) {
+        ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI0;
+    } else if (pinMOSI == 21) {
+        ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI1;
+    } else {
+        printf("spi_init: error. wrong spi_idx \r\n");
+        return;
+    }
+
     spi_init(
         (spi_t *)pSpiMaster, 
         (PinName)g_APinDescription[pinMOSI].pinname, 
@@ -95,7 +114,7 @@ void SPIClass::begin(int ss)
         (PinName)g_APinDescription[ss].pinname
     );
     spi_format((spi_t *)pSpiMaster, 8, 0, 0);
-	spi_frequency((spi_t *)pSpiMaster, defaultFrequency);
+    spi_frequency((spi_t *)pSpiMaster, defaultFrequency);
 }
 
 void SPIClass::end(void)
@@ -109,8 +128,16 @@ byte SPIClass::transfer(byte _pin, uint8_t _data, SPITransferMode _mode)
     u8 spi_Index;
     u32 spi_addr;
 
-    spi_Index = ((spi_t *)pSpiMaster)->spi_adp.Index;
-    spi_addr = 0x40042000 + (spi_Index * SSI_REG_OFF);
+    spi_Index = ((spi_t *)pSpiMaster)->spi_idx;
+    //spi_addr = 0x40042000 + (spi_Index * SSI_REG_OFF);
+    if (spi_Index == MBED_SPI0) {
+        spi_addr = SPI0_REG_BASE;
+    } else if (spi_Index == MBED_SPI1) {
+        spi_addr = SPI1_REG_BASE;
+    } else {
+        printf("error: wrong spi_idx \r\n");
+        return 0;
+    }
 
     if (_pin != pinSS) {
         pinMode(_pin, OUTPUT);
@@ -118,11 +145,11 @@ byte SPIClass::transfer(byte _pin, uint8_t _data, SPITransferMode _mode)
     }
 
     while (!(HAL_READ32(spi_addr, 0x28) & 0x0000002));
-    HAL_WRITE32(spi_addr, 0x60, _data & 0xFFFF);
+    HAL_WRITE32(spi_addr, 0x60, (_data & 0xFFFF));
     while (!(HAL_READ32(spi_addr, 0x28) & 0x0000008));
     d = HAL_READ32(spi_addr, 0x60);
 
-    if (_pin != pinSS && _mode == SPI_LAST) {
+    if ((_pin != pinSS) && (_mode == SPI_LAST)) {
         digitalWrite(_pin, 1);
     }
 
@@ -131,12 +158,22 @@ byte SPIClass::transfer(byte _pin, uint8_t _data, SPITransferMode _mode)
 
 byte SPIClass::transfer(uint8_t _data, SPITransferMode _mode)
 {
+    (void)_mode;
+
     byte d;
     u8 spi_Index;
     u32 spi_addr;
 
-    spi_Index = ((spi_t *)pSpiMaster)->spi_adp.Index;
-    spi_addr = 0x40042000 + (spi_Index * SSI_REG_OFF);
+    spi_Index = ((spi_t *)pSpiMaster)->spi_idx;
+    //spi_addr = 0x40042000 + (spi_Index * SSI_REG_OFF);
+    if (spi_Index == MBED_SPI0) {
+        spi_addr = SPI0_REG_BASE;
+    } else if (spi_Index == MBED_SPI1) {
+        spi_addr = SPI1_REG_BASE;
+    } else {
+        printf("error: wrong spi_idx \r\n");
+        return 0;
+    }
 
     while (!(HAL_READ32(spi_addr, 0x28) & 0x0000002));
     HAL_WRITE32(spi_addr, 0x60, _data & 0xFFFF);
@@ -153,9 +190,9 @@ void SPIClass::transfer(byte _pin, void *_buf, size_t _count, SPITransferMode _m
         digitalWrite(_pin, 0);
     }
 
-    spi_master_write_stream( (spi_t *)pSpiMaster , (char *)_buf, (uint32_t)_count );
+    spi_master_write_stream((spi_t *)pSpiMaster , (char *)_buf, (uint32_t)_count);
 
-    if (_pin != pinSS && _mode == SPI_LAST) {
+    if ((_pin != pinSS) && (_mode == SPI_LAST)) {
         digitalWrite(_pin, 1);
     }
 }
@@ -186,19 +223,25 @@ uint16_t SPIClass::transfer16(uint16_t _data, SPITransferMode _mode)
     return transfer16(pinSS, _data, _mode);
 }
 
-
 void SPIClass::setBitOrder(uint8_t _pin, BitOrder _bitOrder)
 {
+    (void)_pin;
+
     bitOrder = _bitOrder;
 }
 
 void SPIClass::setDataMode(uint8_t _pin, uint8_t _mode)
 {
+    (void)_pin;
+
     spi_format((spi_t *)pSpiMaster, 8, _mode, 0);
 }
 
 void SPIClass::setClockDivider(uint8_t _pin, uint8_t _divider)
 {
+    (void)_pin;
+    (void)_divider;
+
     // no affact in Ameba
 }
 
@@ -214,6 +257,8 @@ void SPIClass::setDataMode(uint8_t _mode)
 
 void SPIClass::setClockDivider(uint8_t _div)
 {
+    (void)_div;
+
     // no affact in Ameba
 }
 
@@ -222,5 +267,5 @@ void SPIClass::setDefaultFrequency(int _frequency)
     defaultFrequency = _frequency;
 }
 
-SPIClass SPI((void *)(&spi_obj), 11, 12, 13, 10);
-
+SPIClass SPI((void *)(&spi_obj0), 11, 12, 13, 10);
+SPIClass SPI1((void *)(&spi_obj1), 21, 20, 19, 18);
