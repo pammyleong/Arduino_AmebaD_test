@@ -16,15 +16,6 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
-#ifdef __cplusplus
-extern "C" {
-
-extern int rtl_printf(const char *fmt, ...);
-
-}
-#endif
-
 #include <string.h>
 #include "server_drv.h"
 #include "wifi_drv.h"
@@ -32,6 +23,12 @@ extern int rtl_printf(const char *fmt, ...);
 #include "WiFiUdp.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
+
+#ifdef __cplusplus
+extern "C" {
+    extern int rtl_printf(const char *fmt, ...);
+}
+#endif
 
 /* Constructor */
 WiFiUDP::WiFiUDP() : _sock(-1), _client_sock(-1) {}

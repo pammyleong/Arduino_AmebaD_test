@@ -26,7 +26,6 @@
 
 WiFiClass::WiFiClass()
 {
-
 }
 
 void WiFiClass::init()
@@ -60,7 +59,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, const char *key)
     WiFiDrv::wifiDriverInit();
 
     // set encryption key
-    if ((WiFiDrv::wifiSetKey(ssid, strlen(ssid)), key_idx, key, strlen(key)) != WL_FAILURE) {
+    if (WiFiDrv::wifiSetKey(ssid, strlen(ssid), key_idx, key, strlen(key)) != WL_FAILURE) {
         status = WiFiDrv::getConnectionStatus();
     } else {
         status = WL_CONNECT_FAILED;
@@ -75,7 +74,7 @@ int WiFiClass::begin(char* ssid, const char *passphrase)
     WiFiDrv::wifiDriverInit();
 
     // set passphrase
-    if ((WiFiDrv::wifiSetPassphrase(ssid, strlen(ssid)), passphrase, strlen(passphrase))!= WL_FAILURE) {
+    if (WiFiDrv::wifiSetPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase))!= WL_FAILURE) {
          status = WiFiDrv::getConnectionStatus();
     } else {
         status = WL_CONNECT_FAILED;
@@ -177,7 +176,9 @@ uint32_t WiFiClass::encryptionTypeEx(uint8_t networkItem)
 
 uint8_t WiFiClass::status()
 {
-    return WiFiDrv::getConnectionStatus();
+    //return WiFiDrv::getConnectionStatus();
+    // zzw
+    return 0;
 }
 
 int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
@@ -191,7 +192,6 @@ int WiFiClass::apbegin(char* ssid, char* channel)
 
     if ((WiFiDrv::apSetNetwork(ssid, strlen(ssid))) != WL_FAILURE) {
         WiFiDrv::apSetChannel(channel);
-
         if ((WiFiDrv::apActivate()) != WL_FAILURE) {
             status = WL_CONNECTED;
         } else {

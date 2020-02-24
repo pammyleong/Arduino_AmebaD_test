@@ -73,9 +73,9 @@ extern "C"{
 #define portModeRegister(P)   ((volatile uint32_t *)(0x48014404 + (P) * 0x0C))
 #endif
 
-#define portOutputRegister(P) ((volatile uint32_t *)(0x48000400 + (P) * 0x0C))
-#define portInputRegister(P)  ((volatile uint32_t *)(0x48000400 + (P) * 4))
-#define portModeRegister(P)   ((volatile uint32_t *)(0x48000400 + (P) * 0x0C))
+#define portOutputRegister(P) ((volatile uint32_t *)(0x48014000 + (P) * 0x400))
+#define portInputRegister(P)  ((volatile uint32_t *)(0x48014050 + (P) * 0x400))
+#define portModeRegister(P)   ((volatile uint32_t *)(0x48014004 + (P) * 0x400))
 
 /*
  * Wait until enter debug mode

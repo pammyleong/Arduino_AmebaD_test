@@ -21,14 +21,12 @@ DHT::DHT(uint8_t pin, uint8_t type, uint8_t count) {
     _port = digitalPinToPort(pin);
 #endif
 
-//#ifdef CONFIG_PLATFORM_8195A
-//    _bit = digitalPinToBitMask(pin);
-//    _port = digitalPinToPort(pin);
-//#endif
-
+// On Ameba use direct GPIO port access as it's much faster and better for catching pulses that are 10's of microseconds in length:
 #ifdef CONFIG_PLATFORM_8721D
+#if 0  //direct port access temporarily suspended on Ameba D for this example
     _bit = digitalPinToBitMask(pin);
     _port = digitalPinToPort(pin);
+#endif
 #endif
 
     // 1 millisecond timeout for
@@ -159,8 +157,7 @@ boolean DHT::read(bool force) {
 
     // First set data line low for 20 milliseconds.
     pinMode(_pin, OUTPUT);
-
-    *portOutputRegister(_port) &= ~_bit;
+    digitalWrite(_pin, LOW); 
 
     delay(20);
 
@@ -170,11 +167,11 @@ boolean DHT::read(bool force) {
         InterruptLock lock;
 
         // End the start signal by setting data line high for 20 microseconds.
-        *portOutputRegister(_port) |= _bit;
+        digitalWrite(_pin, HIGH); 
         delayMicroseconds(20);
 
         // Now start reading the data line to get the value from the DHT sensor.
-        *portModeRegister(_port) &= ~_bit;
+        pinMode(_pin,INPUT); 
         // Delay a bit to let sensor pull data line low.
         delayMicroseconds(10);
 
@@ -263,20 +260,9 @@ uint32_t DHT::expectPulse(bool level) {
         }
     }
 
-    // On Ameba use direct GPIO port access as it's much faster and better for catching pulses that are 10's of microseconds in length:
-//#elif CONFIG_PLATFORM_8195A
-//    count = 1;
-//    uint8_t portState = level ? _bit : 0;
-//    while ((*portInputRegister(_port) & _bit) == portState) {
-//        if (count++ >= _maxcycles) {
-//            return 0; // Exceeded timeout, fail.
-//        }
-//    }
-//    return count;
 #elif CONFIG_PLATFORM_8721D
     count = 1;
-    uint8_t portState = level ? _bit : 0;
-    while ((*portInputRegister(_port) & _bit) == portState) {
+    while (digitalRead(_pin) == level) {
         if (count++ >= _maxcycles) {
             return 0; // Exceeded timeout, fail.
         }

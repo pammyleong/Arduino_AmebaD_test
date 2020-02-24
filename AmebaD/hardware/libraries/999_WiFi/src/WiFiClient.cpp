@@ -1,15 +1,17 @@
+#include "WiFi.h"
+
 extern "C" {
-  #include "wl_definitions.h"
-  #include "wl_types.h"
-  #include "string.h"
-  #include "errno.h"
-  #include "update.h"
+    #include "wl_definitions.h"
+    #include "wl_types.h"
+    #include "string.h"
+    #include "errno.h"
+    #include "update.h"
 }
 
-#include "WiFi.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 #include "server_drv.h"
+
 
 WiFiClient::WiFiClient() : _sock(MAX_SOCK_NUM) {
     _is_connected = false;
@@ -18,7 +20,8 @@ WiFiClient::WiFiClient() : _sock(MAX_SOCK_NUM) {
 
 WiFiClient::WiFiClient(uint8_t sock) {
     _sock = sock;
-    if ((sock >= 0) && (sock != 0xFF)) {
+    //if ((sock >= 0) && (sock != 0xFF)) {
+    if (sock != 0xFF) {
         _is_connected = true;
     }
     recvTimeout = 3000;
@@ -57,6 +60,8 @@ int WiFiClient::available() {
             return 0;
         }
     }
+
+    return 0;
 }
 
 int WiFiClient::read() {
@@ -97,14 +102,11 @@ int WiFiClient::read(uint8_t* buf, size_t size) {
 }
 
 void WiFiClient::stop() {
-
     if (_sock < 0) {
         return;
     }
-
     clientdrv.stopClient(_sock);
     _is_connected = false;
-
     _sock = -1;
 }
 
@@ -145,9 +147,7 @@ int WiFiClient::connect(const char* host, uint16_t port) {
 }
 
 int WiFiClient::connect(IPAddress ip, uint16_t port) {
-
     _is_connected = false;
-
     _sock = clientdrv.startClient(ip, port);
 
     if (_sock < 0) {
@@ -163,11 +163,9 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
 
 int WiFiClient::peek() {
     uint8_t b;
-
     if (!available()) {
         return -1;
     }
-
     clientdrv.getData(_sock, &b, 1);
 
     return b;
@@ -186,8 +184,12 @@ int WiFiClient::setRecvTimeout(int timeout) {
         recvTimeout = timeout;
         clientdrv.setSockRecvTimeout(_sock, recvTimeout);
     }
+
+    return 0;
 }
 
 int WiFiClient::read(char *buf, size_t size) {
     read(((uint8_t *)buf), size);
+
+    return 0;
 }

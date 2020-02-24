@@ -34,7 +34,6 @@ class WiFiSSLClient : public Client {
         int connect(const char *host, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key);
 
         using Print::write;
-
         int setRecvTimeout(int timeout);
 
     private:

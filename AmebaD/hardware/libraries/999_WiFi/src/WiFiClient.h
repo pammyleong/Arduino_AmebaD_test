@@ -1,11 +1,12 @@
 #ifndef wificlient_h
 #define wificlient_h
+
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
 #include "server_drv.h"
-class WiFiClient : public Client {
 
+class WiFiClient : public Client {
     public:
         WiFiClient();
         WiFiClient(uint8_t sock);

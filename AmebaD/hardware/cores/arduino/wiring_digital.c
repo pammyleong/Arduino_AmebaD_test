@@ -218,7 +218,8 @@ uint32_t digitalPinToPort(uint32_t ulPin)
     //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
-        return 0xFFFFFFFF;
+        //return 0xFFFFFFFF;
+        return NULL;
     }
 
     pin_name = g_APinDescription[ulPin].pinname;
@@ -232,12 +233,13 @@ uint32_t digitalPinToBitMask(uint32_t ulPin)
     //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC))
     {
-        return 0xFFFFFFFF;
+        //return 0xFFFFFFFF;
+        return NULL;
     }
 
     pin_name = (g_APinDescription[ulPin].pinname);
 
-    return 1 << PIN_NUM(pin_name);
+    return (1 << PIN_NUM(pin_name));
 }
 #endif
 

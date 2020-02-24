@@ -14,7 +14,6 @@ class WiFiServer : public Server {
 
     public:
         WiFiServer(uint16_t);
-
         WiFiClient available(uint8_t* status = NULL);
 
         void begin();

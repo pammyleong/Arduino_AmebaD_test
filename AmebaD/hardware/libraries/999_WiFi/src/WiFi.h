@@ -20,6 +20,8 @@
 #ifndef WiFi_h
 #define WiFi_h
 
+//#include <ctype.h>
+
 #include <inttypes.h>
 
 extern "C" {
@@ -31,6 +33,7 @@ extern "C" {
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 #include "WiFiSSLClient.h"
+#include "WiFiUdp.h"
 
 class WiFiClass
 {
@@ -70,39 +73,39 @@ class WiFiClass
         int begin(char* ssid, const char *passphrase);
 
         /* Change Ip configuration settings disabling the dhcp client
-            *
-            * param local_ip:   Static ip configuration
-            */
+         *
+         * param local_ip:   Static ip configuration
+         */
         void config(IPAddress local_ip);
 
         /* Change Ip configuration settings disabling the dhcp client
-            *
-            * param local_ip: 	Static ip configuration
-        * param dns_server:     IP configuration for DNS server 1
-            */
+         *
+         * param local_ip: 	Static ip configuration
+         * param dns_server:     IP configuration for DNS server 1
+         */
         void config(IPAddress local_ip, IPAddress dns_server);
 
         /* Change Ip configuration settings disabling the dhcp client
-            *
-            * param local_ip:   Static ip configuration
-        * param dns_server:     IP configuration for DNS server 1
-            * param gateway :   Static gateway configuration
-            */
+         *
+         * param local_ip:   Static ip configuration
+         * param dns_server:     IP configuration for DNS server 1
+         * param gateway :   Static gateway configuration
+        */
         void config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway);
 
         /* Change Ip configuration settings disabling the dhcp client
-            *
-            * param local_ip:   Static ip configuration
-        * param dns_server:     IP configuration for DNS server 1
-            * param gateway:    Static gateway configuration
-            * param subnet:     Static Subnet mask
-            */
+         *
+         * param local_ip:   Static ip configuration
+         * param dns_server:     IP configuration for DNS server 1
+         * param gateway:    Static gateway configuration
+         * param subnet:     Static Subnet mask
+         */
         void config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet);
 
         /* Change DNS Ip configuration
          *
          * param dns_server1: ip configuration for DNS server 1
-         */
+        */
         void setDNS(IPAddress dns_server1);
 
         /* Change DNS Ip configuration
@@ -156,26 +159,26 @@ class WiFiClass
         char* SSID();
 
         /*
-          * Return the current BSSID associated with the network.
-          * It is the MAC address of the Access Point
-          *
-          * return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
-          */
+         * Return the current BSSID associated with the network.
+         * It is the MAC address of the Access Point
+         *
+         * return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
+         */
         uint8_t* BSSID(uint8_t* bssid);
 
         /*
-          * Return the current RSSI /Received Signal Strength in dBm)
-          * associated with the network
-          *
-          * return: signed value
-          */
+         * Return the current RSSI /Received Signal Strength in dBm)
+         * associated with the network
+         *
+         * return: signed value
+         */
         int32_t RSSI();
 
         /*
-          * Return the Encryption Type associated with the network
-          *
-          * return: one value of wl_enc_type enum
-          */
+         * Return the Encryption Type associated with the network
+         *
+         * return: one value of wl_enc_type enum
+         */
         uint8_t	encryptionType();
 
         /*

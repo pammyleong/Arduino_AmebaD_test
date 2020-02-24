@@ -58,15 +58,7 @@ class DHT {
     uint8_t _bit, _port;
 #endif
 
-//#ifdef CONFIG_PLATFORM_8195A
-//    // Use direct GPIO access on Ameba1 so keep track of the port and bitmask
-//    // for the digital pin connected to the DHT.  Other platforms will use digitalRead.
-//    uint8_t _bit, _port;
-//#endif
-
 #ifdef CONFIG_PLATFORM_8721D
-    // Use direct GPIO access on AmebaD so keep track of the port and bitmask
-    // for the digital pin connected to the DHT.  Other platforms will use digitalRead.
     uint8_t _bit, _port;
 #endif
 

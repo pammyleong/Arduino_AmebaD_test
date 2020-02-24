@@ -1,12 +1,12 @@
 #include <WiFi.h>
 
-#define ACCESS_TOKEN ""  //paste your instance ID from android app
-#define SERVER_KEY  "" //paste server key available on Firebase cloud messaging 
+#define ACCESS_TOKEN ""     //paste your instance ID from android app
+#define SERVER_KEY  ""      //paste server key available on Firebase cloud messaging 
 #define HOST_NAME "fcm.googleapis.com"
 
-char ssid[] = "SSID"; //  your network SSID (name)
-char pass[] = "PASSWORD";    // your network password (use for WPA, or use as key for WEP)
-int keyIndex = 0;            // your network key Index number (needed only for WEP)
+char ssid[] = "SSID";       //  your network SSID (name)
+char pass[] = "PASSWORD";   // your network password (use for WPA, or use as key for WEP)
+int keyIndex = 0;           // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
 char server[] = "fcm.googleapis.com";    // name address for Google (using DNS)

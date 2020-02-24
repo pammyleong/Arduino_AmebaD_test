@@ -102,7 +102,6 @@ void loop() {
         // print Unix time:
         Serial.println(epoch);
 
-
         // print the hour, minute and second:
         Serial.print("The UTC time is ");       // UTC is the time at Greenwich Meridian (GMT)
         Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
@@ -152,7 +151,6 @@ unsigned long sendNTPpacket(IPAddress& address) {
     Udp.endPacket();
     //Serial.println("6");
 }
-
 
 void printWifiStatus() {
     // print the SSID of the network you're attached to:

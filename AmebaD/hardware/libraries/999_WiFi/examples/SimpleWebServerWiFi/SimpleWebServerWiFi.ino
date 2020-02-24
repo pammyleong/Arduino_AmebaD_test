@@ -1,19 +1,19 @@
 #include <WiFi.h>
 
-char ssid[] = "yourNetwork";      //  your network SSID (name)
-char pass[] = "Password";   // your network password
-int keyIndex = 0;                 // your network key Index number (needed only for WEP)
+char ssid[] = "yourNetwork";        //  your network SSID (name)
+char pass[] = "Password";           // your network password
+int keyIndex = 0;                   // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 void setup() {
-    Serial.begin(9600);      // initialize serial communication
-    pinMode(13, OUTPUT);      // set the LED pin mode
+    Serial.begin(9600);         // initialize serial communication
+    pinMode(13, OUTPUT);        // set the LED pin mode
     // check for the presence of the shield:
     if (WiFi.status() == WL_NO_SHIELD) {
         Serial.println("WiFi shield not present");
-        while (true);       // don't continue
+        while (true);           // don't continue
     }
 
     String fv = WiFi.firmwareVersion();
@@ -37,16 +37,16 @@ void setup() {
 
 
 void loop() {
-    WiFiClient client = server.available();   // listen for incoming clients
+    WiFiClient client = server.available();     // listen for incoming clients
 
-    if (client) {                             // if you get a client,
+    if (client) {                               // if you get a client,
         Serial.println("new client");           // print a message out the serial port
         String currentLine = "";                // make a String to hold incoming data from the client
         while (client.connected()) {            // loop while the client's connected
-            if (client.available()) {             // if there's bytes to read from the client,
-                char c = client.read();             // read a byte, then
-                Serial.write(c);                    // print it out the serial monitor
-                if (c == '\n') {                    // if the byte is a newline character
+            if (client.available()) {           // if there's bytes to read from the client,
+                char c = client.read();         // read a byte, then
+                Serial.write(c);                // print it out the serial monitor
+                if (c == '\n') {                // if the byte is a newline character
 
                     // if the current line is blank, you got two newline characters in a row.
                     // that's the end of the client HTTP request, so send a response:

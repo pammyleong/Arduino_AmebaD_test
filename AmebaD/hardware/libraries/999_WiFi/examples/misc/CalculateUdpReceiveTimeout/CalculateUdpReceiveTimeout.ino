@@ -16,11 +16,11 @@
 #include <stdio.h>
 
 int status = WL_IDLE_STATUS;
-char ssid[] = "mynetwork";  //  your network SSID (name)
-char pass[] = "mypassword";       // your network password
-int keyIndex = 0;            // your network key Index number (needed only for WEP)
+char ssid[] = "mynetwork";      //  your network SSID (name)
+char pass[] = "mypassword";     // your network password
+int keyIndex = 0;               // your network key Index number (needed only for WEP)
 
-unsigned int localPort = 5001;      // local port to listen for UDP packets
+unsigned int localPort = 5001;  // local port to listen for UDP packets
 
 // A UDP instance to let us send and receive packets over UDP
 WiFiUDP Udp;

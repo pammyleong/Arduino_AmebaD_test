@@ -35,7 +35,8 @@ void WiFiServer::begin()
 
 WiFiClient WiFiServer::available(uint8_t* status)
 {
-    int client_fd;
+    //int client_fd;
+    int client_fd = (int)(status);
 
     client_fd = serverfd.getAvailable(_sock_ser);
 
@@ -82,9 +83,8 @@ size_t WiFiServer::write(const uint8_t *buffer, size_t size)
     for (int sock = 0; sock < MAX_SOCK_NUM; sock++) {
         if (WiFiClass::_server_port[sock] != 0) {
             WiFiClient client(sock);
-
             if ((WiFiClass::_server_port[sock] == _port) && (client.status() == ESTABLISHED)) {
-                n+=client.write(buffer, size);
+                n += client.write(buffer, size);
             }
         }
     }
