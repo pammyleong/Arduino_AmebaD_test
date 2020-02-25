@@ -107,6 +107,7 @@ bool SoftwareSerial::stopListening()
 SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic /* = false */) : 
     _buffer_overflow(false)
 {
+    inverse_logic = inverse_logic;
     this->receivePin = receivePin;
     this->transmitPin = transmitPin;
     pUART = NULL;
@@ -244,6 +245,8 @@ void SoftwareSerial::begin(long speed, int data_bits, int parity, int stop_bits)
 
 void SoftwareSerial::begin(long speed, int data_bits, int parity, int stop_bits, int flowctrl, int rtsPin, int ctsPin)
 {
+    rtsPin = rtsPin;
+    ctsPin = ctsPin;
     pUART = malloc(sizeof(serial_t));
     if (pUART == NULL) {
         printf("fail to malloc\r\n");
