@@ -13,13 +13,13 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "1.0.2",
+          "version": "1.0.2v1",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d-1.0.2-build20200226.tar.gz",
-          "archiveFileName": "ameba_d-1.0.2-build20200226.tar.gz",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/release/ameba_d-1.0.0-build20200226.tar.gz",
+          "archiveFileName": "ameba_d-1.0.0-build20200226.tar.gz",
           "checksum": "SHA-256:e1f68c76de6a1eea2834ab88806b8b79001f26cf9a095efb01d22bd1e2f5acad",
           "size": "47319541",
           "boards": [
