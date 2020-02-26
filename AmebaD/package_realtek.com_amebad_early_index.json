@@ -13,7 +13,7 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
-          "version": "1.0.2v1",
+          "version": "1.0.2-v1",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
