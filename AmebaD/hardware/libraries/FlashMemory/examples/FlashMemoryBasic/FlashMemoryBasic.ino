@@ -18,7 +18,9 @@
 #include <FlashMemory.h>
 
 void setup() {
+    Serial.begin(115200);
     FlashMemory.read();
+
     if (FlashMemory.buf[0] == 0xFF) {
         FlashMemory.buf[0] = 0x00;
         FlashMemory.update();

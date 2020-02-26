@@ -206,11 +206,6 @@ void digitalChangeDir(uint32_t ulPin, uint8_t direction)
 }
 
 /**************************** Extend API by RTK ***********************************/
-// zzw
-#if 1
-//#define Arduino_HAL_GPIO_GET_PORT_BY_NAME(x)        ((x>>5) & 0x03)
-//#define Arduino_HAL_GPIO_GET_PIN_BY_NAME(x)         (x & 0x1f)
-
 uint32_t digitalPinToPort(uint32_t ulPin)
 {
     uint32_t pin_name;
@@ -241,7 +236,6 @@ uint32_t digitalPinToBitMask(uint32_t ulPin)
 
     return (1 << PIN_NUM(pin_name));
 }
-#endif
 
 uint32_t digitalSetIrqHandler(uint32_t ulPin, void (*handler)(uint32_t id, uint32_t event)) {
     gpio_irq_handler_list[ulPin] = (void *) handler;
