@@ -1490,7 +1490,9 @@ typedef struct {
 	uint8_t FLASH_rd_dummy_cyle1;
 	uint8_t FLASH_rd_dummy_cyle2;
 
-	uint8_t RRAM_USER_RSVD[124];			/*usr can alloc from this RSVD space*/
+	uint32_t RTC_YEAR;	
+
+	uint8_t RRAM_USER_RSVD[120];			/*usr can alloc from this RSVD space*/
 
 	
 } RRAM_TypeDef;
@@ -1529,8 +1531,8 @@ typedef struct {
  * @{
  *****************************************************************************/
 
-#ifdef __cplusplus
-#if __cplusplus
+////#ifdef __cplusplus
+#if 0    ////__cplusplus
 
 #define UART0_DEV			UART0_REG_BASE		/*KM4 uart0 */
 #define UART1_DEV			UART1_REG_BASE		/*KM4 uart1_bt */
@@ -1589,7 +1591,8 @@ typedef struct {
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
 #endif
 
-#else
+#endif    ////#else
+
 #define UART0_DEV			((UART_TypeDef			*) UART0_REG_BASE)		/*KM4 uart0 */
 #define UART1_DEV			((UART_TypeDef			*) UART1_REG_BASE)		/*KM4 uart1_bt */
 #define UART2_DEV			((UART_TypeDef			*) UART2_REG_BASE)		/*KM0 log uart */
@@ -1645,7 +1648,7 @@ typedef struct {
 
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
 /** @} End of group AmebaD_Peripheral_Declaration */
-#endif
+////#endif
 
 
 /** @} End of group AmebaD_Outline */

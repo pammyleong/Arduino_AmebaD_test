@@ -60,10 +60,9 @@ SECTIONS
 		*(.image2.ram.text*)
 		*(.image2.net.ram.text*)
 		__ram_text_end__ = .;
-		. = ALIGN(16);
 	} > BD_RAM_NS
 
-	.ram_image2.data :
+	.ram_image2.data : 
 	{
 		__data_start__ = .;
 		*(.data*)
@@ -89,8 +88,9 @@ SECTIONS
 		__ram_nocache_end__ = .;
 	} > BD_RAM_NS
 
-	.ram_heap.data :
+	.ram_heap.data : 
 	{
+		. = ALIGN (32);
 		*(.bfsram.data*)
 		end = .;
 		*(.heap.stdlib*)
@@ -195,21 +195,25 @@ SECTIONS
 		__psram_image2_text_end__ = .;
 	} > PSRAM_NS
 
-	.psram_image2.data :
+	.psram_image2.data : 
 	{
+		. = ALIGN (32);
 		*(.psram.data*)
+		. = ALIGN (32);
 		*(.psram.rodata*)
 	} > PSRAM_NS
-
+  
 	.psram_image2.bss :
 	{
+		. = ALIGN (32);
 		__psram_bss_start__ = .;
 		*(.psram.bss*)
 		__psram_bss_end__ = .;
 	} > PSRAM_NS
 
-	.psram_heap.data :
+	.psram_heap.data : 
 	{
+		. = ALIGN (32);
 		*(.psram.heap*)
 	} > PSRAM_NS
 }
