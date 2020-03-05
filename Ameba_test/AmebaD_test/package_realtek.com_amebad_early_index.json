@@ -18,10 +18,10 @@
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba_test/AmebaD_test/release/ameba_d-1.0.0-build20200226.tar.gz",
-          "archiveFileName": "ameba_d-1.0.0-build20200226.tar.gz",
-          "checksum": "SHA-256:e1f68c76de6a1eea2834ab88806b8b79001f26cf9a095efb01d22bd1e2f5acad",
-          "size": "47319541",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba_test/AmebaD_test/release/ameba_d-1.0.0-test.tar.gz",
+          "archiveFileName": "ameba_d-1.0.0-test.tar.gz",
+          "checksum": "SHA-256:b7ac0b906d60736f75ff0d26fd0ec92606f22aedaf6f80f2c3cc277eb7622ba1",
+          "size": "56306821",
           "boards": [
             {"name": "Ameba RTL8721D"},
             {"name": "Ameba RTL8722DM"},
