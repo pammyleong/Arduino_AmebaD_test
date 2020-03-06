@@ -1531,8 +1531,8 @@ typedef struct {
  * @{
  *****************************************************************************/
 
-////#ifdef __cplusplus
-#if 0    ////__cplusplus
+#ifdef __cplusplus
+#if __cplusplus
 
 #define UART0_DEV			UART0_REG_BASE		/*KM4 uart0 */
 #define UART1_DEV			UART1_REG_BASE		/*KM4 uart1_bt */
@@ -1589,9 +1589,9 @@ typedef struct {
 #define SDIOH_BASE			((SDIOH_TypeDef			*) (SDIOH_REG_BASE))
 
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
-#endif
 
-#endif    ////#else
+#endif
+#else
 
 #define UART0_DEV			((UART_TypeDef			*) UART0_REG_BASE)		/*KM4 uart0 */
 #define UART1_DEV			((UART_TypeDef			*) UART1_REG_BASE)		/*KM4 uart1_bt */
@@ -1648,7 +1648,7 @@ typedef struct {
 
 #define RRAM_BASE			((RRAM_TypeDef			*) (RETENTION_RAM_BASE + RETENTION_RAM_SYS_OFFSET))
 /** @} End of group AmebaD_Peripheral_Declaration */
-////#endif
+#endif
 
 
 /** @} End of group AmebaD_Outline */
