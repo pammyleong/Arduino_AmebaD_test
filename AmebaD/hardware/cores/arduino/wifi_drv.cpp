@@ -22,6 +22,8 @@ extern struct netif xnetif[NET_IF_NUM];
 }
 #endif
 
+
+
 // Array of data to cache the information related to the networks discovered
 uint8_t     WiFiDrv::_networkCount = 0;
 char        WiFiDrv::_networkSsid[][WL_SSID_MAX_LENGTH] = {{"1"}, {"2"}, {"3"}, {"4"}, {"5"}};
@@ -58,6 +60,8 @@ static void init_wifi_struct(void)
 
 void WiFiDrv::wifiDriverInit()
 {
+    printf("    zzw    WiFiDrv::wifiDriverInit    \r\n");
+
     struct netif * pnetif = &xnetif[0];
 
     if (init_wlan == false) {
@@ -67,12 +71,12 @@ void WiFiDrv::wifiDriverInit()
         wifi_mode = RTW_MODE_STA;
     } else if (init_wlan == true) {
         if (wifi_mode != RTW_MODE_STA) {
-            dhcps_deinit();
-            wifi_off();
-            vTaskDelay(20);
-            wifi_on(RTW_MODE_STA);
-            dhcps_init(pnetif);
-            wifi_mode = RTW_MODE_STA;
+            //dhcps_deinit();
+            //wifi_off();
+            //vTaskDelay(20);
+            //wifi_on(RTW_MODE_STA);
+            //dhcps_init(pnetif);
+            //wifi_mode = RTW_MODE_STA;
         }
     }
 }
@@ -314,12 +318,13 @@ int8_t WiFiDrv::disconnect()
 uint8_t WiFiDrv::getConnectionStatus()
 {
     wifiDriverInit();
+    printf("    zzw    WiFiDrv::getConnectionStatus    \r\n");
 
-    if (wifi_is_connected_to_ap() == 0) {
+//    if (wifi_is_connected_to_ap() == 0) {
         return WL_CONNECTED;
-    } else {
-        return WL_DISCONNECTED;
-    }
+//    } else {
+//        return WL_DISCONNECTED;
+//    }
 }
 
 uint8_t* WiFiDrv::getMacAddress()
