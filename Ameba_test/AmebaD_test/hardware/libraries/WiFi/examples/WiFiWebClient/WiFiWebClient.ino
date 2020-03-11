@@ -22,7 +22,7 @@ void setup() {
         while (true);
     }
     String fv = WiFi.firmwareVersion();
-    if (fv != "1.1.0") {
+    if (fv != "1.0.0") {
         Serial.println("Please upgrade the firmware");
     }
     // attempt to connect to Wifi network:
@@ -48,6 +48,7 @@ void setup() {
         client.println("Connection: close");
         client.println();
     }
+    delay(100);
 }
 
 void loop() {

@@ -89,8 +89,6 @@ recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compil
 
 
 ## Combine gc-sections, archives, and objects
-####recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{runtime.tools.ameba_d_asdk_toolchain.path}/lib/" "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" {compiler.c.elf.flags} "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group -Wl,--whole-archive "{build.path}/{archive_file}" -Wl,--no-whole-archive {compiler.ameba.ar.list} -Wl,--end-group "{runtime.tools.ameba_d_tools.path}/bsp/image/cmse_implib.lib" -lm -lstdc++
-
 recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{runtime.tools.ameba_d_asdk_toolchain.path}/lib/" "-L{build.variant.path}/linker_scripts/gcc" "-T{build.variant.path}/{build.ldscript}" {compiler.c.elf.flags} "-Wl,-Map={build.path}/application.map" {compiler.c.elf.extra_flags} -o "{build.path}/application.axf" -Wl,--start-group {object_files} -Wl,--end-group -Wl,--start-group -Wl,--whole-archive "{build.path}/{archive_file}" -Wl,--no-whole-archive {compiler.ameba.ar.list} -Wl,--end-group -lm -lstdc++
 
 

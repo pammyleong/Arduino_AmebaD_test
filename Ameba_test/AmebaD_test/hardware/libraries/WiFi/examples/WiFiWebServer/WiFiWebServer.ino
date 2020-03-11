@@ -20,7 +20,7 @@ void setup() {
         while (true);
     }
     String fv = WiFi.firmwareVersion();
-    if (fv != "1.1.0") {
+    if (fv != "1.0.0") {
         Serial.println("Please upgrade the firmware");
     }
     // attempt to connect to Wifi network:
@@ -95,6 +95,7 @@ void loop() {
 
 void printWifiStatus() {
     // print the SSID of the network you're attached to:
+    Serial.println();
     Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
 

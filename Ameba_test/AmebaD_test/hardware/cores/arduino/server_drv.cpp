@@ -41,7 +41,7 @@ int ServerDrv::availData(int sock)
     } else {
         // flag = MSG_PEEK
         ret = get_receive(sock, &c, 1, 1, &_peer_addr, &_peer_port);
-        if ( ret == 1 ) {
+        if (ret == 1) {
             _available = true;
             return 1;
         } else{
