@@ -37,7 +37,7 @@ void setup() {
         // wait 10 seconds for connection:
         delay(10000);
     }
-    Serial.println("Connected to wifi");
+    Serial.println("\n\rConnected to wifi");
     printWifiStatus();
 
     Serial.println("\nStarting connection to server...");
@@ -52,6 +52,7 @@ void setup() {
     } else {
         Serial.println("connected to server failed");
     }
+    delay(100);
 }
 
 void loop() {

@@ -13,6 +13,36 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
           "architecture": "AmebaD",
+          "version": "1.0.1-t04",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba_test/AmebaD_test/release/ameba_d-1.0.1-test-04.tar.gz",
+          "archiveFileName": "ameba_d-1.0.1-test-04.tar.gz",
+          "checksum": "SHA-256:246db5ffc1c8b476d0584e0c6b6423e0a57c96ea2208016609b3bd9d412cba04",
+          "size": "47906881",
+          "boards": [
+            {"name": "Ameba RTL8721D"},
+            {"name": "Ameba RTL8722DM"},
+            {"name": "Ameba RTL8722CSM"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_d_asdk_toolchain",
+              "version": "1.0.0"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_d_tools",
+              "version": "1.0.0"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M33)",
+          "architecture": "AmebaD",
           "version": "1.0.1-t02",
           "category": "Contributed",
           "help": {
@@ -31,7 +61,7 @@
             {
               "packager": "realtek",
               "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
+              "version": "1.0.0"
             },
             {
               "packager": "realtek",
@@ -61,7 +91,7 @@
             {
               "packager": "realtek",
               "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
+              "version": "1.0.0"
             },
             {
               "packager": "realtek",
@@ -75,7 +105,7 @@
       "tools": [
 		{
           "name": "ameba_d_asdk_toolchain",
-          "version":"1.0.1",
+          "version":"1.0.0",
           "systems": [
             {
               "host":"i686-mingw32",

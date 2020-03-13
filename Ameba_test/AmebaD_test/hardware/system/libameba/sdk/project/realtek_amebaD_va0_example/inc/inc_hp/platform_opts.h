@@ -610,4 +610,36 @@ in lwip_opt.h for support uart adapter*/
 #define CONFIG_FAST_DHCP 0
 #endif
 
+
+/******************  For Arduino SDK customize config   *******************/
+#ifdef ARDUINO_SDK
+
+//#undef  SUPPORT_MP_MODE
+//#define SUPPORT_MP_MODE 0
+
+//#undef  CONFIG_OTA_UPDATE
+//#define CONFIG_OTA_UPDATE 0
+
+#undef  CONFIG_INCLUDE_SIMPLE_CONFIG
+#define CONFIG_INCLUDE_SIMPLE_CONFIG 0
+
+#undef  CONFIG_ENABLE_WPS
+#define CONFIG_ENABLE_WPS 0
+
+#undef  SUPPORT_LOG_SERVICE
+#define SUPPORT_LOG_SERVICE 0
+
+//#define CONFIG_FATFS_EN	1
+//#if CONFIG_FATFS_EN
+//// fatfs version
+//#define FATFS_R_10C
+//// fatfs disk interface
+//#define FATFS_DISK_USB	0
+//#define FATFS_DISK_SD 	1
+//#endif
+
+#endif
+/****************** End of Arduino SDK customize config *******************/
+
+
 #endif

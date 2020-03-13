@@ -152,15 +152,11 @@ WiFiSSLClient::operator bool() {
 }
 
 int WiFiSSLClient::connect(IPAddress ip, uint16_t port) {
-    connect(ip, port, _rootCABuff, _cli_cert, _cli_key);
-
-    return 0;
+    return connect(ip, port, _rootCABuff, _cli_cert, _cli_key);
 }
 
 int WiFiSSLClient::connect(const char *host, uint16_t port) {
-    connect(host, port, _rootCABuff, _cli_cert, _cli_key);
-
-    return 0;
+    return connect(host, port, _rootCABuff, _cli_cert, _cli_key);
 }
 
 int WiFiSSLClient::connect(const char* host, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key) {

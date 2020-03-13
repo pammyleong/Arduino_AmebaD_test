@@ -22,8 +22,6 @@ extern struct netif xnetif[NET_IF_NUM];
 }
 #endif
 
-
-
 // Array of data to cache the information related to the networks discovered
 uint8_t     WiFiDrv::_networkCount = 0;
 char        WiFiDrv::_networkSsid[][WL_SSID_MAX_LENGTH] = {{"1"}, {"2"}, {"3"}, {"4"}, {"5"}};

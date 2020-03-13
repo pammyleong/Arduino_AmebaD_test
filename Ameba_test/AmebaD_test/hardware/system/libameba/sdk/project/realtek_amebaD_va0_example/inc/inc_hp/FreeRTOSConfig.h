@@ -90,6 +90,12 @@ extern uint32_t SystemCoreClock;
 #define configTOTAL_HEAP_SIZE						( ( size_t ) ( 40 * 1024 ) )
 #endif
 
+#if defined(ARDUINO_SDK)
+//#undef  configTOTAL_HEAP_SIZE
+//#define configTOTAL_HEAP_SIZE						( ( size_t ) ( 60 * 1024 ) ) //Arduino Ameba1
+//#define configTOTAL_HEAP_SIZE						( ( size_t ) ( 40 * 1024 ) )
+#endif
+
 #define secureconfigTOTAL_SRAM_HEAP_SIZE			( ( ( size_t ) ( 6 * 1024 ) ) )
 #define secureconfigTOTAL_PSRAM_HEAP_SIZE			( ( ( size_t ) ( 128 * 1024 ) ) )
 

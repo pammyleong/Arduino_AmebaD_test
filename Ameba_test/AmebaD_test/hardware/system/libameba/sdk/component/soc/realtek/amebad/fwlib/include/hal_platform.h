@@ -1035,7 +1035,7 @@ typedef struct {
 
 	__IO uint32_t LSSYNC;				/*!< GPIO level-sensitive synchronization enable register, 	Address offset: 0x60 */
 	__IO uint32_t IDCODE;				/*!< GPIO ID code register, 								Address offset: 0x64 */
-	__IO uint32_t INT_BOTHEDGE;		/*!< GPIO Both Edge Interrupt,									Address offset: 0x68 */
+	__IO uint32_t INT_BOTHEDGE;			/*!< GPIO Both Edge Interrupt, 								Address offset: 0x68 */
 	__IO uint32_t VERIDCODE;			/*!< GPIO component Version register, 						Address offset: 0x6C */
 	__IO uint32_t CONFIG2;				/*!< GPIO configuration Register 2, 						Address offset: 0x70 */
 	__IO uint32_t CONFIG1;				/*!< GPIO configuration Register 1, 						Address offset: 0x74 */

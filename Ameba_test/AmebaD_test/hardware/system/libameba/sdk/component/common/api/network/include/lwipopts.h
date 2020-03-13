@@ -280,6 +280,14 @@ extern unsigned int sys_now(void);
 #define TCP_WND (4*TCP_MSS)
 #endif
 
+#ifdef ARDUINO_SDK
+//#undef MEMP_NUM_NETBUF
+//#define MEMP_NUM_NETBUF                 8
+
+//#undef MEMP_NUM_NETCONN
+//#define MEMP_NUM_NETCONN                16
+#endif // end of #ifdef ARDUINO_SDK
+
 /* ---------- Statistics options ---------- */
 #define LWIP_STATS 0
 #define LWIP_PROVIDE_ERRNO 1

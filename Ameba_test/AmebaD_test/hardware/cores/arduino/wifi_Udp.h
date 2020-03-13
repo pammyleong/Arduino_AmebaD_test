@@ -82,6 +82,4 @@ class UDP : public Stream {
     protected:
         uint8_t* rawIPAddress(IPAddress& addr) { return addr.raw_address(); };
 };
-#else
-    #error
 #endif
