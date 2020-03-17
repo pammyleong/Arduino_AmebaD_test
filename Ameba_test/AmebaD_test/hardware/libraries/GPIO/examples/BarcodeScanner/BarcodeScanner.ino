@@ -39,7 +39,7 @@ void setup() {
     pinMode(dataPin, INPUT);
     pinMode(clockPin, INPUT);
     pinMode(ledPin, OUTPUT);
-    Serial.begin(9600);
+    Serial.begin(115200);
 }
 
 void loop() {

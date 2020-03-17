@@ -28,9 +28,8 @@ Adafruit_GPS GPS(&mySerial);
 // Set to 'true' if you want to debug and listen to the raw GPS sentences. 
 #define GPSECHO  false
 
-void setup()
-{
-    Serial.begin(38400);
+void setup() {
+    Serial.begin(115200);
     Serial.println("Adafruit GPS library basic test!");
 
     // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
@@ -57,8 +56,8 @@ void setup()
 }
 
 uint32_t timer = millis();
-void loop()                     // run over and over again
-{
+void loop() {
+    // run over and over again
     // in case you are not using the interrupt above, you'll
     // need to 'hand query' the GPS, not suggested :(
     // read data from the GPS in the 'main loop'

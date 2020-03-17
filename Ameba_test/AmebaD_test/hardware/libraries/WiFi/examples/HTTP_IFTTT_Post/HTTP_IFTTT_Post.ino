@@ -20,7 +20,7 @@ int status = WL_IDLE_STATUS;
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to SSID: ");
         Serial.println(ssid);

@@ -39,6 +39,12 @@ char *message_list[MESSAGE_LIST_SIZE] = {
 };
 
 void setup() {
+    //Initialize serial and wait for port to open:
+    Serial.begin(115200);
+    while (!Serial) {
+        ; // wait for serial port to connect. Needed for native USB port only
+    }
+
     // attempt to connect to Wifi network:
     while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
         delay(1000);

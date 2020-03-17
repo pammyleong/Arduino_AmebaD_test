@@ -59,6 +59,12 @@ struct pm25_message pm25_message_template[PM25_LEVEL_SIZE] = {
 char message_buf[2048];
 
 void setup() {
+    //Initialize serial and wait for port to open:
+    Serial.begin(115200);
+    while (!Serial) {
+        ; // wait for serial port to connect. Needed for native USB port only
+    }
+
     pms.begin();
 
     // attempt to connect to Wifi network:
@@ -79,7 +85,7 @@ void loop() {
         char *pm25msg_part2 = pm25_message_template[pm25level].msg_part2;
 
         while (1) {
-            if (!client.connect(server, 443)) {
+            if (!(client.connect(server, 443))) {
                 Serial.println("Connect to server failed. Retry after 1s.");
                 client.stop();
                 delay(1000);
@@ -89,13 +95,13 @@ void loop() {
             Serial.println("connected to server");
             // Make a HTTP request:
             sprintf(message_buf,
-                "POST /v2.11/%s/feed?access_token=%s&message=%s%d%s HTTP/1.1\r\nHost: %s\r\n\r\n",
-                FEED_ID,
-                access_token,
-                pm25msg_part1,
-                pm25,
-                pm25msg_part2,
-                server);
+                    "POST /v2.11/%s/feed?access_token=%s&message=%s%d%s HTTP/1.1\r\nHost: %s\r\n\r\n",
+                    FEED_ID,
+                    access_token,
+                    pm25msg_part1,
+                    pm25,
+                    pm25msg_part2,
+                    server);
             client.write(message_buf);
 
             while (!client.available()) {
@@ -140,7 +146,7 @@ int get_pm25_level(int pm25) {
 int last_pm25_value = -100;
 uint32_t last_update_time = 0;
 bool need_publish_on_feed(int pm25) {
-    if ((abs(pm25 - last_pm25_value) >= 10) || (millis() - last_update_time > 60 * 60 * 1000)) {
+    if ((abs(pm25 - last_pm25_value) >= 10) || ((millis() - last_update_time) > (60 * 60 * 1000))) {
         last_pm25_value = pm25;
         last_update_time = millis();
         return true;

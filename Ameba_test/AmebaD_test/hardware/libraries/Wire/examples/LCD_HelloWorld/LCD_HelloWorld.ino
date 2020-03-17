@@ -27,9 +27,8 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I
 
 //LiquidCrystal_I2C lcd(0x38, BACKLIGHT_PIN, POSITIVE);  // Set the LCD I2C address
 
-void setup()
-{
-    Serial.begin(38400);
+void setup() {
+    Serial.begin(115200);
 
     lcd.begin(16, 2);               // initialize the lcd 
     lcd.backlight();
@@ -47,8 +46,7 @@ void setup()
     lcd.print("On SerialMonitor");
 }
 
-void loop()
-{
+void loop() {
     if (Serial.available()) {
         delay(100);
         lcd.clear();
