@@ -17,7 +17,7 @@ char pass[] = "secretPassword";  // your network password
 
 int status  = WL_IDLE_STATUS;    // the Wifi radio's status
 
-char mqttServer[] = "iot.eclipse.org";
+char mqttServer[] = "cloud.amebaiot.com";
 
 char clientId[]       = "amebaClient";
 char clientUser[]     = "testuser";
@@ -57,7 +57,9 @@ void setup() {
     if (client.connect(clientId, clientUser, clientPass)) {
         client.publish(publishTopic, publishPayload);
         client.subscribe(subscribeTopic);
+        Serial.println("---------MQTT server conneccted!-----------");
     }
+    Serial.println("-------Setup finished-------");
 }
 
 void loop() {

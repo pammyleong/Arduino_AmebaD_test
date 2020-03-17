@@ -20,8 +20,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba_test/AmebaD_test/release/ameba_d-1.0.1-test-05.tar.gz",
           "archiveFileName": "ameba_d-1.0.1-test-05.tar.gz",
-          "checksum": "SHA-256:9ebf123903a73529dbb38021a2b9d2e12a88d403248a7fccafe3310d8b4b93e1",
-          "size": "47931286",
+          "checksum": "SHA-256:e0d572fa63959d8cf58b65e10fed6133bc1a8583d19e3841de36c69a7bdc0c85",
+          "size": "47930849",
           "boards": [
             {"name": "Ameba RTL8721D"},
             {"name": "Ameba RTL8722DM"},
