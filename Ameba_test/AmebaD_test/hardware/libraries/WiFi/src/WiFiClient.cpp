@@ -54,9 +54,12 @@ int WiFiClient::available() {
             return 1;
         } else {
             err = clientdrv.getLastErrno(_sock);
-            if (err != EAGAIN) {
+            if (err != 0) {
                 _is_connected = false;
             }
+            //if (err != EAGAIN) {
+                //_is_connected = false;
+            //}
             return 0;
         }
     }
@@ -157,7 +160,6 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
         _is_connected = true;
         clientdrv.setSockRecvTimeout(_sock, recvTimeout);
     }
-
     return 1;
 }
 

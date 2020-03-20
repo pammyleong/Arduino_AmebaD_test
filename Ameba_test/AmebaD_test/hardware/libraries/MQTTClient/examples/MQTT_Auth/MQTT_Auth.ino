@@ -57,9 +57,7 @@ void setup() {
     if (client.connect(clientId, clientUser, clientPass)) {
         client.publish(publishTopic, publishPayload);
         client.subscribe(subscribeTopic);
-        Serial.println("---------MQTT server conneccted!-----------");
     }
-    Serial.println("-------Setup finished-------");
 }
 
 void loop() {

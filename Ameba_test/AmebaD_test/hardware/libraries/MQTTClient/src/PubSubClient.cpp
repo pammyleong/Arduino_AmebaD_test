@@ -261,7 +261,7 @@ boolean PubSubClient::connect(const char *id, const char *user, const char *pass
 
             while (!_client->available()) {
                 unsigned long t = millis();
-                if (t-lastInActivity >= ((int32_t)(MQTT_SOCKET_TIMEOUT * 1000UL))) {
+                if ((t - lastInActivity) >= ((int32_t)(MQTT_SOCKET_TIMEOUT * 1000UL))) {
                     _state = MQTT_CONNECTION_TIMEOUT;
                     _client->stop();
                     return false;
@@ -270,6 +270,7 @@ boolean PubSubClient::connect(const char *id, const char *user, const char *pass
                 delay(10);
 #endif
             }
+
             uint8_t llen;
             uint16_t len = readPacket(&llen);
 
@@ -647,7 +648,8 @@ boolean PubSubClient::subscribe(const char* topic) {
 }
 
 boolean PubSubClient::subscribe(const char* topic, uint8_t qos) {
-    if ((qos < 0) || (qos > 1)) {
+    //if ((qos < 0) || (qos > 1)) {
+    if (qos > 1) {
         return false;
     }
     if (MQTT_MAX_PACKET_SIZE < (9 + strlen(topic))) {

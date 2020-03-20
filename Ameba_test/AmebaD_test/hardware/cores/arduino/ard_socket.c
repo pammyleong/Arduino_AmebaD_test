@@ -104,9 +104,8 @@ int get_receive(int sock, uint8_t* data, int length, int flag, uint32_t *peer_ad
             }
         }
     }
-
     ret = lwip_recvfrom(sock, data, length, flag, &from, &fromlen);
-    if ( ret >= 0 ) {
+    if (ret >= 0) {
         if (peer_addr != NULL) {
             *peer_addr = ((struct sockaddr_in *)&from)->sin_addr.s_addr;
         }
@@ -187,7 +186,7 @@ int start_client(uint32_t ipAddress, uint16_t port, uint8_t protMode)
 
     if (protMode == 0) {//TCP MODE
         if (connect(_sock, ((struct sockaddr *)&serv_addr), sizeof(serv_addr)) == 0) {
-            printf("\r\nConnect to Server successful!\r\n");
+            printf("\r\nConnect to Server successfully!\r\n");
 
             timeout = 3000;
             lwip_setsockopt(_sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
