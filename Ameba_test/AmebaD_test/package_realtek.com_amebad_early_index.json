@@ -271,8 +271,8 @@
               "host": "x86_64-pc-linux-gnu",
               "archiveFileName": "ameba_d_tools_linux-1.0.1.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba_test/AmebaD_test/release/ameba_d_tools_linux-1.0.1.tar.gz",
-              "checksum": "SHA-256:2cdcb54a7094f51dd67dea6ef0d602c1683bd72ea7a9d9ced1796066d055497a",
-              "size": "1982227"
+              "checksum": "SHA-256:fd00829958b1b0b34dbf615ca51dfcae112079b7c81bff9ab015d3e857eac2e5",
+              "size": "1984208"
             }
           ]
         },
