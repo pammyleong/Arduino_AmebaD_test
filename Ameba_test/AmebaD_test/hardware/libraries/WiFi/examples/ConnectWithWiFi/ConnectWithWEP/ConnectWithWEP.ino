@@ -59,6 +59,7 @@ void setup() {
     }
 
     // once you are connected :
+    Serial.println();
     Serial.print("You're connected to the network");
     printCurrentNet();
     printWifiData();

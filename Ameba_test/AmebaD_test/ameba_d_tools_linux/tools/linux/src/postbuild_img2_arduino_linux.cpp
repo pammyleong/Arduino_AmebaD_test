@@ -1,7 +1,9 @@
 /*
 
-Compile command:
-mingw32-g++.exe -o postbuild_img2_arduino_windows.exe tools\windows\src\postbuild_img2_arduino_windows.cpp -static
+Compile:
+
+linux:
+g++ -o postbuild_img2_arduino_linux tools/linux/src/postbuild_img2_arduino_linux.cpp -static
 
 */
 
@@ -14,26 +16,6 @@ mingw32-g++.exe -o postbuild_img2_arduino_windows.exe tools\windows\src\postbuil
 #include <vector>
 
 using namespace std;
-
-void replaceAll( string& source, const string& from, const string& to )
-{
-    string newString;
-    newString.reserve(source.length()); //avoids a few memory allocations
-
-    string::size_type lastPos = 0;
-    string::size_type findPos;
-
-    while (string::npos != (findPos = source.find(from, lastPos))) {
-        newString.append( source, lastPos, (findPos - lastPos));
-        newString += to;
-        lastPos = findPos + from.length();
-    }
-
-    // Care for the rest after last occurrence
-    newString += source.substr(lastPos);
-
-    source.swap(newString);
-}
 
 int main(int argc, char *argv[]) {
 
@@ -62,30 +44,29 @@ int main(int argc, char *argv[]) {
 
     // 1. copy elf application.axf to current folder
     cmdss.clear();
-    cmdss << "xcopy /y " << argv[2] << " .\\";
+    cmdss << "cp " << argv[2] << " ./";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     // 2. remove previous files
-    cmd = "if exist application.map del application.map";
+    cmd = "rm -f application.map";
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "if exist application.asm del application.asm";
+    cmd = "rm -f application.asm";
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "if exist *.bin del *.bin";
+    cmd = "rm -f *.bin";
     cout << cmd << endl;
     system(cmd.c_str());
 
     // 3. generate information files
     path_arm_none_eabi_gcc.assign(argv[3]);
-    replaceAll(path_arm_none_eabi_gcc, "/", "\\");
 
     cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-nm.exe\" application.axf | sort > application.map";
+    cmdss << path_arm_none_eabi_gcc << "arm-none-eabi-nm application.axf | sort > application.map";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
@@ -97,14 +78,13 @@ int main(int argc, char *argv[]) {
     fin.close();
 
     cmdss.clear();
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objdump.exe\" -d application.axf > application.asm";
+    cmdss << path_arm_none_eabi_gcc << "arm-none-eabi-objdump -d application.axf > application.asm";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     // 3.1 check if any forbidden symbols
     path_symbol_black_list.assign(argv[4]);
-    replaceAll(path_symbol_black_list, "/", "\\");
     fin.open(path_symbol_black_list.c_str(), ifstream::in);
     cout << path_symbol_black_list << endl;
     ret = 0;
@@ -116,7 +96,7 @@ int main(int argc, char *argv[]) {
             // check if this symbole appears in the map file
             for (iter = lines.begin(); iter != lines.end(); ++iter) {
                 if ((iter->find(bksym)) != string::npos) {
-                    cerr << "ERROR: " << msg << endl;
+                    cerr << endl << "ERROR: " << msg << endl << endl;
                     ret = -1;
                     break;
                 }
@@ -130,9 +110,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 4. grep sram, xip/flash and psram information
-    fout.open("application.map");
     for (iter = lines.begin(); iter != lines.end(); ++iter) {
-        fout << *iter << endl;
         line = *iter;
         pos = line.find("__ram_image2_text_start__");
         if (pos != string::npos) {
@@ -167,7 +145,6 @@ int main(int argc, char *argv[]) {
             psram_end = strtol(psram_end_st.c_str(), NULL, 16);
         }
     }
-    fout.close();
 
     if (xip_start > 0 && xip_end > 0) {
         has_xip = true;
@@ -186,16 +163,14 @@ int main(int argc, char *argv[]) {
 
     // 5. generate image 2, image xip and image psram
     cmdss.clear();
-    //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image2.start.table -j .ram_image2.text -j .ram.data -Obinary .\\application.axf .\\ram_2.bin";
-    cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary .\\application.axf .\\ram_2.r.bin";
+    cmdss << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy -j .ram_image2.entry -j .ram_image2.text -j .ram_image2.data -Obinary ./application.axf ./ram_2.r.bin";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     if (has_xip) {
         cmdss.clear();
-        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\xip_image2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .xip_image2.text -Obinary .\\application.axf .\\xip_image2.bin";
+        cmdss << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy -j .xip_image2.text -Obinary ./application.axf ./xip_image2.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -203,8 +178,7 @@ int main(int argc, char *argv[]) {
 
     if (has_psram) {
         cmdss.clear();
-        //cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .image3 -j .sdr_data -Obinary .\\application.axf .\\psram_2.bin";
-        cmdss << "\"" << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy.exe\" -j .psram_image2.text -j .psram_image2.data -Obinary .\\application.axf .\\psram_2.r.bin";
+        cmdss << path_arm_none_eabi_gcc << "arm-none-eabi-objcopy -j .psram_image2.text -j .psram_image2.data -Obinary ./application.axf ./psram_2.r.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -214,14 +188,14 @@ int main(int argc, char *argv[]) {
     // 6. fulfill header
     // 6.1 remove bss sections
     cmdss.clear();
-    cmdss << ".\\tools\\linux\\pick.exe " << sram_start << " " << sram_end << " ram_2.r.bin ram_2.bin raw";
+    cmdss << "./tools/linux/pick " << sram_start << " " << sram_end << " ram_2.r.bin ram_2.bin raw";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     if (has_psram) {
         cmdss.clear();
-        cmdss << ".\\tools\\linux\\pick.exe " << psram_start << " " << psram_end << " psram_2.r.bin psram_2.bin raw";
+        cmdss << "./tools/linux/pick " << psram_start << " " << psram_end << " psram_2.r.bin psram_2.bin raw";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -229,14 +203,14 @@ int main(int argc, char *argv[]) {
 
     // 6.2 add header
     cmdss.clear();
-    cmdss << ".\\tools\\linux\\pick.exe " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin";
+    cmdss << "./tools/linux/pick " << sram_start << " " << sram_end << " ram_2.bin ram_2.p.bin";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
     if (has_xip) {
         cmdss.clear();
-        cmdss << ".\\tools\\linux\\pick.exe " << xip_start << " " << xip_end << " xip_image2.bin xip_image2.p.bin";
+        cmdss << "./tools/linux/pick " << xip_start << " " << xip_end << " xip_image2.bin xip_image2.p.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
@@ -244,45 +218,45 @@ int main(int argc, char *argv[]) {
 
     if (has_psram) {
         cmdss.clear();
-        cmdss << ".\\tools\\linux\\pick.exe " << psram_start << " " << psram_end << " psram_2.bin psram_2.p.bin";
+        cmdss << "./tools/linux/pick " << psram_start << " " << psram_end << " psram_2.bin psram_2.p.bin";
         getline(cmdss, cmd);
         cout << cmd << endl;
         system(cmd.c_str());
     }
 
     // 6.3 generate km4_image2_all
-    cmd = "copy /b xip_image2.p.bin+ram_2.p.bin+psram_2.p.bin km4_image2_all.bin";
+    cmd = "cat xip_image2.p.bin ram_2.p.bin psram_2.p.bin > km4_image2_all.bin";
     cout << cmd << endl;
     system(cmd.c_str());
 
     cmdss.clear();
-    cmdss << ".\\tools\\linux\\pad.exe " << "km4_image2_all.bin 4096";
+    cmdss << "./tools/linux/pad " << "km4_image2_all.bin 4096";
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
 
 
     // 7. prepare image 1
-    cmd = "copy bsp\\image\\km0_boot_all.bin .\\";
+    cmd = "cp bsp/image/km0_boot_all.bin ./";
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "copy bsp\\image\\km4_boot_all.bin .\\";
+    cmd = "cp bsp/image/km4_boot_all.bin ./";
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "copy bsp\\image\\km0_image2_all.bin .\\";
+    cmd = "cp bsp/image/km0_image2_all.bin ./";
     cout << cmd << endl;
     system(cmd.c_str());
 
     // 8. generate .bin
-    cmd = "copy /b km0_image2_all.bin+km4_image2_all.bin km0_km4_image2.bin";
+    cmd = "cat km0_image2_all.bin km4_image2_all.bin > km0_km4_image2.bin";
     cout << cmd << endl;
     system(cmd.c_str());
 
 #if 0
     // 9. add checksum
-    cmd = ".\\tools\\linux\\checksum.exe ota.bin";
+    cmd = "./tools/linux/checksum ota.bin";
     cout << cmd << endl;
     system(cmd.c_str());
 #endif

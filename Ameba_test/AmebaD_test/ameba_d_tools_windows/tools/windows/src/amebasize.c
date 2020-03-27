@@ -1,7 +1,15 @@
 /*
 
-Compile under windows (using mingw):
+Compile:
+
+Windows:
 mingw32-gcc.exe -o amebasize.exe tools\windows\src\amebasize.c -static
+
+linux:
+gcc -o amebasize tools/linux/src/amebasize.c -static
+
+macsox:
+gcc -o tools/macosx/amebasize tools/macosx/src/amebasize.c
 
 */
 

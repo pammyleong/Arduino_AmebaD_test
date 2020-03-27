@@ -111,7 +111,7 @@ recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.h
 
 ## Compute size
 recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"
-recipe.size.pattern.linux="{runtime.tools.ameba_1_tools.path}/amebasize" "{runtime.tools.ameba_1_tools.path}"
+recipe.size.pattern.linux="{runtime.tools.ameba_d_tools.path}/amebasize" "{runtime.tools.ameba_d_tools.path}"
 
 recipe.size.regex=^(?:bootloader_km0|bootloader_km4|image2)\s+([0-9]+).*
 

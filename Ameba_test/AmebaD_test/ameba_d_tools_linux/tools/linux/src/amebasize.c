@@ -1,7 +1,15 @@
 /*
 
-Compile under windows (using mingw):
+Compile:
+
+Windows:
 mingw32-gcc.exe -o amebasize.exe tools\windows\src\amebasize.c -static
+
+linux:
+gcc -o amebasize tools/linux/src/amebasize.c -static
+
+macsox:
+gcc -o tools/macosx/amebasize tools/macosx/src/amebasize.c
 
 */
 
@@ -16,7 +24,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	sprintf(filename, "%s\\km0_boot_all.bin", argv[1]);
+	sprintf(filename, "%s/km0_boot_all.bin", argv[1]);
 	FILE* fp_bootloader_km0 = fopen(filename, "rb");
 	if (fp_bootloader_km0 != NULL) {
 		fseek(fp_bootloader_km0, 0L, SEEK_END);
@@ -25,7 +33,7 @@ int main(int argc, char *argv[]) {
 		printf("bootloader_km0 %d\n", size);
 	}
 
-	sprintf(filename, "%s\\km4_boot_all.bin", argv[1]);
+	sprintf(filename, "%s/km4_boot_all.bin", argv[1]);
 	FILE* fp_bootloader_km4 = fopen(filename, "rb");
 	if (fp_bootloader_km4 != NULL) {
 		fseek(fp_bootloader_km4, 0L, SEEK_END);
@@ -34,7 +42,7 @@ int main(int argc, char *argv[]) {
 		printf("bootloader_km4 %d\n", size);
 	}
 
-	sprintf(filename, "%s\\km0_km4_image2.bin", argv[1]);
+	sprintf(filename, "%s/km0_km4_image2.bin", argv[1]);
 	FILE* fp_img2 = fopen(filename, "rb");
 	if (fp_img2 != NULL) {
 		fseek(fp_img2, 0L, SEEK_END);
