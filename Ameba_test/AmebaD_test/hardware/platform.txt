@@ -120,7 +120,14 @@ recipe.size.regex=^(?:bootloader_km0|bootloader_km4|image2)\s+([0-9]+).*
 # -------------------
 tools.ameba_d_tools.upload.params.verbose=
 tools.ameba_d_tools.upload.params.quiet=
+
 #tools.ameba_d_tools.upload.pattern="{runtime.tools.ameba_d_tools.path}/upload_dap.sh" {upload.verbose}
+
+
 tools.ameba_d_tools.upload.pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_image_tool_windows.exe" "{runtime.tools.ameba_d_tools.path}" "{serial.port}" {upload.verbose}
+
+#tools.ameba_d_tools.upload.pattern.windows="{runtime.tools.ameba_d_tools.path}/ameba_d_arduino_image_tool_windows.exe" "{runtime.tools.ameba_d_tools.path}" "{serial.port}" {upload.verbose}
+
+
 #tools.ameba_d_tools.upload.network_pattern="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
 #tools.ameba_d_tools.upload.network_pattern.windows="{runtime.tools.ameba_d_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_d_tools.path}\ota.bin"
