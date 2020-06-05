@@ -3,7 +3,7 @@
 Compile:
 
 windows:
-mingw32-g++ -o ameba_d_arduino_image_tool_windows.exe tools\windows\src\ameba_d_arduino_image_tool_windows.cpp -static
+mingw32-g++ -o ameba_d_arduino_image_tool_windows.exe ameba_d_arduino_image_tool_windows.cpp -static
 
 */
 
@@ -19,50 +19,6 @@ mingw32-g++ -o ameba_d_arduino_image_tool_windows.exe tools\windows\src\ameba_d_
 #include <windows.h>
 
 using namespace std;
-
-int retrieve_system_call_result (string cmd, vector<string> *lines) {
-
-    int ret = 0;
-
-    FILE *fin;
-    stringstream ss;
-    string line;
-    const int bufsize = 256;
-    char buf[bufsize];
-
-    bool buffer_result = true;
-
-    if (lines == NULL) {
-        buffer_result = false;
-    } else {
-        lines->clear();
-    }
-
-    do {
-        fin = popen(cmd.c_str(), "r");
-        if (fin == NULL || errno != 0) {
-            ret = -1;
-            break;
-        }
-
-        while(fgets(buf, bufsize, fin) != NULL) {
-            if (buffer_result) {
-                ss << buf;
-            }
-        }
-
-        // now ss contain the results. Dump into string vector
-        if (buffer_result) {
-            lines->clear();
-            while(getline(ss, line)) {
-                lines->push_back(line);
-            }
-        }
-        pclose(fin);
-    } while (0);
-
-    return ret;
-}
 
 bool isFileExist(string path) {
     bool ret = false;
@@ -88,6 +44,8 @@ void zzw_delay_S(int t) {
         cout << cmd << endl;
     }
 }
+
+unsigned int ameba_baudrate = 1500000;
 
 int main(int argc, char *argv[]) {
 
@@ -117,6 +75,12 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+//2 open serial
+    //serialport_open(argv[2], 115200);
+    if (serialport_open(argv[2], ameba_baudrate) == 0) {
+        cout << "ERR: Serial Port not open!" << endl;
+        return 0;
+    }
 
 
 

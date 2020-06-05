@@ -29,7 +29,8 @@ int32_t     WiFiDrv::_networkRssi[WL_NETWORKS_LIST_MAXNUM] = {0};
 uint32_t    WiFiDrv::_networkEncr[WL_NETWORKS_LIST_MAXNUM] = {0};
 
 static bool init_wlan = false;
-static int wifi_mode = NULL;
+//static int wifi_mode = NULL;
+static int wifi_mode = 0;
 
 // zzw
 //static rtw_network_info_t wifi = {0};
@@ -416,7 +417,8 @@ char* WiFiDrv::getSSIDNetoworks(uint8_t networkItem)
 uint8_t WiFiDrv::getEncTypeNetowrks(uint8_t networkItem)
 {
     if (networkItem >= WL_NETWORKS_LIST_MAXNUM) {
-        return NULL;
+        //return NULL;
+        return 0;
     }
 
     uint8_t encType = 0;
@@ -443,7 +445,8 @@ uint32_t WiFiDrv::getEncTypeNetowrksEx(uint8_t networkItem)
 int32_t WiFiDrv::getRSSINetoworks(uint8_t networkItem)
 {
     if (networkItem >= WL_NETWORKS_LIST_MAXNUM) {
-        return NULL;
+        //return NULL;
+        return 0;
     }
 
     return _networkRssi[networkItem];
