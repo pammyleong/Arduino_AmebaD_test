@@ -9,7 +9,7 @@ linux:
 gcc -o pick tools/linux/src/pick.c -static
 
 macsox:
-gcc -o tools/macosx/pick tools/macosx/src/pick.c
+gcc -o tools/macos/pick tools/macos/src/pick.c
 
 */
 

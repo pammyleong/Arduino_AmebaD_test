@@ -9,7 +9,7 @@ linux:
 gcc -o pad tools/linux/src/pad.c -static
 
 macsox:
-gcc -o tools/macosx/pad tools/macosx/src/pad.c
+gcc -o tools/macos/pad tools/macos/src/pad.c
 
 */
 

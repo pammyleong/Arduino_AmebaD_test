@@ -9,7 +9,7 @@ linux:
 gcc -o amebasize tools/linux/src/amebasize.c -static
 
 macsox:
-gcc -o tools/macosx/amebasize tools/macosx/src/amebasize.c
+gcc -o tools/macos/amebasize tools/macos/src/amebasize.c
 
 */
 
