@@ -13,6 +13,35 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
+          "version": "3.0.1-t02",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d-3.0.1-t02.tar.gz",
+          "archiveFileName": "ameba_d-3.0.1-t02.tar.gz",
+          "checksum": "SHA-256:3d61a8b535ef04fd49dfdb435ba51c3b0d3555072750e06e3eff1a89f305efda",
+          "size": "55684769",
+          "boards": [
+            {"name": "RTL8722DM"},
+            {"name": "RTL8722CSM"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_d_asdk_toolchain",
+              "version": "1.0.1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_d_tools",
+              "version": "1.0.1"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
+          "architecture": "AmebaD",
           "version": "3.0.1-t01",
           "category": "Contributed",
           "help": {
@@ -432,8 +461,8 @@
               "host": "x86_64-apple-darwin",
               "archiveFileName": "ameba_d_tools_macos-1.0.1.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d_tools_macos-1.0.1.tar.gz",
-              "checksum": "SHA-256:9aef99fd7c511daa50bb1415e6f4d8b80ac97ceed0214fbe8afe32bd0812e789",
-              "size": "1984210"
+              "checksum": "SHA-256:5a330895378fdfc715e74bb25c43e5de37221f8d4ffa7a697c69c6aeccc8f2cb",
+              "size": "105435"
             }
           ]
         },

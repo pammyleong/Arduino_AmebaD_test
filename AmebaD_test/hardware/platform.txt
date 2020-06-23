@@ -106,16 +106,19 @@ recipe.strip.pattern="{compiler.path}{compiler.strip.cmd}" "{build.path}/{build.
 recipe.objcopy.hex.cmd=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.cmd.windows=postbuild_img2_arduino_windows.exe
 recipe.objcopy.hex.cmd.linux=postbuild_img2_arduino_linux
+recipe.objcopy.hex.cmd.macosx=postbuild_img2_arduino_macos
 
 recipe.objcopy.hex.imagepath={build.path}\application.axf
 recipe.objcopy.hex.imagepath.windows="{build.path}\application.axf"
 recipe.objcopy.hex.imagepath.linux="{build.path}/application.axf"
+recipe.objcopy.hex.imagepath.macosx="{build.path}/application.axf"
 
 recipe.objcopy.hex.pattern="{runtime.tools.ameba_d_tools.path}/{recipe.objcopy.hex.cmd}" "{runtime.tools.ameba_d_tools.path}" "{recipe.objcopy.hex.imagepath}" "{compiler.path}" "{build.variant.path}/{build.sym_bklist}"
 
 ## Compute size
 recipe.size.pattern.windows="{runtime.tools.ameba_d_tools.path}/amebasize.exe" "{runtime.tools.ameba_d_tools.path}"
 recipe.size.pattern.linux="{runtime.tools.ameba_d_tools.path}/amebasize" "{runtime.tools.ameba_d_tools.path}"
+recipe.size.pattern.macosx="{runtime.tools.ameba_d_tools.path}/amebasize" "{runtime.tools.ameba_d_tools.path}"
 
 recipe.size.regex=^(?:bootloader_km0|bootloader_km4|image2)\s+([0-9]+).*
 
