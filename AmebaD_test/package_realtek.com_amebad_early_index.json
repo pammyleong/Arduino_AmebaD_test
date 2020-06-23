@@ -421,8 +421,8 @@
               "host":"x86_64-apple-darwin",
               "archiveFileName":"ameba_d_toolchain_macos-1.0.1.tar.bz2",
               "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d_toolchain_macos-1.0.1.tar.bz2",
-              "checksum":"SHA-256:9578623108f91ef351d0e4733188ff75424ecf8d4207ed91ae7abd8c00315999",
-              "size":"99659513"
+              "checksum":"SHA-256:cc52c2c3650e21ef636bc10242432f75cd0f4884b1188f328982e77030d91787",
+              "size":"91538901"
             }
           ]
         },
