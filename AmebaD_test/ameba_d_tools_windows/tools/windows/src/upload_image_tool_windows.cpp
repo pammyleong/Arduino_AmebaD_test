@@ -3,8 +3,8 @@
 Compile:
 
 windows:
-mingw32-g++ -o upload_image_tool_windows.exe tools\windows\src\upload_image_tool_windows.cpp -static
-
+mingw32-g++.exe -o upload_image_tool_windows.exe upload_image_tool_windows.cpp -static
+i686-w64-mingw32-g++.exe -o upload_image_tool_windows.exe upload_image_tool_windows.cpp -static
 */
 
 #include <iostream>

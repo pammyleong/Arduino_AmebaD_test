@@ -20,8 +20,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d-3.0.1-t03.tar.gz",
           "archiveFileName": "ameba_d-3.0.1-t03.tar.gz",
-          "checksum": "SHA-256:d3c8c4a131098c9ac264344b3993f08a41e4d680af09779e0b321b23250aa1e6",
-          "size": "55732525",
+          "checksum": "SHA-256:3ea5ea0ff3a0d07951e50ac7f56dc517dae4020db0b0de2c4a31affb207b395f",
+          "size": "55733487",
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"}
@@ -476,8 +476,8 @@
               "host": "i686-mingw32",
               "archiveFileName": "ameba_d_tools_windows-1.0.2.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d_tools_windows-1.0.2.tar.gz",
-              "checksum": "SHA-256:4ff5740392fc9cdd811deb2aa68a695685a7a6cbd1399e7daeec0f09fd0514fd",
-              "size": "3704841"
+              "checksum": "SHA-256:eb71ac78a108a8a3449bcdf0bc81b5dbc6f97ebb6db9d77f156a94babde54c99",
+              "size": "2466590"
             },
             {
               "host": "x86_64-pc-linux-gnu",
