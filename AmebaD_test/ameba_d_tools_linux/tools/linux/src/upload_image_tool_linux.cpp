@@ -1,10 +1,8 @@
 /*
 
 Compile:
-
 linux:
 g++ -o upload_image_tool_linux tools/linux/src/upload_image_tool_linux.cpp -static
-
 */
 
 #include <iostream>
@@ -18,7 +16,6 @@ g++ -o upload_image_tool_linux tools/linux/src/upload_image_tool_linux.cpp -stat
 #include <fstream>
 #include <unistd.h>
 
-#include <windows.h>
 
 using namespace std;
 
@@ -27,129 +24,34 @@ int main(int argc, char *argv[]) {
 	string cmd;
 	stringstream cmdss;
 
-	string filepath_km0_boot_all;
-	string filepath_km4_boot_all;
-	string filepath_km0_km4_image2;
-
-	filepath_km0_boot_all.assign("km0_boot_all.bin");
-	filepath_km4_boot_all.assign("km4_boot_all.bin");
-	filepath_km0_km4_image2.assign("km0_km4_image2.bin");
-
+	// change directory to {runtime.tools.ameba_d_tools.path}
 	chdir(argv[1]);
 
-	cmd = "copy tools\\windows\\image_tool\\imgtool_flashloader_amebad.bin .\\";
-	//cout << cmd << endl;
+	// copy the "imgtool_flashloader_amebad.bin" to current directory
+	cmd = "cp tools/linux/image_tool/imgtool_flashloader_amebad.bin ./";
+	cout << cmd << endl;
 	system(cmd.c_str());
 
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set baudrate 1500000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -remove device COM0";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -add device " << argv[2];
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
+	// 5 seconds count down to allow user setting ameba D to UART download mode
 	cmd = "Please enter the upload mode (wait 5s)";
 	cout << cmd << endl;
 	for (int i = 5; i > 0; i--)
 	{
-		Sleep(1000);
+		sleep(1);
 		cmd = to_string(i);
 		cout << "    0" << cmd << endl;
 	}
 
-// km0_boot_all
 	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set address 0x08000000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
+	// run image tool with serial port as argument
+	cmdss << "./tools/linux/image_tool/amebad_image_tool " << argv[2];
+
+	// copy command in cmdss to cmd
+	cmd = cmdss.str();
 	system(cmd.c_str());
 
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set length 0x2000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set image km0_boot_all.bin";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -download";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmd = "    Upload km0_boot_all done. ";
-	cout << cmd << endl;
-
-// km4_boot_all
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set address 0x08004000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set length 0x2000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set image km4_boot_all.bin";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -download";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmd = "    Upload km4_boot_all done. ";
-	cout << cmd << endl;
-
-// km0_km4_image2
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set address 0x08006000";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set length 0xF9FFF";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -set image km0_km4_image2.bin";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmdss.clear();
-	cmdss << ".\\tools\\windows\\image_tool\\1-10_MP_Image_Tool.exe -download";
-	getline(cmdss, cmd);
-	//cout << cmd << endl;
-	system(cmd.c_str());
-
-	cmd = "    Upload km0_km4_image2 done. ";
+	printf("\r\n");
+	cmd = "    Upload Image done. ";
 	cout << cmd << endl;
 
 	return 0;
