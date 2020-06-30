@@ -29,6 +29,10 @@ int main(int argc, char *argv[]) {
 
 	chdir(argv[1]);
 
+	cmd = "copy tools\\windows\\image_tool\\imgtool_flashloader_amebad.bin .\\";
+	cout << cmd << endl;
+	system(cmd.c_str());
+
 	cmd = "Please enter the upload mode (wait 5s)";
 	cout << cmd << endl;
 	for (int i = 5; i > 0; i--)
@@ -44,6 +48,7 @@ int main(int argc, char *argv[]) {
 	//cout << cmd << endl;
 	system(cmd.c_str());
 
+	printf("\r\n");
 	cmd = "    Upload Image done. ";
 	cout << cmd << endl;
 

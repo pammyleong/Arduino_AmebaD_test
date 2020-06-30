@@ -476,8 +476,8 @@
               "host": "i686-mingw32",
               "archiveFileName": "ameba_d_tools_windows-1.0.2.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d_tools_windows-1.0.2.tar.gz",
-              "checksum": "SHA-256:eb71ac78a108a8a3449bcdf0bc81b5dbc6f97ebb6db9d77f156a94babde54c99",
-              "size": "2466590"
+              "checksum": "SHA-256:134eab0cb6089b8653d9feed1360dbe8c8c2cbb881dc93c2c0deae992f801c7d",
+              "size": "3629093"
             },
             {
               "host": "x86_64-pc-linux-gnu",
