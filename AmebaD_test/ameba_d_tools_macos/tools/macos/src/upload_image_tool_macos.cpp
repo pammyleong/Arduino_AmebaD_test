@@ -48,9 +48,7 @@ int main(int argc, char *argv[]) {
 	cout << cmd << endl;
 	system(cmd.c_str());
 
-	printf("/r/n");
-
-	cmd = "    Upload km0_km4_image2 done. ";
+	cmd = "    Upload Image done. ";
 	cout << cmd << endl;
 
 	return 0;
