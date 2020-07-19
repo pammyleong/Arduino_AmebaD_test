@@ -1,0 +1,12 @@
+
+v3.0.4-t01
+    update BT
+        add example BLEBatteryClient
+        add example BLEScan
+        add example BLEWIfiConfig
+
+    delete polarssl
+    add mbedtls 2.4.0 suppport
+        add example Amazon_AWS_IoT_Basic
+        add example MQTT_TLS
+
