@@ -132,10 +132,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   printf("Message arrived [%s] %s\r\n", topic, buf);
 
   if ((strstr(topic, "/shadow/get/accepted") != NULL) || (strstr(topic, "/shadow/update/accepted") != NULL)) {
-    // payload format: {"state":{"reported":{"led":1},"desired":{"led":0}},"metadata":{"reported":{"led":{"timestamp":1466996558}},"desired":{"led":{"timestamp":1466996558}}},"version":7,"timestamp":1466996558}
-    pch = strstr(buf, "\"desired\":{\"led\":");
+    pch = strstr(buf, "\"reported\":{\"led\":");
     if (pch != NULL) {
-      pch += strlen("\"desired\":{\"led\":");
+      pch += strlen("\"reported\":{\"led\":");
       desired_led_state = *pch - '0';
       if (desired_led_state != led_state) {
         updateLedState(desired_led_state);

@@ -1,5 +1,5 @@
 
-v3.0.4-t01
+v3.0.4
     update BT
         add example BLEBatteryClient
         add example BLEScan
