@@ -183,9 +183,7 @@ int start_ssl_client(sslclient_context *ssl_client, uint32_t ipAddress, uint32_t
                 mbedtls_ssl_conf_ca_chain(ssl_client->conf, cacert, NULL);
                 mbedtls_ssl_conf_authmode(ssl_client->conf, MBEDTLS_SSL_VERIFY_REQUIRED);
             } else {
-                printf("ERROR: Unable to form SSL connection without Root CA cert!\r\n");
-                ret = -1;
-                break;
+                mbedtls_ssl_conf_authmode(ssl_client->conf, MBEDTLS_SSL_VERIFY_NONE);
             }
 
             if ((cli_cert != NULL) && (cli_key != NULL)) {
