@@ -102,6 +102,15 @@ int main(int argc, char *argv[]) {
     cout << cmd << endl;
     system(cmd.c_str());
 
+    //cp /GCC-RELEASE/project_hp/asdk/image/target_img2.axf /GCC-RELEASE/project_hp/asdk/image/target_pure_img2.axf
+    //arm-none-eabi-strip /GCC-RELEASE/project_hp/asdk/image/target_pure_img2.axf
+
+    //cmdss.clear();
+    //cmdss << "\"" <<path_arm_none_eabi_gcc << "arm-none-eabi-strip.exe\" application.axf";
+    //getline(cmdss, cmd);
+    //cout << cmd << endl;
+    //system(cmd.c_str());
+
     // 3.1 check if any forbidden symbols
     path_symbol_black_list.assign(argv[4]);
     replaceAll(path_symbol_black_list, "/", "\\");
