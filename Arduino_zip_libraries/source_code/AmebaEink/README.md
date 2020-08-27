@@ -26,7 +26,6 @@ API
 
 **Generate a QR Code**
 
-```c
 // The structure to manage the QR code
 QRCode qrcode;
 
@@ -34,7 +33,6 @@ QRCode qrcode;
 uint8_t qrcodeBytes[qrcode_getBufferSize()];
 
 qrcode_initText(&qrcode, qrcodeBytes, 3, ECC_LOW, "HELLO WORLD");
-```
 
 **Draw a QR Code**
 
@@ -46,20 +44,6 @@ How a QR code is used will vary greatly from project to project. For example:
 
 The following example prints a QR code to the Serial Monitor (it likely will
 not be scannable, but is just for demonstration purposes).
-
-```c
-for (uint8 y = 0; y < qrcode.size; y++) {
-    for (uint8 x = 0; x < qrcode.size; x++) {
-        if (qrcode_getModule(&qrcode, x, y) {
-            Serial.print("**");
-        } else {
-            Serial.print("  ");
-        }
-    }
-    Serial.print("\n");
-}
-```
-
 
 What is Version, Error Correction and Mode?
 -------------------------------------------

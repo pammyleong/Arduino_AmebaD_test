@@ -8,4 +8,3 @@ AmebaPowerSave	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-xxx	KEYWORD2
