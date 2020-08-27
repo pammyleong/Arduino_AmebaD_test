@@ -1,6 +1,8 @@
+    //update BT lib and add BT example
+
 
 v3.0.5
-    add Eink examples
+    add zip lib Eink and examples
         add example EinkDisplayImage
         add example EinkDisplayQR
 
@@ -8,11 +10,8 @@ v3.0.5
     update Amazon AWS related examples
 
     add power save support
-        add example SleepMode
+        add example TicklessMode
         add example DeepSleepMode
-
-    //update BT lib and add BT example
-
 
 v3.0.4
     update BT
