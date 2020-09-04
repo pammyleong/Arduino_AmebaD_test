@@ -20,8 +20,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD_test/release/ameba_d-3.0.5-t05.tar.gz",
           "archiveFileName": "ameba_d-3.0.5-t05.tar.gz",
-          "checksum": "SHA-256:20198f2e1ade7904b2d887ea827608df784acb7285cdf57f753489bc35b3828f",
-          "size": "44177685",
+          "checksum": "SHA-256:2f6355a26a6afc07f797ed69d533903ee19eb83d2981938f34df5344290962c5",
+          "size": "44174540",
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"}
