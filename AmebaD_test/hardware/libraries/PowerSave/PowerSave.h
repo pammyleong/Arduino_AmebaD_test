@@ -20,6 +20,8 @@ public:
      *
      * @param[in] sleep_mode 
      */
+    PMUClass(void);
+
     void begin(uint32_t sleep_mode);
 
     void AONTimerDuration(uint32_t duration_ms);

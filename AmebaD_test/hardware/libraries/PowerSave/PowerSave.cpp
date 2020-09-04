@@ -10,6 +10,9 @@ extern "C" {
 
 KM4SLEEP_ParamDef DSLP_Para;
 
+PMUClass::PMUClass(void) {
+}
+
 void PMUClass::begin(uint32_t sleep_mode) {
     if (sleep_mode == 11) {
         // deepsleep
@@ -49,12 +52,58 @@ void PMUClass::RTCWakeSetup(uint32_t duration_d, uint32_t duration_h, uint32_t d
     RTC_TimeStructInit(&RTC_TimeStruct);
     RTC_SetTime(RTC_Format_BIN, &RTC_TimeStruct);
     RTC_AlarmStructInit(&RTC_AlarmStruct_temp);
-    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Days = 1 + duration_d;
-    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Hours = 1 + duration_h;
-    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Minutes = 1 + duration_m;
+
+    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Days = duration_d;
+    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Hours = duration_h;
+    RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Minutes = duration_m;
     RTC_AlarmStruct_temp.RTC_AlarmTime.RTC_Seconds = duration_s;
-    RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_Hours | RTC_AlarmMask_Minutes;
-    RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_Days;
+
+#if 0
+    if (duration_d > 0) {
+        RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_None;
+        RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_None;
+    } else {
+        if (duration_h > 0) {
+            RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_None;
+            RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_Days;
+        } else {
+            if (duration_m > 0) {
+                RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_Hours;
+                RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_Days;
+            } else {
+                if (duration_s > 0) {
+                    RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_Hours | RTC_AlarmMask_Minutes;
+                    RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_Days;
+                } else {
+                    RTC_AlarmStruct_temp.RTC_AlarmMask = RTC_AlarmMask_All;
+                    RTC_AlarmStruct_temp.RTC_Alarm2Mask = RTC_Alarm2Mask_Days;
+                }
+            }
+        }
+    }
+
+#else
+    // RTC_AlarmMask_None    RTC_AlarmMask_Hours    RTC_AlarmMask_Minutes    RTC_AlarmMask_Seconds    RTC_AlarmMask_All 
+    // RTC_Alarm2Mask_None    RTC_Alarm2Mask_Days
+    uint32_t temp_mask1 = 0;
+    uint32_t temp_mask2 = 0;
+    if (duration_d <= 0) {
+        temp_mask2 = temp_mask2 | RTC_Alarm2Mask_Days;
+    }
+    if (duration_h <= 0) {
+        temp_mask1 = temp_mask1 | RTC_AlarmMask_Hours;
+    }
+    if (duration_m <= 0) {
+        temp_mask1 = temp_mask1 | RTC_AlarmMask_Minutes;
+    }
+    if (duration_s <= 0) {
+        temp_mask1 = temp_mask1 | RTC_AlarmMask_Seconds;
+    }
+
+    RTC_AlarmStruct_temp.RTC_AlarmMask = temp_mask1;
+    RTC_AlarmStruct_temp.RTC_Alarm2Mask = temp_mask2;
+#endif
+
     RTC_SetAlarm(RTC_Format_BIN, &RTC_AlarmStruct_temp);
     RTC_AlarmCmd(ENABLE);
 }
