@@ -1,100 +1,146 @@
+/**
+ *  @filename   :   epdif.cpp
+ *  @brief      :   Implements for e-paper library
+ *  @author     :   Realtek SD3
+ *
+ *  Copyright (C) Realtek     September 9 2017
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documnetation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to  whom the Software is
+ * furished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS OR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 #include "epdif.h"
-#include "image.h"
+
 #include <SPI.h>
+#include <avr/pgmspace.h>
 
-EpdIf::EpdIf() {
-};
+#include "image.h"
 
-EpdIf::~EpdIf() {
-};
+// Partial Update Delay, may have an influence on degradation
+#define GxGDEH029A1_PU_DELAY 300
+
+const unsigned char LUT_DATA[] PROGMEM = {
+    0x50, 0xAA, 0x55, 0xAA, 0x11, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0xFF, 0xFF, 0x1F, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+const unsigned char LUT_DATA_part[] PROGMEM = {
+    0x10, 0x18, 0x18, 0x08, 0x18, 0x18,
+    0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x13, 0x14, 0x44, 0x12,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+EpdIf::EpdIf(){};
+
+EpdIf::~EpdIf(){};
+
 
 void EpdIf::driver_delay_us(unsigned int xus) {
-  for (; xus > 1; xus--);
+    for (; xus > 1; xus--)
+        ;
 }
 
-void EpdIf::driver_delay_xms(unsigned long xms) {//1ms
-  unsigned long i = 0 , j = 0;
-  for (j = 0; j < xms; j++)  {
-    for (i = 0; i < 256; i++);
-  }
+void EpdIf::driver_delay_xms(unsigned long xms) {  //1ms
+    unsigned long i = 0, j = 0;
+    for (j = 0; j < xms; j++) {
+        for (i = 0; i < 256; i++)
+            ;
+    }
 }
 
 void EpdIf::DELAY_S(unsigned int delaytime) {
-  unsigned int i, j, k;
-  for (i = 0; i < delaytime; i++)  {
-    for (j = 0; j < 4000; j++)    {
-      for (k = 0; k < 222; k++);
+    unsigned int i, j, k;
+    for (i = 0; i < delaytime; i++) {
+        for (j = 0; j < 4000; j++) {
+            for (k = 0; k < 222; k++)
+                ;
+        }
     }
-  }
 }
 
-//////////////////////SPI///////////////////////////////////
-void EpdIf::SPI_Delay(unsigned char xrate) {
-  unsigned char i;
-  while (xrate)  {
-    for (i = 0; i < 2; i++);
-    xrate--;
-  }
+/**
+    @brief: basic function for SPI delay
+*/
+void EpdIf::SpiDelay(unsigned char xrate) {
+    unsigned char i;
+    while (xrate) {
+        for (i = 0; i < 2; i++)
+            ;
+        xrate--;
+    }
 }
-
 
 /**
     @brief: basic function for transfering data
 */
-void EpdIf::SPI_Write(unsigned char value) {
-  unsigned char i;
-  this->SPI_Delay(1);
-  for (i = 0; i < 8; i++)  {
-    EPD_W21_CLK_0;
-    this->SPI_Delay(1);
-    if (value & 0x80)
-      EPD_W21_MOSI_1;
-    else
-      EPD_W21_MOSI_0;
-    value = (value << 1);
-    this->SPI_Delay(1);
-    this->driver_delay_us(1);
-    EPD_W21_CLK_1;
-    this->SPI_Delay(1);
-  }
+void EpdIf::SpiTransfer(unsigned char value) {
+    unsigned char i;
+    SpiDelay(1);
+    for (i = 0; i < 8; i++) {
+        EPD_W21_CLK_0;
+        SpiDelay(1);
+        if (value & 0x80)
+            EPD_W21_MOSI_1;
+        else
+            EPD_W21_MOSI_0;
+        value = (value << 1);
+        SpiDelay(1);
+        driver_delay_us(1);
+        EPD_W21_CLK_1;
+        SpiDelay(1);
+    }
+
+    //  digitalWrite(CS_PIN, LOW);
+    // data=transfer(&data, 1);
+    // digitalWrite(CS_PIN, HIGH);
 }
 
 /**
     @brief: basic function for sending commands
 */
-void EpdIf::EPD_W21_WriteCMD(unsigned char command) {
-  this->SPI_Delay(1);
-  EPD_W21_CS_0;
-  EPD_W21_DC_0;   // command write
-  this->SPI_Write(command);
-  EPD_W21_CS_1;
+void EpdIf::SendCommand(unsigned char command) {
+    SpiDelay(1);
+    EPD_W21_DC_0;  // set DC pin to LOW
+    EPD_W21_CS_0;
+    SpiTransfer(command);
+    EPD_W21_CS_1;
 }
 
 /**
     @brief: basic function for sending data
 */
-void EpdIf::EPD_W21_WriteDATA(unsigned char command) {
-  this->SPI_Delay(1);
-  EPD_W21_CS_0;
-  EPD_W21_DC_1;   // command write
-  this->SPI_Write(command);
-  EPD_W21_CS_1;
+void EpdIf::SendData(unsigned char command) {
+    SpiDelay(1);
+    EPD_W21_DC_1;  // command write
+    EPD_W21_CS_0;
+    SpiTransfer(command);
+    EPD_W21_CS_1;
 }
 
 /**
-    @brief: Wait until the busy_pin goes LOW
+    @brief: Wait until the busy_pin goes idle --> LOW
 */
-void EpdIf::Epaper_READBUSY(void) {
-  while (1)  { //=1 BUSY
-    if (isEPD_W21_BUSY == 0) break;
-  }
-}
-
-/**
-    @brief: Same as Epaper_READBUSY
-*/
-void EpdIf::Epd_WaitUntilIdle(void) {
-  this->Epaper_READBUSY();
+void EpdIf::EPD_Busy(void) {
+    while (1) {  //=1 BUSY
+        if (isEPD_W21_BUSY == 0) break;
+    }
 }
 
 /**
@@ -103,10 +149,10 @@ void EpdIf::Epd_WaitUntilIdle(void) {
             see Epd::Sleep();
 */
 void EpdIf::EPD_Reset(void) {
-  EPD_W21_RST_0;            // Module reset
-  delay(1);                 // At least 10ms delay
-  EPD_W21_RST_1;
-  delay(1);
+    EPD_W21_RST_0;  // module reset
+    delay(1);
+    EPD_W21_RST_1;
+    delay(1);
 }
 
 /**
@@ -115,89 +161,11 @@ void EpdIf::EPD_Reset(void) {
             The deep sleep mode would return to standby by hardware reset.
             You can use Epd::Init() to awaken
 */
-void EpdIf::EPD_DeepSleep(void) {
-  this->EPD_W21_WriteCMD (0x10); //enter deep sleep, DEEP_SLEEP_MODE = 0x10
-  this->EPD_W21_WriteDATA(0x01);
-  delay(100);
-}
-
-//////////////////////LUT///////////////////////////////////
-const unsigned char LUT_DATA[] PROGMEM = {   //30 bytes
-  //C221 25C Full update waveform
-  0x50, 0xAA, 0x55, 0xAA, 0x11, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0xFF, 0xFF, 0x1F, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-const unsigned char LUT_DATA_part[] PROGMEM = { //30 bytes
-  //C221 25C partial update waveform
-  0x10, 0x18, 0x18, 0x08, 0x18, 0x18,
-  0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x13, 0x14, 0x44, 0x12,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
-/**
-    @brief: set the look-up table register
-*/
-void EpdIf::EPD_select_LUT(const unsigned char * wave_data) {
-  unsigned char count;
-  this->EPD_W21_WriteCMD(0x32);
-  for (count = 0; count < 30; count++)
-    this->EPD_W21_WriteDATA(pgm_read_byte(&wave_data[count]));
-}
-
-//////////////////////EPD//////////////////////////////////
-void EpdIf::EPD_HW_Init(void) {
-  EPD_W21_RST_0;  // Module reset
-  delay(1); //At least 10ms delay
-  EPD_W21_RST_1;
-  delay(1); //At least 10ms delay
-
-  this->EPD_W21_WriteCMD(0x01); //Driver output control
-  this->EPD_W21_WriteDATA(0x27); //Y%256--->(295+1)=296
-  this->EPD_W21_WriteDATA(0x01); //Y%256
-  this->EPD_W21_WriteDATA(0x00);
-
-  this->EPD_W21_WriteCMD(0x0C); //softstart
-  this->EPD_W21_WriteDATA(0xD7);   //is necessary
-  this->EPD_W21_WriteDATA(0xD6);   //is necessary
-  this->EPD_W21_WriteDATA(0x9D);  //is necessary
-
-  this->EPD_W21_WriteCMD(0x2C);     //VCOM Voltage
-  this->EPD_W21_WriteDATA(0x9A);
-
-  this->EPD_W21_WriteCMD(0x3A);     //Dummy Line
-  this->EPD_W21_WriteDATA(0x1A);
-  this->EPD_W21_WriteCMD(0x3B);     //Gate time
-  this->EPD_W21_WriteDATA(0X08);
-
-  this->EPD_W21_WriteCMD(0x11); //data entry mode
-  this->EPD_W21_WriteDATA(0x01);
-
-  this->EPD_W21_WriteCMD(0x3C); //BorderWavefrom
-  this->EPD_W21_WriteDATA(0x33);
-
-  this->EPD_W21_WriteCMD(0x44); //set Ram-X address start/end position
-  this->EPD_W21_WriteDATA(0x00);
-  this->EPD_W21_WriteDATA(0x0F);    //0x0C-->(15+1)*8=128
-
-  this->EPD_W21_WriteCMD(0x45); //set Ram-Y address start/end position
-  this->EPD_W21_WriteDATA(0x27);   //Y%256--->(295+1)=296
-  this->EPD_W21_WriteDATA(0x01);  //Y%256
-  this->EPD_W21_WriteDATA(0x00);
-  this->EPD_W21_WriteDATA(0x00);
-
-  this->EPD_W21_WriteCMD(0x4E);   // set RAM x address count to 0;
-  this->EPD_W21_WriteDATA(0x00);
-  this->EPD_W21_WriteCMD(0x4F);   // set RAM y address count to 0X127;
-  this->EPD_W21_WriteDATA(0x27);  //Y%256
-  this->EPD_W21_WriteDATA(0x01);  //Y/256
-  this->Epaper_READBUSY();
-  this->EPD_select_LUT(LUT_DATA); //LUT
+void EpdIf::EPD_Sleep(void) {
+    SendCommand(DEEP_SLEEP_MODE);
+    SendData(0x01);
+    delay(100);
+    EPD_Busy();
 }
 
 /**
@@ -207,222 +175,370 @@ void EpdIf::EPD_HW_Init(void) {
             the the next action of SetFrameMemory or ClearFrame will
             set the other memory area.
 */
-void EpdIf::EPD_Update(void) {
-  this->EPD_W21_WriteCMD(0x22);  //Display Update Control
-  this->EPD_W21_WriteDATA(0xC4);
-  this->EPD_W21_WriteCMD(0x20);  //Activate Display Update Sequence
-  this->Epaper_READBUSY();
+void EpdIf::EPD_UpdateDisplay(void) {
+    SendCommand(DISPLAY_UPDATE_CONTROL_2);  //Display Update Control
+    SendData(0xC4);
+    SendCommand(MASTER_ACTIVATION);           //Activate Display Update Sequence
+    SendCommand(TERMINATE_FRAME_READ_WRITE);  //Activate Display Update Sequence
+    this->EPD_Busy();
+}
+
+/**
+    @brief: basic function for hardware initialization
+*/
+void EpdIf::EPD_Init(void) {
+    EPD_W21_RST_0;  // Module reset
+    delay(1);       //At least 10ms delay
+    EPD_W21_RST_1;
+    delay(1);  //At least 10ms delay
+
+    SendCommand(DRIVER_OUTPUT_CONTROL);
+    SendData((EPD_HEIGHT - 1) & 0xFF);         // 0x27
+    SendData(((EPD_HEIGHT - 1) >> 8) & 0xFF);  // 0x01
+    SendData(0x00);                            // GD = 0; SM = 0; TB = 0;8i8i
+    SendCommand(BOOSTER_SOFT_START_CONTROL);
+    SendData(0xD7);
+    SendData(0xD6);
+    SendData(0x9D);
+    SendCommand(WRITE_VCOM_REGISTER);
+    SendData(0xA8);  // 0xA8 or 0x9A
+    SendCommand(SET_DUMMY_LINE_PERIOD);
+    SendData(0x1A);  // 4 dummy lines per gate
+    SendCommand(SET_GATE_TIME);
+    SendData(0X08);  // 2us per line
+    SendCommand(DATA_ENTRY_MODE_SETTING);
+    SendData(0x01);  // X increment; Y increment 0x01 display image 0x03 display text
+    // SendCommand(BORDER_WAVEFORM_CONTROL);
+    // SendData(0x33);
+    // comment out lines below still workable
+
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  //set Ram-X address start/end position
+    SendData(0x00);
+    SendData(0x0F);                                     //0x0C-->(15+1)*8=128
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);  //set Ram-Y address start/end position
+    SendData(0x27);                                     //Y%256--->(295+1)=296
+    SendData(0x01);                                     //Y%256
+    SendData(0x00);
+    SendData(0x00);
+
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);  // set RAM x address count to 0;
+    SendData(0x00);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);  // set RAM y address count to 0X127;
+    SendData(0x27);                          //Y%256
+    SendData(0x01);                          //Y/256
+    this->EPD_Busy();
+    this->SetLUT(LUT_DATA);
+    /* EPD hardware init end */
+}
+
+void EpdIf::EPD_InitText(void) {
+    EPD_W21_RST_0;  // Module reset
+    delay(1);       //At least 10ms delay
+    EPD_W21_RST_1;
+    delay(1);  //At least 10ms delay
+
+    SendCommand(DRIVER_OUTPUT_CONTROL);
+    SendData((EPD_HEIGHT - 1) & 0xFF);         // 0x27
+    SendData(((EPD_HEIGHT - 1) >> 8) & 0xFF);  // 0x01
+    SendData(0x00);                            // GD = 0; SM = 0; TB = 0;8i8i
+    SendCommand(BOOSTER_SOFT_START_CONTROL);
+    SendData(0xD7);
+    SendData(0xD6);
+    SendData(0x9D);
+    SendCommand(WRITE_VCOM_REGISTER);
+    SendData(0x9A);
+    SendCommand(SET_DUMMY_LINE_PERIOD);
+    SendData(0x1A);  // 4 dummy lines per gate
+    SendCommand(SET_GATE_TIME);
+    SendData(0X08);  // 2us per line
+    SendCommand(DATA_ENTRY_MODE_SETTING);
+    SendData(0x03);  // X increment; Y increment
+    // SendCommand(BORDER_WAVEFORM_CONTROL);
+    // SendData(0x33);
+
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  //set Ram-X address start/end position
+    SendData(0x00);
+    SendData(0x0F);                                     //0x0C-->(15+1)*8=128
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);  //set Ram-Y address start/end position
+    SendData(0x27);                                     //Y%256--->(295+1)=296
+    SendData(0x01);                                     //Y%256
+    SendData(0x00);
+    SendData(0x00);
+
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);  // set RAM x address count to 0;
+    SendData(0x00);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);  // set RAM y address count to 0X127;
+    SendData(0x27);                          //Y%256
+    SendData(0x01);                          //Y/256
+    this->EPD_Busy();
+    this->SetLUT(LUT_DATA);
+    /* EPD hardware init end */
 }
 
 void EpdIf::EPD_Part_Init(void) {
-  this->EPD_HW_Init();            //Electronic paper initialization
-  this->EPD_select_LUT(LUT_DATA_part);
-  //POWER ON
-  this->EPD_W21_WriteCMD(0x22);   //Display Update Control
-  this->EPD_W21_WriteDATA(0xC0);
-  this->EPD_W21_WriteCMD(0x20);   //Activate Display Update Sequence
-  this->Epaper_READBUSY();
-  this->EPD_W21_WriteCMD(0x3C);   //BorderWavefrom
-  this->EPD_W21_WriteDATA(0x01);
+    EPD_Init();
+    this->SetLUT(LUT_DATA_part);
+    //POWER ON
+    SendCommand(DISPLAY_UPDATE_CONTROL_2);
+    SendData(0xC0);
+    SendCommand(MASTER_ACTIVATION);  //Activate Display Update Sequence
+    this->EPD_Busy();
+    SendCommand(BORDER_WAVEFORM_CONTROL);  //BorderWavefrom
+    SendData(0x01);
 }
 
 void EpdIf::EPD_Part_Update(void) {
-  this->EPD_W21_WriteCMD(0x22);
-  this->EPD_W21_WriteDATA(0x04);  //different
-  this->EPD_W21_WriteCMD(0x20);
-  this->Epaper_READBUSY();
+    SendCommand(DISPLAY_UPDATE_CONTROL_2);
+    SendData(0x04);  //different
+    SendCommand(MASTER_ACTIVATION);
+    this->EPD_Busy();
 }
 
-void EpdIf::EPD_SetRAMValue_BaseMap( const unsigned char * datas) {
-  unsigned int i;
-  const unsigned char  *datas_flag;
-  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
-  unsigned int x_start = 0, y_start = 296;
-  unsigned int PART_COLUMN = 296, PART_LINE = 128;
-  datas_flag = datas;
-  //FULL update
-  this->EPD_HW_Init();
-  this->EPD_W21_WriteCMD(0x24);   //Write Black and White image to RAM
-  for (i = 0; i < ALLSCREEN_GRAGHBYTES; i++)
-  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&datas[i]));
-  }
-  this->EPD_Update();
-  delay(100);
-  //PART update
-  this->EPD_Part_Init();          //Local initialization (the top left corner of the screen is the origin of the coordinates)
-  datas = datas_flag;             //Record array first address
-  x_start = x_start / 8;          //Convert to byte
-  x_end = (x_start + PART_LINE) / 8 - 1;
-  y_start1 = 0;
-  y_start2 = y_start - 1;
+void EpdIf::EPD_SetRAMValue_BaseMap(const unsigned char *datas) {
+    unsigned int i;
+    const unsigned char *datas_flag;
+    unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
+    unsigned int x_start = 0, y_start = 296;
+    unsigned int PART_COLUMN = 296, PART_LINE = 128;
+    datas_flag = datas;
 
-  if (y_start >= 256)  {
-    y_start1 = y_start2 / 256;
-    y_start2 = y_start2 % 256;
-  }
-  y_end1 = 0; //0
-  y_end2 = 0; //0
-  if (y_end2 >= 256)  {
-    y_end1 = y_end2 / 256;
-    y_end2 = y_end2 % 256;
-  }
+    //FULL update
+    EPD_Init();
+    SendCommand(WRITE_RAM);  //Write Black and White image to RAM
+    for (i = 0; i < ALLSCREEN_GRAGHBYTES; i++) {
+        SendData(pgm_read_byte(&datas[i]));
+    }
+    this->EPD_UpdateDisplay();
+    delay(100);
+    //PART update
+    EPD_Part_Init();        //Local initialization (the top left corner of the screen is the origin of the coordinates)
+    delay(10); 
+    datas = datas_flag;     //Record array first address
+    x_start = x_start / 8;  //Convert to byte
+    x_end = (x_start + PART_LINE) / 8 - 1;
+    y_start1 = 0;
+    y_start2 = y_start - 1;
 
-  this->EPD_W21_WriteCMD(0x44);       // set RAM x address start/end, in page 35
-  this->EPD_W21_WriteDATA(x_start);    // RAM x address start at 00h;
-  this->EPD_W21_WriteDATA(x_end);    // RAM x address end at 0fh(15+1)*8->128
-  this->EPD_W21_WriteCMD(0x45);       // set RAM y address start/end, in page 35
-  this->EPD_W21_WriteDATA(y_start2);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_start1);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_end2);    // RAM y address end at 00h;
-  this->EPD_W21_WriteDATA(y_end1);    // ????=0
-  this->EPD_W21_WriteCMD(0x4E);   // set RAM x address count to 0;
-  this->EPD_W21_WriteDATA(x_start);
-  this->EPD_W21_WriteCMD(0x4F);   // set RAM y address count to 0X127;
-  this->EPD_W21_WriteDATA(y_start2);
-  this->EPD_W21_WriteDATA(y_start1);
-  this->EPD_W21_WriteCMD(0x24);   //Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&datas[i]));
-  }
-  this->EPD_Part_Update();
-  delay(100);
+    if (y_start >= 256) {
+        y_start1 = y_start2 / 256;
+        y_start2 = y_start2 % 256;
+    }
+    y_end1 = 0;  //0
+    y_end2 = 0;  //0
+    if (y_end2 >= 256) {
+        y_end1 = y_end2 / 256;
+        y_end2 = y_end2 % 256;
+    }
 
-  datas = datas_flag;
-  this->EPD_W21_WriteCMD(0x44);         // set RAM x address start/end, in page 35
-  this->EPD_W21_WriteDATA(x_start);     // RAM x address start at 00h;
-  this->EPD_W21_WriteDATA(x_end);       // RAM x address end at 0fh(15+1)*8->128
-  this->EPD_W21_WriteCMD(0x45);         // set RAM y address start/end, in page 35
-  this->EPD_W21_WriteDATA(y_start2);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_start1);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_end2);      // RAM y address end at 00h;
-  this->EPD_W21_WriteDATA(y_end1);      // ????=0
-  this->EPD_W21_WriteCMD(0x4E);         // set RAM x address count to 0;
-  this->EPD_W21_WriteDATA(x_start);
-  this->EPD_W21_WriteCMD(0x4F);         // set RAM y address count to 0X127;
-  this->EPD_W21_WriteDATA(y_start2);
-  this->EPD_W21_WriteDATA(y_start1);
+    // SetMemoryArea(x_start, y_start, x_end, y_end);
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  // set RAM x address start/end, in page 35
+    SendData(x_start);                                  // RAM x address start at 00h;
+    SendData(x_end);                                    // RAM x address end at 0fh(15+1)*8->128
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);  // set RAM y address start/end, in page 35
+    SendData(y_start2);                                 // RAM y address start at 0127h;
+    SendData(y_start1);                                 // RAM y address start at 0127h;
+    SendData(y_end2);                                   // RAM y address end at 00h;
+    SendData(y_end1);                                   // ????=0
 
-  this->EPD_W21_WriteCMD(0x24);   // Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&datas[i]));
-  }
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);  // set RAM x address count to 0;
+    SendData(x_start);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);  // set RAM y address count to 0X127;
+    SendData(y_start2);
+    SendData(y_start1);
+    SendCommand(WRITE_RAM);  //Write Black and White image to RAM
+    for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++) {
+        SendData(pgm_read_byte(&datas[i]));
+    }
+    this->EPD_Part_Update();
+    delay(100);
+
+    datas = datas_flag;
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  // set RAM x address start/end, in page 35
+    SendData(x_start);                                  // RAM x address start at 00h;
+    SendData(x_end);                                    // RAM x address end at 0fh(15+1)*8->128
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);  // set RAM y address start/end, in page 35
+    SendData(y_start2);                                 // RAM y address start at 0127h;
+    SendData(y_start1);                                 // RAM y address start at 0127h;
+    SendData(y_end2);                                   // RAM y address end at 00h;
+    SendData(y_end1);                                   // ????=0
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);             // set RAM x address count to 0;
+    SendData(x_start);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);  // set RAM y address count to 0X127;
+    SendData(y_start2);
+    SendData(y_start1);
+
+    SendCommand(WRITE_RAM);  // Write Black and White image to RAM
+    for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++) {
+        SendData(pgm_read_byte(&datas[i]));
+    }
 }
+
+/**
+ *  @brief: put an image buffer to the frame memory.
+ *          this won't update the display.
+ */
 
 void EpdIf::EPD_Dis_Part(
-  unsigned int x_start,
-  unsigned int y_start,
-  const unsigned char * datas,
-  unsigned int PART_COLUMN,
-  unsigned int PART_LINE
-) {
-  const unsigned char  *datas_flag;
-  unsigned int i;
-  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
-  datas_flag = datas;             // Record array first address
-  x_start = x_start / 8;          // Convert to byte
-  x_end = x_start + PART_LINE / 8 - 1;
+    unsigned int x_start,
+    unsigned int y_start,
+    const unsigned char *datas,
+    unsigned int PART_COLUMN,  //y height
+    unsigned int PART_LINE) {  // x width
 
-  y_start1 = 0;
-  y_start2 = y_start - 1;
-  if (y_start >= 256)  {
-    y_start1 = y_start2 / 256;
-    y_start2 = y_start2 % 256;
-  }
-  y_end1 = 0;
-  y_end2 = y_start + PART_COLUMN - 1;
-  if (y_end2 >= 256)  {
-    y_end1 = y_end2 / 256;
-    y_end2 = y_end2 % 256;
-  }
+    unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
+    
+    EPD_Part_Init();
+    delay(10); 
 
-  this->EPD_W21_WriteCMD(0x44);         // set RAM x address start/end, in page 35
-  this->EPD_W21_WriteDATA(x_start);     // RAM x address start at 00h;
-  this->EPD_W21_WriteDATA(x_end);       // RAM x address end at 0fh(15+1)*8->128
-  this->EPD_W21_WriteCMD(0x45);         // set RAM y address start/end, in page 35
-  this->EPD_W21_WriteDATA(y_start2);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_start1);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_end2);      // RAM y address end at 00h;
-  this->EPD_W21_WriteDATA(y_end1);      // ????=0
-
-  this->EPD_W21_WriteCMD(0x4E);         // set RAM x address count to 0;
-  this->EPD_W21_WriteDATA(x_start);
-  this->EPD_W21_WriteCMD(0x4F);         // set RAM y address count to 0X127;
-  this->EPD_W21_WriteDATA(y_start2);
-  this->EPD_W21_WriteDATA(y_start1);
-
-
-  this->EPD_W21_WriteCMD(0x24);         //Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&datas[i]));
-  }
-  this->EPD_Part_Update();
-
-
-  datas = datas_flag;
-  this->EPD_W21_WriteCMD(0x44);         // set RAM x address start/end, in page 35
-  this->EPD_W21_WriteDATA(x_start);     // RAM x address start at 00h;
-  this->EPD_W21_WriteDATA(x_end);       // RAM x address end at 0fh(15+1)*8->128
-  this->EPD_W21_WriteCMD(0x45);         // set RAM y address start/end, in page 35
-  this->EPD_W21_WriteDATA(y_start2);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_start1);    // RAM y address start at 0127h;
-  this->EPD_W21_WriteDATA(y_end2);      // RAM y address end at 00h;
-  this->EPD_W21_WriteDATA(y_end1);      // ????=0
-
-
-  this->EPD_W21_WriteCMD(0x4E);         // set RAM x address count to 0;
-  this->EPD_W21_WriteDATA(x_start);
-  this->EPD_W21_WriteCMD(0x4F);         // set RAM y address count to 0X127;
-  this->EPD_W21_WriteDATA(y_start2);
-  this->EPD_W21_WriteDATA(y_start1);
-
-
-  this->EPD_W21_WriteCMD(0x24);         //Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&datas[i]));
-  }
-
-}
-
-//////////////////ALL screen update ////////////////////
-/**
-    @brief: Display the whole screen as White
-*/
-void EpdIf::EPD_WhiteScreen_White(void) {
-  unsigned int i, k;
-  this->EPD_W21_WriteCMD(0x24);
-  for (k = 0; k < 296; k++) {
-    for (i = 0; i < 16; i++) {
-      this->EPD_W21_WriteDATA(0xff); //write RAM for black(0)/white (1)
+    if (datas == NULL || x_start < 0 || y_start < 0 || PART_COLUMN < 0 || PART_LINE < 0) {
+        return;
     }
-  }
-  this->EPD_Update();
-}
 
-/**
-    @brief: Display the whole screen as Black
-*/
-void EpdIf::EPD_WhiteScreen_Black(void) {
-  unsigned int i, k;
-  this->EPD_W21_WriteCMD(0x24);
-  for (k = 0; k < 296; k++) {
-    for (i = 0; i < 16; i++) {
-      this->EPD_W21_WriteDATA(0x00);  //write RAM for black(0)/white (1)
+    x_start = x_start / 8;  // Convert to byte
+    x_end = x_start + PART_LINE / 8 - 1;
+
+    y_start1 = 0;
+    y_start2 = y_start - 1;
+
+    if (y_start >= 256) {
+        y_start1 = y_start2 / 256;
+        y_start2 = y_start2 % 256;
     }
-  }
-  this->EPD_Update();
+    y_end1 = 0;
+    y_end2 = y_start + PART_COLUMN - 1;
+
+    if (y_end2 >= 256) {
+        y_end1 = y_end2 / 256;
+        y_end2 = y_end2 % 256;
+    }
+
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  // set RAM x address start/end, in page 35
+    SendData(x_start);                                  // RAM x address start at 00h;
+    SendData(x_end);                                    // RAM x address end at 0fh(15+1)*8->128
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);  // set RAM y address start/end, in page 35
+    SendData(y_start2);                                 // RAM y address start at 0127h;
+    SendData(y_start1);                                 // RAM y address start at 0127h;
+    SendData(y_end2);                                   // RAM y address end at 00h;
+    SendData(y_end1);                                   // ????=0
+
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);  // set RAM x address count to 0;
+    SendData(x_start);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);  // set RAM y address count to 0X127;
+    SendData(y_start2);
+    SendData(y_start1);
+    this->EPD_Busy();
+
+    SendCommand(WRITE_RAM);  //Write Black and White image to RAM
+                             /* send the image data */
+    for (int i = 0; i < PART_COLUMN * PART_LINE / 8; i++) {
+        SendData(pgm_read_byte(&datas[i]));
+    }
+}
+
+void EpdIf::EPD_SetFrame(
+    const unsigned char *image_buffer,
+    int x,
+    int y,
+    int image_width,
+    int image_height) {
+    int x_end;
+    int y_end;
+
+    EPD_InitText();
+    delay(10);
+
+    if (
+        image_buffer == NULL ||
+        x < 0 || image_width < 0 ||
+        y < 0 || image_height < 0) {
+        return;
+    }
+    
+    x &= 0xF8;
+    image_width &= 0xF8;
+    if (x + image_width >= EPD_WIDTH) {
+        x_end = EPD_WIDTH - 1;
+    } else {
+        x_end = x + image_width - 1;
+    }
+    if (y + image_height >= EPD_HEIGHT) {
+        y_end = EPD_HEIGHT - 1;
+    } else {
+        y_end = y + image_height - 1;
+    }
+
+    SendCommand(SET_RAM_X_ADDRESS_START_END_POSITION);  
+    SendData((x >> 3) & 0xFF);
+    SendData((x_end >> 3) & 0xFF);
+    SendCommand(SET_RAM_Y_ADDRESS_START_END_POSITION);
+    SendData(y & 0xFF);
+    SendData((y >> 8) & 0xFF);
+    SendData(y_end & 0xFF);
+    SendData((y_end >> 8) & 0xFF);
+
+    SendCommand(SET_RAM_X_ADDRESS_COUNTER);
+    /* x point must be the multiple of 8 or the last 3 bits will be ignored */
+    SendData((x >> 3) & 0xFF);
+    SendCommand(SET_RAM_Y_ADDRESS_COUNTER);
+    SendData(y & 0xFF);
+    SendData((y >> 8) & 0xFF);
+    this->EPD_Busy();
+
+    SendCommand(WRITE_RAM);
+    /* send the image data */
+    for (int j = 0; j < y_end - y + 1; j++) {
+        for (int i = 0; i < (x_end - x + 1) / 8; i++) {
+            SendData(image_buffer[i + j * (image_width / 8)]);
+        }
+    }
+}
+
+void EpdIf::EPD_SetFrameMemory(const unsigned char *image_buffer) {
+    SendCommand(WRITE_RAM);
+    for (int i = 0; i < ALLSCREEN_GRAGHBYTES; i++) {
+        SendData(pgm_read_byte(&image_buffer[i]));
+    }
+    // this->EPD_UpdateDisplay();
 }
 
 /**
-    @brief: Display the whole based on the basemap image
+ *  @brief: clear the frame memory with the White color.
+ *          and update the display.
+ */
+void EpdIf::EPD_ClearScreen_White(void) {
+    SendCommand(WRITE_RAM);
+    /* send the color data */
+    for (int k = 0; k < 296; k++) {
+        for (int i = 0; i < 16; i++) {
+            SendData(0xff);  // 0xFF All White
+        }
+    }
+    // this->EPD_UpdateDisplay();
+}
+
+/**
+ *  @brief: clear the frame memory with the Black color.
+ *          and update the display.
+ */
+void EpdIf::EPD_ClearScreen_Black(void) {
+    SendCommand(WRITE_RAM);
+    /* send the color data */
+    for (int k = 0; k < 296; k++) {
+        for (int i = 0; i < 16; i++) {
+            SendData(0x00);  // 0x00 All Black
+        }
+    }
+    // this->EPD_UpdateDisplay();
+}
+
+/**
+    @brief: set the Look-Up Table (LUT) register
 */
-void EpdIf::EPD_WhiteScreen_ALL(void) {
-  unsigned int i;
-  this->EPD_W21_WriteCMD(0x24);   //write RAM for black(0)/white (1)
-  for (i = 0; i < ALLSCREEN_GRAGHBYTES; i++)  {
-    this->EPD_W21_WriteDATA(pgm_read_byte(&gImage_basemapNA[i]));
-  }
-  this->EPD_Update();
+void EpdIf::SetLUT(const unsigned char *wave_data) {
+    SendCommand(WRITE_LUT_REGISTER);
+    /* the length of look-up table is 30 bytes */
+    for (int i = 0; i < 30; i++)
+        SendData(pgm_read_byte(&wave_data[i]));
 }
 
 //////////////////END ////////////////////

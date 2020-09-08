@@ -45,6 +45,17 @@ How a QR code is used will vary greatly from project to project. For example:
 The following example prints a QR code to the Serial Monitor (it likely will
 not be scannable, but is just for demonstration purposes).
 
+for (uint8 y = 0; y < qrcode.size; y++) {
+    for (uint8 x = 0; x < qrcode.size; x++) {
+        if (qrcode_getModule(&qrcode, x, y) {
+            Serial.print("**");
+        } else {
+            Serial.print("  ");
+        }
+    }
+    Serial.print("\n");
+
+
 What is Version, Error Correction and Mode?
 -------------------------------------------
 

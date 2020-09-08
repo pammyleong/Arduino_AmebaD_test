@@ -115,7 +115,7 @@ void Paint::DrawPixel(int x, int y, int colored) {
         DrawAbsolutePixel(x, y, colored);
     } else if (this->rotate == ROTATE_90) {
         if(x < 0 || x >= this->height || y < 0 || y >= this->width) {
-          return;
+            return;
         }
         point_temp = x;
         x = this->width - y;
@@ -123,14 +123,14 @@ void Paint::DrawPixel(int x, int y, int colored) {
         DrawAbsolutePixel(x, y, colored);
     } else if (this->rotate == ROTATE_180) {
         if(x < 0 || x >= this->width || y < 0 || y >= this->height) {
-          return;
+            return;
         }
         x = this->width - x;
         y = this->height - y;
         DrawAbsolutePixel(x, y, colored);
     } else if (this->rotate == ROTATE_270) {
         if(x < 0 || x >= this->height || y < 0 || y >= this->width) {
-          return;
+            return;
         }
         point_temp = x;
         x = y;
@@ -142,44 +142,45 @@ void Paint::DrawPixel(int x, int y, int colored) {
 /**
  *  @brief: this draws a charactor on the frame buffer but not refresh
  */
-//void Paint::DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored) {
-//    int i, j;
-//    unsigned int char_offset = (ascii_char - ' ') * font->Height * (font->Width / 8 + (font->Width % 8 ? 1 : 0));
-//    const unsigned char* ptr = &font->table[char_offset];
-//
-//    for (j = 0; j < font->Height; j++) {
-//        for (i = 0; i < font->Width; i++) {
-//            if (pgm_read_byte(ptr) & (0x80 >> (i % 8))) {
-//                DrawPixel(x + i, y + j, colored);
-//            }
-//            if (i % 8 == 7) {
-//                ptr++;
-//            }
-//        }
-//        if (font->Width % 8 != 0) {
-//            ptr++;
-//        }
-//    }
-//}
+void Paint::DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored) {
+    int i, j;
+    unsigned int char_offset = (ascii_char - ' ') * font->Height * (font->Width / 8 + (font->Width % 8 ? 1 : 0));
+    const unsigned char* ptr = &font->table[char_offset];
+
+    for (j = 0; j < font->Height; j++) {
+        for (i = 0; i < font->Width; i++) {
+            if (pgm_read_byte(ptr) & (0x80 >> (i % 8))) {
+                DrawPixel(x + i, y + j, colored);
+            }
+            if (i % 8 == 7) {
+                ptr++;
+            }
+        }
+        if (font->Width % 8 != 0) {
+            ptr++;
+        }
+    }
+}
 
 /**
 *  @brief: this displays a string on the frame buffer but not refresh
 */
-//void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colored) {
-//    const char* p_text = text;
-//    unsigned int counter = 0;
-//    int refcolumn = x;
-//    /* Send the string character by character on EPD */
-//    while (*p_text != 0) {
-//        /* Display one character on EPD */
-//        DrawCharAt(refcolumn, y, *p_text, font, colored);
-//        /* Decrement the column position by 16 */
-//        refcolumn += font->Width;
-//        /* Point on the next character */
-//        p_text++;
-//        counter++;
-//    }
-//}
+void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colored) {
+    const char* p_text = text;
+    unsigned int counter = 0;
+    int refcolumn = x;
+    
+    /* Send the string character by character on EPD */
+    while (*p_text != 0) {
+        /* Display one character on EPD */
+        DrawCharAt(refcolumn, y, *p_text, font, colored);
+        /* Decrement the column position by 16 */
+        refcolumn += font->Width;
+        /* Point on the next character */
+        p_text++;
+        counter++;
+    }
+}
 
 /**
 *  @brief: this draws a line on the frame buffer
@@ -194,12 +195,12 @@ void Paint::DrawLine(int x0, int y0, int x1, int y1, int colored) {
 
     while((x0 != x1) && (y0 != y1)) {
         DrawPixel(x0, y0 , colored);
-        if (2 * err >= dy) {     
+        if (2 * err >= dy) {
             err += dy;
             x0 += sx;
         }
         if (2 * err <= dx) {
-            err += dx; 
+            err += dx;
             y0 += sy;
         }
     }
@@ -234,7 +235,7 @@ void Paint::DrawRectangle(int x0, int y0, int x1, int y1, int colored) {
     max_x = x1 > x0 ? x1 : x0;
     min_y = y1 > y0 ? y0 : y1;
     max_y = y1 > y0 ? y1 : y0;
-    
+
     DrawHorizontalLine(min_x, min_y, max_x - min_x + 1, colored);
     DrawHorizontalLine(min_x, max_y, max_x - min_x + 1, colored);
     DrawVerticalLine(min_x, min_y, max_y - min_y + 1, colored);
@@ -251,9 +252,9 @@ void Paint::DrawFilledRectangle(int x0, int y0, int x1, int y1, int colored) {
     max_x = x1 > x0 ? x1 : x0;
     min_y = y1 > y0 ? y0 : y1;
     max_y = y1 > y0 ? y1 : y0;
-    
+
     for (i = min_x; i <= max_x; i++) {
-      DrawVerticalLine(i, min_y, max_y - min_y + 1, colored);
+        DrawVerticalLine(i, min_y, max_y - min_y + 1, colored);
     }
 }
 
@@ -276,7 +277,7 @@ void Paint::DrawCircle(int x, int y, int radius, int colored) {
         if (e2 <= y_pos) {
             err += ++y_pos * 2 + 1;
             if(-x_pos == y_pos && e2 <= x_pos) {
-              e2 = 0;
+                e2 = 0;
             }
         }
         if (e2 > x_pos) {
