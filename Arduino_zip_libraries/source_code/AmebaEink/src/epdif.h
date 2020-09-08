@@ -55,8 +55,6 @@ class EpdIf {
 public:
     EpdIf(void);
     ~EpdIf(void);
-    //////// Internal Functions ////////
-
     void EPD_Dis_Part(
         unsigned int x_start,
         unsigned int y_start,
@@ -81,12 +79,6 @@ public:
     void EPD_Sleep(void);
 
 private:
-    // unsigned int reset_pin;
-    // unsigned int dc_pin;
-    // unsigned int cs_pin;
-    // unsigned int busy_pin;
-    // const unsigned char* lut;
-
     // Driver
     void driver_delay_us(unsigned int xus);
     void driver_delay_xms(unsigned long xms);

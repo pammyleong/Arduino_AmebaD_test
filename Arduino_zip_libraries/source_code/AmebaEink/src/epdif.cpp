@@ -390,7 +390,7 @@ void EpdIf::EPD_Dis_Part(
     EPD_Part_Init();
     delay(10); 
 
-    if (datas == NULL || x_start < 0 || y_start < 0 || PART_COLUMN < 0 || PART_LINE < 0) {
+    if (datas == NULL) {
         return;
     }
 
@@ -430,7 +430,7 @@ void EpdIf::EPD_Dis_Part(
 
     SendCommand(WRITE_RAM);  //Write Black and White image to RAM
                              /* send the image data */
-    for (int i = 0; i < PART_COLUMN * PART_LINE / 8; i++) {
+    for (unsigned int i = 0; i < PART_COLUMN * PART_LINE / 8; i++) {
         SendData(pgm_read_byte(&datas[i]));
     }
 }

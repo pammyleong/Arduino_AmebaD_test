@@ -1,8 +1,8 @@
 #include <avr/pgmspace.h>
-#include "image.h"
-#include "epdif.h"
 
+#include "epdif.h"
 #include "epdpaint.h"
+#include "image.h"
 #include "qrcode.h"
 
 #define COLORED           0
@@ -23,10 +23,9 @@ void setup() {
 }
 
 void loop() {
-    EPD.EPD_HW_Init();              // Electronic paper initialization
-    EPD.EPD_WhiteScreen_White();    // Display whole screen in white
+    EPD.EPD_SetRAMValue_BaseMap(gImage_basemapNA);
     PrintQRCode("https://www.amebaiot.com/en/ameba-arduino-summary/");
-    while (1);
+    EPD.EPD_Sleep();
 }
 
 void PrintQRCode(const char * url){
@@ -51,6 +50,7 @@ void PrintQRCode(const char * url){
             }
         }
     }
-    EPD.EPD_WhiteScreen_White();      // Display whole screen in white
+    EPD.EPD_ClearScreen_White();  // Display whole screen in white
     EPD.EPD_Dis_Part(30, 200, paint.GetImage(), paint.GetWidth(), paint.GetHeight());
+    EPD.EPD_UpdateDisplay();
 }

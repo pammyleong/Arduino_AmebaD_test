@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-AmebaEink               KEYWORD1
+AmebaEink                   KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

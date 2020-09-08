@@ -1,5 +1,5 @@
-#include "image.h"
 #include "epdif.h"
+#include "image.h"
 
 EpdIf EPD;
 
@@ -13,10 +13,9 @@ void setup() {
 }
 
 void loop() {
-    EPD.EPD_HW_Init();          // Electronic paper initialization
-    DisplayImage();             // Display an image
-    DisplayQRCode();            // Displays QR codes every 4-5 sec
-    DisplayGIF();               // Display a 3 frame GIF
+    DisplayImage();   // Display an image
+    DisplayQRCode();  // Displays QR codes every 4-5 sec
+    DisplayGIF();     // Display a 3 frame GIF
 }
 
 void DisplayImage(void) {
@@ -38,11 +37,13 @@ void DisplayQRCode(void) {
 
 void DisplayGIF(void) {
     EPD.EPD_SetRAMValue_BaseMap(gImage_basemapNA);
-    EPD.EPD_Part_Init();                              // Local refresh initialization
     delay(100);
     for (int i = 0; i < 5; i++) {
         EPD.EPD_Dis_Part(20, 200, gImage_f1, 128, 64);  // x,y,DATA,resolution 128 x 64
+        EPD.EPD_UpdateDisplay();
         EPD.EPD_Dis_Part(20, 200, gImage_f2, 128, 64);  // x,y,DATA,resolution 128 x 64
+        EPD.EPD_UpdateDisplay();
         EPD.EPD_Dis_Part(20, 200, gImage_f3, 128, 64);  // x,y,DATA,resolution 128 x 64
+        EPD.EPD_UpdateDisplay();
     }
 }
