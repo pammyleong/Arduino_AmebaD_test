@@ -1,2 +1,2 @@
-# Arduino_AmebaD_test
+# Arduino_Ameba_SDK_test
 #test1
