@@ -11,6 +11,7 @@ void alc5680_i2c_init(void);
 u8 alc5680_reg_read_16(u32 reg, u16* val);
 u8 alc5680_reg_read_32(u32 reg, u32* val);
 u8 alc5680_reg_write_32(u32 reg, u32 val);
+u8 alc5680_reg_write_16b(u32 reg, u16 val);
 
 void alc5680_get_info(unsigned char *buffer);
 void alc5680_handler_function(unsigned char *buffer,int len,unsigned int index);

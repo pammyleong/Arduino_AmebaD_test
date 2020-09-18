@@ -3,6 +3,13 @@
 
 #define MP3_MAX_SAMPLES_PER_FRAME (1152*2)
 
+#include <stdio.h>
+#include <stdint.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+
+
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
 #endif

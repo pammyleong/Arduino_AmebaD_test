@@ -41,7 +41,7 @@ struct v4l2_fh {
 
 	/* Events */
 	//wait_queue_head_t	wait;
-	_Sema			wait;
+	Sema			wait;
 	struct list_head	subscribed; /* Subscribed events */
 	struct list_head	available; /* Dequeueable event */
 	unsigned int		navailable;

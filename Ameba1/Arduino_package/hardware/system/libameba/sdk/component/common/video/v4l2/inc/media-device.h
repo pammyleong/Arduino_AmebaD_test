@@ -79,7 +79,7 @@ struct media_device {
 	spinlock_t lock;
 	/* Serializes graph operations. */
 	//struct mutex graph_mutex;
-	_Mutex graph_mutex;
+	Mutex graph_mutex;
 
 	int (*link_notify)(struct media_link *link, u32 flags, unsigned int notification);
 };

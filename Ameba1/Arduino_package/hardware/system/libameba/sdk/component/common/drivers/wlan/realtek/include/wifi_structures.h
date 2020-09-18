@@ -17,6 +17,12 @@
 #ifndef _WIFI_STRUCTURES_H
 #define _WIFI_STRUCTURES_H
 
+/** @addtogroup nic NIC
+ *  @ingroup    wlan
+ *  @brief      NIC functions
+ *  @{
+ */
+
 //#include <freertos/freertos_service.h>
 #include "wifi_constants.h"
 #include "dlist.h"
@@ -24,7 +30,7 @@
 extern "C" {
 #endif
 
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__)|| defined (__GNUC__)
 #pragma pack(1)
 #endif
 
@@ -35,11 +41,11 @@ typedef struct rtw_ssid {
     unsigned char len;     /**< SSID length */
     unsigned char val[33]; /**< SSID name (AP name)  */
 } rtw_ssid_t;
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__)|| defined (__GNUC__)
 #pragma pack()
 #endif
 
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__)|| defined (__GNUC__)
 #pragma pack(1)
 #endif
 
@@ -49,14 +55,15 @@ typedef struct rtw_ssid {
 typedef struct rtw_mac {
     unsigned char octet[6]; /**< Unique 6-byte MAC address */
 } rtw_mac_t;
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__)|| defined (__GNUC__)
 #pragma pack()
 #endif
 
 /**
   * @brief  The structure is used to describe the setting about SSID,
   *			security type, password and default channel, used to start AP mode.
-  * @note  The data length of string pointed by ssid and password should not exceed 32.
+  * @note  The data length of string pointed by ssid should not exceed 32, 
+  *        and the data length of string pointed by password should not exceed 64.
   */
 typedef struct rtw_ap_info {
 	rtw_ssid_t 			ssid;
@@ -69,7 +76,8 @@ typedef struct rtw_ap_info {
 /**
   * @brief  The structure is used to describe the station mode setting about SSID, 
   *			security type and password, used when connecting to an AP.
-  * @note  The data length of string pointed by ssid and password should not exceed 32.
+  * @note  The data length of string pointed by ssid should not exceed 32, 
+  *        and the data length of string pointed by password should not exceed 64.
   */
 typedef struct rtw_network_info {
 	rtw_ssid_t 			ssid;
@@ -80,7 +88,7 @@ typedef struct rtw_network_info {
 	int					key_id;
 }rtw_network_info_t;
 
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
 #pragma pack(1)
 #endif
 
@@ -97,7 +105,7 @@ typedef struct rtw_scan_result {
     unsigned int                      channel;          /**< Radio channel that the AP beacon was received on                          */
     rtw_802_11_band_t       band;             /**< Radio band                                                                */                                        
 } rtw_scan_result_t;
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
 #pragma pack()
 #endif
 
@@ -111,7 +119,7 @@ typedef struct rtw_scan_handler_result {
 
 } rtw_scan_handler_result_t;
 
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
 #pragma pack(1)
 #endif
 
@@ -126,7 +134,7 @@ typedef struct rtw_wifi_setting {
 	unsigned char 		password[65];
 	unsigned char		key_idx;
 }rtw_wifi_setting_t;
-#if defined(__IAR_SYSTEMS_ICC__)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(__GNUC__)
 #pragma pack()
 #endif
 
@@ -204,12 +212,38 @@ typedef struct ieee80211_frame_info{
 	unsigned char bssid[6];
 	unsigned char encrypt;
 	signed char rssi;
+#if CONFIG_UNSUPPORT_PLCPHDR_RPT
+	rtw_rx_type_t type;
+#endif
 }ieee80211_frame_info_t;
+
+#if CONFIG_UNSUPPORT_PLCPHDR_RPT
+typedef struct rtw_rx_info {
+	unsigned short length;	// length without FCS
+	unsigned char filter;		// 1: HT-20 2T and not LDPC pkt; 2: HT-40 2T and not LDPC pkt; 3: LDPC pkt
+	signed char rssi;	// -128~-1
+	unsigned short channel;	// channel whick this pkt in
+	unsigned char agg:1;		// aggregation pkt or not. If an AMPDU contains only one MPDU then above 'length' is the antual pkt length without FCS, buuut if it contains multiple MPDUs then above 'length' is useless because it cannot tell how many MPDUs are contained and how long is each MPDU.
+	unsigned char mcs:7;		// mcs index
+}rtw_rx_info_t;
+
+struct rtw_plcp_info {
+	struct rtw_plcp_info *prev;
+	struct rtw_plcp_info *next;
+	rtw_rx_info_t rtw_plcp_info;
+};
+
+struct rtw_rx_buffer {
+	struct rtw_plcp_info *head;
+	struct rtw_plcp_info *tail;
+};
+
+#endif
 
 typedef struct {
 	char filter_id;
 	rtw_packet_filter_pattern_t patt;
-	rtw_packet_filter_rule_e rule;
+	rtw_packet_filter_rule_t rule;
 	unsigned char enable;
 }rtw_packet_filter_info_t;
 
@@ -218,8 +252,35 @@ typedef struct rtw_mac_filter_list{
 	unsigned char mac_addr[6];
 }rtw_mac_filter_list_t;
 
+/**
+  * @brief  The structure is copy from structure net_device_stats, used to get statistic by customer.
+  */
+typedef struct rtw_net_device_stats {
+	unsigned long   rx_packets;             /* total packets received       */
+	unsigned long   tx_packets;             /* total packets transmitted    */
+	unsigned long   rx_dropped;             /* no space in  buffers    */
+	unsigned long   tx_dropped;             /* no space available   */
+	unsigned long   rx_bytes;               /* total bytes received         */
+	unsigned long   tx_bytes;               /* total bytes transmitted      */
+}rtw_net_device_stats_t;
+
+/**
+  * @brief  The structure is used to get different retry time packet num.
+  */
+typedef struct rtw_fw_retry_drop {
+	unsigned short   retry_0;             /* no retry packet num      */
+	unsigned short   retry_1;             /* retry 1 time packet num  */
+	unsigned short   retry_2;             /* retry 2 times packet num */
+	unsigned short   retry_3;             /* retry 3 times packet num */
+	unsigned short   retry_4;             /* retry 4 times packet num */
+	unsigned short   retry_drop;          /* drop packet num          */
+	unsigned short   data_ready;          /* used to sync data ready  */
+}rtw_fw_retry_drop_t;
+
 #ifdef	__cplusplus
 }
 #endif
+
+/*\@}*/
 
 #endif /* _WIFI_STRUCTURES_H */

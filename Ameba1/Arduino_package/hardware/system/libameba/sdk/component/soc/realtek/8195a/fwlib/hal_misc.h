@@ -20,6 +20,8 @@
 #define CHIP_ID_8710AM      0xFA
 #define CHIP_ID_SIP         0xF9  
 #define CHIP_ID_COMBO_SIP   0xF8
+#define CHIP_ID_SIP2        0xF7
+#define CHIP_ID_MICO100     0xF1
 
 enum _HAL_RESET_REASON{
 	REASON_DEFAULT_RST = 0,         /**< normal startup by power on */
@@ -28,7 +30,8 @@ enum _HAL_RESET_REASON{
 	REASON_SOFT_WDT_RST,        /**< software watch dog reset, GPIO status won't change */
 	REASON_SOFT_RESTART,        /**< software restart ,system_restart , GPIO status won't change */
 	REASON_DEEP_SLEEP_AWAKE,    /**< wake up from deep-sleep */
-	REASON_EXT_SYS_RST          /**< external system reset */
+	REASON_EXT_SYS_RST,          /**< external system reset */
+	REASON_UNKNOWN,         /**< unknown reset */
 };
 typedef u32 HAL_RESET_REASON;
 
@@ -52,6 +55,5 @@ extern _LONG_CALL_ROM_ int _strcmp(const char *cs, const char *ct);
 
 VOID HalSetResetCause(IN HAL_RESET_REASON reason);
 HAL_RESET_REASON HalGetResetCause(VOID);
-
 
 #endif  //_MISC_H_

@@ -334,7 +334,7 @@ struct vb2_queue {
 	unsigned int			io_modes;
 	unsigned int			io_flags;
 	//struct mutex			*lock;
-	_Mutex				*lock;
+	Mutex				*lock;
 	
 	struct v4l2_fh			*owner;
 
@@ -354,11 +354,10 @@ struct vb2_queue {
 
 	atomic_t			queued_count;
 	struct list_head		done_list;
-	//spinlock_t			done_lock;
-	//_LOCK_T				done_lock;
-	_Mutex					done_lock;
+	spinlock_t			done_lock;
+
 	//wait_queue_head_t		done_wq;
-	_Sema				done_wq;	//counting semaphore 
+	Sema				done_wq;	//counting semaphore 
 	
 	void				*alloc_ctx[VIDEO_MAX_PLANES];
 	unsigned int			plane_sizes[VIDEO_MAX_PLANES];

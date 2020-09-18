@@ -102,7 +102,7 @@ extern u8 g_security_mode;
 extern s32 rtk_sc_init(char *custom_pin_code, struct simple_config_lib_config* config);
 extern int rtl_pre_parse(u8 *mac_addr, u8 *buf, void *userdata, u8 **da, u8 **sa, unsigned int *len);
 extern s32 rtk_start_parse_packet(u8 *da, u8 *sa, s32 len,  void * user_data, void *backup_sc);
-extern s32 softAP_simpleConfig_parse(unsigned char *buf, int len, void *backup_sc_ctx, void *psoftAP_ctx);
+extern SC_softAP_status softAP_simpleConfig_parse(unsigned char *buf, int len, void *backup_sc_ctx, void *psoftAP_ctx);
 extern void rtk_restart_simple_config(void);
 extern void rtk_sc_deinit();
 extern void wifi_enter_promisc_mode();

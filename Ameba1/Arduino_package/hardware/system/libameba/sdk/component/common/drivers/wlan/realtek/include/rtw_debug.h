@@ -1,22 +1,12 @@
 /******************************************************************************
- *
- * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of version 2 of the GNU General Public License as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
- *
- *
- ******************************************************************************/
+  *
+  * This module is a confidential and proprietary property of RealTek and
+  * possession or use of this module requires written permission of RealTek.
+  *
+  * Copyright(c) 2016, Realtek Semiconductor Corporation. All rights reserved. 
+  *
+******************************************************************************/
+
 #ifndef __RTW_DEBUG_H__
 #define __RTW_DEBUG_H__
 
@@ -151,6 +141,10 @@
 extern void rtl871x_cedbg(const char *fmt, ...);
 #endif
 
+extern u32 GlobalDebugEnable;
+extern u8 GlobalPrivateLog;
+extern u16 GlobalDebugLevel;
+
 #define RT_TRACE(_Comp, _Level, Fmt) do{}while(0)
 #define _func_enter_ do{}while(0)
 #define _func_exit_ do{}while(0)
@@ -166,6 +160,11 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 	#define MSG_8192C(x, ...) do {} while(0)
 	#define DBG_8192C(x,...) do {} while(0)
 	#define DBG_871X_LEVEL(x,...) do {} while(0)
+#endif
+
+#ifdef CONFIG_BT_COEXIST
+	#define RTW_INFO(x,...) do {} while (0)
+	#define RTW_DBG_DUMP(_TitleString, _HexData, _HexDataLen) do {} while (0)
 #endif
 
 #undef	_dbgdump
@@ -191,26 +190,32 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 #define DRIVER_PREFIX	"RTL871X: "
 #endif
 
-#define DEBUG_LEVEL	(_drv_err_)
 #if 	defined (_dbgdump)
 	#undef DBG_871X_LEVEL
-#if defined (__ICCARM__) || defined (__CC_ARM) || defined(CONFIG_PLATFORM_8195A) || defined(CONFIG_PLATFORM_8711B)
+#if defined (__ICCARM__) || defined (__CC_ARM) ||defined(__GNUC__)
 	#define DBG_871X_LEVEL(level, ...)     \
 	do {\
-		_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
+		if(GlobalDebugEnable){\
+			if (level <= GlobalDebugLevel) {\
+				_dbgdump(DRIVER_PREFIX __VA_ARGS__);\
+			}\
+		}\
 	}while(0)
 #else
 	#define DBG_871X_LEVEL(level, fmt, arg...)     \
 	do {\
-		if (level <= DEBUG_LEVEL) {\
-			if (level <= _drv_err_ && level > _drv_always_) {\
-				_dbgdump(DRIVER_PREFIX"ERROR " fmt, ##arg);\
-			} \
-			else {\
-				_dbgdump(DRIVER_PREFIX fmt, ##arg);\
-			} \
+		if(GlobalDebugEnable){\
+			if (level <= GlobalDebugLevel) {\
+				if (level <= _drv_err_ && level > _drv_always_) {\
+					_dbgdump(DRIVER_PREFIX"ERROR " fmt, ##arg);\
+				} \
+				else {\
+					_dbgdump(DRIVER_PREFIX fmt, ##arg);\
+				} \
+			}\
 		}\
 	}while(0)
+
 #endif	//#ifdef __CC_ARM
 #endif
 
@@ -235,7 +240,7 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 
 #ifdef CONFIG_DEBUG_RTL871X
 #ifndef _RTL871X_DEBUG_C_
-	extern u32 GlobalDebugLevel;
+	extern u16 GlobalDebugLevel;
 	extern u64 GlobalDebugComponents;
 #endif
 

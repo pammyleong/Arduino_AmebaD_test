@@ -94,7 +94,7 @@ struct stream_context
 	struct codec_info *codec;
 	u8 media_type;
 	u8 framerate;
-	u32 bitrate;
+        u32 bitrate;
 	u32 samplerate;
 	u32 channel;
 	struct rtp_statistics statistics;

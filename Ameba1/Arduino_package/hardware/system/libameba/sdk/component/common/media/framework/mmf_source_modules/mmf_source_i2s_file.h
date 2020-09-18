@@ -10,8 +10,8 @@
 #include "lwip/netif.h"
 
 #include "i2s_api.h"
-#include "alc5651.c"        
-#include "g711_codec.h"
+#include "alc5651.h"        
+#include "g711\g711_codec.h"
 #include "gpio_api.h"   // mbed
 #include "gpio_irq_api.h"
 

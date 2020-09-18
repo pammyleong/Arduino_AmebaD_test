@@ -153,95 +153,9 @@ extern void uart_at_send_buf(u8 *buf, u32 len);
 			/*uart_at_unlock();*/\
 	}while(0)
 
-#elif CONFIG_EXAMPLE_SPI_ATCMD
-
-#include "wifi_structures.h"
-#include <wlan_fast_connect/example_wlan_fast_connect.h>
-
-typedef struct _SPI_LOG_CONF_{
-    int frequency;
-    int bits;
-    int mode;
-}SPI_LOG_CONF, *PSPI_LOG_CONF;
-
-#define ATCMD_WIFI_CONN_STORE_MAX_NUM (1)
-struct atcmd_wifi_conf{
-	int32_t auto_enable;
-	rtw_wifi_setting_t setting;
-	int32_t reconn_num;
-	int32_t reconn_last_index;	
-	struct wlan_fast_reconnect reconn[ATCMD_WIFI_CONN_STORE_MAX_NUM];
-};
-
-#define ATCMD_LWIP_CONN_STORE_MAX_NUM (1)
-struct atcmd_lwip_conn_info{
-	int32_t role; //client, server or seed
-	uint32_t protocol; //tcp or udp
-	uint32_t remote_addr; //remote ip
-	uint32_t remote_port; //remote port
-	uint32_t local_addr; //locale ip, not used yet
-	uint32_t local_port; //locale port, not used yet
-	uint32_t reserved; //reserve for further use
-};
-struct atcmd_lwip_conf {
-	int32_t enable; //enable or not
-	int32_t conn_num;
-	int32_t last_index;
-	int32_t reserved; //reserve for further use
-	struct atcmd_lwip_conn_info conn[ATCMD_LWIP_CONN_STORE_MAX_NUM];
-};
-
-typedef enum {
-	AT_PARTITION_ALL = 0,
-	AT_PARTITION_SPI = 1,
-	AT_PARTITION_WIFI = 2,
-	AT_PARTITION_LWIP = 3
-} AT_PARTITION;
-
-typedef enum {
-	AT_PARTITION_READ = 0,
-	AT_PARTITION_WRITE = 1,
-	AT_PARTITION_ERASE = 2
-} AT_PARTITION_OP;
-
-//first segment for uart
-#define SPI_SETTING_BACKUP_SECTOR		(0x8000)
-#define SPI_CONF_DATA_OFFSET			(0)
-#define SPI_CONF_DATA_SIZE				((((sizeof(SPI_LOG_CONF)-1)>>2) + 1)<<2)
-
-//second segment for wifi config
-#define WIFI_CONF_DATA_OFFSET			(SPI_CONF_DATA_OFFSET+SPI_CONF_DATA_SIZE)
-#define WIFI_CONF_DATA_SIZE				((((sizeof(struct atcmd_wifi_conf)-1)>>2) + 1)<<2)
-
-//fouth segment for lwip config
-#define LWIP_CONF_DATA_OFFSET			(WIFI_CONF_DATA_OFFSET+WIFI_CONF_DATA_SIZE)
-#define LWIP_CONF_DATA_SIZE				((((sizeof(struct atcmd_lwip_conf)-1)>>2) + 1)<<2)
-
-extern void atcmd_update_partition_info(AT_PARTITION id, AT_PARTITION_OP ops, u8 *data, u16 len);
-
-#define ATSTRING_LEN 	(LOG_SERVICE_BUFLEN)
-extern char at_string[ATSTRING_LEN];
-
-extern void spi_at_send_string(char *str);
-extern void spi_at_send_buf(u8 *buf, u32 len);
-
-#define at_printf(fmt, args...)  do{\
-			/*spi_at_lock();*/\
-			snprintf(at_string, ATSTRING_LEN, fmt, ##args); \
-			spi_at_send_string(at_string);\
-			/*spi_at_unlock();*/\
-	}while(0)
-#define at_print_data(data, size)  do{\
-			/*spi_at_lock();*/\
-			spi_at_send_buf(data, size);\
-			/*spi_at_unlock();*/\
-	}while(0)
-
-#else // #elif CONFIG_EXAMPLE_SPI_ATCMD
-
+#else
 #define at_printf(fmt, args...) do{printf(fmt, ##args);}while(0)
 #define at_print_data(data, size) do{__rtl_memDump(data, size, NULL);}while(0)
-
 #endif//#if CONFIG_EXAMPLE_UART_ATCMD
 
 #endif

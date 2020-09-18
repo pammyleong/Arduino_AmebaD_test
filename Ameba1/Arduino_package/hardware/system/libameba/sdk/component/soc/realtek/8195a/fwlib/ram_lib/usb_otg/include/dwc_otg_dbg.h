@@ -31,7 +31,7 @@
 #define __DWC_OTG_DBG_H__
 #include "section_config.h"
 
-//#define OTGDEBUG    1
+#define OTGDEBUG    1
 #define VERBOSE     1
 
 /** @file
@@ -46,7 +46,7 @@ extern uint32_t g_dbg_lvl;
 /**
  * Set the Debug Level variable.
  */
-extern _LONG_CALL_ uint32_t SET_DEBUG_LEVEL(const uint32_t new_level);
+extern _LONG_CALL_ uint32_t SET_DEBUG_LEVEL(const uint32_t new);
 
 /** When debug level has the DBG_CIL bit set, display CIL Debug messages. */
 #define DBG_CIL		(0x2)

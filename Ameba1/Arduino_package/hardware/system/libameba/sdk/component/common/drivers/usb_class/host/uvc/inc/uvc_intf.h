@@ -18,7 +18,26 @@ struct uvc_context
       int compression_ratio;//compression format video compression ratio
 };
 
-#define USER_CTRL_SATURATION  1
+#define USER_CTRL_BRIGHTNESS  0
+#define USER_CTRL_CONTRAST    1
+#define USER_CTRL_SATURATION  2
+#define USER_CTRL_HUE         3
+#define USER_CTRL_AUTO_WHITE_BALANCE    12
+#define USER_CTRL_DO_WHITE_BALANCE      13
+#define USER_CTRL_RED_BALANCE           14
+#define USER_CTRL_BLUE_BALANCE          15
+#define USER_CTRL_GAMMA                 16
+#define USER_CTRL_EXPOSURE              17
+#define USER_CTRL_AUTOGAIN              18
+#define USER_CTRL_GAIN                  19
+#define USER_CTRL_HFLIP                 20
+#define USER_CTRL_VFLIP                 21
+#define USER_CTRL_POWER_LINE_FREQUENCY  24
+#define USER_CTRL_HUE_AUTO              25
+#define USER_CTRL_WHITE_BALANCE_TEMPERATURE     26
+#define USER_CTRL_SHARPNESS             27
+#define USER_CTRL_BACKLIGHT_COMPENSATION        28
+
 
 struct uvc_user_ctrl
 {

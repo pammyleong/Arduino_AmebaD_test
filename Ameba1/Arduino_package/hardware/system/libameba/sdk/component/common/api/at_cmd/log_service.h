@@ -67,6 +67,7 @@
 #define AT_FLAG_LWIP        AT_BIT(7)
 #define AT_FLAG_COMMON      AT_BIT(8)
 #define AT_FLAG_WIFI        AT_BIT(9)
+#define AT_FLAG_RDP         AT_BIT(10)
 
 enum{
 	AT_DBG_OFF = 0,
@@ -79,21 +80,25 @@ enum{
 extern unsigned char  gDbgLevel;
 extern unsigned int   gDbgFlag;
 
-#define AT_PRINTK(fmt, args...)	printf(fmt"\r\n",## args)
-#define _AT_PRINTK(fmt, args...)	printf(fmt,## args)
-#define AT_DBG_MSG(flag, level, fmt, args...)					\
+#define AT_PRINTK(...)			\
+		do{							\
+			printf(__VA_ARGS__); 	\
+			printf("\r\n");			\
+		}while(0)
+#define _AT_PRINTK(...)	printf(__VA_ARGS__)
+#define AT_DBG_MSG(flag, level, ...)					\
 		do{														\
 			if(((flag) & gDbgFlag) && (level <= gDbgLevel)){	\
-				AT_PRINTK(fmt,## args);							\
+				AT_PRINTK(__VA_ARGS__);							\
 			}													\
 		}while(0)
-#define _AT_DBG_MSG(flag, level, fmt, args...)					\
+#define _AT_DBG_MSG(flag, level, ...)					\
 		do{														\
 			if(((flag) & gDbgFlag) && (level <= gDbgLevel)){	\
-				_AT_PRINTK(fmt,## args);							\
+				_AT_PRINTK(__VA_ARGS__);						\
 			}													\
 		}while(0)
-		
+
 #ifndef SUPPORT_INTERACTIVE_MODE
 #define SUPPORT_INTERACTIVE_MODE	0
 #endif //#ifndef SUPPORT_INTERACTIVE_MODE

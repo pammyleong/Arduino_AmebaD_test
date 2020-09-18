@@ -1,7 +1,6 @@
 #ifndef _EXCHBUF_H
 #define _EXCHBUF_H
 #include "cmsis_os.h"
-#include "errno.h"
 
 /*service task state*/
 #define S_STOP 					0x00
@@ -30,6 +29,8 @@
 #define CMD_SET_TASK_FROZEN             0x25
 #define CMD_SET_TASK_OFF                0x26
 #define CMD_SELECT_CHANNEL		0x30
+#define CMD_ENABLE_CHANNEL              0X31
+#define CMD_DISABLE_CHANNEL             0x32
 #define CMD_SET_CB_START		0x40
 #define CMD_SET_CB_STOP			0x41
 #define CMD_SET_CB_PAUSE		0x42
@@ -39,18 +40,6 @@
 #define CMD_GET_STREAM_READY            0x52
 #define CMD_GET_STREAM_STATUS           0x53
 
-/*mp4 storage*/
-#define CMD_SET_ST_PERIOD               0X60
-#define CMD_SET_ST_TOTAL                0X61
-#define CMD_SET_ST_TYPE                 0X62
-#define CMD_SET_ST_FILENAME             0x63
-#define CMD_SET_ST_START                0x64
-/*mp4 storage*/
-#define STORAGE_ALL     0
-#define STORAGE_VIDEO   1
-#define STORAGE_AUDIO   2
-
-/*exchange buffer state*/
 #define STAT_INIT		0
 #define STAT_USED		1
 #define STAT_READY		2
@@ -66,6 +55,17 @@
 #define FMT_A_PCMA			0x11
 #define FMT_A_MP4A_LATM		0x12
 #define FMT_AV_UNKNOWN		0xFF
+
+/*mp4 storage*/
+#define CMD_SET_ST_PERIOD               0X60
+#define CMD_SET_ST_TOTAL                0X61
+#define CMD_SET_ST_TYPE                 0X62
+#define CMD_SET_ST_FILENAME             0x63
+#define CMD_SET_ST_START                0x64
+/*mp4 storage*/
+#define STORAGE_ALL     0
+#define STORAGE_VIDEO   1
+#define STORAGE_AUDIO   2
 
 #define MFT_CMD	0
 #define MFT_DATA 1
@@ -86,4 +86,26 @@ typedef struct _exch_buf{
 }exch_buf_t;
 
 typedef int (*mmf_cb_t)(void*);
+
+/* common error code for MMF */
+#define EAGAIN          11
+#define	EFAULT          14
+#define	EINVAL          22
+
+#ifndef ON
+#define   ON        1
+#endif
+
+#ifndef OFF
+#define   OFF       0
+#endif
+
+#ifndef ENABLE
+#define   ENABLE    1
+#endif
+
+#ifndef DISABLE
+#define   DISABLE   0
+#endif
+
 #endif

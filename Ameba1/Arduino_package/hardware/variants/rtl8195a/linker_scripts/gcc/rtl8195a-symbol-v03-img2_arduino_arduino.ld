@@ -33,10 +33,13 @@ SECTIONS
 
 /*  Add . to assign the start address of the section,                                     * 
   *  to prevent the change of the start address by ld doing section alignment */  
+
+
+/* these 4 sections is used by ROM global variable */
+  	/* Don't move them and never add RAM code variable to these sections */
+/*
   .ram_image1.text . :
   {
-  	/* these 4 sections is used by ROM global variable */
-  	/* Don't move them and never add RAM code variable to these sections */
     __image1_validate_code__ = .;
     KEEP(*(.image1.validate.rodata*))
     KEEP(*(.infra.ram.data*))
@@ -149,14 +152,16 @@ SECTIONS
     *(.fwu.text*)
     *(.otg.rom.text*)
     *(.text*)
+    *(.wlan.text*)
   } > BD_RAM
 
   .ram.data : 
   {
     __data_start__ = .;
     *(.data*)
-    __data_end__ = .;
+    *(.wlan.data*)
     . = ALIGN(4);
+    __data_end__ = .;
     __ram_image2_text_end__ = .;    
   } > BD_RAM
   
@@ -169,7 +174,9 @@ SECTIONS
     *(.hal.gpio.data*)
     *(.fwu.data*)
     *(.bss*)
+    *(.wlan.bss*)
     *(COMMON)
+    *(.wlan.bdsram.data*)
     *(.bdsram.data*)
     __bss_end__ = .;
     .ram.bss$$Limit = .;

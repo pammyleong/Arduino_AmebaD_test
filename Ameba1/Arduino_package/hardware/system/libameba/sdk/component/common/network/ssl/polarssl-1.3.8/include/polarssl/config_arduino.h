@@ -2156,9 +2156,7 @@
 //#define SSL_DEFAULT_TICKET_LIFETIME     86400 /**< Lifetime of session tickets (if enabled) */
 //#define POLARSSL_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default 256 bits) */
 
-/* Realteck Ameba HW Crypto */
-#define RTL_HW_CRYPTO
-#define SUPPORT_HW_SW_CRYPTO
+
 #define RTL_CRYPTO_FRAGMENT               15360 /* 15*1024 < 16000 */
 
 /**

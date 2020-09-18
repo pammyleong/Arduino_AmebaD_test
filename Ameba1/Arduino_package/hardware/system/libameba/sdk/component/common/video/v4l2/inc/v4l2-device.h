@@ -55,8 +55,8 @@ struct v4l2_device {
 	struct list_head subdevs;
 	/* lock this struct; can be used by the driver as well if this
 	   struct is embedded into a larger struct. */
-	//spinlock_t lock;
-	_Lock lock;
+	spinlock_t lock;
+
 	/* unique device name, by default the driver name + bus ID */
 	char name[V4L2_DEVICE_NAME_SIZE];
 	/* notify callback called by some sub-devices. */
@@ -67,7 +67,7 @@ struct v4l2_device {
 	struct v4l2_prio_state prio;
 	/* BKL replacement mutex. Temporary solution only. */
 	//struct mutex ioctl_lock;
-	_Mutex ioctl_lock;
+	Mutex ioctl_lock;
 	/* Keep track of the references to this struct. */
 	//struct kref ref;
 	unsigned long ref;
