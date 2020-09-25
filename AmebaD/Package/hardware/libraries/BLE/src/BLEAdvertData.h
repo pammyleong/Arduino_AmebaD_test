@@ -1,6 +1,7 @@
 #ifndef _BLE_ADVERTDATA_H_
 #define _BLE_ADVERTDATA_H_
 
+#include <Arduino.h>
 #include "BLEAddr.h"
 #include "BLEUUID.h"
 
@@ -20,6 +21,7 @@ class BLEAdvertData {
         BLEAdvertData();
         void clear(void);
         void addData(const uint8_t* data, uint8_t size);      // Advertising data types not included in this class can be added manually using addData
+        uint8_t addFlags();
         uint8_t addFlags(uint8_t flags);
         uint8_t addPartialServices(BLEUUID uuid);
         uint8_t addCompleteServices(BLEUUID uuid);

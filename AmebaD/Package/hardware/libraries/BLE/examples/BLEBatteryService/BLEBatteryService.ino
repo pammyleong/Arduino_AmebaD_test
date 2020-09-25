@@ -1,8 +1,6 @@
 
 #include "BLEDevice.h"
 #include "BLEBatteryService.h"
-#include "BLEAdvert.h"
-#include "BLEUUID.h"
 
 BLEBatteryService battery;
 BLEAdvertData advdata;

@@ -1,6 +1,8 @@
 #ifndef _BLE_BATTSERVICE_H_
 #define _BLE_BATTSERVICE_H_
 
+#include <Arduino.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

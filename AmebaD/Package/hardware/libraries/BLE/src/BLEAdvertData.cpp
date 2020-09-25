@@ -52,6 +52,11 @@ void BLEAdvertData::addData(const uint8_t* data, uint8_t size) {
     }
 }
 
+// Use default flags values for RTL8722
+uint8_t BLEAdvertData::addFlags() {
+    return addFlags(GAP_ADTYPE_FLAGS_LIMITED | GAP_ADTYPE_FLAGS_BREDR_NOT_SUPPORTED);
+}
+
 // Valid flags for advertising
 // GAP_ADTYPE_FLAGS_LIMITED                            0x01 //!< Discovery Mode: LE Limited Discoverable Mode
 // GAP_ADTYPE_FLAGS_GENERAL                            0x02 //!< Discovery Mode: LE General Discoverable Mode

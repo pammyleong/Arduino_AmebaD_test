@@ -1,6 +1,7 @@
 #ifndef _BLE_ADVERT_H_
 #define _BLE_ADVERT_H_
 
+#include <Arduino.h>
 #include "BLEUUID.h"
 #include "BLEAdvertData.h"
 
