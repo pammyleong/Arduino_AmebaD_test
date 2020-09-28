@@ -160,6 +160,10 @@ void BLECharacteristic::indicate(uint8_t conn_id) {
 }
 
 //--------- Write Char Value --------//
+bool BLECharacteristic::writeString(String str) {
+    return writeData(str.c_str());
+}
+
 bool BLECharacteristic::writeData(const char* str) {
     return setData((uint8_t*) str, strlen(str));
 }

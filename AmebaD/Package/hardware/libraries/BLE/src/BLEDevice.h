@@ -36,15 +36,14 @@ class BLEDevice {
         BLEDevice();
         void init();
         void deinit();
-        //bool connected();
-        bool connected(uint8_t connId);
+        bool connected(uint8_t connId = 0);
         void setDeviceName(String devName);
         void setDeviceAppearance(uint16_t devAppearance);
         BLEAdvert* configAdvert();
         BLEScan* configScan();
         BLEConnect* configConnection();
         void setScanCallback(void (*scanCB)(T_LE_CB_DATA*));
-        void beginCentral(uint8_t connCount);
+        void beginCentral(uint8_t connCount = 3);
         void beginPeripheral();
         void end();
         void configServer(uint8_t maxServiceCount);

@@ -46,11 +46,9 @@ class BLECharacteristic {
         uint16_t getDataLen();
         void notify(uint8_t conn_id);          // Send a notification to a client that has enabled notifications
         void indicate(uint8_t conn_id);        // Send a notification requiring ack to a client that has enable indications
-        // Figure out how to wait and confirm indication?
-        // need to check if possible to retrieve per connection notification setting
-        // Possibility of sending data updates  & notifications to multiple connected clients at once?
 
         //--------- Write Char Value --------//
+        bool writeString(String str);
         bool writeData(const char* str);
         bool writeData8(uint8_t num);
         bool writeData16(uint16_t num);

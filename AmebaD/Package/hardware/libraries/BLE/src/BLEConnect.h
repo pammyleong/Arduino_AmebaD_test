@@ -22,7 +22,7 @@ class BLEConnect {
         bool connect(uint8_t (&btAddr)[6], T_GAP_REMOTE_ADDR_TYPE destAddrType, uint16_t scanTimeout);
         bool connect(BLEAdvertData targetDevice, uint16_t scanTimeout);
         bool connect(BLEAddr destAddr, T_GAP_REMOTE_ADDR_TYPE destAddrType, uint16_t scanTimeout);
-        bool disconnect(uint8_t connId);
+        bool disconnect(uint8_t connId = 0);
 
         void setScanInterval(uint16_t scanInt_ms);
         void setScanWindow(uint16_t scanWindow_ms);
