@@ -37,11 +37,13 @@ extern "C" {
 
 BLEDevice BLE;
 
+uint8_t BLEDevice::_bleState = 0;
 BLEAdvert* BLEDevice::_pBLEAdvert = nullptr;
 BLEScan* BLEDevice::_pBLEScan = nullptr;
 void (*BLEDevice::_pScanCB)(T_LE_CB_DATA*) = nullptr;
 BLEConnect* BLEDevice::_pBLEConn = nullptr;
-uint8_t BLEDevice::_bleState = 0;
+BLEService* BLEDevice::_servicePtrList[BLE_MAX_SERVICE_COUNT] = {};
+uint8_t BLEDevice::_serviceCount = 0;
 void *BLEDevice::_appTaskHandle = NULL;   //!< main task handle
 void *BLEDevice::_evtQueueHandle = NULL;  //!< Event queue handle
 void *BLEDevice::_ioQueueHandle = NULL;   //!< IO queue handle
@@ -184,10 +186,6 @@ void BLEDevice::beginCentral(uint8_t connCount) {
     le_register_app_cb(gapCallbackDefault);
     if (BTDEBUG) printf("GAP cb reg\r\n");
 
-    // register clients and callbacks
-    client_register_general_client_cb(appClientCallbackDefault);
-    //ble_central_gcs_client_id = gcs_add_client(ble_central_gcs_client_callback, BLE_CENTRAL_APP_MAX_LINKS, BLE_CENTRAL_APP_MAX_DISCOV_TABLE_NUM);
-
     // start BLE main task to handle IO and GAP msg
     os_task_create(&_appTaskHandle, "BLE_Central_Task", BLEMainTask, 0, 256*6, 1);
     if (BTDEBUG) printf("Task create\r\n");
@@ -217,7 +215,7 @@ void BLEDevice::beginPeripheral() {
     } else {
         _bleState = 1;
     }
-    uint8_t  slave_init_mtu_req = false;
+    uint8_t  slave_init_mtu_req = true;
 
     gap_config_max_le_link_num(1);
     le_gap_init(1);
@@ -236,9 +234,6 @@ void BLEDevice::beginPeripheral() {
     // register callback to handle app GAP message
     le_register_app_cb(gapCallbackDefault);
     if (BTDEBUG) printf("GAP cb reg\r\n");
-
-    // register services and callbacks
-    server_register_app_cb(appProfileCallbackDefault);
 
     // start BLE main task to handle IO and GAP msg
     os_task_create(&_appTaskHandle, "BLE_Peripheral_Task", BLEMainTask, 0, 256*4, 1);
@@ -269,7 +264,18 @@ void BLEDevice::end() {
     }
 
     // disconnect current devices
-    // app task deinit
+    uint8_t connId;
+    for (connId = 0; connId < BLE_CENTRAL_APP_MAX_LINKS; connId++) {
+        if (_bleCentralAppLinkTable[connId].conn_state == GAP_CONN_STATE_CONNECTED) {
+            le_disconnect(connId);
+        }
+    }
+
+    // delete all existing services
+    for (connId = 0; connId < BLE_MAX_SERVICE_COUNT; connId++) {
+        _servicePtrList[connId] = nullptr;
+    }
+
     // check advertising state and stop advertising
     le_get_gap_param(GAP_PARAM_DEV_STATE , &new_state);
     if (new_state.gap_adv_state != GAP_ADV_STATE_IDLE) {
@@ -282,6 +288,7 @@ void BLEDevice::end() {
         le_scan_stop();
     }
 
+    // app task deinit
     if (_ioQueueHandle) {
         os_msg_queue_delete(_ioQueueHandle);
     }
@@ -305,21 +312,39 @@ void BLEDevice::end() {
         delete _pBLEScan;
         _pBLEScan = nullptr;
     }
+    if (_pBLEConn != nullptr) {
+        delete _pBLEConn;
+        _pBLEConn = nullptr;
+    }
 }
 
-void BLEDevice::configServer(uint8_t serviceCount) {
-    if (serviceCount <= 5) {
-        server_init(serviceCount);
+void BLEDevice::configServer(uint8_t maxServiceCount) {
+    if (maxServiceCount <= BLE_MAX_SERVICE_COUNT) {
+        server_init(maxServiceCount);
+        // register default service callback
+        server_register_app_cb(appServiceCallbackDefault);
     } else {
         printf("Too many services \r\n");
     }
 }
 
-void BLEDevice::configClient(uint8_t clientCount) {
-    if (clientCount <= 5) {
-        client_init(clientCount);
+void BLEDevice::configClient() {
+        client_init(BLE_CENTRAL_APP_MAX_LINKS);
+        // register default client callback
+        client_register_general_client_cb(appClientCallbackDefault);
+}
+
+void BLEDevice::addService(BLEService& newService) {
+    if (_serviceCount < (BLE_MAX_SERVICE_COUNT)) {
+        T_SERVER_ID service_id;
+        if (false == server_add_service(&service_id, (uint8_t *)newService.generateServiceAttrTable(), newService._total_attr_count * sizeof(T_ATTRIB_APPL), _serviceCallbacksDefault)) {
+            printf("server_add_service %s failed\n", newService.getUUID().str());
+        } else {
+            _servicePtrList[_serviceCount++] = &newService;
+            newService.setServiceID(service_id);
+        }
     } else {
-        printf("Too many clients \r\n");
+        printf("Maximum number of services reached \n");
     }
 }
 

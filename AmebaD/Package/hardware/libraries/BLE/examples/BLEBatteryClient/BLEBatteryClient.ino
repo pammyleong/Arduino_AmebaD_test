@@ -64,7 +64,7 @@ void setup() {
     BLE.setScanCallback(scanCB);
     BLE.beginCentral(1);
 
-    BLE.configClient(1);
+    BLE.configClient();
     battClient.addClient(1);
     battClient.setDiscoveryCallback(discoveryCB);
     battClient.setNotificationCallback(notificationCB);

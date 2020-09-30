@@ -36,6 +36,8 @@ extern "C" {
 }
 #endif
 
+//---------------------------- Default handlers for core BLE functionality ----------------------------//
+
 T_APP_RESULT BLEDevice::gapCallbackDefault(uint8_t cb_type, void *p_cb_data) {
     T_APP_RESULT result = APP_RESULT_SUCCESS;
     T_LE_CB_DATA *p_data = (T_LE_CB_DATA *)p_cb_data;
@@ -211,12 +213,12 @@ void BLEDevice::devStateEvtHandlerPeriphDefault(T_GAP_DEV_STATE new_state, uint1
     if (_gapDevState.gap_adv_state != new_state.gap_adv_state) {
         if (new_state.gap_adv_state == GAP_ADV_STATE_IDLE) {
             if (new_state.gap_adv_sub_state == GAP_ADV_TO_IDLE_CAUSE_CONN) {
-                printf("[BLE Device] GAP adv stopped: because connection created\n\r");
+                printf("[BLE Device] GAP adv stopped: because connection created\r\n");
             } else {
-                printf("[BLE Device] GAP adv stopped\n\r"); 
+                printf("[BLE Device] GAP adv stopped\r\n"); 
             }
         } else if (new_state.gap_adv_state == GAP_ADV_STATE_ADVERTISING) {
-            printf("[BLE Device] GAP adv start\n\r");
+            printf("[BLE Device] GAP adv start\r\n");
         }
     }
     _gapDevState = new_state;
@@ -362,7 +364,11 @@ void BLEDevice::authenStateEvtHandlerDefault(uint8_t conn_id, uint8_t new_state,
     }
 }
 
-T_APP_RESULT BLEDevice::appProfileCallbackDefault(T_SERVER_ID service_id, void *p_data) {
+
+
+//--------------------------------------------------------- Default callbacks for services ---------------------------------------------------------//
+
+T_APP_RESULT BLEDevice::appServiceCallbackDefault(T_SERVER_ID service_id, void *p_data) {
     T_APP_RESULT result = APP_RESULT_SUCCESS;
     if (service_id == SERVICE_PROFILE_GENERAL_ID) {
         T_SERVER_APP_CB_DATA *p_param = (T_SERVER_APP_CB_DATA *)p_data;
@@ -391,6 +397,47 @@ T_APP_RESULT BLEDevice::appProfileCallbackDefault(T_SERVER_ID service_id, void *
     }
     return result;
 }
+
+T_APP_RESULT BLEDevice::serviceAttrReadCallbackDefault(uint8_t conn_id, T_SERVER_ID service_id, uint16_t attrib_index,
+                                                                        uint16_t offset, uint16_t *p_length, uint8_t **pp_value) {
+
+    T_APP_RESULT cause  = APP_RESULT_ATTR_NOT_FOUND;
+    uint8_t i;
+    for (i = 0; i < _serviceCount; i++) {
+        if ((_servicePtrList[i]->getServiceID()) == service_id) {
+            cause = _servicePtrList[i]->serviceAttrReadCallbackDefault(conn_id, service_id, attrib_index, offset, p_length, pp_value);
+            break;
+        }
+    }
+    return (cause);
+}
+
+T_APP_RESULT BLEDevice::serviceAttrWriteCallbackDefault(uint8_t conn_id, T_SERVER_ID service_id, uint16_t attrib_index,
+                                                                        T_WRITE_TYPE write_type, uint16_t length, uint8_t *p_value,
+                                                                        P_FUN_WRITE_IND_POST_PROC *p_write_ind_post_proc) {
+
+    T_APP_RESULT cause = APP_RESULT_ATTR_NOT_FOUND;
+    uint8_t i;
+    for (i = 0; i < _serviceCount; i++) {
+        if ((_servicePtrList[i]->getServiceID()) == service_id) {
+            cause = _servicePtrList[i]->serviceAttrWriteCallbackDefault(conn_id, service_id, attrib_index, write_type, length, p_value, p_write_ind_post_proc);
+            break;
+        }
+    }
+    return cause;
+}
+
+void BLEDevice::serviceCccdUpdateCallbackDefault(uint8_t conn_id, T_SERVER_ID service_id, uint16_t attrib_index, uint16_t ccc_bits) {
+    uint8_t i;
+    for (i = 0; i < _serviceCount; i++) {
+        if ((_servicePtrList[i]->getServiceID()) == service_id) {
+            _servicePtrList[i]->serviceCccdUpdateCallbackDefault(conn_id, service_id, attrib_index, ccc_bits);
+            break;
+        }
+    }
+}
+
+//--------------------------------------------------------- Default callbacks for clients ---------------------------------------------------------//
 
 T_APP_RESULT BLEDevice::appClientCallbackDefault(T_CLIENT_ID client_id, uint8_t conn_id, void *p_data) {
     T_APP_RESULT  result = APP_RESULT_SUCCESS;
