@@ -50,7 +50,8 @@ build.extra_flags=
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
 ### -save-temps
-compiler.c.elf.extra_flags= -Wl,--cref -Wl,--build-id=none -Wl,-wrap,strcat -Wl,-wrap,strchr -Wl,-wrap,strcmp -Wl,-wrap,strncmp -Wl,-wrap,strcpy -Wl,-wrap,strncpy -Wl,-wrap,strlen -Wl,-wrap,strnlen -Wl,-wrap,strncat -Wl,-wrap,strpbrk -Wl,-wrap,strstr -Wl,-wrap,strtok -Wl,-wrap,strsep -Wl,-wrap,strtoll -Wl,-wrap,strtoul -Wl,-wrap,strtoull -Wl,-wrap,atoi -Wl,-wrap,malloc -Wl,-wrap,free -Wl,-wrap,realloc -Wl,-wrap,memcmp -Wl,-wrap,memcpy -Wl,-wrap,memmove -Wl,-wrap,memset -Wl,-wrap,printf -Wl,-wrap,sprintf -Wl,-wrap,snprintf -Wl,--no-enum-size-warning -Wl,--warn-common
+###compiler.c.elf.extra_flags= -Wl,--cref -Wl,--build-id=none -Wl,-wrap,strcat -Wl,-wrap,strchr -Wl,-wrap,strcmp -Wl,-wrap,strncmp -Wl,-wrap,strcpy -Wl,-wrap,strncpy -Wl,-wrap,strlen -Wl,-wrap,strnlen -Wl,-wrap,strncat -Wl,-wrap,strpbrk -Wl,-wrap,strstr -Wl,-wrap,strtok -Wl,-wrap,strsep -Wl,-wrap,strtoll -Wl,-wrap,strtoul -Wl,-wrap,strtoull -Wl,-wrap,atoi -Wl,-wrap,malloc -Wl,-wrap,free -Wl,-wrap,realloc -Wl,-wrap,memcmp -Wl,-wrap,memcpy -Wl,-wrap,memmove -Wl,-wrap,memset -Wl,-wrap,printf -Wl,-wrap,sprintf -Wl,-wrap,snprintf -Wl,--no-enum-size-warning -Wl,--warn-common
+compiler.c.elf.extra_flags= -Wl,--cref -Wl,--build-id=none -Wl,-wrap,strcat -Wl,-wrap,strchr -Wl,-wrap,strcmp -Wl,-wrap,strncmp -Wl,-wrap,strcpy -Wl,-wrap,strncpy -Wl,-wrap,strlen -Wl,-wrap,strnlen -Wl,-wrap,strncat -Wl,-wrap,strpbrk -Wl,-wrap,strstr -Wl,-wrap,strtok -Wl,-wrap,strsep -Wl,-wrap,strtoll -Wl,-wrap,strtoul -Wl,-wrap,strtoull -Wl,-wrap,atoi -Wl,-wrap,malloc -Wl,-wrap,free -Wl,-wrap,realloc -Wl,-wrap,memcmp -Wl,-wrap,memcpy -Wl,-wrap,memmove -Wl,-wrap,memset -Wl,--no-enum-size-warning -Wl,--warn-common
 compiler.cpp.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
