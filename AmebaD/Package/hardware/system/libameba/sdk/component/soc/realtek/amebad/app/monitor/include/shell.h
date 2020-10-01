@@ -78,8 +78,9 @@ typedef struct {
 //#endif
 
 #define AMEBA_CONSOLE_PREFIX	"#"
+// zzw arduino
 #define CONSOLE_AMEBA(...)     do {\
-	_ConsolePrint("\r"AMEBA_CONSOLE_PREFIX __VA_ARGS__);\
+	_ConsolePrint("\r" AMEBA_CONSOLE_PREFIX __VA_ARGS__);\
 }while(0)
 
 _LONG_CALL_ VOID shell_init_rom(u32 TBLSz, VOID *pTBL);
