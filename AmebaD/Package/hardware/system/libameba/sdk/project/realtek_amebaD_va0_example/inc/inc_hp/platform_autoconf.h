@@ -45,11 +45,6 @@
 #undef  CONFIG_TRUSTZONE
 
 /*
- * < CONFIG SBootIMG2 
- */
-#undef  CONFIG_SBootIMG2
-
-/*
  * < CONFIG OS 
  */
 #define CONFIG_KERNEL 1
@@ -126,6 +121,7 @@
 #define CONFIG_WIFI_NORMAL 1
 #undef  CONFIG_WIFI_TEST
 #define CONFIG_WIFI_MODULE 1
+#undef  CONFIG_LWIP_LAYER_OFF
 
 /*
  * < CONFIG NETWORK 
