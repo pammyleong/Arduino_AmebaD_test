@@ -43,13 +43,13 @@ class BLEDevice {
         BLEScan* configScan();
         BLEConnect* configConnection();
         void setScanCallback(void (*scanCB)(T_LE_CB_DATA*));
-        void beginCentral(uint8_t connCount = 3);
+        void beginCentral(uint8_t connCount = BLE_CENTRAL_APP_MAX_LINKS);
         void beginPeripheral();
         void end();
-        void configServer(uint8_t maxServiceCount);
-        void configClient();
-        void addService(BLEService& newService);
         void getLocalAddr(uint8_t (&addr)[GAP_BD_ADDR_LEN]);        // Local address is only avaliable after peripheral or central mode is started
+        void configServer(uint8_t maxServiceCount);
+        void addService(BLEService& newService);
+        void configClient();
 
     private:
         static void BLEMainTask(void *p_param);

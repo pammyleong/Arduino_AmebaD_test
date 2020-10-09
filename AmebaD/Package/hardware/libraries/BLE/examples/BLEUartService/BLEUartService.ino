@@ -13,8 +13,6 @@ BLECharacteristic Tx(CHARACTERISTIC_UUID_TX);
 BLEAdvertData advdata;
 BLEAdvertData scndata;
 bool notify = false;
-char TxRxStrBuf [STRING_BUF_SIZE] = {0};
-uint16_t strlength;
 
 void readCB (BLECharacteristic* chr, uint8_t connID) {
   printf("Characteristic %s read by connection %d \n", chr->getUUID().str(), connID);
@@ -23,9 +21,8 @@ void readCB (BLECharacteristic* chr, uint8_t connID) {
 void writeCB (BLECharacteristic* chr, uint8_t connID) {
   printf("Characteristic %s write by connection %d :\n", chr->getUUID().str(), connID);
   if (chr->getDataLen() > 0) {
-    strlength = chr->getData((uint8_t*)TxRxStrBuf, STRING_BUF_SIZE);
     Serial.print("Received string: ");
-    Serial.write(TxRxStrBuf, strlength);
+    Serial.print(chr->readString());
     Serial.println();
   }
 }
@@ -69,15 +66,11 @@ void setup() {
 }
 
 void loop() {
-  strlength = 0;
-  while ((Serial.available()) && (strlength < STRING_BUF_SIZE)) {
-    TxRxStrBuf[strlength++] = Serial.read();
-  }
-  if (strlength > 0) {
-    Tx.setData((uint8_t*) TxRxStrBuf, strlength);
+  if (Serial.available()) {
+    Tx.writeString(Serial.readString());
     if (BLE.connected(0) && notify) {
       Tx.notify(0);
     }
   }
-  delay(1000);
+  delay(100);
 }
