@@ -31,6 +31,9 @@ extern "C" {
 #include "profile_server.h"
 #include "profile_client.h"
 
+void wifi_btcoex_set_bt_on(void);
+void wifi_btcoex_set_bt_off(void);
+
 #ifdef __cplusplus
 }
 #endif
@@ -275,6 +278,7 @@ void BLEDevice::end() {
     for (connId = 0; connId < BLE_MAX_SERVICE_COUNT; connId++) {
         _servicePtrList[connId] = nullptr;
     }
+    _serviceCount = 0;
 
     // check advertising state and stop advertising
     le_get_gap_param(GAP_PARAM_DEV_STATE , &new_state);

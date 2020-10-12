@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include "BLEUUID.h"
 
-#define MAX_NUM_DESC 5
 #define CHAR_VALUE_MAX_LEN 230
 
 #ifdef __cplusplus
@@ -30,35 +29,36 @@ class BLECharacteristic {
         //------------- Configure -------------//
         void setUUID(BLEUUID uuid);
         BLEUUID getUUID();
+        void setBufferLen(uint16_t max_len);               // Set size of byte array used for containing characteristic data
+        uint16_t getBufferLen();
         void setReadProperty(bool value);
         void setWriteProperty(bool value);
         void setNotifyProperty(bool value);
         void setIndicateProperty(bool value);
         void setProperties(uint8_t value);
         uint8_t getProperties();
-        void setBufferLen(uint16_t max_len);               // Set size of byte array used for containing characteristic data
-        uint16_t getBufferLen();
 
-        //--------- Modify Char Value ---------//
+        //--------- Read Char Value --------//
+        String readString();
+        uint8_t readData8();
+        uint16_t readData16();
+        uint32_t readData32();
+
+        //--------- Write Char Value --------//
+        bool writeString(String str);
+        bool writeString(const char* str);
+        bool writeData8(uint8_t num);
+        bool writeData16(uint16_t num);
+        bool writeData32(uint32_t num);
+        bool writeData32(int num);
+
+        //----------- Modify Char -----------//
         bool setData(uint8_t* data, uint16_t datalen);
         uint16_t getData(uint8_t* data, uint16_t datalen);
         uint8_t* getDataBuff();
         uint16_t getDataLen();
         void notify(uint8_t conn_id);          // Send a notification to a client that has enabled notifications
         void indicate(uint8_t conn_id);        // Send a notification requiring ack to a client that has enable indications
-
-        //--------- Write Char Value --------//
-        bool writeString(String str);
-        bool writeData(const char* str);
-        bool writeData8(uint8_t num);
-        bool writeData16(uint16_t num);
-        bool writeData32(uint32_t num);
-        bool writeData32(int num);
-
-        //--------- Read Char Value --------//
-        uint8_t readData8();
-        uint16_t readData16();
-        uint32_t readData32();
 
         //------------- Descriptors -------------//
         void setUserDescriptor(const char* description);               // Descriptor UUID 0x2901
@@ -92,7 +92,7 @@ class BLECharacteristic {
 
         BLEService* _pService = nullptr;
         BLEUUID _uuid;
-        uint8_t _handle_index = 0;
+        uint8_t _handle_index = 0xff;
         uint8_t _char_properties = 0x00;        // default = no properties
         uint32_t _char_attr_permissions = GATT_PERM_NONE;
 

@@ -344,7 +344,7 @@ void BLEDevice::connParamUpdateEvtHandlerDefault(uint8_t conn_id, uint8_t status
 }
 
 void BLEDevice::authenStateEvtHandlerDefault(uint8_t conn_id, uint8_t new_state, uint16_t cause) {
-    //printf("authenStateEvtHandlerDefault:conn_id %d, cause 0x%x\r\n", conn_id, cause);
+    if (BTDEBUG) printf("authenStateEvtHandlerDefault:conn_id %d, cause 0x%x\r\n", conn_id, cause);
     switch (new_state) {
         case GAP_AUTHEN_STATE_STARTED: {
             if (BTDEBUG) printf("authenStateEvtHandlerDefault: GAP_AUTHEN_STATE_STARTED\r\n");
@@ -363,8 +363,6 @@ void BLEDevice::authenStateEvtHandlerDefault(uint8_t conn_id, uint8_t new_state,
             break;
     }
 }
-
-
 
 //--------------------------------------------------------- Default callbacks for services ---------------------------------------------------------//
 
@@ -400,7 +398,6 @@ T_APP_RESULT BLEDevice::appServiceCallbackDefault(T_SERVER_ID service_id, void *
 
 T_APP_RESULT BLEDevice::serviceAttrReadCallbackDefault(uint8_t conn_id, T_SERVER_ID service_id, uint16_t attrib_index,
                                                                         uint16_t offset, uint16_t *p_length, uint8_t **pp_value) {
-
     T_APP_RESULT cause  = APP_RESULT_ATTR_NOT_FOUND;
     uint8_t i;
     for (i = 0; i < _serviceCount; i++) {
@@ -415,7 +412,6 @@ T_APP_RESULT BLEDevice::serviceAttrReadCallbackDefault(uint8_t conn_id, T_SERVER
 T_APP_RESULT BLEDevice::serviceAttrWriteCallbackDefault(uint8_t conn_id, T_SERVER_ID service_id, uint16_t attrib_index,
                                                                         T_WRITE_TYPE write_type, uint16_t length, uint8_t *p_value,
                                                                         P_FUN_WRITE_IND_POST_PROC *p_write_ind_post_proc) {
-
     T_APP_RESULT cause = APP_RESULT_ATTR_NOT_FOUND;
     uint8_t i;
     for (i = 0; i < _serviceCount; i++) {
@@ -452,7 +448,7 @@ T_APP_RESULT BLEDevice::appClientCallbackDefault(T_CLIENT_ID client_id, uint8_t 
                     if (BTDEBUG) printf("Discovery state send to application directly.");
                 }
                 break;
-                
+
             case CLIENT_APP_CB_TYPE_DISC_RESULT:
                 if (p_client_app_cb_data->cb_content.disc_result_data.result_type == DISC_RESULT_ALL_SRV_UUID16) {
                     if (BTDEBUG) printf("Discovery All Primary Service: UUID16 0x%x, start handle 0x%x, end handle 0x%x.",

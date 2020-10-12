@@ -24,15 +24,12 @@ BLECharacteristic Tx(CHARACTERISTIC_UUID_TX);
 BLEAdvertData advdata;
 BLEAdvertData scndata;
 bool notify = false;
-char TxRxStrBuf [STRING_BUF_SIZE] = {0};
-uint16_t strlength;
 
 void writeCB (BLECharacteristic* chr, uint8_t connID) {
     printf("Characteristic %s write by connection %d :\n", chr->getUUID().str(), connID);
     if (chr->getDataLen() > 0) {
-        strlength = chr->getData((uint8_t*)TxRxStrBuf, STRING_BUF_SIZE);
         Serial.print("Received string: ");
-        Serial.write(TxRxStrBuf, strlength);
+        Serial.print(chr->readString());
         Serial.println();
     }
 }

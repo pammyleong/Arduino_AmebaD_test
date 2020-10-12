@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 
+#include "gatt.h"
+#include "profile_server.h"
+
 #ifdef __cplusplus
 }
 #endif
@@ -37,6 +40,24 @@ void BLECharacteristic::setUUID(BLEUUID uuid) {
 
 BLEUUID BLECharacteristic::getUUID() {
     return _uuid;
+}
+
+void BLECharacteristic::setBufferLen(uint16_t max_len) {
+    if (max_len > CHAR_VALUE_MAX_LEN) {
+        printf ("Characteristic %s buffer size too large, maximum of %d \n", _uuid.str(), CHAR_VALUE_MAX_LEN);
+    } else {
+        _data_buf = (uint8_t*) realloc(_data_buf, max_len*sizeof(uint8_t));
+        if (_data_buf == NULL) {
+            printf("Not enough memory to set buffer length for characteristic %s \n", _uuid.str());
+            _data_buf_len = 0;
+        } else {
+            _data_buf_len = max_len;
+        }
+    }
+}
+
+uint16_t BLECharacteristic::getBufferLen() {
+    return _data_buf_len;
 }
 
 void BLECharacteristic::setReadProperty(bool value) {
@@ -95,25 +116,59 @@ uint8_t BLECharacteristic::getProperties() {
     return _char_properties;
 }
 
-void BLECharacteristic::setBufferLen(uint16_t max_len) {
-    if (max_len > CHAR_VALUE_MAX_LEN) {
-        printf ("Characteristic %s buffer size too large, maximum of %d \n", _uuid.str(), CHAR_VALUE_MAX_LEN);
-    } else {
-        _data_buf = (uint8_t*) realloc(_data_buf, max_len*sizeof(uint8_t));
-        if (_data_buf == NULL) {
-            printf("Not enough memory to set buffer length for characteristic %s \n", _uuid.str());
-            _data_buf_len = 0;
-        } else {
-            _data_buf_len = max_len;
-        }
-    }
+//--------- Read Char Value --------//
+
+String BLECharacteristic::readString() {
+    char datastring[_data_buf_len + 1] = {0};
+    getData((uint8_t*)datastring, sizeof(datastring));
+    return String(datastring);
 }
 
-uint16_t BLECharacteristic::getBufferLen() {
-    return _data_buf_len;
+uint8_t BLECharacteristic::readData8() {
+    uint8_t num = 0;
+    getData(&num, sizeof(num));
+    return num;
 }
 
-//--------- Modify Char Value ---------//
+uint16_t BLECharacteristic::readData16() {
+    uint16_t num = 0;
+    getData((uint8_t*) &num, sizeof(num));
+    return num;
+}
+
+uint32_t BLECharacteristic::readData32() {
+    uint32_t num = 0;
+    getData((uint8_t*) &num, sizeof(num));
+    return num;
+}
+
+//--------- Write Char Value --------//
+
+bool BLECharacteristic::writeString(String str) {
+    return writeString(str.c_str());
+}
+
+bool BLECharacteristic::writeString(const char* str) {
+    return setData((uint8_t*) str, strlen(str));
+}
+
+bool BLECharacteristic::writeData8(uint8_t num) {
+    return setData((uint8_t*) &num, sizeof(num));
+}
+
+bool BLECharacteristic::writeData16(uint16_t num) {
+    return setData((uint8_t*) &num, sizeof(num));
+}
+
+bool BLECharacteristic::writeData32(uint32_t num) {
+    return setData((uint8_t*) &num, sizeof(num));
+}
+
+bool BLECharacteristic::writeData32(int num) {
+    return setData((uint8_t*) &num, sizeof(num));
+}
+
+//----------- Modify Char -----------//
 
 bool BLECharacteristic::setData(uint8_t* data, uint16_t datalen) {
     if (datalen > _data_buf_len) {
@@ -157,50 +212,6 @@ void BLECharacteristic::indicate(uint8_t conn_id) {
         return;
     }
     server_send_data(conn_id, _pService->getServiceID(), _handle_index, _data_buf, _data_len, GATT_PDU_TYPE_INDICATION);
-}
-
-//--------- Write Char Value --------//
-bool BLECharacteristic::writeString(String str) {
-    return writeData(str.c_str());
-}
-
-bool BLECharacteristic::writeData(const char* str) {
-    return setData((uint8_t*) str, strlen(str));
-}
-
-bool BLECharacteristic::writeData8(uint8_t num) {
-    return setData((uint8_t*) &num, sizeof(num));
-}
-
-bool BLECharacteristic::writeData16(uint16_t num) {
-    return setData((uint8_t*) &num, sizeof(num));
-}
-
-bool BLECharacteristic::writeData32(uint32_t num) {
-    return setData((uint8_t*) &num, sizeof(num));
-}
-
-bool BLECharacteristic::writeData32(int num) {
-    return setData((uint8_t*) &num, sizeof(num));
-}
-
-//--------- Read Char Value --------//
-uint8_t BLECharacteristic::readData8() {
-    uint8_t num = 0;
-    getData(&num, sizeof(num));
-    return num;
-}
-
-uint16_t BLECharacteristic::readData16() {
-    uint16_t num = 0;
-    getData((uint8_t*) &num, sizeof(num));
-    return num;
-}
-
-uint32_t BLECharacteristic::readData32() {
-    uint32_t num = 0;
-    getData((uint8_t*) &num, sizeof(num));
-    return num;
 }
 
 //------------- Descriptors -------------//
@@ -263,7 +274,7 @@ uint8_t BLECharacteristic::generateCharacteristicAttrTable(T_ATTRIB_APPL* attr_t
     return _attr_count;
 }
 
-// Generate basic default characteristic declaration attribute
+// Generate characteristic declaration attribute and characteristic value attribute
 uint8_t BLECharacteristic::generateAttrCharacteristicDeclaration(T_ATTRIB_APPL* attr_tbl, uint8_t index) {
     attr_tbl[index].flags = (ATTRIB_FLAG_VALUE_INCL);
     attr_tbl[index].type_value[0] = LO_WORD(GATT_UUID_CHARACTERISTIC);
@@ -276,8 +287,6 @@ uint8_t BLECharacteristic::generateAttrCharacteristicDeclaration(T_ATTRIB_APPL* 
     if (_uuid.length() == 2) {
         attr_tbl[index+1].flags = (ATTRIB_FLAG_VALUE_APPL);
         memcpy(attr_tbl[index+1].type_value, _uuid.dataNative(), 2);
-        //attr_tbl[index+1].type_value[0] = ((_uuid.dataNative())[0]);
-        //attr_tbl[index+1].type_value[1] = ((_uuid.dataNative())[1]);
     } else if (_uuid.length() == 16) {
         attr_tbl[index+1].flags = (ATTRIB_FLAG_VALUE_APPL | ATTRIB_FLAG_UUID_128BIT);
         memcpy(attr_tbl[index+1].type_value, _uuid.dataNative(), 16);
