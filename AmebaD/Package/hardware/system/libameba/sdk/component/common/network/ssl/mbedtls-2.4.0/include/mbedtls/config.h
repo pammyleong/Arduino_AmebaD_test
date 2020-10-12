@@ -16,7 +16,10 @@
 //#define SUPPORT_HW_SSL_HMAC_SHA256
 #endif
 
-#if defined(CONFIG_SSL_ROM)
+#if defined(ARDUINO_SDK)
+#include "platform_stdlib.h"
+#include "mbedtls/config_arduino.h"
+#elif defined(CONFIG_SSL_ROM)
 #include <section_config.h>
 #include "platform_stdlib.h"
 #include "mbedtls/config_rom.h"
