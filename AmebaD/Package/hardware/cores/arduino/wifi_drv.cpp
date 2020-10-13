@@ -32,9 +32,6 @@ static bool init_wlan = false;
 //static int wifi_mode = NULL;
 static int wifi_mode = 0;
 
-// zzw
-//static rtw_network_info_t wifi = {0};
-//static rtw_ap_info_t ap = {0};
 static rtw_network_info_t wifi;
 static rtw_ap_info_t ap;
 static unsigned char password[65] = {0};
@@ -243,7 +240,7 @@ int8_t WiFiDrv::apSetChannel(const char *channel)
     return ret;
 }
 
-int8_t WiFiDrv::apActivate()
+int8_t WiFiDrv::apActivate(uint8_t hidden_ssid)
 {
 #if CONFIG_LWIP_LAYER
     struct ip_addr ipaddr;
@@ -280,7 +277,13 @@ int8_t WiFiDrv::apActivate()
     }
     printf("\n\rStarting AP ...");
 
-    if((ret = wifi_start_ap((char*)ap.ssid.val, ap.security_type, (char*)ap.password, ap.ssid.len, ap.password_len, ap.channel)) < 0) {
+    if (hidden_ssid == 1) {
+        ret = wifi_start_ap_with_hidden_ssid((char*)ap.ssid.val, ap.security_type, (char*)ap.password, ap.ssid.len, ap.password_len, ap.channel);
+    } else {
+        ret = wifi_start_ap((char*)ap.ssid.val, ap.security_type, (char*)ap.password, ap.ssid.len, ap.password_len, ap.channel);
+    }
+
+    if(ret < 0) {
         printf("\n\rERROR: Operation failed!");
         ret = WL_FAILURE;
         goto exit;

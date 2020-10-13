@@ -239,9 +239,9 @@ class WiFiClass
          */
         int hostByName(const char* aHostname, IPAddress& aResult);
 
-        int apbegin(char* ssid, char* channel);
+        int apbegin(char* ssid, char* channel, uint8_t hidden_ssid);
 
-        int apbegin(char* ssid, char* password, char* channel);
+        int apbegin(char* ssid, char* password, char* channel, uint8_t hidden_ssid);
 
         int disablePowerSave();
 
