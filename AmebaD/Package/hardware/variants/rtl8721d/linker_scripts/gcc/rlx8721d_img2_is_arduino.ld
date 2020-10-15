@@ -148,7 +148,7 @@ SECTIONS
 		__exidx_start = .;
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
 		__exidx_end = .;
-		end = .;
+/*		end = .;*/
 	} > KM4_IMG2
 
 	__wrap_printf = 0x1010a3f5;
