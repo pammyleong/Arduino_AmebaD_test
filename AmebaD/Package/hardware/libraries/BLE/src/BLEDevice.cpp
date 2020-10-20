@@ -47,12 +47,17 @@ void (*BLEDevice::_pScanCB)(T_LE_CB_DATA*) = nullptr;
 BLEConnect* BLEDevice::_pBLEConn = nullptr;
 BLEService* BLEDevice::_servicePtrList[BLE_MAX_SERVICE_COUNT] = {};
 uint8_t BLEDevice::_serviceCount = 0;
+BLEClient* BLEDevice::_clientPtrList[BLE_CENTRAL_APP_MAX_LINKS] = {};
 void *BLEDevice::_appTaskHandle = NULL;   //!< main task handle
 void *BLEDevice::_evtQueueHandle = NULL;  //!< Event queue handle
 void *BLEDevice::_ioQueueHandle = NULL;   //!< IO queue handle
 T_GAP_DEV_STATE BLEDevice::_gapDevState = {0, 0, 0, 0, 0};
 T_GAP_CONN_STATE BLEDevice::_gapConnState = GAP_CONN_STATE_DISCONNECTED;
 T_APP_LINK BLEDevice::_bleCentralAppLinkTable[BLE_CENTRAL_APP_MAX_LINKS];
+uint8_t BLEDevice::all_phys = GAP_PHYS_PREFER_2M_BIT;
+uint8_t BLEDevice::tx_phys = GAP_PHYS_PREFER_2M_BIT;
+uint8_t BLEDevice::rx_phys = GAP_PHYS_PREFER_2M_BIT;
+T_GAP_PHYS_OPTIONS BLEDevice::phy_options = GAP_PHYS_OPTIONS_CODED_PREFER_NO;
 
 BLEDevice::BLEDevice() {
 }
@@ -163,17 +168,16 @@ void BLEDevice::beginCentral(uint8_t connCount) {
 
     if (connCount <= BLE_CENTRAL_APP_MAX_LINKS) {
         gap_config_max_le_link_num(connCount);
+        //gap_config_max_le_paired_device(BLE_CENTRAL_APP_MAX_LINKS);
         le_gap_init(connCount);
     } else {
         printf("Recommended max link count exceeded\r\n");
     }
 
-    uint8_t  phys_prefer = GAP_PHYS_PREFER_ALL;
-    uint8_t  tx_phys_prefer = GAP_PHYS_PREFER_1M_BIT | GAP_PHYS_PREFER_2M_BIT | GAP_PHYS_PREFER_CODED_BIT;
-    uint8_t  rx_phys_prefer = GAP_PHYS_PREFER_1M_BIT | GAP_PHYS_PREFER_2M_BIT | GAP_PHYS_PREFER_CODED_BIT;
-    le_set_gap_param(GAP_PARAM_DEFAULT_PHYS_PREFER, sizeof(phys_prefer), &phys_prefer);
-    le_set_gap_param(GAP_PARAM_DEFAULT_TX_PHYS_PREFER, sizeof(tx_phys_prefer), &tx_phys_prefer);
-    le_set_gap_param(GAP_PARAM_DEFAULT_RX_PHYS_PREFER, sizeof(rx_phys_prefer), &rx_phys_prefer);
+    // Update GAP PHY preferences
+    le_set_gap_param(GAP_PARAM_DEFAULT_PHYS_PREFER, sizeof(all_phys), &all_phys);
+    le_set_gap_param(GAP_PARAM_DEFAULT_TX_PHYS_PREFER, sizeof(tx_phys), &tx_phys);
+    le_set_gap_param(GAP_PARAM_DEFAULT_RX_PHYS_PREFER, sizeof(rx_phys), &rx_phys);
 
     // update device parameters
     le_set_gap_param(GAP_PARAM_DEVICE_NAME, GAP_DEVICE_NAME_LEN, _deviceName);
@@ -218,10 +222,16 @@ void BLEDevice::beginPeripheral() {
     } else {
         _bleState = 1;
     }
-    uint8_t  slave_init_mtu_req = true;
+    uint8_t  slave_init_mtu_req = true;//false;
 
     gap_config_max_le_link_num(1);
+    //gap_config_max_le_paired_device(BLE_CENTRAL_APP_MAX_LINKS);
     le_gap_init(1);
+
+    // Update GAP PHY preferences
+    le_set_gap_param(GAP_PARAM_DEFAULT_PHYS_PREFER, sizeof(all_phys), &all_phys);
+    le_set_gap_param(GAP_PARAM_DEFAULT_TX_PHYS_PREFER, sizeof(tx_phys), &tx_phys);
+    le_set_gap_param(GAP_PARAM_DEFAULT_RX_PHYS_PREFER, sizeof(rx_phys), &rx_phys);
 
     // update device parameters
     le_set_gap_param(GAP_PARAM_DEVICE_NAME, GAP_DEVICE_NAME_LEN, _deviceName);
@@ -274,7 +284,12 @@ void BLEDevice::end() {
         }
     }
 
-    // delete all existing services
+    // delete all existing clients and services
+    for (connId = 0; connId < BLE_CENTRAL_APP_MAX_LINKS; connId++) {
+        if (_clientPtrList[connId] != nullptr) {
+            delete _clientPtrList[connId];
+        }
+    }
     for (connId = 0; connId < BLE_MAX_SERVICE_COUNT; connId++) {
         _servicePtrList[connId] = nullptr;
     }
@@ -352,6 +367,36 @@ void BLEDevice::addService(BLEService& newService) {
     }
 }
 
+BLEClient* BLEDevice::addClient(uint8_t connId) {
+    BLEClient* newClient = nullptr;
+    if (connId >= BLE_CENTRAL_APP_MAX_LINKS) {
+        printf("Invalid connection ID %d \n", connId);
+        return newClient;
+    }
+    if (!connected(connId)) {
+        printf("No device connected at conn ID %d \n", connId);
+        return newClient;
+    }
+
+    T_CLIENT_ID client_id;
+    newClient = new BLEClient();
+    if (newClient == nullptr) {
+        printf("Create new client failed for conn ID %d \n", connId);
+        return newClient;
+    }
+    if (false == client_register_spec_client_cb(&client_id, &_clientCallbacksDefault)) {
+        printf("Register_client failed for conn ID %d \n", connId);
+        delete newClient;
+        newClient = nullptr;
+    } else {
+        _clientPtrList[connId] = newClient;
+        newClient->_clientId = client_id;
+        newClient->_connId = connId;
+    }
+
+    return newClient;
+}
+
 void BLEDevice::getLocalAddr(uint8_t (&addr)[GAP_BD_ADDR_LEN]) {
     uint8_t  btaddr[GAP_BD_ADDR_LEN] = {0};
     gap_get_param(GAP_PARAM_BD_ADDR, btaddr);
@@ -368,6 +413,11 @@ void BLEDevice::setupGAPBondManager() {
     le_bond_set_param(GAP_PARAM_BOND_FIXED_PASSKEY_ENABLE, sizeof(_authUseFixPasskey), &_authUseFixPasskey);
     le_bond_set_param(GAP_PARAM_BOND_SEC_REQ_ENABLE, sizeof(_authSecReqEnable), &_authSecReqEnable);
     le_bond_set_param(GAP_PARAM_BOND_SEC_REQ_REQUIREMENT, sizeof(_authSecReqFlags), &_authSecReqFlags);
+    //int ret = gap_set_pairable_mode();
+    //if(ret == GAP_CAUSE_SUCCESS)
+        //printf("\n\rSet pairable mode success!\r\n");
+    //else
+        //printf("\n\rSet pairable mode fail!\r\n");
 }
 
 void BLEDevice::BLEMainTask(void *p_param) {

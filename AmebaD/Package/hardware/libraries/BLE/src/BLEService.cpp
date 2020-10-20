@@ -78,7 +78,7 @@ T_ATTRIB_APPL* BLEService::generateServiceAttrTable() {
     free(_service_attr_tbl);
     _service_attr_tbl = (T_ATTRIB_APPL*)malloc(_total_attr_count * sizeof(T_ATTRIB_APPL));
     memset(_service_attr_tbl, 0, _total_attr_count * sizeof(T_ATTRIB_APPL));
-    
+
     // Generate first attribute for service
     uint8_t _attr_count = 0;    // Pass in as handle?
     _attr_count += generateAttrServiceDeclaration(&(_service_attr_tbl[0]), _attr_count);
@@ -93,8 +93,6 @@ T_ATTRIB_APPL* BLEService::generateServiceAttrTable() {
 
 // Generate basic default service declaration attribute
 uint8_t BLEService::generateAttrServiceDeclaration(T_ATTRIB_APPL* attr_tbl, uint8_t index) {
-
-
     if (_uuid.length() == 2) {
         attr_tbl[index].flags = (ATTRIB_FLAG_VALUE_INCL | ATTRIB_FLAG_LE);
         attr_tbl[index].type_value[0] = LO_WORD(GATT_UUID_PRIMARY_SERVICE);

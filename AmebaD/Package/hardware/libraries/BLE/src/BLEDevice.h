@@ -6,6 +6,7 @@
 #include "BLEConnect.h"
 #include "BLEScan.h"
 #include "BLEService.h"
+#include "BLEClient.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,6 +51,7 @@ class BLEDevice {
         void configServer(uint8_t maxServiceCount);
         void addService(BLEService& newService);
         void configClient();
+        BLEClient* addClient(uint8_t connId);
 
     private:
         static void BLEMainTask(void *p_param);
@@ -78,6 +80,12 @@ class BLEDevice {
 
         //----------------------------------- Default callbacks for clients -----------------------------------//
         static T_APP_RESULT appClientCallbackDefault(T_CLIENT_ID client_id, uint8_t conn_id, void *p_data);
+        static void clientDiscoverStateCallbackDefault(uint8_t conn_id, T_DISCOVERY_STATE discovery_state);
+        static void clientDiscoverResultCallbackDefault(uint8_t conn_id, T_DISCOVERY_RESULT_TYPE result_type, T_DISCOVERY_RESULT_DATA result_data);
+        static void clientReadResultCallbackDefault(uint8_t conn_id, uint16_t cause, uint16_t handle, uint16_t value_size, uint8_t *p_value);
+        static void clientWriteResultCallbackDefault(uint8_t conn_id, T_GATT_WRITE_TYPE type, uint16_t handle, uint16_t cause, uint8_t credits);
+        static T_APP_RESULT clientNotifyIndicateCallbackDefault(uint8_t conn_id, bool notify, uint16_t handle, uint16_t value_size, uint8_t *p_value);
+        static void clientDisconnectCallbackDefault(uint8_t conn_id);
 
         // Default device name and device appearance
         char _deviceName[GAP_DEVICE_NAME_LEN] = "AMEBA_BLE_DEV";
@@ -92,11 +100,21 @@ class BLEDevice {
         static BLEConnect* _pBLEConn;   // Pointer to connect object (central mode)
         static BLEService* _servicePtrList[BLE_MAX_SERVICE_COUNT];
         static uint8_t _serviceCount;
+        static BLEClient* _clientPtrList[BLE_CENTRAL_APP_MAX_LINKS];
 
         const T_FUN_GATT_SERVICE_CBS _serviceCallbacksDefault = {
             serviceAttrReadCallbackDefault,   // Read callback function pointer
             serviceAttrWriteCallbackDefault,  // Write callback function pointer
             serviceCccdUpdateCallbackDefault  // CCCD update callback function pointer
+        };
+
+        const T_FUN_CLIENT_CBS _clientCallbacksDefault = {
+            clientDiscoverStateCallbackDefault,   // Discovery State callback function pointer
+            clientDiscoverResultCallbackDefault,  // Discovery result callback function pointer
+            clientReadResultCallbackDefault,      // Read response callback function pointer
+            clientWriteResultCallbackDefault,     // Write result callback function pointer
+            clientNotifyIndicateCallbackDefault,  // Notify Indicate callback function pointer
+            clientDisconnectCallbackDefault       // Link disconnection callback function pointer
         };
 
         // task and queue handles
@@ -109,14 +127,20 @@ class BLEDevice {
         static T_APP_LINK _bleCentralAppLinkTable[BLE_CENTRAL_APP_MAX_LINKS];
 
         // GAP Bond Manager default parameters
-        uint8_t  _authPairMode = GAP_PAIRING_MODE_NO_PAIRING;
-        uint16_t _authFlags = GAP_AUTHEN_BIT_NONE;
+        uint8_t  _authPairMode = GAP_PAIRING_MODE_NO_PAIRING;//GAP_PAIRING_MODE_PAIRABLE;
+        uint16_t _authFlags = GAP_AUTHEN_BIT_NONE;//GAP_AUTHEN_BIT_BONDING_FLAG;
         uint8_t  _authIoCap = GAP_IO_CAP_NO_INPUT_NO_OUTPUT;
         uint8_t  _authOob = false;
         uint8_t  _authUseFixPasskey = false;
         uint32_t _authFixPasskey = 0;
         uint8_t  _authSecReqEnable = false;
-        uint16_t _authSecReqFlags = GAP_AUTHEN_BIT_NONE;
+        uint16_t _authSecReqFlags = GAP_AUTHEN_BIT_NONE;//GAP_AUTHEN_BIT_BONDING_FLAG;
+
+        // GAP PHY preference
+        static uint8_t all_phys;
+        static uint8_t tx_phys;
+        static uint8_t rx_phys;
+        static T_GAP_PHYS_OPTIONS phy_options;
 };
 
 extern BLEDevice BLE;
