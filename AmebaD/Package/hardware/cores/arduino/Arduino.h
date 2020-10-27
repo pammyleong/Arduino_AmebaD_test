@@ -25,7 +25,7 @@
 #include <string.h>
 #include <math.h>
 
-#define Arduino_STD_PRINTF
+//#define Arduino_STD_PRINTF
 
 #ifdef Arduino_STD_PRINTF
 #include <stdio.h>

@@ -4,7 +4,7 @@ char ssid[] = "yourNetwork";  //Set the AP's SSID
 char pass[] = "Password";     //Set the AP's password
 char channel[] = "1";         //Set the AP's channel
 int status = WL_IDLE_STATUS;  //Set the Wifi radio's status
-int ssid_status = 0;           //Set SSID status, 1 hidden, 0 not hidden
+int ssid_status = 0;          //Set SSID status, 1 hidden, 0 not hidden
 
 void setup() {
     //Initialize serial and wait for port to open:
