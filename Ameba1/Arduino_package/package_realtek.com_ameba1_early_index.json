@@ -20,8 +20,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/Ameba1/Arduino_package/release/ameba_1-2.0.9-t01.tar.gz",
           "archiveFileName": "ameba_1-2.0.9-t01.tar.gz",
-          "checksum": "SHA-256:34febf2e2ed3310e549fd9af02dfdd36017ec782be530954289f3ba6cbebd70b",
-          "size": "16706259",
+          "checksum": "SHA-256:4a7c4a8725d3dba7551ac56e8c691181437df78b85ed1d7e56ad23a094441b32",
+          "size": "16705999",
           "boards": [
             {"name": "Ameba RTL8195A"},
             {"name": "Ameba RTL8710"},
