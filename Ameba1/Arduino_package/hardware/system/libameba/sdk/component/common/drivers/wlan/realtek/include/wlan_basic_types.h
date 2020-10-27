@@ -179,7 +179,6 @@
 #define ENSRQUERYDOMAINTOOLONG  176 /* Domain name is too long */
 #define ENSRCNAMELOOP 177 /* Domain name is too long */
 
-#define _KEEP_AUTH 3
 
 
 

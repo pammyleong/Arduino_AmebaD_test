@@ -1,6 +1,6 @@
 /****************************************************************************** 
 * 
-* Copyright(c) 2007 - 2017 Realtek Corporation. 
+* Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved. 
 * 
 * This program is free software; you can redistribute it and/or modify it 
 * under the terms of version 2 of the GNU General Public License as 
@@ -11,9 +11,14 @@
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
 * more details. 
 * 
+* You should have received a copy of the GNU General Public License along with 
+* this program; if not, write to the Free Software Foundation, Inc., 
+* 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA 
+* 
+* 
 ******************************************************************************/
 
-/*Image2HeaderVersion: 2.3.1*/
+/*Image2HeaderVersion: 2.25*/
 #if (RTL8195A_SUPPORT == 1)
 #ifndef __INC_MP_BB_HW_IMG_8195A_H
 #define __INC_MP_BB_HW_IMG_8195A_H

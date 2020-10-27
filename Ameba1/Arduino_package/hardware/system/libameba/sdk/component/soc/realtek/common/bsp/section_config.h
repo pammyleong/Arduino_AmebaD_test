@@ -270,10 +270,11 @@
         
 #define START_OTG_RAM_FUN_SECTION                       \
 //		SECTION(".ram.otg.data.a")
-	
+
 #define START_OTG_RAM_DATA_SECTION                      \
 //		SECTION(".ram.otg.data.b")
 #endif
+
 
 #define IMAGE2_START_RAM_FUN_SECTION                     \
             SECTION(".image2.ram.data")

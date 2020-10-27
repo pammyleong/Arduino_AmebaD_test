@@ -198,10 +198,6 @@ struct dac_s {
 };
 #endif
 
-struct gdma_s {
-    HAL_GDMA_OBJ gdma_obj;
-    uint8_t gdma_allocated;
-};
 
 #ifdef __cplusplus
 }

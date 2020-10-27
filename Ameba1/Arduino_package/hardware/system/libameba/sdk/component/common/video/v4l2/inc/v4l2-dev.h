@@ -145,7 +145,8 @@ struct video_device
 	int index;
 
 	/* V4L2 file handles */
-	spinlock_t		fh_lock; /* Lock for all v4l2_fhs */
+	//spinlock_t		fh_lock; /* Lock for all v4l2_fhs */
+	_Lock			fh_lock;
 	struct list_head	fh_list; /* List of struct v4l2_fh */
 	int debug;			/* Activates debug level*/
 
@@ -164,7 +165,7 @@ struct video_device
 	//DECLARE_BITMAP(disable_locking, BASE_VIDIOC_PRIVATE); /* unsigned long disable_locking[6] */
 	unsigned long disable_locking[6];
 	//struct mutex *lock;	/* make serilized ioctl lock possible */
-	Mutex	*lock;
+	_Mutex	*lock;
 };
 
 /* todo need to modify */

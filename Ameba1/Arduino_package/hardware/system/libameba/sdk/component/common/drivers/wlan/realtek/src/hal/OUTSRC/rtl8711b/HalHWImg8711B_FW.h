@@ -18,20 +18,20 @@
 * 
 ******************************************************************************/
 
-/*Image2HeaderVersion: 2.16*/
-#if (RTL8711B_SUPPORT == 1)
-#ifndef __INC_MP_FW_HW_IMG_8711B_H
-#define __INC_MP_FW_HW_IMG_8711B_H
+#if (RTL8723B_SUPPORT==1)
+#ifndef __INC_FW_HW_IMG_8723B_H
+#define __INC_FW_HW_IMG_8723B_H
 
 
 /******************************************************************************
 *                           FW_AP.TXT
 ******************************************************************************/
+
 void
-ODM_ReadFirmware_MP_8711B_FW_ROM(
-	IN   PDM_ODM_T    pDM_Odm,
-	OUT  u1Byte       *pFirmware,
-	OUT  u4Byte       *pFirmwareSize
+ODM_ReadFirmware_MP_8723B_FW_AP(
+     IN   PDM_ODM_T    pDM_Odm,
+     OUT  u1Byte       *pFirmware,
+     OUT  u4Byte       *pFirmwareSize
 );
 
 /******************************************************************************
@@ -39,24 +39,34 @@ ODM_ReadFirmware_MP_8711B_FW_ROM(
 ******************************************************************************/
 
 void
-ODM_ReadFirmware_MP_8711B_FW_NIC(
-	IN   PDM_ODM_T    pDM_Odm,
-	OUT  u1Byte       *pFirmware,
-	OUT  u4Byte       *pFirmwareSize
+ODM_ReadFirmware_MP_8723B_FW_NIC(
+     IN   PDM_ODM_T    pDM_Odm,
+     OUT  u1Byte       *pFirmware,
+     OUT  u4Byte       *pFirmwareSize
+);
+
+/******************************************************************************
+*                           FW_NIC_WOWLAN.TXT
+******************************************************************************/
+
+void
+ODM_ReadFirmware_MP_8723B_FW_NIC_WOWLAN(
+     IN   PDM_ODM_T    pDM_Odm,
+     OUT  u1Byte       *pFirmware,
+     OUT  u4Byte       *pFirmwareSize
 );
 
 /******************************************************************************
 *                           FW_WoWLAN.TXT
 ******************************************************************************/
-
+#ifdef CONFIG_WOWLAN
 void
-ODM_ReadFirmware_MP_8711B_FW_WoWLAN(
-	IN   PDM_ODM_T    pDM_Odm,
-	OUT  u1Byte       *pFirmware,
-	OUT  u4Byte       *pFirmwareSize
+ODM_ReadFirmware_MP_8723B_FW_WOWLAN(
+     IN   PDM_ODM_T    pDM_Odm,
+     OUT  u1Byte       *pFirmware,
+     OUT  u4Byte       *pFirmwareSize
 );
-
+#endif //CONFIG_WOWLAN
 #endif
-#endif /* end of HWIMG_SUPPORT*/
-
+#endif // end of HWIMG_SUPPORT
 

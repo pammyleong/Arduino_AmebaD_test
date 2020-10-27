@@ -9,6 +9,10 @@
 #ifndef TLS_H
 #define TLS_H
 
+#include <polarssl/config.h>
+#include <polarssl/memory.h>
+#include <polarssl/ssl.h>
+
 struct tls_connection;
 
 struct tls_random {

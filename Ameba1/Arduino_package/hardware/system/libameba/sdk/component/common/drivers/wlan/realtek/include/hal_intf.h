@@ -69,7 +69,9 @@ typedef enum _HW_VARIABLES{
 	HW_VAR_ACK_PREAMBLE,
 	HW_VAR_SEC_CFG,
 	HW_VAR_SEC_DK_CFG,
+#if !defined(CONFIG_LX_HCI)
 	HW_VAR_BCN_VALID,
+#endif
 	HW_VAR_RF_TYPE,
 	HW_VAR_DM_FLAG,
 	HW_VAR_DM_FUNC_OP,
@@ -111,7 +113,7 @@ typedef enum _HW_VARIABLES{
 	HW_VAR_SWITCH_EPHY_WoWLAN,
 	HW_VAR_EFUSE_USAGE,
 	HW_VAR_EFUSE_BYTES,
-#if defined(CONFIG_BT_EFUSE)
+#if !defined(NOT_SUPPORT_BT)
 	HW_VAR_EFUSE_BT_USAGE,
 	HW_VAR_EFUSE_BT_BYTES,
 #endif
@@ -125,7 +127,6 @@ typedef enum _HW_VARIABLES{
 #ifdef CONFIG_WOWLAN
 	HW_VAR_WOWLAN,
 	HW_VAR_WAKEUP_REASON,
-	HW_VAR_RPWM_TOG,
 #endif
 #ifdef CONFIG_GPIO_WAKEUP
 	HW_SET_GPIO_WL_CTRL,
@@ -149,15 +150,8 @@ typedef enum _HW_VARIABLES{
 	HW_VAR_ASIX_IOT,
 #ifdef CONFIG_PROMISC
 	HW_VAR_PROMISC,
-#if CONFIG_UNSUPPORT_PLCPHDR_RPT
-	HW_VAR_H2C_UNSUPPORT_PLCPHDR_RPT,
-#endif
 #endif
 	HW_VAR_SET_ICV,
-#ifdef CONFIG_MCC_MODE
-	HW_VAR_TSF_AUTO_SYNC,
-	HW_VAR_GET_TSF,
-#endif
 }HW_VARIABLES;
 
 typedef enum _HAL_DEF_VARIABLE{
@@ -172,7 +166,6 @@ typedef enum _HAL_DEF_VARIABLE{
 	HAL_DEF_RX_DMA_SZ,
 	HAL_DEF_RX_PAGE_SIZE,
 	HAL_DEF_DBG_DM_FUNC,//for dbg
-	HAL_DEF_DBG_DM_SUPPORT_ABILITY,//for dbg
 	HAL_DEF_RA_DECISION_RATE,
 	HAL_DEF_RA_SGI,
 	HAL_DEF_PT_PWR_STATUS,
@@ -202,38 +195,6 @@ typedef enum _HAL_INTF_PS_FUNC{
 	HAL_USB_SELECT_SUSPEND,
 	HAL_MAX_ID,
 }HAL_INTF_PS_FUNC;
-
-#define C2H_TYPE_REG 0
-#define C2H_TYPE_PKT 1
-
-/* 
-* C2H event format:
-* Fields    TRIGGER    PAYLOAD    SEQ    PLEN    ID
-* BITS     [127:120]    [119:16]   [15:8]  [7:4]  [3:0]
-*/
-#define C2H_ID(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)), 0, 4)
-#define C2H_PLEN(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)), 4, 4)
-#define C2H_SEQ(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)) + 1, 0, 8)
-#define C2H_PAYLOAD(_c2h)	(((u8*)(_c2h)) + 2)
-
-#define SET_C2H_ID(_c2h, _val)		SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)), 0, 4, _val)
-#define SET_C2H_PLEN(_c2h, _val)	SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)), 4, 4, _val)
-#define SET_C2H_SEQ(_c2h, _val)		SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)) + 1 , 0, 8, _val)
-
-/* 
-* C2H event format:
-* Fields    TRIGGER     PLEN      PAYLOAD    SEQ      ID
-* BITS    [127:120]  [119:112]  [111:16]   [15:8]   [7:0]
-*/
-#define C2H_ID_88XX(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)), 0, 8)
-#define C2H_SEQ_88XX(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)) + 1, 0, 8)
-#define C2H_PAYLOAD_88XX(_c2h)	(((u8*)(_c2h)) + 2)
-#define C2H_PLEN_88XX(_c2h)		LE_BITS_TO_1BYTE(((u8*)(_c2h)) + 14, 0, 8)
-#define C2H_TRIGGER_88XX(_c2h)	LE_BITS_TO_1BYTE(((u8*)(_c2h)) + 15, 0, 8)
-
-#define SET_C2H_ID_88XX(_c2h, _val)		SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)), 0, 8, _val)
-#define SET_C2H_SEQ_88XX(_c2h, _val)	SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)) + 1, 0, 8, _val)
-#define SET_C2H_PLEN_88XX(_c2h, _val)	SET_BITS_TO_LE_1BYTE(((u8*)(_c2h)) + 14, 0, 8, _val)
 
 typedef s32 (*c2h_id_filter)(u8 *c2h_evt);
 
@@ -273,7 +234,6 @@ struct hal_ops {
 	void	(*disable_interrupt)(_adapter *padapter);
 
 	s32		(*interrupt_handler)(_adapter *padapter);
-	void	(*clear_interrupt)(_adapter *padapter);
 	
 #ifdef CONFIG_WOWLAN
 	void	(*disable_interrupt_but_cpwm2)(_adapter *padapter);
@@ -298,8 +258,6 @@ struct hal_ops {
 	void	(*SetHalODMVarHandler)(_adapter *padapter, HAL_ODM_VARIABLE eVariable, PVOID pValue1,BOOLEAN bSet);
 
 	void	(*UpdateRAMaskHandler)(_adapter *padapter, u32 mac_id, u8 rssi_level);
-
-	u8 (*c2h_handler)(_adapter *adapter, u8 id, u8 seq, u8 plen, u8 *payload);
 #if 0
 	void	(*SetBeaconRelatedRegistersHandler)(_adapter *padapter);
 #endif
@@ -515,6 +473,7 @@ typedef struct eeprom_priv EEPROM_EFUSE_PRIV, *PEEPROM_EFUSE_PRIV;
 #define is_boot_from_eeprom(adapter) (adapter->eeprompriv.EepromOrEfuse)
 
 //TODO
+#if 0
 
 #ifdef CONFIG_WOWLAN
 typedef enum _wowlan_subcode{
@@ -547,8 +506,8 @@ struct wowlan_ioctl_param{
 #define Rx_MagicPkt				0x21
 #define Rx_UnicastPkt			0x22
 #define Rx_PatternPkt			0x23
-#define Roaming_BcnRssi		0x88
 #endif // CONFIG_WOWLAN
+#endif	//#if 0
 
 void rtw_hal_def_value_init(_adapter *padapter);
 
@@ -579,10 +538,6 @@ void	rtw_hal_get_odm_var(_adapter *padapter, HAL_ODM_VARIABLE eVariable, PVOID p
 	
 void rtw_hal_enable_interrupt(_adapter *padapter);
 void rtw_hal_disable_interrupt(_adapter *padapter);
-void rtw_hal_clear_interrupt(_adapter *padapter);
-#ifdef CONFIG_WOWLAN
-void rtw_hal_disable_interrupt_but_cpwm2(_adapter *padapter);
-#endif
 
 u32	rtw_hal_inirp_init(_adapter *padapter);
 u32	rtw_hal_inirp_deinit(_adapter *padapter);
@@ -638,7 +593,7 @@ void rtw_hal_set_wowlan_fw(_adapter *padapter, u8 sleep);
 
 c2h_id_filter rtw_hal_c2h_id_filter_ccx(_adapter *padapter);
 
-u8  rtw_hal_c2h_handler(_adapter *padapter, u8 id, u8 seq, u8 plen, u8 *payload);
+s32 rtw_hal_c2h_handler(_adapter *padapter, u8 *c2h_evt);
 
 
 #ifdef CONFIG_ANTENNA_DIVERSITY

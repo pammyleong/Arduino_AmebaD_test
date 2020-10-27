@@ -49,9 +49,7 @@
 
 #include <stdio.h>
 #include <drv_conf.h> 
-#if defined( PLATFORM_ALIOS)
-#include "alios_service.h"
-#elif defined( PLATFORM_FREERTOS)
+#if defined( PLATFORM_FREERTOS)
 #include "freertos_service.h"
 #elif defined( PLATFORM_ECOS)
 #include "ecos/ecos_service.h"

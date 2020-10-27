@@ -291,6 +291,7 @@ struct eap_method {
  * struct eap_sm - EAP state machine data
  */
 
+
 struct eap_sm {
 	enum {
 		EAP_INITIALIZE, EAP_DISABLED, EAP_IDLE, EAP_RECEIVED,

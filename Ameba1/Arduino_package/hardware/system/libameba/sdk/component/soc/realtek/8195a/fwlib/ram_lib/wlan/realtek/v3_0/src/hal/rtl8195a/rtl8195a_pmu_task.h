@@ -54,120 +54,6 @@
 #define SETACK  BIT1
 #define GETDATA BIT0
 
-
-
-
-#define CONFIG_SW_MAILBOX       0 //temporary
-#define CONFIG_DEBUGPRT_BT      1 //temporary
-
-#ifdef CONFIG_BT_MAILBOX
-//BTConCurr
-#define DefaultTBTTOnPeriod 0xB
-#define DefaultMedOnPeroid  0x8
-#define MaxTBTTOnPeriod     0x2A   // 0X16
-#define MaxMedOnPeroid      0x2A   // 0X16
-#define MinTBTTOnPeriod     0x3
-#define MinMedOnPeroid      0x3
-#define NULL_EARLY          0x3
-#define REDUCTIONPERIOD     0x5
-#define DefaultRCount       0x4
-#define DOWN                0
-#define UP                  1
-#define MAILBOX_MAX_LENGTH  7
-#define EXTENSIONTHRESHOLD  65	//Alan 2013_0801
-#define NORESPONSELIMIT     5
-#define SLOT_WIFI           0
-#define SLOT_BT             1
-#define DEFAULTSETTING      3
-
-
-//Alan 2013_0720
-#define MAILBOX_STATUS	0
-
-//Alan 2013_0923
-#define SCO_eSCO_slot_unit	320	//320us
-#define SCO_eSCO_timer_unit	32	//32us	
-//#define SCO_WiFi_slot			0
-//#define SCO_BT_slot			1
-#define BT_reduce_code_size	1
-
-//Alan 
-#define WLAN_ON             0
-#define WLAN_OFF            1
-
-#define ANT_CTRL_BY_PTA     0x66
-#define ANT_CTRL_BY_BBSW    0x77
-
-#define ANT_TOGGLE_WIFI     0x20000000
-#define ANT_TOGGLE_BT       0x10000000
-
-#define MAILBOX_RTY_LMT     4
-
-#define RSP_WIFI_FW         0
-#define RSP_WIFI_REQ        1
-#define RSP_BT_CHANGE_STS   2
-
-#define SEL_COEX_TABLE_1    0x03//0x6c0  bit[1:0]=2'b11
-#define SEL_COEX_TABLE_2    0xFC//0x6c4  bit[1:0]=2'b00
-
-#define ONBT                0
-#define ONWIFI              1
-#define NOCHANGE            2
-#define ONBBSW              0
-#define ONPTA               1
-
-#define DACSWING_ADDR       0x880
-
-#define DACSWING_SHF        25
-#define DACSWING_MASK       0xC1ffffff
-
-#define RTY_LMT_SCONULL     5
-#define RTY_LMT_BTQNULL     8
-#define RTY_LMT_QNULL       8
-#define RTY_LMT_CTS2SELF    0	//Alan ,use 0 is correct, suggest by Ausin-Lo
-
-
-
-#define REG_MAILBOX_OUT_DATA0   0x70 
-#define REG_MAILBOX_OUT_DATA1   0x74 
-#define REG_MAILBOX_OUT_CTRL    0x78 
-#define REG_MAILBOX_IN_DATA0    0x80 
-#define REG_MAILBOX_IN_DATA1    0x84 
-#define REG_VNDR_WL_PMC_IMR     0x88
-
-#define WLCALIBRATION               0x01E7
-
-#define REG_DBG_BYTE_22             0x048F
-#define REG_DBG_BYTE_15             0x049C
-#define REG_DBG_BYTE_16	            0x049D
-#define REG_AntSwitchOutSide        REG_DBG_BYTE_22
-#define REG_Null1_fail_counter	    REG_DBG_BYTE_15
-#define REG_BT_Cal_Ind		        REG_DBG_BYTE_16
-
-#define REG_TX_PKT_NUM              0x04E3
-#define REG_ANT_SEL                 0x06CC
-
-#define REG_BT_COEX                 0x0764
-#define REG_WLAN_ACT_MSK_CTRL       0x0768
-#define REG_REG_BT_STATISTICS_CTRL  0x076E
-#define REG_BT_ACT_STATISTICS_RPT   0x0770
-#define REG_BT_STATISTICS_OTH_CTRL  0x0778
-#define REG_BT_ISR_CTRL             0x0783
-#define REG_BT_ISR_STA              0x078F
-
-#define REG_RFE_INV                 0x092C
-#define REG_RFE_CTRL89              0x0930
-#define REG_RFE_SWCTRL              rS0S1_PathSwitch //Page 9: 0x948
-
-//Jimmy 
-#define ANT_092C_CTRL_WIFI          0x00
-#define ANT_092C_CTRL_BT            0x01
-
-
-
-#endif //#ifdef CONFIG_BT_MAILBOX
-
-
 /*--------------------------Define -------------------------------------------*/
 #ifdef CONFIG_POWER_SAVING
 #define MACID_CLIENT        0
@@ -193,48 +79,13 @@ typedef enum _FW_ERR0_STATUS_
 
 //TxPauseReasonCode
 typedef enum _TRPC_ {
-    TPRC_ISSUEBTQNull_1             = 0x1,
-    TPRC_ISSUEBTQNull_2             = 0x2,
-    TPRC_FLEXIBLEEXTENDECISION_1    = 0x3,
-    TPRC_BTTDMA03_1                 = 0x4,
-    TPRC_BTTDMABCN_1                = 0x4,
-    TPRC_BTTDMATBTT_1               = 0x5,    
-    TPRC_BTTDMA14_1                 = 0x6,
-    TPRC_BTTDMATIMEOUT_1            = 0x6,    
-    TPRC_BTTDMA25_3                 = 0x8,
-    TPRC_BTTDMATIMEOUT_3            = 0x8,    
-    TPRC_BTTDMA25_5                 = 0x9,
-    TPRC_BTTDMATIMEOUT_4            = 0x9,    
-    TPRC_BTTDMA25_7                 = 0xA,
-    TPRC_BTTDMATIMEOUT_5            = 0xA,    
-    TPRC_BTTDMA03_2                 = 0xB,
-    TPRC_BTTDMATIMEOUT_6            = 0xB,    
-    TPRC_BTTDMA14_2                 = 0xC,
-    TPRC_BTTDMATIMEOUT_7            = 0xC,    
-    TPRC_BTTDMA25_4                 = 0xE,
-    TPRC_BTTDMATIMEOUT_9            = 0xE,    
-    TPRC_BTTDMA25_6                 = 0xF,
-    TPRC_BTTDMATIMEOUT_10           = 0xF,    
-    TPRC_BTTDMA25_8                 = 0x10,
-    TPRC_BTTDMATIMEOUT_11           = 0x10,
-    TPRC_BACKUPANTENNA_1            = 0x11,
-    TPRC_BTROLECHANGETIMER          = 0x12,    
 	TPRC_ISSUENULLDATA_1			= 0x26,
 	TPRC_ISSUENULLDATA_2			= 0x27,
-    TPRC_ISSUENULLDATA_3            = 0x28,
-    TPRC_ISSUEQNULL_1               = 0x29,
-    TPRC_ISSUEQNULL_2               = 0x2A,    
 	TPRC_PSS2TS3                    = 0x2B,
 	TPRC_PSS0TS1					= 0x2C,
 	TPRC_PSS2TS4                    = 0x2D,
 	TPRC_PSS2TS5                    = 0x2E,
     TPRC_PSS0TS6                    = 0x2F,
-    TPRC_SCOESCO_1                  = 0x36,
-    TPRC_ISSUECTS2SELF_1            = 0x36,
-    TPRC_ISSUECTS2SELF_2            = 0x37,    
-    TPRC_ISSUECTS2SELF_3            = 0x38,
-    TRPC_WAITTXSMOK_1               = 0x47,
-    TRPC_WAITTXSMOK_2               = 0x48,    
 } TRPC, *PTRPC;
 
 
@@ -264,51 +115,6 @@ typedef enum _SMART_PS_MODE_FOR_LEGACY_
 }SMART_PS_MODE_FOR_LEGACY, *PSMART_PS_MODE_FOR_LEGACY;
 
 #endif //#ifdef CONFIG_POWER_SAVING
-
-
-#ifdef CONFIG_BT_MAILBOX
-
-typedef enum _MAILBOX_STATUS_ {
-    BT_Active_OutReady_not_zero	= BIT0,
-    BT_Non_Ative				= BIT1,
-    BT_Patch_Timeout			=BIT2,	
-    BT_Content_Error			=BIT3,
-    BT_Content_Checksum_error	=BIT4,
-};
-
-//Register C2H Command ID here
-typedef enum _C2H_CMD_ {
-    C2HID_DEBUG                 = 0,
-    C2HID_H2C2HLB               = 1,
-    C2HID_TXBF                  = 2,
-    C2HID_CCX_TXRPT             = 3,
-    C2HID_AP_REQ_TXRPT          = 4,
-    C2HID_INIT_RATE_COLLECT     = 5,
-    C2HID_PSD_RPT               = 6,
-    C2HID_SCAN_COMPLETE         = 7,
-    C2HID_PSD_CONTROL           = 8,
-    C2HID_BT_INFORMATION        = 9,
-    C2HID_BT_LOOPBACK           = 0x0A,
-    C2HID_BT_MP_REPORT          = 0x0B,
-    C2HID_RA_RPT                = 0x0C,
-    C2HID_SPE_STATIS            = 0x0D,
-    C2HID_RA_PARA_RPT            = 0x0E,
-    C2HID_CURRENT_CHANNEL       = 0x10,
-    C2HID_IQK_OFFLOAD           = 0x11,
-    C2HID_BB_GAIN_REPORT        = 0x12,
-    C2HID_RateAdaptive_RPT_88E  = 0x13,	//Ben, 130515, for 88e smic RA debug
-    C2HID_GPIOWAKEUP            = 0x14,
-    C2HID_MAILBOX_STATUS        = 0x15,		// Alan 2013_0720
-    C2HID_P2P_RPT               = 0x16,
-    C2HID_MCC_STATUS            = 0x17,
-
-    C2HID_DEBUG_CODE           = 0xFE,
-    C2HID_EXTEND_IND            = 0xFF
-} C2H_CMD, *PC2H_CMD;
-
-
-#endif //#ifdef CONFIG_BT_MAILBOX
-
 
 /*--------------------------Define MACRO--------------------------------------*/
 #ifdef CONFIG_POWER_SAVING
@@ -458,28 +264,6 @@ typedef enum _C2H_CMD_ {
 
 #endif //#ifdef CONFIG_POWER_SAVING
 
-#ifdef CONFIG_BT_MAILBOX
-#define BTNRDY              BIT6
-#define BTRDY               BIT7
-#define FTINT_BTCMD         BIT18  
-#define FTINT_TRIGGER_PKT   BIT19 
-
-#define GTIMER3				3
-#define GTIMER4				4
-#define GTIMER5				5
-#define MAILBOX_TIMER_MASK  GTIMER4
-#define BTTDMA_TIMER_MASK   GTIMER3 
-#define BT_GTIMER3          0x1
-#define BT_GTIMER4          0x2
-
-#define LENGTH_C2H_BUFF     10
-#define C2H_Q_FULL(x, y)        (((((x) == 0) && ((y) == (LENGTH_C2H_BUFF - 1)))||((y) == ((x) - 1))) ? _TRUE : _FALSE)
-
-
-
-#endif //#ifdef CONFIG_BT_MAILBOX
-
-
 /*------------------------------Define Struct---------------------------------*/
 #ifdef CONFIG_POWER_SAVING
 typedef struct _PS_PARM_ {
@@ -608,254 +392,6 @@ typedef struct _H2CParam_SetPwrMode_parm_ {
 
 #endif //#ifdef CONFIG_POWER_SAVING
 
-#ifdef CONFIG_BT_MAILBOX
-typedef struct _BTTxStatus_Parm_ {
-    u8      StatusWLOpmode:1;
-    u8      StatusWLOpmodeTx:1;
-    u8      StatusBTInfo:1;
-    u8      StatusBTInfoTx:1;
-    u8      StatusIgnoreWLAct:1;
-    u8      StatusIgnoreWLActTx:1;
-    u8      StatusBTMP:1;
-    u8      StatusBTMPTx:1;
-    u8      StatusAutoRPT:1;
-    u8      StatusAutoRPTTx:1;
-    u8      rsvd:6;
-    u8      BTInfo;
-    u8      IgnoreWLAct;
-    u8      AutoRPT;
-    u8      BTMPContent[5];
-}BTTxStatus_Parm, *PBTTxStatus_Parm;
-
-typedef struct _BT_B_TYPE_TDMA_Parm_ {
-    //B0
-    u8      Enable                  :1;
-    u8      ValueofReg870InBT       :1;     //1:0x870 = 0x300, 0:0x870 = 0x310
-    u8      TxPspollIntheMedium     :1;
-    u8      ValueOfReg870           :1;     // when disable 1:0x870 = 0x310, 0:0x870 = 0x300  
-                                            //when enable 1: 0x860 = 0x110, 0:0x860 = 0x210
-    u8      AutoWakeUp              :1;		//when set 1, use null(0) and null(1) packet
-    u8      NoPS                    :1;			//when set 1, in BT slot will pause WiFi Tx
-    u8      AllowBTHighPriority     :1;
-    u8      ValueofReg870InWIFI     :1;     //1:0x870 = 0x300, 0:0x870 = 0x310
-    //B1
-    u8      TBTTOnPeriod;
-    //B2
-    u8      MedPeriod;
-    //B3              
-    u8      NoTxPause               :1;
-    u8      Valueof778InWIFI        :1;
-    u8      Valueof778InWIFIOnSCO   :1;
-    u8      ValueofReg778           :1;     //when disable 1: 778=3, 0: 778=1
-                                            //when enable 1:allow 32k, 0:not allow 32k
-    u8      SCOOption               :1;
-    u8      ValueofReg860InWIFI     :1;
-    u8      TwoAntenna              :1;
-    u8      ReduceWIFIPower         :1;
-    //B4
-    u8      ExtraDecisonOf778             :1;
-    	//u8      RxExtension             :1; // no use : Alan 2013_0805
-    u8      CCK_Priority_toggle   :1;
-    //u8      NoPSRFCtrl              :1;		//When set 1. in BT slot need to close WiFi RF 
-    u8      WifiAutoSlot            :1;
-    //u8      ChangeCoexTable2        :1;	//no use: Alan 2013_0805
-    u8		CTS2Self				  :1;	
-    u8      ChangeCoexTable         :1;
-    u8      LongNAV                 :1;			// use large NAV to protect BT slot
-    u8      FlexibleExtension       :1;
-    u8      ValueofReg778B1InBT     :1;        // 1:778[1]=1, 0:778[1]=0 in bt
-
-    //DHCP
-    u8      DtimExt;
-    u8      DHCPOn                  :1;
-    u8      NoRxBCNCondition        :1;
-    u8      Write860                :1;
-    u8      Value860                :1;
-    
-    u8      DTIMFlag                :1;
-    u8      WifiActive              :1;
-    u8      rsvd2                   :2;    
-
-    u8      BTTxAbort               :1;
-    u8      TxNull1                 :1;
-    u8      TxNull1ok               :1;
-    u8      rsvd3                   :5;
-    
-    u8      WLANPeriodTemp;
-    u8      ExtensionThreshold1;
-    u8      ExtensionThreshold2;
-    u8      ExtensionThreshold3;
-    u8      HalfTBTTOnPeriod;
-    u8      HalfMedPeriod;
-    u8      RNum;
-    u8      RCount;
-    u8      HalfBCNIvl;
-    u8      BCNIvl;			//Alan 2013_0911
-    u8      WLANOnPeriod;
-    u8      WLANPeriodCount;
-    u8      InitialBTPower;
-    u8      ExtensionCount;
-    u8      NullExtensionCount;
-    u8      NAVTemp;
-    u8      TxCounter;
-    u8      BTConnect;
-    u8      BTRptConnect;
-    u8      BTChangeType:1;
-    u8      BTCTCount:4;
-    u8      BTCTCTh:3;
-    u32     ValueBackup;
-    u8      ValueBackup2;
-    u8      ValueBackup3;
-    u8      ValueBackup4;
-    u8      MailboxRdy;
-    u8      BTDisable;
-    u8      RxExtension             :1;				// Alan 2013_0905
-    u8      WLCalibrationEn         :1;
-    u8      GNT_BT_Val              :1;                        //Alan 2014_0226
-    u8      BTOnlyTest              :1;     
-    u8      DynamicSlotBackup       :1;
-    u8      rsvd4:3;
-    u16     Reg948Backup;
-    BTTxStatus_Parm BTTxStatus;
-    u8      extensionthreshold;                     //alan 20150108
-} BT_B_TYPE_TDMA_Parm, *PBT_B_TYPE_TDMA_Parm;
-
-//H2C Index: 0x60
-typedef struct _BT_MAILBOX_Parm_ {
-    u8          signal_ant_en:1;
-    u8          DAC_swing_en:1;
-    u8          NAV_en:1;
-    u8          TDMA_En:1;
-    u8          rvsd:4;
-    
-    u8          bt_rssi_init_value;
-    u8          bt_rssi_current_value;
-    u32         DAC_swing_level;
-    u32         DAC_swing_init_value;
-    u8          init_value_0x2e;
-    u8          init_value_0x2d;
-    u8          OneAntSCOEnable;
-    u8          BTNoResponseCount;
-    u8          AntSelReverse;
-    u8          SwitchOutside;
-    u8          RAOffsetEn;
-    u8          RAOffset;
-    u8          RAOffsetMCS7;
-    u8          RAOffsetMCS6;
-    u8          RAOffsetMCS5;
-    u8		 BTCalibration:1;
-    u8           rsvd1:7;
-    u8		 BTCalibrationPeriod;
-    u8  	 Null1_FAIL_Counter;	
-}BT_MAILBOX_Parm, *PBT_MAILBOX_Parm;
-
-//H2C Index: 0x66
-typedef struct _WLAN_Opmode_Parm_ {
-    u8          opmode; // RT_MEDIA_STATUS
-    u8          chl_idx;
-    u8          bw;     
-}WLAN_Opmode_Parm, *PWLAN_Opmode_Parm;
-
-//H2C Index:0x6B
-typedef struct _BT_SCO_eSCO_operation_Parm_{
-
-	//Byte0	
-	u8    enable:1;
-	u8	Control_Pkt_Type:2;
-	u8	Tx_Pause_BT_slot:1;
-	u8	Coex_Table_toggle:1;
-	u8	Antenna_Toggle:1;
-	u8	rsvd_1:2;
-
-	//Byte1	
-	u8	ValueOf778WiFi_slot:2;
-	u8	Ant_position_wifi_slot:1;
-	u8	rsvd_2:1;
-	u8	ValueOf778BT_slot:2;
-	u8	Ant_position_bt_slot:1;
-	u8	rsvd_3:1;
-
-	//Byte2
-	u8	WiFi_slot;		
-	//Byte3	
-	u8	BT_slot;		
-	//Byte4	
-	u8	CTS2Self_NAV;	
-
-	//not from H2C
-	u8	stage;
-	u8	INT_count;
-	u8	issue_null_stage;
-	u8	SCO_eSCO_TX_null_flag;
-	u8	SCO_eSCO_period_end_flag;
-	u16	WiFi_slot_real;
-	u16	BT_slot_real;
-	u16	CTS2Self_NAV_real;
-}BT_SCO_eSCO_operation_Parm,*PBT_SCO_eSCO_operation_Parm;
-
-//H2C Index:0x6C
-typedef struct _H2CHDL_BT_Page_Scan_Interval_Parm_{
-	u8	LSB_Interval;
-	u8	MSB_Interval;
-}BT_Page_Scan_Interval_Parm,*PBT_Page_Scan_Interval_Parm;
-
-typedef struct _H2CHDL_BT_Init_Parm_ {
-    u8  Enhance3wireMode:1;
-    u8  HighPowerPAMode:1;
-    u8  rsvd:6;
-}BT_Init_Parm, *PBT_Init_Parm;
-
-typedef struct _PS_BT_Parm_ {
-    u8      PspollTxFlag;
-    u8      LowPwrRxBCN     :1;
-    u8      AntAutoSwitch   :1;
-    u8      PSAllowBTHighPri:1;
-    u8      ProtectBCN      :1;
-    u8      SilencePeriod   :1;
-    u8      FastBTConnect   :1;
-    u8      TwoAntennaEn    :1;
-    u8      LowPwrRxBCNLeave:1;
-}PS_BT_Parm, *PPS_BT_Parm;
-
-typedef struct _BtCoex_info_ {
-        BT_B_TYPE_TDMA_Parm     BtTdmaParm;
-        BT_MAILBOX_Parm         BtParm;
-        WLAN_Opmode_Parm        WIFI_Info;           
-        BT_SCO_eSCO_operation_Parm      BT_SCO_eSCO_info;   
-        BT_Page_Scan_Interval_Parm      BT_Page_Scan_Interval;
-        BT_Init_Parm            BT_Init_Info;
-        
-#ifdef CONFIG_POWER_SAVING        
-        PS_BT_Parm              PSBTParm;
-#endif //#ifdef CONFIG_POWER_SAVING
-
-#if CONFIG_DEBUGPRT_BT
-        u8                      BTcnt[40];
-#endif  
-        u8                      BT_Timer_Flag;
-
-}BtCoex_info, *PBtCoex_info;
-
-
-//==================C2H event format ====================
-// Field     SYNC       CMD_LEN     CONTENT    CMD_SEQ      CMD_ID
-// BITS  [127:120]  [119:112]      [111:16]          [15:8]        [7:0]
-typedef struct _C2H_EVT_HDR_H {
-    u8  cmd_id;
-    u8  cmd_seq;
-    u8  content[12];
-    u8  cmd_len;
-}C2H_EVT_HDR_H, *PC2H_EVT_HDR_H;
-
-
-typedef struct _C2H_INFO_ {
-    u8  c2h_w_ptr;
-    u8  c2h_r_ptr;
-    PC2H_EVT_HDR_H  pc2h_evt_hdr[LENGTH_C2H_BUFF];
-}C2H_INFO, *PC2H_INFO;
-#endif //#ifdef CONFIG_BT_MAILBOX
-
-
 /*------------------------------Function declaration--------------------------*/
 
 #ifdef CONFIG_POWER_SAVING
@@ -880,16 +416,16 @@ extern void GTimer7Handle(VOID *Data);
 extern void InitGTimer1ms(PADAPTER padapter, u8 IRQDis, u8 TimerID, u32 Period);
 extern void DeInitGTimer1ms(PADAPTER padapter, u8 TimerID);
 extern void ChangeTransmiteRate(u16 offset, u8 rate);
-extern void PowerBitSetting(PADAPTER padapter,BOOLEAN bPowerBit, u16 offset);
+extern void PowerBitSetting(BOOLEAN bPowerBit, u16 offset);
 extern void ChkandChangePS(PPS_PARM pPSParm, BOOLEAN bPowerBit);
-extern u16 IssueRsvdPagePacketSetting(PADAPTER padapter, u8 PageNum, BOOLEAN bHwSEQEn, u8 RtyLmt);
+extern u16 IssueRsvdPagePacketSetting(u8 PageNum, BOOLEAN bHwSEQEn, u8 RtyLmt);
 extern void InitRsvdPgPkt(void);
-extern BOOLEAN IssueNullData(PADAPTER padapter, BOOLEAN bPowerBit, u8 RtyLmt);
-extern void IssuePSPoll(PADAPTER padapter);
-extern BOOLEAN WaitTxStateMachineOk(PADAPTER padapter);
+extern BOOLEAN IssueNullData(PPS_PARM pPSParm, BOOLEAN bPowerBit, u8 RtyLmt);
+extern void IssuePSPoll(void);
+extern BOOLEAN WaitTxStateMachineOk(void);
 extern void WriteTxPause(u8 value, u8 rcode);
-extern void PsCloseRF(PADAPTER padapter);
-extern void PsOpenRF(PADAPTER padapter);
+extern void PsCloseRF(void);
+extern void PsOpenRF(void);
 extern void SetPwrStateReg(PPS_PARM pPSParm, u8 PwrStateType, u8 value);
 extern BOOLEAN ChkTxQueueIsEmpty(void);
 extern void InitPS(PADAPTER padapter);
@@ -898,7 +434,7 @@ extern void Legacy_PS_Setting(PADAPTER padapter);
 extern void PSModeSetting(PADAPTER padapter, u8 on);
 extern void ConfigListenBeaconPeriod(PPS_PARM pPSParm, u8 RLBM, u8 AwakeInterval);
 extern void PSSetMode(PADAPTER padapter, PLEGACY_PS_PARM pparm);
-extern BOOLEAN PS_S2_Condition_Match(PADAPTER padapter);
+extern BOOLEAN PS_S2_Condition_Match(PPS_PARM pPSParm);
 extern BOOLEAN PS_S4_Condition_Match(PADAPTER padapter);
 extern BOOLEAN PS_32K_Condition_Match(void);
 extern void PS_S2ToS3ToS0State(PADAPTER padapter, u8 nulldata0Allow);
@@ -908,15 +444,15 @@ extern void PS_S0ToS1ToS2State(PADAPTER padapter);
 extern void PS_S1ToS0orS2State(PPS_PARM pPSParm);
 extern void PS_S2ToS4State(PADAPTER padapter);
 extern void PS_S2ToS5State(PPS_PARM pPSParm);
-extern void PS_S4ToS2State(PADAPTER padapter, u8 ReleaseTxPause);
+extern void PS_S4ToS2State(PPS_PARM pPSParm, u8 ReleaseTxPause);
 extern void PS_S5ToS2State(PPS_PARM pPSParm);
 extern void PS_S0ToS6State(PADAPTER padapter);
-extern void PS_S6ToS0State(PADAPTER padapter);
+extern void PS_S6ToS0State(PPS_PARM pPSParm);
 extern void CheckTSFIsStable(u8 ReqState);
 extern void WaitHWStateReady(void);
-extern void SysClkDown(PADAPTER padapter);
-extern void SysClkUp(PADAPTER padapter);
-extern void SleepTo32K(PADAPTER padapter);
+extern void SysClkDown(PPS_PARM	pPSParm);
+extern void SysClkUp(PPS_PARM pPSParm);
+extern void SleepTo32K(PPS_PARM pPSParm);
 extern void Change_PS_State(PADAPTER padapter, u8 request_ps_state, u8 nulldata0Allow);
 extern void ChangePSStateByRPWM(PADAPTER padapter);
 extern void SetSmartPSTimer(PADAPTER padapter);
@@ -937,10 +473,7 @@ extern void ISR_RxUCMD1(PADAPTER padapter);
 extern void ISR_RxUCMD0(PADAPTER padapter);
 extern void ISR_TxPktIn(PADAPTER padapter);
 extern void ISR_TXCCX(PADAPTER padapter);
-extern void ISR_WlFTINT(PADAPTER padapter);
-extern void ISR_SCO_OP(PADAPTER padapter);
 extern void H2CHDL_SetPwrMode(PADAPTER padapter, u8* pCmdBuffer);
-extern void H2CHDL_PS_SCAN(PADAPTER padapter, u8* pCmdBuffer);
 extern void CheckInReqStateTask(PADAPTER padapter);
 extern void HalSetRPWM(PADAPTER padapter, BOOLEAN benter32k);
 extern u32  HalGetNullTxRpt(PADAPTER padapter);
@@ -952,79 +485,6 @@ extern void H2CHDL_BcnIgnoreEDCCA(PADAPTER padapter, u8* pCmdBuffer);
 
 void PMUTask(PADAPTER padapter);
 void PMUInitial(PADAPTER padapter);
-
-
-#ifdef CONFIG_BT_MAILBOX
-extern void GTimer5Handle(VOID *Data);
-extern void Write778(IN PADAPTER padapter, IN u8 value);
-extern void DacSwing(IN PADAPTER padapter, IN u8 action);
-extern void InitBTMailbox(IN PADAPTER padapter); 
-extern void BTMailboxRetry(IN PADAPTER 	padapter); 
-extern void C2HBTInfo (IN PADAPTER padapter, IN u8 option); 
-extern void C2HBTLoopback (IN PADAPTER padapter, IN u8 *pbuf);
-extern void C2HBTMpRpt(IN PADAPTER padapter, IN u8 idx, IN u8 status, IN u8 req_num); 
-extern void C2HBTMailBoxStatus(IN u8 status); 
-
-
-extern void BTNullSetting(IN PADAPTER padapter,IN u8 bPowerBit, IN u16 offset, IN u8 lsb, IN u8 msb);
-extern void IssueBTQNull(IN PADAPTER padapter,IN u8 bPowerBit, IN u8 lsb, IN u8 msb);
-extern void WlanActCtrl(IN PADAPTER padapter); 
-extern void ChangeCoexTable(IN PADAPTER padapter, IN u8 slot); //#pragma disable 
-extern void InitBTCoexTimer(IN PADAPTER padapter, IN u8 duration);
-extern void InitSCOTimer(IN PADAPTER padapter, IN u16 duration);
-extern void FlexibleExtensionDecision(IN PADAPTER padapter); 
-extern void BT_TDMA_Slot_Operation_1and4(IN PADAPTER padapter, IN	u8 slot_num);
-extern void BT_TDMA_Slot_Operation_2and5(IN PADAPTER padapter, IN	u8 slot_num);    
-extern void BT_TDMA_Slot_Operation_0and3(IN PADAPTER padapter, IN	u8 slot_num); //#pragma disable      
-extern void BT_TDMA_Dynamic_Slot(IN PADAPTER padapter); //#pragma disable  
-extern void InitBTypeTDMA(IN PADAPTER padapter); 
-extern void InitBTypeTDMA2(IN PADAPTER padapter); 
-extern void BTypeTDMABCNEarly(IN PADAPTER padapter); 
-extern void BTypeTDMATBTThdl(IN PADAPTER padapter); 
-extern void BTypeTDMATimeOuthdl(IN PADAPTER padapter); 
-extern void AntennaSwitchCtrl(IN PADAPTER padapter,u8 side,u8 ctrl); //#pragma disable  
-extern void BackupAntennaSetting(IN PADAPTER padapter,IN u8 option); 
-extern void BTRoleChangeTimerHDL(IN PADAPTER padapter);
-extern void BTRoleChangeDefaultSetting(IN PADAPTER 	padapter); 
-extern void BTRoleChangeTBTTHDL(IN PADAPTER padapter); 
-extern void MailboxINTHDL(IN PADAPTER padapter); 
-extern void SCO_eSCO_IssueCtrlData(IN PADAPTER padapter,IN u8 ctrl_pkt_type,IN u8 slot,IN u8 power_bit);
-extern void BTSCOeSCOAntSetup(IN PADAPTER padapter,IN u8 slot); 
-extern void BTSCOeSCOIssueNullHDL(IN PADAPTER padapter); //#pragma disable  
-
-extern void IssueQNull(IN PADAPTER padapter,IN u8 bPowerBit); //#pragma disable  
-extern void CTS2SelfSetting(IN u16 offset, IN u16 NAV); //#pragma disable  
-extern void IssueCTS2Self(IN PADAPTER padapter,IN u16 NAV); //#pragma disable   
-
-
-extern void FillMailbox(IN PADAPTER padapter,IN u8 cmd, IN u8 length, IN u8 *pparm); 
-extern u8 WL2BTMailbox(IN  PADAPTER padapter,IN u8 cmd, IN u8 length, IN u8 *pparm); //#pragma disable  
-extern void H2CHDL_BTPSTDMA(IN PADAPTER padapter,IN u8 *pbuf); //#pragma disable  
-extern void H2CHDL_BTInfo(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_ForceBTTxpwr(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BTIgnoreWlanAct(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_DACSwingValue(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_AntSelReverse(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_WLOpmode(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BTMpH2C(IN PADAPTER padapter,IN u8 *pbuf); //#pragma disable  
-extern void H2CHDL_BTControl(IN PADAPTER padapter,IN u8 *pbuf); //#pragma disable  
-extern void H2CHDL_BTWifiCtrl(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BT_SCO_eSCO_Operation(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BT_Page_Scan_Interval(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_WLCalibration(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_GNT_BT_CTRL(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BT_ONLY_TEST(IN PADAPTER padapter,IN u8 *pbuf); 
-extern void H2CHDL_BT_Init_Param(IN PADAPTER padapter,IN u8 *pbuf); 
-#if !TASK_SCHEDULER_DISABLED
-#ifdef CONFIG_BT_MAILBOX
-void C2HInQueue(IN PADAPTER    padapter, PC2H_EVT_HDR_H pc2h_hdr);
-#endif
-#endif // !TASK_SCHEDULER_DISABLED
-
-#endif //#ifdef CONFIG_BT_MAILBOX
-
-
-
 
 #endif  //CONFIG_LITTLE_WIFI_MCU_FUNCTION_THREAD
 #endif  //__RTL8195A_PMU_TASK_H__

@@ -368,17 +368,15 @@ typedef enum _RT_SPINLOCK_TYPE{
 
 #elif (DM_ODM_SUPPORT_TYPE == ODM_IOT)
 	#include <drv_types.h>
-    
-	#define RA_MASK_PHYDMLIZE_CE	1
-    
+
 	typedef unsigned char			u1Byte,*pu1Byte;
 	typedef unsigned short			u2Byte,*pu2Byte;
 	typedef unsigned int			u4Byte,*pu4Byte;
 	typedef unsigned long long		u8Byte,*pu8Byte;
-	typedef signed char			s1Byte,*ps1Byte; /* GCC ROM char = unsigned char */
-	typedef signed short			s2Byte,*ps2Byte;
-	typedef signed long			s4Byte,*ps4Byte;
-	typedef long long			s8Byte,*ps8Byte;
+	typedef char					s1Byte,*ps1Byte;
+	typedef short					s2Byte,*ps2Byte;
+	typedef long					s4Byte,*ps4Byte;
+	typedef long long				s8Byte,*ps8Byte;
 
 	typedef struct sta_info			STA_INFO_T,*PSTA_INFO_T;
 
@@ -391,9 +389,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 	#ifdef  CONFIG_ANTENNA_DIVERSITY
 		#define CONFIG_HW_ANTENNA_DIVERSITY
 	#endif
-	
-	#define true	_TRUE
-	#define false	_FALSE
 	
 	// Array_MP_8195A_TXPWR_LMT[]
 	typedef enum _ODM_PW_LMT_REGULATION_TYPE{
@@ -433,12 +428,6 @@ typedef enum _RT_SPINLOCK_TYPE{
 		PW_LMT_PH_4T = 4
 	}ODM_PW_LMT_RFPATH_TYPE;
 
-    	#if defined(CONFIG_LITTLE_ENDIAN)	
-		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_LITTLE
-	#elif defined (CONFIG_BIG_ENDIAN)
-		#define	ODM_ENDIAN_TYPE			ODM_ENDIAN_BIG
-	#endif
-    
 #endif
 
 #define READ_NEXT_PAIR(v1, v2, i) do { if (i+2 >= ArrayLen) break; i += 2; v1 = Array[i]; v2 = Array[i+1]; } while(0)

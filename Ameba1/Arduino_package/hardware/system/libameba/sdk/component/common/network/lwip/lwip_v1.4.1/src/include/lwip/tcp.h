@@ -376,9 +376,6 @@ void             tcp_randomize_local_port   (void);
 
 const char* tcp_debug_state_str(enum tcp_state s);
 
-#ifdef LWIP_HOOK_TCP_ISN
-void tcp_isn_init(void);
-#endif
 
 #ifdef __cplusplus
 }

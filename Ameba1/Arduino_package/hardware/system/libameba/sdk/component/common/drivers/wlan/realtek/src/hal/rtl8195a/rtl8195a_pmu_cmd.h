@@ -82,7 +82,6 @@ typedef enum _H2C_CMD_ {
     H2CID_WL_Calibraion         = 0x6D,
     H2CID_GNT_BT_CTRL           = 0x6E,
     H2CID_BT_ONLY_TEST          = 0x6F,
-	H2CID_BT_INIT_PARAM         = 0x70,
 
     //1 Class5: WOWLAN
     H2CID_WoWLAN                = 0x80,
@@ -125,23 +124,6 @@ typedef struct _H2CParam_RsvdPage_ {
     u8                    *ReservedPagePacket;
     u32                   TotalPacketLen;
 } H2CParam_RsvdPage, *PH2CParam_RsvdPage;
-
-//H2C Index: 0x25
-typedef struct _Scan_Parm_ {
-    u8          Enable;
-}Scan_Parm, *PScan_Parm;
-
-//H2C Index: 0x64
-typedef struct _DAC_Swing_Value_Parm_ {
-    u8          value;
-}DAC_Swing_Value_Parm, *PDAC_Swing_Value_Parm;
-
-
-//H2C Index: 0x65
-typedef struct _Ant_Sel_Reverse_Parm_ {
-    u8          Reverse;
-    u8          SwitchOutside;
-}Ant_Sel_Reverse_Parm, *PAnt_Sel_Reverse_Parm;
 
 u32 H2CCmdCommon(PADAPTER padapter, u8 ElementID, u8 *pCmdBuffer);
 

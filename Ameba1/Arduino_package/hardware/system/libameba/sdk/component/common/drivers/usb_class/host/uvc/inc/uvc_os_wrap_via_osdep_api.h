@@ -7,7 +7,7 @@
 #include "osdep_api.h"
 #include "usb_defs.h"
 
-#include "usb_errno.h"
+#include "errno.h"
 #include "dlist.h"
 
 
@@ -335,10 +335,10 @@ static inline __u16 le16_to_cpup(const __le16 *p)
 #endif
 
 #ifndef copy_from_user
-#define copy_from_user(to, from, sz) RtlMemcpy((to), (from), (sz))
+#define copy_from_user(to, from, sz) _memcpy((to), (from), (sz))
 #endif
 #ifndef copy_to_user
-#define copy_to_user(to, from, sz)   RtlMemcpy((to), (from), (sz))
+#define copy_to_user(to, from, sz)   _memcpy((to), (from), (sz))
 #endif
 
 typedef u32             compat_caddr_t; //used for compatibility in uvc_v4l2.c

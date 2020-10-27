@@ -263,24 +263,35 @@
 #define REG_HI6Q_TXBD_IDX           		0x03D0  // 4 Bytes
 #define REG_HI7Q_TXBD_IDX           		0x03D4  // 4 Bytes
 
-//CPWM &RPWM
-#define REG_LX_HRPWM_8711B			0x03D9  // 1 Bytes
-#define REG_LX_HCPWM_8711B			0x03DA  // 1 Bytes //from 0x14c
+#define REG_PCIE_HRPWM1_V1          		0x03D9  // 1 Bytes
+#define REG_PCIE_HCPWM1_V1          		0x03DA  // 1 Bytes
 
 #define REG_LX_CTRL2                			0x03DB  // 1 Bytes
 
-#define REG_LX_HRPWM2_8711B          		0x03DC  // 2 Bytes //REG_LX_HCPWM1_8711B
-#define REG_LX_HCPWM2_8711B          		0x03DE  // 2 Bytes 
-#define REG_LX_H2C_MSG_V1         		0x03E0  // 4 Bytes
-#define REG_LX_C2H_MSG_V1         		0x03E4  // 4 Bytes
+#define REG_PCIE_HRPWM2_V1          		0x03DC  // 2 Bytes
+#define REG_PCIE_HCPWM2_V1          		0x03DE  // 2 Bytes
+#define REG_PCIE_H2C_MSG_V1         		0x03E0  // 4 Bytes
+#define REG_PCIE_C2H_MSG_V1         		0x03E4  // 4 Bytes
 
 
 #define REG_LX_DMA_ISR              			0x03E8  // 4 Bytes
-#define REG_LX_DMA_IMR              			0x03EC  // 4 Bytes
-#define REG_LX_DMA_DBG              			0x03F0  // 4 Bytes
+#define REG_LX_DMA_IMR              		0x03EC  // 4 Bytes
+#define REG_LX_DMA_DBG              		0x03F0  // 4 Bytes
 
-#define REG_BUS_MIX_CFG             			0x03F8  // 4 Bytes#
-#define REG_BUS_MIX_CFG1            		0x03FC  // 4 Bytes
+#define REG_BUS_MIX_CFG             		0x03F8  // 4 Bytes#
+#define REG_BUS_MIX_CFG1            			0x03FC  // 4 Bytes
+
+// RTL8723 series -------------------------------
+#define REG_PCIE_HISR_EN				0x0394	//PCIE Local Interrupt Enable Register
+#define REG_PCIE_HISR					0x03A0
+#define REG_PCIE_HISRE					0x03A4
+#define REG_PCIE_HIMR					0x03A8
+#define REG_PCIE_HIMRE					0x03AC
+
+#define REG_USB_HIMR					0xFE38
+#define REG_USB_HIMRE					0xFE3C
+#define REG_USB_HISR					0xFE78
+#define REG_USB_HISRE					0xFE7C
 
 //-----------------------------------------------------
 //
@@ -406,7 +417,6 @@
 #define REG_PSTIMER						0x0580
 #define REG_TIMER0						0x0584
 #define REG_TIMER1						0x0588
-#define REG_TBTT_HOLD_PREDICT_P1		0x05B2
 #define REG_ACMHWCTRL					0x05C0
 #define REG_NOA_DESC_SEL				0x05CF
 #define REG_NOA_DESC_DURATION		0x05E0
@@ -449,7 +459,6 @@
 #define REG_CTS2TO						0x0641
 #define REG_EIFS							0x0642
 
-#define REG_PORT_CTRL					0x076D
 
 //RXERR_RPT
 #define RXERR_TYPE_OFDM_PPDU			0
@@ -515,8 +524,6 @@
 #define REG_MACID1						0x0700
 #define REG_BSSID1						0x0708
 
-/* port0 & port1 enable */
-#define REG_PORT_CTRL					0x76D
 
 //-----------------------------------------------------
 //
@@ -1525,9 +1532,6 @@ Current IOREG MAP
 //2 //REG_DUAL_TSF_RST (0x553)
 #define DUAL_TSF_RST_P2P		BIT(4)
 
-//2 REG_TBTT_HOLD_PREDICT_P1 (0x5B2)
-#define BIT_DIS_BCN_1st			BIT(5)
-
 //2 // REG_NOA_DESC_SEL (0x5CF)
 #define NOA_DESC_SEL_0			0
 #define NOA_DESC_SEL_1			BIT(4)
@@ -1611,7 +1615,6 @@ Current IOREG MAP
 #define BIT_MASK_MAX_TXDMA      0x7
 #define BIT_MAX_TXDMA(x)            (((x) & BIT_MASK_MAX_TXDMA)<<BIT_SHIFT_MAX_TXDMA)
 
-#define SW_BCN_ADDR_SEL		BIT(16)
 #define BIT_STOP_BCNQ               	BIT(14)
 #define BIT_STOP_MGQ			BIT(13)
 #define BIT_STOP_VOQ                	BIT(12)

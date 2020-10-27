@@ -18,7 +18,7 @@
 * 
 ******************************************************************************/
 
-/*Image2HeaderVersion: 2.18*/
+/*Image2HeaderVersion: 2.22*/
 #if (RTL8711B_SUPPORT == 1)
 #ifndef __INC_MP_BB_HW_IMG_8711B_H
 #define __INC_MP_BB_HW_IMG_8711B_H

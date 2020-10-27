@@ -15,12 +15,6 @@
   ****************************************************************************** 
   */
 
-/** @addtogroup wpsp2p WPS/P2P
- *  @ingroup    wlan
- *  @brief      WPS/P2P functions
- *  @{
- */
-
 /**
  * @brief  Initialize P2P data.
  * @warning  Before invoking this function, the Wi-Fi should be enabled by using @ref wifi_on(RTW_MODE_P2P).
@@ -190,4 +184,4 @@ int wifi_p2p_start_auto_go(void *res);
  */
 int cmd_wifi_p2p_auto_go_start(int argc, char **argv);
 
-/*\@}*/
+

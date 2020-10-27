@@ -244,14 +244,9 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 #define TDMA_CHANGE_STATE_TASK_PRIORITY     3
 #endif //#ifdef TDMA_POWER_SAVING
 
-#endif //#ifdef CONFIG_POWER_SAVING
+#endif
 
-#ifdef CONFIG_BT_MAILBOX
-#define RX_C2H_STACKSIZE                    256
-#define RX_C2H_TASK_PRIORITY                3
-#endif //#ifdef CONFIG_BT_MAILBOX 
-
-#endif //#ifdef CONFIG_LITTLE_WIFI_MCU_FUNCTION_THREAD
+#endif
 
 #define LX_DMA_IMR_DISABLED 0
 #define FW_IMR_DISABLED     0

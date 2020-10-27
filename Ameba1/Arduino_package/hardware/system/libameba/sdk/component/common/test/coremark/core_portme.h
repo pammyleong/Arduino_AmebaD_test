@@ -9,7 +9,7 @@
 */
 
 /* Realtek define */
-#include "ameba_soc.h"
+#include "rtl8195a.h"
 
 #define ITERATIONS 3000
 #define HAS_STDIO 0

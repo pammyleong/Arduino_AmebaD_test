@@ -32,9 +32,6 @@
 #include "rtl8195a/rtl8195a_xmit.h"
 #include "rtl8195a/rtl8195a_cmd.h"
 #include "rtl8195a/rtl8195a_pmu_cmd.h"
-#ifdef CONFIG_MCC_MODE
-#include "rtl8195a/rtl8195a_mcc.h"
-#endif
 #include "rtl8195a/rtl8195a_led.h"
 #include "rtl8195a/Hal8195APwrSeq.h"
 #include "rtl8195a/Hal8195APhyReg.h"
@@ -247,14 +244,9 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 #define TDMA_CHANGE_STATE_TASK_PRIORITY     3
 #endif //#ifdef TDMA_POWER_SAVING
 
-#endif //#ifdef CONFIG_POWER_SAVING
+#endif
 
-#ifdef CONFIG_BT_MAILBOX
-#define RX_C2H_STACKSIZE                    256
-#define RX_C2H_TASK_PRIORITY                3
-#endif //#ifdef CONFIG_BT_MAILBOX 
-
-#endif //#ifdef CONFIG_LITTLE_WIFI_MCU_FUNCTION_THREAD
+#endif
 
 #define LX_DMA_IMR_DISABLED 0
 #define FW_IMR_DISABLED     0
@@ -303,7 +295,8 @@ typedef enum tag_Package_Definition
 	PACKAGE_QFN56,
 	PACKAGE_QFN48,
 	PACKAGE_BGA96,
-	PACKAGE_COMBO
+	PACKAGE_QFN88,
+	PACKAGE_QFN216
 }PACKAGE_TYPE_E;
 
 typedef enum tag_ChipID_Definition
@@ -315,9 +308,9 @@ typedef enum tag_ChipID_Definition
 	CHIPID_8711AN		= 0xFB,
 	CHIPID_8710AM		= 0xFA,
 	CHIPID_SIP			= 0xF9,	// Midea
-	CHIPID_COMBO_SIP	= 0xF8,	// MICO200
+	CHIPID_COMBO_SIP	= 0xF8,
 	CHIPID_SIP2			= 0xF7,
-	CHIPID_MICO100		= 0xF1	// wifi SIP
+	CHIPID_MICO100		= 0xF1
 }CHIP_TD_E;
 
 
@@ -340,7 +333,7 @@ typedef enum tag_ChipID_Definition
 #endif
 #define TX_BCNQ_DESC_NUM        2
 #define TX_MGQ_DESC_NUM         4
-#define TX_H0Q_DESC_NUM         4
+#define TX_H0Q_DESC_NUM         2
 #define TX_H1Q_DESC_NUM         2
 #define TX_H2Q_DESC_NUM         2
 #define TX_H3Q_DESC_NUM         2

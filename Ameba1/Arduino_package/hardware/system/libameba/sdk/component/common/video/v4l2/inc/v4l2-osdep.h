@@ -3,10 +3,9 @@
 
 #include "platform/platform_stdlib.h"
 #include "basic_types.h"
-//#include "osdep_api.h"  //deprecated use osdep_service.h instead
-#include "osdep_service.h"
+#include "osdep_api.h"
 #include "usb_defs.h"
-#include "usb_errno.h"
+#include "errno.h"
 //#include "hal_util.h"
 #include "dlist.h"
 
@@ -60,7 +59,7 @@
 #endif
 
 #ifndef spinlock_t
-#define spinlock_t _lock
+#define spinlock_t _Lock
 #endif
 
 #ifndef gfp_t
@@ -68,16 +67,16 @@
 #endif
 
 #ifndef _atomic_spin_lock_irqsave
-#define _atomic_spin_lock_irqsave(p, flags) 		save_and_cli()
+#define _atomic_spin_lock_irqsave(p, flags) 		SaveAndCli()
 #endif
 #ifndef _atomic_spin_unlock_irqrestore
-#define _atomic_spin_unlock_irqrestore(p, flags)	restore_flags()
+#define _atomic_spin_unlock_irqrestore(p, flags)	RestoreFlags()
 #endif
 #ifndef local_irq_save
-#define local_irq_save(flags)				save_and_cli()
+#define local_irq_save(flags)				SaveAndCli()
 #endif
 #ifndef local_irq_restore
-#define local_irq_restore(flags)			restore_flags()
+#define local_irq_restore(flags)			RestoreFlags()
 #endif
 #ifndef cris_atomic_save
 #define cris_atomic_save(addr, flags) 			local_irq_save(flags)
@@ -168,74 +167,74 @@
 
 /* spin lock */
 #ifndef spin_lock_init
-	#define spin_lock_init(plock) 			rtw_spinlock_init((plock))
+	#define spin_lock_init(plock) 			RtlSpinlockInit((plock))
 #endif
 #ifndef spin_lock_free
-	#define spin_lock_free(plock) 			rtw_spinlock_free((plock))
+	#define spin_lock_free(plock) 			RtlSpinlockFree((plock))
 #endif
 #ifndef spin_lock
-	#define spin_lock(plock) 			rtw_spin_lock((plock))
+	#define spin_lock(plock) 			RtlSpinlock((plock))
 #endif
 #ifndef spin_unlock 
-	#define spin_unlock(plock) 			rtw_spin_unlock((plock))
+	#define spin_unlock(plock) 			RtlSpinunlock((plock))
 #endif
 
 
 /* mutex */
 #ifndef Mutex
-	#define Mutex _mutex
+	#define Mutex _Mutex
 #endif
-#ifndef Mutex_Init
-	#define Mutex_Init(pmutex)			rtw_mutex_init((pmutex))
+#ifndef mutex_init
+	#define mutex_init(pmutex)			RtlMutexInit((pmutex))
 #endif
-#ifndef Mutex_Lock
-	#define Mutex_Lock(pmutex)			rtw_mutex_get((pmutex))
+#ifndef mutex_lock
+	#define mutex_lock(pmutex)			RtlDownSema((pmutex))
 #endif
-#ifndef Mutex_Unlock
-	#define Mutex_Unlock(pmutex)		rtw_mutex_put((pmutex))	
+#ifndef mutex_unlock
+	#define mutex_unlock(pmutex)		RtlUpSema((pmutex))	
 #endif
-#ifndef Mutex_Free
-	#define Mutex_Free(pmutex)			rtw_mutex_free((pmutex))
+#ifndef mutex_destory
+	#define mutex_destory(pmutex)			RtlMutexFree((pmutex))
 #endif
 
 /* semaphore */
 #ifndef Sema
-        #define Sema _sema
+        #define Sema _Sema
 #endif
 #ifndef Sema_Init
-	#define Sema_Init(pmutex, pval)			rtw_init_sema(pmutex, pval)
+	#define Sema_Init(pmutex, pval)			RtlInitSema(pmutex, pval)
 #endif
 #ifndef Sema_Free
-	#define Sema_Free(pmutex)				rtw_free_sema(pmutex)
+	#define Sema_Free(pmutex)				RtlFreeSema(pmutex)
 #endif
 #ifndef Sema_Up
-	#define Sema_Up(pmutex)				rtw_up_sema(pmutex)
+	#define Sema_Up(pmutex)				RtlUpSema(pmutex)
 #endif
 #ifndef Sema_Down
-	#define Sema_Down(pmutex)				rtw_down_sema(pmutex)
+	#define Sema_Down(pmutex)				RtlDownSema(pmutex)
 #endif
-#ifndef Sema_Down_WithTimeout
-	#define Sema_Down_WithTimeout(pmutex,ptimeout)			rtw_down_timeout_sema(pmutex,ptimeout) //
+#ifndef Sema_Sown_WithTimeout
+	#define Sema_Down_WithTimeout(pmutex,ptimeout)			RtlDownSemaWithTimeout(pmutex,ptimeout) //
 #endif
 
 /* Atomic integer operations */
 #ifndef atomic_set
-	#define atomic_set(v, i)		ATOMIC_SET((v), (i))
+	#define atomic_set(v, i)		RTL_ATOMIC_SET((v), (i))
 #endif
 #ifndef atomic_read
-	#define atomic_read(v)			ATOMIC_READ((v))
+	#define atomic_read(v)			RTL_ATOMIC_READ((v))
 #endif
 #ifndef atomic_add
-	#define atomic_add(v, i)		ATOMIC_ADD((v), (i))
+	#define atomic_add(v, i)		RTL_ATOMIC_ADD((v), (i))
 #endif
 #ifndef atomic_sub
-	#define atomic_sub(v, i)		ATOMIC_SUB((v), (i))
+	#define atomic_sub(v, i)		RTL_ATOMIC_SUB((v), (i))
 #endif
 #ifndef atomic_inc
-	#define atomic_inc(v)			ATOMIC_INC((v))
+	#define atomic_inc(v)			RTL_ATOMIC_INC((v))
 #endif
 #ifndef atomic_dec
-	#define atomic_dec(v)			ATOMIC_DEC((v))
+	#define atomic_dec(v)			RTL_ATOMIC_DEC((v))
 #endif
 
            
@@ -741,5 +740,107 @@ typedef __u64 __le64;
 typedef __u64 __be64; 
 typedef __u16 __sum16;
 typedef __u32 __wsum;
+
+#ifndef __GFP_WAIT
+#define __GFP_WAIT             					(0x10u)
+#endif
+#ifndef __GFP_HIGH
+#define __GFP_HIGH             					(0x20u)
+#endif
+#ifndef __GFP_IO
+#define __GFP_IO               					(0x40u)
+#endif
+#ifndef __GFP_FS
+#define __GFP_FS               					(0x80u)
+#endif
+#ifndef GFP_NOIO
+#define GFP_NOIO 						(0x10u)
+#endif
+#ifndef __GFP_NOWARN
+#define __GFP_NOWARN          					(0x200u)
+#endif
+#ifndef GFP_KERNEL
+#define GFP_KERNEL	(__GFP_WAIT | __GFP_IO | __GFP_FS)
+#endif
+
+#ifndef copy_from_user
+#define copy_from_user(to, from, sz) _memcpy((to), (from), (sz))
+#endif
+#ifndef copy_to_user
+#define copy_to_user(to, from, sz)   _memcpy((to), (from), (sz))
+#endif
+
+#if 0 /*comment since we are not using polling*/
+/* These are specified by iBCS2 */
+#ifndef POLLIN 
+#define POLLIN          0x0001
+#endif
+#ifndef POLLPRI
+#define POLLPRI         0x0002
+#endif
+#ifndef POLLOUT
+#define POLLOUT         0x0004
+#endif
+#ifndef POLLERR
+#define POLLERR         0x0008
+#endif
+#ifndef POLLHUP
+#define POLLHUP         0x0010
+#endif
+#ifndef POLLNVAL
+#define POLLNVAL        0x0020
+#endif 
+/* The rest seem to be more-or-less nonstandard. Check them! */
+#ifndef POLLRDNORM
+#define POLLRDNORM      0x0040
+#endif
+#ifndef POLLRDBAND 
+#define POLLRDBAND      0x0080
+#endif
+#ifndef POLLWRNORM
+#define POLLWRNORM      0x0100
+#endif
+#ifndef POLLWRBAND
+#define POLLWRBAND      0x0200
+#endif
+#ifndef POLLMSG
+#define POLLMSG         0x0400
+#endif
+#ifndef POLLREMOVE
+#define POLLREMOVE      0x1000
+#endif
+#ifndef POLLRDHUP
+#define POLLRDHUP       0x2000
+#endif 
+#ifndef POLLFREE
+#define POLLFREE        0x4000  /* currently only for epoll */
+#endif
+#ifndef POLL_BUSY_LOOP
+#define POLL_BUSY_LOOP  0x8000
+#endif
+#endif
+
+struct __wait_queue_head {
+         _Sema lock;
+         struct list_head        task_list;
+};
+
+typedef struct __wait_queue_head wait_queue_head_t;
+
+static inline void __init_waitqueue_head(wait_queue_head_t *q)
+{
+         //spin_lock_init(&q->lock);
+	 RtlInitSema(&q->lock,0);
+	 INIT_LIST_HEAD(&q->task_list);
+}
+#ifndef init_waitqueue_head
+#define init_waitqueue_head(q)      \
+do {                                \
+ 	__init_waitqueue_head((q)); \
+} while (0)
+#endif
+#ifndef DEFAULT_POLLMASK
+#define DEFAULT_POLLMASK (POLLIN | POLLOUT | POLLRDNORM | POLLWRNORM)
+#endif
 
 #endif /*_V4L2_OSDEP_H_*/

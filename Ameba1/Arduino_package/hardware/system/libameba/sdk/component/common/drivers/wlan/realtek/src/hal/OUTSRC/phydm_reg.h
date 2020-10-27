@@ -73,12 +73,9 @@
 #define	ODM_CCK_FA_CNT_MSB			0xa5b
 #define	ODM_CCK_FA_CNT_LSB			0xa5c
 #define	ODM_CCK_NEW_FUNCTION		0xa75
-#define	ODM_CCK_CS_RATIO			0xaaa
 #define	ODM_OFDM_PHY0_PAGE_C		0xc00
 #define	ODM_OFDM_RX_ANT				0xc04
 #define	ODM_R_A_RXIQI					0xc14
-#define	ODM_OFDM_MATCH_FILTER		0xc30
-#define	ODM_OFDM_DELAY_CORRELATOR	0xc3c
 #define	ODM_R_A_AGC_CORE1			0xc50
 #define	ODM_R_A_AGC_CORE2			0xc54
 #define	ODM_R_B_AGC_CORE1			0xc58

@@ -15,7 +15,7 @@
 
 #define GMK_LEN					32
 #define GTK_LEN					32
-#define IGTK_LEN					16
+#define IGTK_LEN				16
 #define PMK_LEN					32
 #define PMKID_LEN				16
 #define KEY_NONCE_LEN			32
@@ -85,7 +85,6 @@
 #define	WLAN_REASON_MIC_FAILURE				14
 #define WLAN_REASON_4WAY_HANDSHAKE_TIMEOUT	15
 
-
 /*
 	2008-12-16, For Corega CG-WLCB54GL 54Mbps NIC interoperability issue.
 	The behavior of this NIC when it connect to the other AP with WPA/TKIP is:
@@ -108,28 +107,7 @@
  */
 //#define MAX_RESEND_NUM	3
 #define MAX_RESEND_NUM		5
-
-/*
-	Revise STA EAPOL-key(4-2) resend time from "RESEND_TIME" to "CLIENT_RESEND_TIME" to make sure one 4-1 followed
-	by only one 4-2 but not 'several' to fix:
-	As to AP "HUAWEI WS5100", in case of situation that if STA (re)connect to the AP with a wrong password for several times
-	and in each (re)connect the 4-2 msg with the wrong pw info (re)sent more than once in response to every 4-1, then the AP will
-	probably put the STA into blacklist and won't respond to STA's AUTH again even the STA may has corrected the password.
-	
-	AP(WS5100)	<-----------> 	STA
-					....................
-					------------> Assoc Rsp (ok)
-					------------> EAPOL-key (4-1)
-					<------------ EAPOL-key (4-2 with wrong pw info)
-					<------------ EAPOL-key (resend 4-2 with wrong pw info)					
-					
-					------------> EAPOL-key (4-way msg 1)
-					<------------ EAPOL-key (4-2 with wrong pw info)					
-					<------------ EAPOL-key (resend 4-2 with wrong pw info)			
-					....................					
-*/
 #define RESEND_TIME			1000
-#define CLIENT_RESEND_TIME		1200
 #define WAIT_TIME			7000
 
 #define GK_REKEY_TIME		3600000		//Set rekey period to 1 hour
@@ -305,18 +283,6 @@ typedef enum{
         DOT11_PortStatus_Authorized,
         DOT11_PortStatus_Guest
 }DOT11_PORT_STATUS;
-
-#ifdef CONFIG_MOVE_PSK_TO_ROM
-static __inline__ OCTET_STRING SubStr(OCTET_STRING f, unsigned short s, unsigned short l)
-{
-	OCTET_STRING res;
-
-	res.Length = l;
-	res.Octet = f.Octet + s;
-
-	return res;
-}
-#endif
 
 #define SetSubStr(f,a,l)					memcpy(f.Octet+l,a.Octet,a.Length)
 #define GetKeyInfo0(f, mask) 				((f.Octet[KeyInfoPos + 1] & mask) ? 1 : 0)

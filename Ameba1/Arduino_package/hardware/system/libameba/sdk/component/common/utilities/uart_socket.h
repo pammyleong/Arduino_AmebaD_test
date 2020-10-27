@@ -1,9 +1,7 @@
 #ifndef __UART_SOCKET_H_
 #define __UART_SOCKET_H_
 
-//#include "osdep_api.h"
-#include "osdep_service.h"
-
+#include "osdep_api.h"
 #include "serial_api.h"
 #include "serial_ex_api.h"
 
@@ -38,13 +36,10 @@ typedef struct _uart_socket_t
 	u32 tx_start;
 	u32 tx_bytes;
 	u8 send_buf[UART_SEND_BUFFER_LEN];
-	//_Sema tx_sema;
-	//_Sema dma_tx_sema;	
-	_sema tx_sema;
-	_sema dma_tx_sema;
+	_Sema tx_sema;
+	_Sema dma_tx_sema;	
 
-	//_Sema action_sema;
-	_sema action_sema;
+	_Sema action_sema;
 }uart_socket_t;
 
 uart_socket_t* uart_open(uart_set_str *puartpara);

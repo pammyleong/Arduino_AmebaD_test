@@ -35,15 +35,19 @@ ODM_ReadAndConfig_MP_8711B_RadioA(/* TC: Test Chip, MP: MP Chip*/
 u4Byte ODM_GetVersion_MP_8711B_RadioA(void);
 
 /******************************************************************************
-*                           TxPowerTrack_QFN32.TXT
+*                           RADIO_DIFF.TXT
 ******************************************************************************/
 
+extern u4Byte Array_MP_8711B_RADIO_DIFF_LB[50];
+extern u4Byte Array_MP_8711B_RADIO_DIFF_MB[50];
+extern u4Byte Array_MP_8711B_RADIO_DIFF_HB[50];
 void
-ODM_ReadAndConfig_MP_8711B_TxPowerTrack_QFN32(/* TC: Test Chip, MP: MP Chip*/
-	IN   PDM_ODM_T  pDM_Odm
+ODM_ReadAndConfig_MP_8711B_RADIO_DIFF(
+     IN   PDM_ODM_T    pDM_Odm,
+ 	 IN   u4Byte  	   Array[],
+ 	 IN   u4Byte  	   ArrayLen 
 );
-u4Byte ODM_GetVersion_MP_8711B_TxPowerTrack_QFN32(void);
-
+u4Byte ODM_GetVersion_MP_8711B_RADIO_DIFF(void);
 
 /******************************************************************************
 *                           TxPowerTrack_QFN48.TXT
@@ -55,16 +59,25 @@ ODM_ReadAndConfig_MP_8711B_TxPowerTrack_QFN48(/* TC: Test Chip, MP: MP Chip*/
 );
 u4Byte ODM_GetVersion_MP_8711B_TxPowerTrack_QFN48(void);
 
-
 /******************************************************************************
-*                           TxPowerTrack_QFN68.TXT
+*                           TxPowerTrack_QFN56.TXT
 ******************************************************************************/
 
 void
-ODM_ReadAndConfig_MP_8711B_TxPowerTrack_QFN68(/* TC: Test Chip, MP: MP Chip*/
+ODM_ReadAndConfig_MP_8711B_TxPowerTrack_QFN56(/* TC: Test Chip, MP: MP Chip*/
 	IN   PDM_ODM_T  pDM_Odm
 );
-u4Byte ODM_GetVersion_MP_8711B_TxPowerTrack_QFN68(void);
+u4Byte ODM_GetVersion_MP_8711B_TxPowerTrack_QFN56(void);
+
+/******************************************************************************
+*                           TxPowerTrack_TFBGA96.TXT
+******************************************************************************/
+
+void
+ODM_ReadAndConfig_MP_8711B_TxPowerTrack_TFBGA96(/* TC: Test Chip, MP: MP Chip*/
+	IN   PDM_ODM_T  pDM_Odm
+);
+u4Byte ODM_GetVersion_MP_8711B_TxPowerTrack_TFBGA96(void);
 
 /******************************************************************************
 *                           TXPWR_LMT.TXT

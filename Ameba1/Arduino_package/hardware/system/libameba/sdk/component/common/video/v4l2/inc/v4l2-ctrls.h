@@ -196,8 +196,8 @@ struct v4l2_ctrl_ref {
 struct v4l2_ctrl_handler {
 	//struct mutex _lock;
 	//struct mutex *lock;
-	Mutex	_lock;
-	Mutex	*lock;
+	_Mutex	_lock;
+	_Mutex	*lock;
 	struct list_head ctrls;
 	struct list_head ctrl_refs;
 	struct v4l2_ctrl_ref *cached;

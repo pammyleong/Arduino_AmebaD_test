@@ -2,7 +2,6 @@
 #define _PATCH_UVC_GEO_H_
 
 #include "videodev2.h"
-#include "uvc_osdep.h"
 #if 0
 #define be32_to_cpu(x)  ((((x) >> 24) & 0xff) | \
              (((x) >> 8) & 0xff00) | \

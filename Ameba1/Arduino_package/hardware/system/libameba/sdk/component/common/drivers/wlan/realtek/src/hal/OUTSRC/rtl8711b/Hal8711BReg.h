@@ -68,7 +68,7 @@
 #define REG_SDIO_CTRL_8723B				0x0070
 #define REG_OPT_CTRL_8723B				0x0074
 #define REG_AFE_XTAL_CTRL_EXT_8723B	0x0078
-#define REG_MCUFWDL_8711B				0x0090
+#define REG_MCUFWDL_8723B				0x0080
 #define REG_BT_PATCH_STATUS_8723B		0x0088
 #define REG_HIMR0_8723B					0x00B0
 #define REG_HISR0_8723B					0x00B4
@@ -160,10 +160,32 @@
 
 //-----------------------------------------------------
 //
-//	0x0300h ~ 0x03FFh	LxBUS hal_com_reg.h
+//	0x0300h ~ 0x03FFh	PCIe
 //
 //-----------------------------------------------------
+#define	REG_PCIE_CTRL_REG_8723B		0x0300
+#define	REG_INT_MIG_8723B				0x0304	// Interrupt Migration 
+#define	REG_BCNQ_DESA_8723B			0x0308	// TX Beacon Descriptor Address
+#define	REG_HQ_DESA_8723B				0x0310	// TX High Queue Descriptor Address
+#define	REG_MGQ_DESA_8723B			0x0318	// TX Manage Queue Descriptor Address
+#define	REG_VOQ_DESA_8723B			0x0320	// TX VO Queue Descriptor Address
+#define	REG_VIQ_DESA_8723B				0x0328	// TX VI Queue Descriptor Address
+#define	REG_BEQ_DESA_8723B			0x0330	// TX BE Queue Descriptor Address
+#define	REG_BKQ_DESA_8723B			0x0338	// TX BK Queue Descriptor Address
+#define	REG_RX_DESA_8723B				0x0340	// RX Queue	Descriptor Address
+#define	REG_DBI_WDATA_8723B			0x0348	// DBI Write Data
+#define	REG_DBI_RDATA_8723B			0x034C	// DBI Read Data
+#define	REG_DBI_ADDR_8723B				0x0350	// DBI Address
+#define	REG_DBI_FLAG_8723B				0x0352	// DBI Read/Write Flag
+#define	REG_MDIO_WDATA_8723B		0x0354	// MDIO for Write PCIE PHY
+#define	REG_MDIO_RDATA_8723B			0x0356	// MDIO for Reads PCIE PHY
+#define	REG_MDIO_CTL_8723B			0x0358	// MDIO for Control
+#define	REG_DBG_SEL_8723B				0x0360	// Debug Selection Register
+#define	REG_PCIE_HRPWM_8723B			0x0361	//PCIe RPWM
+#define	REG_PCIE_HCPWM_8723B			0x0363	//PCIe CPWM
+#define	REG_PCIE_MULTIFET_CTRL_8723B	0x036A	//PCIE Multi-Fethc Control
 
+#define REG_RX_RXBD_NUM_8723B              0x0382
 
 // spec version 11
 //-----------------------------------------------------
@@ -617,9 +639,6 @@
 #define	IMR_BCNERLY_MSK_8711B                 BIT0        //This interrupt is issued at the time set by DRVERLYINT register before TBTT time.
 #endif
 
-
-#define	IMR_MSK_CPWM2	           		BIT25
-#define	IMR_MSK_CPWM	            	BIT24
 #define	IMR_FOVW_MSK_8711B	            BIT23        //"Rx packet buffer OverflowSet this bit to one when Rx packet buffer write pointer hits read pointer. "
 #define	IMR_TXBCN0ERR_8711B				BIT20		// Transmit Beacon0 Error	
 #define	IMR_TXBCN0OK_8711B				BIT19		// Transmit Beacon0 OK
@@ -676,13 +695,6 @@
 #define	IMR_TXCLOSE_MSK_8711B	        BIT0        //TX Finish (Ack/BA process Finish) Interrupt.
 
 #endif
-
-//----------------------------------------------------------------------------
-//       8711 IMR/ISR bits						(offset 0x13C,  8bits)
-//----------------------------------------------------------------------------
-#define	IMR_TXBCN1ERR_8711B				BIT15		// Transmit Beacon1 Error	
-#define	IMR_TXBCN1OK_8711B				BIT14		// Transmit Beacon1 OK
-
 //----------------------------------------------------------------------------
 //       8711 IMR/ISR bits						(offset 0x3EC,  8bits)
 //----------------------------------------------------------------------------

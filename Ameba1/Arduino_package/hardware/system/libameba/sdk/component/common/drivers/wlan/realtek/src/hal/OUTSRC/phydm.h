@@ -400,14 +400,8 @@ typedef enum _HT_IOT_PEER
 #define ODM_IC_11AC_SERIES_SUPPORT		1
 #endif
 
-#if (RTL8711B_SUPPORT == 1)
-#define ODM_PHY_STATUS_NEW_TYPE_SUPPORT			1
-#else
-#define ODM_PHY_STATUS_NEW_TYPE_SUPPORT			0
-#endif
-
 #define IQK_THRESHOLD			8
-#if 1 //(RTL8195A_SUPPORT == 1)
+
 typedef struct _ODM_Phy_Status_Info_
 {
 	//
@@ -420,45 +414,24 @@ typedef struct _ODM_Phy_Status_Info_
 	u1Byte		RxPWDBAll;
 #endif
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_IOT))
-#if (RTL8195A_SUPPORT == 1)
 	u1Byte		SignalQuality;	 						// in 0-100 index. 
 	u1Byte		RxMIMOSignalStrength[ODM_RF_PATH_MAX];	// in 0~100 index
 	s1Byte		RecvSignalPower;						// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u1Byte		SignalStrength; 						// in 0-100 index.
-	s1Byte		RxSNR[4];							/* per-path's SNR	*/
+	#if ((RTL8195A_SUPPORT == 0) && (RTL8711B_SUPPORT == 0))
+		s1Byte		RxMIMOSignalQuality[ODM_RF_PATH_MAX];	// per-path's EVM
+		s1Byte		RxPower;								// in dBm Translate from PWdB
+		u1Byte		BTRxRSSIPercentage; 
+		s1Byte		RxPwr[ODM_RF_PATH_MAX];				// per-path's pwdb
+		u1Byte		RxSNR[ODM_RF_PATH_MAX];				// per-path's SNR	
+		u1Byte		btCoexPwrAdjust;
+	#endif
 	#if (ODM_IC_11AC_SERIES_SUPPORT)
 		u1Byte		RxMIMOEVMdbm[ODM_RF_PATH_MAX];		// per-path's EVM dbm
 		s2Byte		Cfo_short[ODM_RF_PATH_MAX]; 		// per-path's Cfo_short
 		s2Byte		Cfo_tail[ODM_RF_PATH_MAX];			// per-path's Cfo_tail
 		u1Byte		BandWidth;
 	#endif
-#elif (RTL8711B_SUPPORT == 1)
-	u1Byte		SignalQuality;				/* in 0-100 index. */
-	s1Byte		RxMIMOSignalQuality[4];		/* per-path's EVM */
-	u1Byte		RxMIMOEVMdbm[4];			/* per-path's EVM dbm */
-	u1Byte		RxMIMOSignalStrength[4];	/* in 0~100 index */
-	s2Byte		Cfo_short[4];				/* per-path's Cfo_short */
-	s2Byte		Cfo_tail[4];					/* per-path's Cfo_tail */
-	s1Byte		RxPower;					/* in dBm Translate from PWdB */
-	s1Byte		RecvSignalPower;			/* Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures. */
-	u1Byte		BTRxRSSIPercentage;
-	u1Byte		SignalStrength;				/* in 0-100 index. */
-	s1Byte		RxPwr[4];					/* per-path's pwdb */
-	s1Byte		RxSNR[4];					/* per-path's SNR	*/
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	u1Byte		RxCount:2;					/* RX path counter---*/
-	u1Byte		BandWidth:2;
-	u1Byte		rxsc:4;						/* sub-channel---*/
-#else
-	u1Byte		BandWidth;
-#endif
-	u1Byte		btCoexPwrAdjust;
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	u1Byte		channel;						/* channel number---*/
-	BOOLEAN		bMuPacket;					/* is MU packet or not---*/
-	BOOLEAN		bBeamformed;				/* BF packet---*/
-#endif	
-#endif
 #else
 	u1Byte		SignalQuality;	 		// in 0-100 index. 
 	s1Byte		RxMIMOSignalQuality[4];	//per-path's EVM
@@ -477,49 +450,10 @@ typedef struct _ODM_Phy_Status_Info_
 	u1Byte		BandWidth;
 	u1Byte		btCoexPwrAdjust;
 #endif
+
 }ODM_PHY_INFO_T,*PODM_PHY_INFO_T;
-#else
 
-typedef struct _ODM_Phy_Status_Info_ {
-	//
-	// Be care, if you want to add any element please insert between 
-	// RxPWDBAll & SignalStrength.
-	//
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN))
-	u4Byte		RxPWDBAll;	
-#else
-	u1Byte		RxPWDBAll;	
-#endif
-	u1Byte		SignalQuality;				/* in 0-100 index. */
-	s1Byte		RxMIMOSignalQuality[ODM_RF_PATH_MAX];		/* per-path's EVM */
-	u1Byte		RxMIMOEVMdbm[ODM_RF_PATH_MAX];			/* per-path's EVM dbm */
-	u1Byte		RxMIMOSignalStrength[ODM_RF_PATH_MAX];	/* in 0~100 index */
-	s2Byte		Cfo_short[ODM_RF_PATH_MAX];				/* per-path's Cfo_short */
-	s2Byte		Cfo_tail[ODM_RF_PATH_MAX];					/* per-path's Cfo_tail */
-	s1Byte		RxPower;					/* in dBm Translate from PWdB */
-	s1Byte		RecvSignalPower;			/* Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures. */
-	u1Byte		BTRxRSSIPercentage;
-	u1Byte		SignalStrength;				/* in 0-100 index. */
-	s1Byte		RxPwr[ODM_RF_PATH_MAX];					/* per-path's pwdb */
-	s1Byte		RxSNR[ODM_RF_PATH_MAX];					/* per-path's SNR	*/
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	u1Byte		RxCount:2;					/* RX path counter---*/
-	u1Byte		BandWidth:2;
-	u1Byte		rxsc:4;						/* sub-channel---*/
-#else
-	u1Byte		BandWidth;
-#endif
-#if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE|ODM_IOT))
-	u1Byte		btCoexPwrAdjust;
-#endif
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	u1Byte		channel;						/* channel number---*/
-	BOOLEAN		bMuPacket;					/* is MU packet or not---*/
-	BOOLEAN		bBeamformed;				/* BF packet---*/
-#endif
-} ODM_PHY_INFO_T, *PODM_PHY_INFO_T;
 
-#endif
 typedef struct _ODM_Per_Pkt_Info_
 {
 	//u1Byte		Rate;	
@@ -538,16 +472,7 @@ typedef struct _ODM_Phy_Dbg_Info_
 	u4Byte		NumQryPhyStatus;
 	u4Byte		NumQryPhyStatusCCK;
 	u4Byte		NumQryPhyStatusOFDM;
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	u4Byte		NumQryMuPkt;
-	u4Byte		NumQryBfPkt;
-	u4Byte		NumQryMuVhtPkt[40];
-	u4Byte		NumQryVhtPkt[40];
-	BOOLEAN		bLdpcPkt;
-	BOOLEAN		bStbcPkt;
-#endif
 	u1Byte		NumQryBeaconPkt;
-	u4Byte		NumQryBeaconPktAll;
 	//Others
 	s4Byte		RxEVM[4];	
 	
@@ -711,7 +636,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_DMSP_IS_MASTER,
 	ODM_CMNINFO_SCAN,
 	ODM_CMNINFO_POWER_SAVING,
-	ODM_CMNINFO_TDMA,		
 	ODM_CMNINFO_ONE_PATH_CCA,			// ODM_CCA_PATH_E
 	ODM_CMNINFO_DRV_STOP,
 	ODM_CMNINFO_PNP_IN,
@@ -725,13 +649,6 @@ typedef enum _ODM_Common_Info_Definition
 	ODM_CMNINFO_FCS_MODE,
 	ODM_CMNINFO_PROMISC_MODE,
 	ODM_CMNINFO_PROMISC_AVG_RSSI,
-#if (RTL8711B_SUPPORT == 1)	
-	ODM_CMNINFO_NOLINK_APMODE,
-#endif
-#ifdef CONFIG_SYNCPKT
-    ODM_CMNINFO_SYNCPKT_MODE,
-    ODM_CMNINFO_SYNC_AVG_RSSI,
-#endif
 //--------- POINTER REFERENCE-----------//
 
 //------------CALL BY VALUE-------------//
@@ -766,27 +683,6 @@ typedef enum _ODM_Common_Info_Definition
 
 
 }ODM_CMNINFO_E;
-
-enum phydm_info_query_e {
-	PHYDM_INFO_FA_OFDM,
-	PHYDM_INFO_FA_CCK,
-	PHYDM_INFO_FA_TOTAL,
-	PHYDM_INFO_CCA_OFDM,
-	PHYDM_INFO_CCA_CCK,
-	PHYDM_INFO_CCA_ALL,
-	PHYDM_INFO_CRC32_OK_VHT,
-	PHYDM_INFO_CRC32_OK_HT,
-	PHYDM_INFO_CRC32_OK_LEGACY,
-	PHYDM_INFO_CRC32_OK_CCK,
-	PHYDM_INFO_CRC32_ERROR_VHT,
-	PHYDM_INFO_CRC32_ERROR_HT,
-	PHYDM_INFO_CRC32_ERROR_LEGACY,
-	PHYDM_INFO_CRC32_ERROR_CCK,
-	PHYDM_INFO_EDCCA_FLAG,
-	PHYDM_INFO_OFDM_ENABLE,
-	PHYDM_INFO_CCK_ENABLE,
-	PHYDM_INFO_DBG_PORT_0
-};
 
 //
 // 2011/10/20 MH Define ODM support ability.  ODM_CMNINFO_ABILITY
@@ -882,7 +778,6 @@ typedef enum tag_ODM_Fab_Version_Definition
 {
 	ODM_TSMC 	=	0,
 	ODM_UMC 	=	1,
-	ODM_SMIC	=	2,
 }ODM_FAB_E;
 
 // ODM_CMNINFO_RF_TYPE
@@ -1168,7 +1063,6 @@ typedef struct _FAST_ANTENNA_TRAINNING_
 	u1Byte	antsel_rx_keep_0;
 	u1Byte	antsel_rx_keep_1;
 	u1Byte	antsel_rx_keep_2;
-    u1Byte	antsel_rx_keep_3;
 	u4Byte	antSumRSSI[7];
 	u4Byte	antRSSIcnt[7];
 	u4Byte	antAveRSSI[7];
@@ -1355,7 +1249,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 
 	u1Byte			odm_Regulation2_4G;
 	u1Byte			odm_Regulation5G;
-	BOOLEAN			cck_new_agc;	
+	
 //-----------HOOK BEFORE REG INIT-----------//	
 
 	//
@@ -1396,7 +1290,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	// Common info for Status
 	BOOLEAN			*pbScanInProcess;
 	BOOLEAN			*pbPowerSaving;
-	BOOLEAN			*pbTDMA;	
 	// CCA Path 2-path/path-A/path-B = 0/1/2; using ODM_CCA_PATH_E.
 	u1Byte			*pOnePathCCA;
 	//pMgntInfo->AntennaTest
@@ -1409,10 +1302,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 
 	u1Byte			*PromiscEnabled;  //Only used after channel fixed for airkiss
 	s1Byte			*PromiscRssiAvg;
-#ifdef CONFIG_SYNCPKT
-        u1Byte          *syncmodeEnabled;
-        s1Byte          *syncRssiAvg;
-#endif
 //--------- POINTER REFERENCE-----------//
 	pu2Byte			pForcedDataRate;
 //------------CALL BY VALUE-------------//
@@ -1422,7 +1311,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	BOOLEAN			bLinked;
 
 	BOOLEAN			bsta_state;
-	u1Byte			RSSI_Min;	
+	u1Byte			RSSI_Min;
 	u1Byte          InterfaceIndex; // Add for 92D  dual MAC: 0--Mac0 1--Mac1
 	BOOLEAN         bIsMPChip;
 	BOOLEAN			bOneEntryOnly;
@@ -1440,8 +1329,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u8Byte			RSSI_TRSW_H;
 	u8Byte			RSSI_TRSW_L;	
 	u8Byte			RSSI_TRSW_iso;
-	u1Byte			RXAntStatus;
-	u1Byte			TXAntStatus;
+
 	u1Byte			RxRate;
 	BOOLEAN			bNoisyState;
 	u1Byte			TxRate;
@@ -1478,20 +1366,10 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	u1Byte			DCbackoff;
 	BOOLEAN			Adaptivity_enable;
 	u1Byte			APTotalNum;
-    BOOLEAN			EDCCA_enable;
 	ADAPTIVITY_STATISTICS	Adaptivity;
 	//For Adaptivtiy
 	
 	ODM_NOISE_MONITOR noise_level;//[ODM_MAX_CHANNEL_NUM];
-	/*for noise detection*/
-	BOOLEAN			NoisyDecision; /*b_noisy*/
-	BOOLEAN			pre_b_noisy;	
-	u4Byte			NoisyDecision_Smooth;
-    
-#if (ODM_PHY_STATUS_NEW_TYPE_SUPPORT == 1)
-	s4Byte			AccumulatePWDB[ODM_ASSOCIATE_ENTRY_NUM];
-#endif
-
 	//
 	//2 Define STA info.
 	// _ODM_STA_INFO
@@ -1549,8 +1427,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//#endif 
 
 	BOOLEAN				bNoBeaconIn2s;
-	u1Byte				BeaconCntWind[4];
-	u1Byte				BeaconCntWindVaild[4];	
+	
 #if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	//Path Div Struct
 	PATHDIV_PARA	pathIQK;
@@ -1629,11 +1506,6 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	//
 	// ODM system resource.
 	//
-#ifdef CONFIG_BT_COEXIST
-	u32			n_iqk_cnt;
-	u32			n_iqk_ok_cnt;
-	u32			n_iqk_fail_cnt;
-#endif
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_WIN|ODM_CE))	
 	//
@@ -1654,11 +1526,7 @@ typedef  struct DM_Out_Source_Dynamic_Mechanism_Structure
 	RT_TIMER				CCKPathDiversityTimer;
 	RT_TIMER 	FastAntTrainingTimer;
 #endif
-
-#if (RTL8711B_SUPPORT == 1)
-	/*1:GREE mode;0:normal mode*/
-	BOOLEAN			bNoLink_Mode;
-#endif
+	
 	// ODM relative workitem.
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	#if USE_WORKITEM
@@ -1739,7 +1607,6 @@ typedef enum _ODM_FW_Config_Type{
     CONFIG_FW_WoWLAN_2,
     CONFIG_FW_AP_WoWLAN,
     CONFIG_FW_BT,
-    CONFIG_FW_ROM,
 } ODM_FW_Config_Type;
 
 // Status code
@@ -2008,10 +1875,6 @@ ODM_ReleaseAllTimers(
 VOID
 ODM_ResetIQKResult(
     IN PDM_ODM_T pDM_Odm 
-    );
-
-VOID phydm_NoisyDetection(
-    IN	PDM_ODM_T	pDM_Odm	
     );
 
 

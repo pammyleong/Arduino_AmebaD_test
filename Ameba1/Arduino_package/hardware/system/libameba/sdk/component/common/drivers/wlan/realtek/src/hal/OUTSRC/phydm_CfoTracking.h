@@ -66,8 +66,7 @@ VOID
 ODM_ParsingCFO(
 	IN		PVOID					pDM_VOID,
 	IN		PVOID					pPktinfo_VOID,
-	IN     	s1Byte* 					pcfotail,
-	IN		u1Byte			            num_ss
+	IN     	s1Byte* 					pcfotail
 );
 
 #endif

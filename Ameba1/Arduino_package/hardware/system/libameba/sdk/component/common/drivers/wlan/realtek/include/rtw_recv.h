@@ -30,11 +30,7 @@
 #if DEFRAGMENTATION
     #define NR_RECVFRAME 8
 #else
-#ifndef CONFIG_HIGH_TP
     #define NR_RECVFRAME 2	//Decrease recv frame due to memory limitation - YangJue
-#else
-    #define NR_RECVFRAME 256
-#endif
 #endif
 #endif
 #else
@@ -46,12 +42,8 @@
 #elif defined(PLATFORM_OS_CE)
 	#define NR_RECVBUFF (4)
 #elif defined(PLATFORM_FREERTOS)
-#ifndef CONFIG_HIGH_TP
 //	#define NR_RECVBUFF (8)	//Decrease recv buffer due to memory limitation - Alex Fang
 	#define NR_RECVBUFF (1)	//Decrease recv buffer due to memory limitation - YangJue
-#else
-	#define NR_RECVBUFF (32)
-#endif
 #else
 	#if (defined CONFIG_GSPI_HCI || defined CONFIG_SDIO_HCI)
 		#define NR_RECVBUFF (32)
@@ -67,7 +59,6 @@
 
 #define PHY_RSSI_SLID_WIN_MAX			100
 #define PHY_LINKQUALITY_SLID_WIN_MAX		20
-#define PHY_BCN_RSSI_SLID_WIN_MAX			10
 
 // Rx smooth factor
 #define Rx_Smooth_Factor (20)
@@ -99,7 +90,6 @@ struct recv_reorder_ctrl
 	u8 wsize_b;
 	_queue pending_recvframe_queue;
 	_timer reordering_ctrl_timer;
-	u8 bReorderWaiting;
 };
 
 struct	stainfo_rxcache	{
@@ -148,7 +138,6 @@ struct phy_info
 	u8		RxMIMOSignalStrength[MAX_RF_PATH];		// in 0~100 index
 	s8		RecvSignalPower;						// Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures.
 	u8		SignalStrength; 						// in 0-100 index.
-	u8		RxSNR[MAX_RF_PATH];					// per-path's SNR
 	#if ((RTL8195A_SUPPORT == 0) && (RTL8711B_SUPPORT == 0))
 		s8		RxMIMOSignalQuality[MAX_RF_PATH];	// per-path's EVM
 		s8		RxPower;							// in dBm Translate from PWdB
@@ -185,31 +174,6 @@ struct phy_info
 	u8		BandWidth;
 	u8		btCoexPwrAdjust;
 };
-#elif(RTL8711B_SUPPORT == 1)
-struct phy_info
-{
-	u8		RxPWDBAll;
-	
-	u8		SignalQuality;				/* in 0-100 index. */
-	s8		RxMIMOSignalQuality[4];		/* per-path's EVM */
-	u8		RxMIMOEVMdbm[4];			/* per-path's EVM dbm */
-	u8		RxMIMOSignalStrength[4];	/* in 0~100 index */
-	s16		Cfo_short[4];				/* per-path's Cfo_short */
-	s16		Cfo_tail[4];					/* per-path's Cfo_tail */
-	s8		RxPower;					/* in dBm Translate from PWdB */
-	s8		RecvSignalPower;			/* Real power in dBm for this packet, no beautification and aggregation. Keep this raw info to be used for the other procedures. */
-	u8		BTRxRSSIPercentage;
-	u8		SignalStrength;				/* in 0-100 index. */
-	s8		RxPwr[4];					/* per-path's pwdb */
-	s8		RxSNR[4];					/* per-path's SNR	*/
-	u8		RxCount:2;					/* RX path counter---*/
-	u8		BandWidth:2;
-	u8		rxsc:4;						/* sub-channel---*/
-	u8		btCoexPwrAdjust;
-	u8		channel;						/* channel number---*/
-	u8		bMuPacket;					/* is MU packet or not---*/
-	u8		bBeamformed;				/* BF packet---*/
-};
 #else
 #define MAX_PATH_NUM_92CS		2
 struct phy_info //ODM_PHY_INFO_T
@@ -238,7 +202,6 @@ struct rx_pkt_attrib	{
 	u8	qos;
 	u8	priority;
 	u8	pw_save;
-	u8	paggr;
 	u8	mdata;
 	u16	seq_num;
 	u8	frag_num;
@@ -290,7 +253,7 @@ struct rx_pkt_attrib	{
 //These definition is used for Rx packet reordering.
 #define SN_LESS(a, b)		(((a-b)&0x800)!=0)
 #define SN_EQUAL(a, b)	(a == b)
-#define REORDER_WIN_SIZE	4	// reduce due to skbdata num limit//NR_RECVFRAME
+//#define REORDER_WIN_SIZE	128
 //#define REORDER_ENTRY_NUM	128
 #define REORDER_WAIT_TIME	(30) // (ms)
 
@@ -383,14 +346,10 @@ struct recv_priv
 
 	u32	bIsAnyNonBEPkts;
 	u64	rx_bytes;
-	u64	last_rx_bytes;
 	u64	rx_pkts;
-	u32	rx_drop;
-	u32	rx_overflow;
-	u16	rx_frame_null_cnt;
-	u16	rx_skb_null_cnt;
-	u16	rx_reorder_drop_cnt;
-	u16	rx_reorder_timeout_cnt;
+	u64	rx_drop;
+	u64 rx_overflow;
+	u64	last_rx_bytes;
 
 	uint  rx_icv_err;
 	uint  rx_largepacket_crcerr;
@@ -452,7 +411,6 @@ struct recv_priv
 	u8 is_signal_dbg;	// for debug
 	u8 signal_strength_dbg;	// for debug
 	s8 rssi;
-	s8 bcn_rssi;
 	s8 rxpwdb;
 	u8 signal_strength;
 	u8 signal_qual;
@@ -465,10 +423,8 @@ struct recv_priv
 	_timer signal_stat_timer;
 	u32 signal_stat_sampling_interval;
 	//u32 signal_stat_converging_constant;
-	struct signal_stat signal_snr;
 	struct signal_stat signal_qual_data;
 	struct signal_stat signal_strength_data;
-	struct smooth_rssi_data signal_strength_beacon;
 #else //CONFIG_NEW_SIGNAL_STAT_PROCESS
 	struct smooth_rssi_data signal_qual_data;
 	struct smooth_rssi_data signal_strength_data;

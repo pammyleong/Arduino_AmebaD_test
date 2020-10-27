@@ -259,7 +259,7 @@ void hal_init_macaddr(_adapter *adapter);
 void SetHwReg(PADAPTER padapter, u8 variable, u8 *val);
 void GetHwReg(PADAPTER padapter, u8 variable, u8 *val);
 
-#if defined (CONFIG_RTL8188F) || defined (CONFIG_RTL8711B)
+#ifdef CONFIG_RTL8188F
 typedef enum _RT_MEDIA_STATUS {
 	RT_MEDIA_DISCONNECT = 0,
 	RT_MEDIA_CONNECT       = 1

@@ -17,38 +17,8 @@
  *
  *
  ******************************************************************************/
-#ifndef __MP_PRECOMP_H__
-#define __MP_PRECOMP_H__
 
-#include <drv_types.h>
-#include <hal_data.h>
-
-#define BT_TMP_BUF_SIZE	100
-
-#ifdef CONFIG_BT_COEXIST
-#define BT_SUPPORT		1
-#define COEX_SUPPORT	1
-#define HS_SUPPORT		1
-
-#define rsprintf			snprintf
-#define DCMD_Printf			DBG_BT_INFO
-#define delay_ms(ms)		rtw_mdelay_os(ms)
-
-typedef enum _BTC_MSG_COMP_TYPE {
-	COMP_COEX		= 0,
-	COMP_MAX
-} BTC_MSG_COMP_TYPE;
-
-#include "halbtcoutsrc.h"
-#include "halbtc8195a1ant.h"
-#include "halbtc8195a2ant.h"
-
-#else
-#define BT_SUPPORT		0
-#define COEX_SUPPORT	0
-#define HS_SUPPORT		0
-#endif
-
-#endif /*  __MP_PRECOMP_H__ */
-
+//#include <Precomp.h>
+//#include "phydm_precomp.h"
+//#include "../phydm_precomp.h"
 

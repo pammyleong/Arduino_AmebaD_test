@@ -119,7 +119,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #include "wireless.h"
 #include <netdev.h>
 #include <osdep_service.h>
-#include <device_lock.h>
 #include <rtw_byteorder.h>
 #include <rtw_io.h>
 #include <hci_spec.h>
@@ -192,15 +191,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #ifdef CONFIG_IOCTL_CFG80211
 	#include "ioctl_cfg80211.h"
 #endif //CONFIG_IOCTL_CFG80211
-
-#ifdef CONFIG_BT_COEXIST
-	#include <rtw_btcoex.h>
-	#include <rtw_mi.h>
-#endif
-
-#ifdef CONFIG_MCC_MODE
-	#include <hal_mcc.h>
-#endif /*CONFIG_MCC_MODE */
 
 #define SPEC_DEV_ID_NONE BIT(0)
 #define SPEC_DEV_ID_DISABLE_HT BIT(1)
@@ -277,24 +267,21 @@ struct registry_priv
 	u8	rf_config ;
 //	u8	low_power ;
 	u8	power_percentage_idx;
+
 	u8	wifi_spec;// !turbo_mode
+
 	u8	channel_plan;
-	u8	map_in_efuse;
-	
 #ifdef CONFIG_BT_COEXIST
 	u8	btcoex;
 	u8	bt_iso;
 	u8	bt_sco;
 	u8	bt_ampdu;
-	u8	ant_num;
 #endif
 #if RX_AGGREGATION 
 	BOOLEAN	bAcceptAddbaReq;
 #endif
-#ifdef CONFIG_ANTENNA_DIVERSITY
-	u8	antdiv_cfg;
-	u8	antdiv_type;
-#endif
+//	u8	antdiv_cfg;
+//	u8	antdiv_type;
 
 #ifdef CONFIG_AUTOSUSPEND
 	u8	usbss_enable;//0:disable,1:enable
@@ -350,27 +337,6 @@ struct registry_priv
 	u8 adaptivity_dc_backoff;
 	s8 adaptivity_th_l2h_ini;
 //	u8 nhm_en;
-
-#ifdef CONFIG_MCC_MODE
-	u8 en_mcc;
-	u32 rtw_mcc_single_tx_cri;
-	u32 rtw_mcc_ap_bw20_target_tx_tp;
-	u32 rtw_mcc_ap_bw40_target_tx_tp;
-	u32 rtw_mcc_ap_bw80_target_tx_tp;
-	u32 rtw_mcc_sta_bw20_target_tx_tp;
-	u32 rtw_mcc_sta_bw40_target_tx_tp;
-	u32 rtw_mcc_sta_bw80_target_tx_tp;
-	s8 rtw_mcc_policy_table_idx;
-	u8 rtw_mcc_duration;
-	u8 rtw_mcc_tsf_sync_offset;
-	u8 rtw_mcc_start_time_offset;
-	u8 rtw_mcc_interval;
-	s8 rtw_mcc_guard_offset0;
-	s8 rtw_mcc_guard_offset1;
-	u8 rtw_mcc_pattern_table_idx;
-	u8 rtw_mcc_enable_rmcc;
-#endif /* CONFIG_MCC_MODE */
-	u8 trp_tis_test;
 };
 
 //For registry parameters
@@ -384,46 +350,16 @@ struct registry_priv
 #ifdef CONFIG_CONCURRENT_MODE
 #define is_primary_adapter(adapter) (adapter->adapter_type == PRIMARY_ADAPTER)
 #define get_iface_type(adapter) (adapter->iface_type)
-//#define get_hw_port(adapter) (adapter->hw_port)
 #else
 #define is_primary_adapter(adapter) (1)
 #define get_iface_type(adapter) (IFACE_PORT0)
-//#define get_hw_port(adapter) (HW_PORT0)
 #endif
-
-enum _IFACE_ID {
-	IFACE_ID0, /*PRIMARY_ADAPTER*/
-	IFACE_ID1,
-	IFACE_ID2,
-	IFACE_ID3,
-	IFACE_ID4,
-	IFACE_ID5,
-	IFACE_ID6,
-	IFACE_ID7,
-	IFACE_ID_MAX,
-};
 
 enum _IFACE_TYPE {
 	IFACE_PORT0, //mapping to port0 for C/D series chips
 	IFACE_PORT1, //mapping to port1 for C/D series chip
 	MAX_IFACE_PORT,
 };
-
-enum _hw_port {
-	HW_PORT0,
-	HW_PORT1,
-	HW_PORT2,
-	HW_PORT3,
-	HW_PORT4,
-	MAX_HW_PORT,
-};
-
-_adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
-_adapter *dvobj_get_unregisterd_adapter(struct dvobj_priv *dvobj);
-_adapter *dvobj_get_adapter_by_addr(struct dvobj_priv *dvobj, u8 *addr);
-#define dvobj_get_primary_adapter(dvobj)	((dvobj)->padapters[IFACE_ID0])
-
-
 
 enum _ADAPTER_TYPE {
 	PRIMARY_ADAPTER,
@@ -444,9 +380,6 @@ struct dvobj_priv
 #ifdef CONFIG_CONCURRENT_MODE
 	void *padapters[MAX_IFACE_PORT];
 	u8 iface_nums; // total number of ifaces used runtime
-#endif
-#ifdef CONFIG_BT_COEXIST
-	struct mi_state iface_state;
 #endif
 	//In /Out Pipe information
 	//int	RtInPipe[2];
@@ -592,13 +525,6 @@ struct dvobj_priv
 #endif //PLATFORM_FREERTOS
 #endif
 
-#ifdef CONFIG_MCC_MODE
-	struct mcc_obj_priv mcc_objpriv;
-	unsigned char	oper_channel; /* saved channel info when call set_channel_bw */
-	unsigned char	oper_bwmode;
-	unsigned char	oper_ch_offset;/* PRIME_CHNL_OFFSET */
-	u32 on_oper_ch_time;
-#endif /*CONFIG_MCC_MODE */
 };
 
 #ifdef PLATFORM_LINUX
@@ -755,10 +681,6 @@ struct _ADAPTER{
 	s32	bCardDisableWOHSM;
 	u8	RxStop;	//Used to stop rx thread as early as possible
 
-#if defined(CONFIG_WLAN_SWITCH_MODE) && CONFIG_WLAN_SWITCH_MODE
-	_sema	RxProtect_sema;	//Used to protect RX when in rtw_set_mode
-#endif
-
 	u32	IsrContent;
 	u32	ImrContent;
 
@@ -872,13 +794,13 @@ struct _ADAPTER{
 	_adapter *pbuddy_adapter;
 
 	_mutex *hw_init_mutex;
-	_mutex *ph2c_fwcmd_mutex;
 #if defined(CONFIG_CONCURRENT_MODE) 
 	u8 isprimary; //is primary adapter or not
 	u8 adapter_type;
 	u8 iface_type; //interface port type
 
 	//for global synchronization
+	_mutex *ph2c_fwcmd_mutex;
 	_mutex *psetch_mutex;
 	_mutex *psetbw_mutex;
 
@@ -925,40 +847,6 @@ struct _ADAPTER{
 	u8 ra_mask_user_en;
 	u32 ra_mask_define;
 	u8 auto_rate_fallback_user_en;
-
-#if defined (CONFIG_AP_MODE)
-	/*
-	 * If bit0 is set 1: driver won't process any rx packets from ap port
-	 * If bit1 is set 1: driver will only process rx beacon packets
-	*/
-	u8 b_suspend_ap_rx;
-#endif
-
-#ifdef CONFIG_MCC_MODE
-	struct mcc_adapter_priv mcc_adapterpriv;
-	/* notes:
-	**	if isprimary is true, the adapter_type value is 0, iface_id is IFACE_ID0 for PRIMARY_ADAPTER
-	**	if isprimary is false, the adapter_type value is 1, iface_id is IFACE_ID1 for VIRTUAL_ADAPTER
-	**	refer to iface_id if iface_nums>2 and isprimary is false and the adapter_type value is 0xff.*/
-	//u8 hw_port; /*interface port type, it depends on HW port */
-
-	/*extend to support multi interface*/
-	/*IFACE_ID0 is equals to PRIMARY_ADAPTER
-	IFACE_ID1 is equals to VIRTUAL_ADAPTER*/
-	u8 iface_id;
-
-#endif /* CONFIG_MCC_MODE */
-	
-#ifdef CONFIG_SYNCPKT
-    u8 dst_addr[6];
-    u8 syncpkt_local;
-    u8 syncpkt_num;
-    u8 syncpkt_interval;
-    u8 syncpkt_flag;
-    u8 syncpkt_fwips_flag;
-    s8 pkt_rssi;
-    s8 pkt_avg_rssi;
-#endif
 };
 
 #define adapter_to_dvobj(adapter) (adapter->dvobj)

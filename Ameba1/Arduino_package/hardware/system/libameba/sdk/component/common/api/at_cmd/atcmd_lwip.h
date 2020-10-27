@@ -99,6 +99,7 @@ int hang_node(node* insert_node);
 int hang_seednode(node* main_node ,node* insert_node);
 node *seek_node(int con_id);
 node *tryget_node(int n);
+void atcmd_lwip_set_rx_buffer(unsigned char *buf, int bufsize);
 #endif
 
 

@@ -67,7 +67,6 @@
 #define AT_FLAG_LWIP        AT_BIT(7)
 #define AT_FLAG_COMMON      AT_BIT(8)
 #define AT_FLAG_WIFI        AT_BIT(9)
-#define AT_FLAG_RDP         AT_BIT(10)
 
 enum{
 	AT_DBG_OFF = 0,
@@ -98,7 +97,7 @@ extern unsigned int   gDbgFlag;
 				_AT_PRINTK(__VA_ARGS__);						\
 			}													\
 		}while(0)
-
+		
 #ifndef SUPPORT_INTERACTIVE_MODE
 #define SUPPORT_INTERACTIVE_MODE	0
 #endif //#ifndef SUPPORT_INTERACTIVE_MODE

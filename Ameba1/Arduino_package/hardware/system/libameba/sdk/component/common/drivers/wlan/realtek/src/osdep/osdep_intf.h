@@ -35,14 +35,7 @@ struct pkt_buff {
 	unsigned char *data;
 };
 
-#if defined(PLATFORM_ALIOS)
-
-#include "alios/wrapper.h"
-#include "alios/alios_intfs.h"
-#include "alios/alios_xmit.h"
-#include "alios/alios_recv.h"
-
-#elif defined(PLATFORM_FREERTOS)
+#if defined(PLATFORM_FREERTOS)
 
 #include "freertos/wrapper.h"
 #include "freertos/freertos_intfs.h"

@@ -44,9 +44,7 @@
 #define RECV_ALIVE	BIT(1)
 #define CMD_ALIVE	BIT(2)
 #define EVT_ALIVE	BIT(3)
-#ifdef CONFIG_BT_COEXIST
-#define BTCOEX_ALIVE	BIT(4)
-#endif /* CONFIG_BT_COEXIST */
+
 
 enum Power_Mgnt
 {
@@ -134,7 +132,7 @@ __inline static void _exit_pwrlock(_pwrlock *plock)
 	rtw_up_sema(plock);
 }
 
-#define LPS_DELAY_TIME	1.3 // 1.3 sec
+#define LPS_DELAY_TIME	1 // 1 sec
 
 #define EXE_PWR_NONE	0x01
 #define EXE_PWR_IPS		0x02
@@ -203,7 +201,6 @@ struct pwrctrl_priv
 	_timer pwr_rpwm_timer;
 #endif // CONFIG_LPS_RPWM_TIMER
 	u8	bpower_saving;
-	u8	bTDMA;
 
 	u8	b_hw_radio_off;
 	u8	reg_rfoff;
@@ -305,11 +302,9 @@ struct pwrctrl_priv
     u8	tdma_rfon_period_len_1;
     u8	tdma_rfon_period_len_2;
     u8	tdma_rfon_period_len_3;
-	u8	tdma_network_type;
 	#endif
 
 	u8	lps_dtim;
-	u8	lps_level;//add to resolve ping lose issue in noisy env
 };
 
 #define rtw_get_ips_mode_req(pwrctrlpriv) \

@@ -409,10 +409,6 @@ struct mlme_priv {
 
 	NDIS_802_11_SSID	assoc_ssid;
 	u8	assoc_bssid[6];
-	
-#ifdef CONFIG_WOWLAN
-	u8	ip_addr[4];
-#endif
 
 	struct wlan_network	cur_network;
 
@@ -549,10 +545,6 @@ struct mlme_priv {
 	u8	sa_ext[L2SDTA_SERVICE_VE_LEN];
 #endif // CONFIG_INTEL_WIDI
 
-#ifdef CONFIG_BT_COEXIST
-	u32 lastscantime;
-#endif
-	
 #ifdef CONFIG_CONCURRENT_MODE
 	u8	scanning_via_buddy_intf;
 #endif

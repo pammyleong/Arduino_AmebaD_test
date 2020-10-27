@@ -60,9 +60,6 @@
 #define LIB1X_EAP_OPCODE_WSC_DONE		(0x05)
 #define LIB1X_EAP_OPCODE_WSC_FRAG_ACK		(0x06)
 
-#define WPS_START_DELAY_TIME    1000
-#define WPS_START_RESEND_TIME   10000
-
 struct rtw_wps_context
 {
   	/* WPS State Machine */
@@ -71,9 +68,6 @@ struct rtw_wps_context
 	
 	/* Avoid handle duplicated message */
 	unsigned char record_last_message_type;
-
-	/* For handling fragmented messages */
-	unsigned char last_message_has_more_frag;
 		
 	unsigned char pad_aligned;
 	unsigned char identifier;

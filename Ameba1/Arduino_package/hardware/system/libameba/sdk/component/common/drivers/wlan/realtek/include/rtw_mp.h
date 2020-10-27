@@ -364,7 +364,8 @@ enum {
 	MP_PwrCtlDM,
 	MP_IQK,
 	MP_LCK,
-	MP_DRV_ABILITY
+	MP_RSSI,
+	MP_DRV_ABILITY,
 };
 
 struct mp_priv

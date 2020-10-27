@@ -215,8 +215,6 @@ enum NETWORK_TYPE
 #define SUPPORTED_24G_NETTYPE_MSK (WIRELESS_11B | WIRELESS_11G | WIRELESS_11_24N)
 #define SUPPORTED_5G_NETTYPE_MSK (WIRELESS_11A | WIRELESS_11_5N)
 
-#define IsLegacyOnly(NetType)  ((NetType) == ((NetType) & (WIRELESS_11BG | WIRELESS_11A)))
-
 #define IsSupported24G(NetType) ((NetType) & SUPPORTED_24G_NETTYPE_MSK ? _TRUE : _FALSE)
 #define IsSupported5G(NetType) ((NetType) & SUPPORTED_5G_NETTYPE_MSK ? _TRUE : _FALSE)
 
@@ -1487,11 +1485,6 @@ enum rtw_ieee80211_back_actioncode {
 	RTW_WLAN_ACTION_DELBA = 2,
 };
 
-enum rtw_ieee80211_spec_mgnt_actioncode {
-	RTW_WLAN_ACTION_CSA = 4,
-	RTW_WLAN_ACTION_EXTENDED_CSA = 5,
-};
-
 /* HT features action code */
 enum rtw_ieee80211_ht_actioncode {
 	RTW_WLAN_ACTION_NOTIFY_CH_WIDTH = 0,
@@ -1575,7 +1568,5 @@ int rtw_parse_sec_ie_akm_mgc(u8* ie, int ie_len, int *auth_key_mgmt, int *mgmt_g
 void rtw_macaddr_cfg(u8 *mac_addr);
 
 u16 rtw_mcs_rate(u8 rf_type, u8 bw_40MHz, u8 short_GI_20, u8 short_GI_40, unsigned char * MCS_rate);
-
-
 #endif /* __IEEE80211_H */
 

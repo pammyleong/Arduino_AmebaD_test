@@ -76,31 +76,6 @@ typedef struct _TxPowerInfo24G{
 #endif
 }TxPowerInfo24G, *PTxPowerInfo24G;
 
-typedef	enum _BT_Ant_NUM {
-	Ant_x2	= 0,
-	Ant_x1	= 1
-} BT_Ant_NUM, *PBT_Ant_NUM;
-
-typedef	enum _BT_CoType {
-	BT_2WIRE		= 0,
-	BT_ISSC_3WIRE	= 1,
-	BT_ACCEL		= 2,
-	BT_CSR_BC4		= 3,
-	BT_CSR_BC8		= 4,
-	BT_RTL8756		= 5,
-	BT_RTL8723A		= 6,
-	BT_RTL8821		= 7,
-	BT_RTL8723B		= 8,
-	BT_RTL8192E		= 9,
-	BT_RTL8814A		= 10,
-	BT_RTL8812A		= 11,
-	BT_RTL8703B		= 12,
-	BT_RTL8822B		= 13,
-	BT_RTL8723D		= 14,
-	BT_RTL8821C		= 15,
-	BT_RTL8195A		= 16
-} BT_CoType, *PBT_CoType;
-
 #endif
 
 

@@ -80,10 +80,10 @@
 #define REG_TXPKTBUF_BCNQ_BDNY_8711B        0x0424
 #define REG_TXPKTBUF_MGQ_BDNY_8711B	        0x0425
 #define REG_TXPKTBUF_WMAC_LBK_BF_HD_8711B   0x045D
-//#ifdef CONFIG_WOWLAN
+#ifdef CONFIG_WOWLAN
 #define REG_TXPKTBUF_IV_LOW             0x0484
 #define REG_TXPKTBUF_IV_HIGH            0x0488
-//#endif
+#endif
 
 //-----------------------------------------------------
 //
@@ -208,13 +208,12 @@
 #define EEPROM_LNA_TYPE_2G_8723BU			0xBD
 
 //RTL8723BS
+#define	EEPROM_MAC_ADDR_8723BS				0x11A
 #define	EEPROM_MAC_ADDR_8711B				0x11A
 
 #define EEPROM_Voltage_ADDR_8723B			0x8
 
 #define EEPROM_TX_KFREE_8711B				0xEE
-
-#define EEPROM_THERMAL_OFFSET_8711B	       	0xEF
 
 #define EEPROM_PACKAGE_TYPE_8711B			0xF8
 
@@ -257,7 +256,7 @@
 #define EEPROM_USB_OPTIONAL1					0xE
 #define EEPROM_CHANNEL_PLAN_BY_HW_MASK		0x80
 
-#define RTL_EEPROM_ID							0x8195
+#define RTL_EEPROM_ID							0x8711
 #define EEPROM_Default_TSSI						0x0
 #define EEPROM_Default_BoardType				0x02
 #define EEPROM_Default_ThermalMeter			0x12

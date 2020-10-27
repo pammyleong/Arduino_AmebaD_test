@@ -24,97 +24,34 @@
 extern "C" {
 #endif
 
-/** @addtogroup ethernet ETHERNET
- *  @ingroup    hal
- *  @brief      ETHERNET functions
- *  @{
- */
+// Connection constants
 
-/** 
- *  @brief To initialize the Ethernet MAC controller.
- *
- *  @param  None
- *
- *  @returns    The result.
- */
 int ethernet_init(void);
-
-/** 
- *  @brief To de-initialize the Ethernet MAC controller.
- *
- *  @param None
- *
- *  @returns    void.
- */
 void ethernet_free(void);
 
-/** 
- *  @brief To write "size" bytes of data from "data" to the Tx packet buffer.
- *
- *  @param[in]  data The buffer of packet data.
- *  @param[in]  size The size of the packet data.
- *
- *  @returns    The number of bytes written, or (-1) if errors.
- */
+// write size bytes from data to ethernet buffer
+// return num bytes written
+// or -1 if size is too big
 int ethernet_write(const char *data, int size);
 
-/** 
- *  @brief To send the packet from Tx packet buffer.
- *
- *  @param None
- *
- *  @returns    The packet size.
- */
+// send ethernet write buffer, returning the packet size sent
 int ethernet_send(void);
 
-/** 
- *  @brief To receive a packet into the Rx packet buffer.
- *
- *  @param None
- *
- *  @returns    The packet size, or 0 if no packet received.
- */
+// recieve from ethernet buffer, returning packet size, or 0 if no packet
 int ethernet_receive(void);
 
-/** 
- *  @brief To read packet data from Rx packet buffer to the "data" buffer.
- *
- *  @param[in]  data A buffer for the packet data.
- *  @param[in]  size The specified length (in bytes) to be read.
- *
- *  @returns    The actual size (in bytes) of data read.
- */
+// read size bytes in to data, return actual num bytes read (0..size)
+// if data == NULL, throw the bytes away
 int ethernet_read(char *data, int size);
 
-/** 
- *  @brief To get the ethernet MAC address.
- *
- *  @param[in]  mac The buffer of MAC address.
- *
- *  @returns    void.
- */
+// get the ethernet address
 void ethernet_address(char *mac);
 
-/** 
- *  @brief To get the link status.
- *
- *  @param None
- *
- *  @returns    1 for link up, 0 for link down.
- */
+// see if the link is up
 int ethernet_link(void);
 
-/** 
- *  @brief To set the link speed and duplex mode.
- *
- *  @param[in]  speed The specified link speed.
- *  @param[in]  duplex The specifed duplex mode.
- *
- *  @returns    void.
- */
+// force link settings
 void ethernet_set_link(int speed, int duplex);
-
-/** @} */ /* End of group ethernet */
 
 #ifdef __cplusplus
 }

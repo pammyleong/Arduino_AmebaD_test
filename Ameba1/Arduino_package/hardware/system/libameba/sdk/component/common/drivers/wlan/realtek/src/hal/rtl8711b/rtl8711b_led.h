@@ -20,5 +20,16 @@
 #ifndef __RTL8711B_LED_H__
 #define __RTL8711B_LED_H__
 
+#include <drv_conf.h>
+#include <osdep_service.h>
+#include <drv_types.h>
+
+
+//================================================================================
+// Interface to manipulate LED objects.
+//================================================================================
+void rtl8711b_InitSwLeds(PADAPTER padapter);
+void rtl8711b_DeInitSwLeds(PADAPTER padapter);
+
 #endif
 

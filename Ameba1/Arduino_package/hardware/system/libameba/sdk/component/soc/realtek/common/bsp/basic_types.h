@@ -81,6 +81,7 @@ typedef unsigned int            BOOL;
 #ifndef BOOL
 typedef unsigned char           BOOL;
 #endif
+//zzw arduino
 #ifndef __cplusplus
 #ifndef bool
 typedef unsigned char           bool;
@@ -423,7 +424,7 @@ typedef	    __kernel_ssize_t	SSIZE_T;
 // Get the N-bytes aligment offset from the current length
 #define N_BYTE_ALIGMENT(__Value, __Aligment) ((__Aligment == 1) ? (__Value) : (((__Value + __Aligment - 1) / __Aligment) * __Aligment))
 
-typedef unsigned char	BOOLEAN,*PBOOLEAN,boolean;
+typedef unsigned char	BOOLEAN,*PBOOLEAN;
 
 #define TEST_FLAG(__Flag,__testFlag)		(((__Flag) & (__testFlag)) != 0)
 #define SET_FLAG(__Flag, __setFlag)			((__Flag) |= __setFlag)

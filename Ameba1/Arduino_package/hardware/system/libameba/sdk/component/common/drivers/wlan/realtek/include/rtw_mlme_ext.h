@@ -35,11 +35,10 @@
 #define FAST_SURVEY_TO	(25) //Fast connection time, scan only partial channel
 #define SURVEY_TO		(100) //Reduce connection time
 //#define SURVEY_TO		(300) //Increase time to stay each channel - Alex Fang
-#define REAUTH_TO		(800) //(50)
+#define REAUTH_TO		(300) //(50)
 #define REASSOC_TO		(300) //(50)
 //#define DISCONNECT_TO	(3000)
 #define ADDBA_TO			(2000)
-#define DEFRAG_TO			(2000)
 
 #define LINKED_TO (1) //unit:2 sec, 1x2=2 sec
 
@@ -52,7 +51,7 @@
 #else
 	#define ROAMING_LIMIT	8
 #endif
-//#define	IOCMD_REG0		0x10250370
+//#define	IOCMD_REG0		0x10250370		 	
 //#define	IOCMD_REG1		0x10250374
 //#define	IOCMD_REG2		0x10250378
 
@@ -95,12 +94,12 @@ extern const u8	WMM_PARA_OUI[];
 
 //
 // Channel Plan Type.
-// Note:
-//	We just add new channel plan when the new channel plan is different from any of the following
-//	channel plan.
+// Note: 
+//	We just add new channel plan when the new channel plan is different from any of the following 
+//	channel plan. 
 //	If you just wnat to customize the acitions(scan period or join actions) about one of the channel plan,
 //	customize them in RT_CHANNEL_INFO in the RT_CHANNEL_LIST.
-//
+// 
 typedef enum _RT_CHANNEL_DOMAIN
 {
 	//===== old channel plan mapping =====//
@@ -176,16 +175,15 @@ typedef enum _RT_CHANNEL_DOMAIN
 
 typedef enum _RT_CHANNEL_DOMAIN_2G
 {
-	RT_CHANNEL_DOMAIN_2G_WORLD1 = 0x00,		//0x20, Worldwird 13, ch1~13 (ETSI, MKK)
-	RT_CHANNEL_DOMAIN_2G_ETSI1 = 0x01,		//0x21, Europe, ch1~13
-	RT_CHANNEL_DOMAIN_2G_FCC1 = 0x02,		//0x22, US, ch1~11
-	RT_CHANNEL_DOMAIN_2G_MKK1 = 0x03,		//0x23, Japan, ch1~14
-	RT_CHANNEL_DOMAIN_2G_ETSI2 = 0x04,		//0x24, France, ch10~13
-	RT_CHANNEL_DOMAIN_2G_FCC2 = 0x05,		//0x2A, US, ch1~13
-	RT_CHANNEL_DOMAIN_2G_MKK2 = 0x06,		//0x58, Japan, ch1~13
-	RT_CHANNEL_DOMAIN_2G_WORLD2 = 0x07,		//0x47, Worldwird 13, ch1~13 (ETSI, MKK, FCC)
-	RT_CHANNEL_DOMAIN_2G_GLOBAL = 0x08,		//0x41, Global, ch1~14 (ETSI, MKK, FCC)
-
+	RT_CHANNEL_DOMAIN_2G_WORLD1 = 0x00,		//Worldwird 13, ch1~13 (ETSI, MKK)
+	RT_CHANNEL_DOMAIN_2G_ETSI1 = 0x01,		//Europe, ch1~13
+	RT_CHANNEL_DOMAIN_2G_FCC1 = 0x02,		//US, ch1~11
+	RT_CHANNEL_DOMAIN_2G_MKK1 = 0x03,		//Japan, ch1~14
+	RT_CHANNEL_DOMAIN_2G_ETSI2 = 0x04,		//France, ch10~13
+	RT_CHANNEL_DOMAIN_2G_RCC2 = 0x05,		//US, ch1~13
+	RT_CHANNEL_DOMAIN_2G_MKK2 = 0x06,		//Japan, ch1~13
+	RT_CHANNEL_DOMAIN_2G_WORLD2 = 0x07,		//Worldwird 13, ch1~13 (ETSI, MKK, FCC)
+	RT_CHANNEL_DOMAIN_2G_GLOBAL = 0x08,		//Global, ch1~14 (ETSI, MKK, FCC)
 	//===== Add new channel plan above this line===============//
 	RT_CHANNEL_DOMAIN_2G_MAX,
 }RT_CHANNEL_DOMAIN_2G, *PRT_CHANNEL_DOMAIN_2G;
@@ -278,15 +276,15 @@ typedef enum _HT_IOT_PEER
 	HT_IOT_PEER_RALINK 			= 4,
 	HT_IOT_PEER_ATHEROS 			= 5,
 	HT_IOT_PEER_CISCO 			= 6,
-	HT_IOT_PEER_MERU 			= 7,
+	HT_IOT_PEER_MERU 			= 7,	
 	HT_IOT_PEER_MARVELL 			= 8,
 	HT_IOT_PEER_REALTEK_SOFTAP 		= 9,// peer is RealTek SOFT_AP, by Bohn, 2009.12.17
 	HT_IOT_PEER_SELF_SOFTAP 		= 10, // Self is SoftAP
 	HT_IOT_PEER_AIRGO 			= 11,
-	HT_IOT_PEER_INTEL 			= 12,
-	HT_IOT_PEER_RTK_APCLIENT 		= 13,
-	HT_IOT_PEER_REALTEK_81XX 		= 14,
-	HT_IOT_PEER_REALTEK_WOW 		= 15,
+	HT_IOT_PEER_INTEL 			= 12, 
+	HT_IOT_PEER_RTK_APCLIENT 		= 13, 
+	HT_IOT_PEER_REALTEK_81XX 		= 14,	
+	HT_IOT_PEER_REALTEK_WOW 		= 15,	
 	HT_IOT_PEER_MAX 			= 16
 }HT_IOT_PEER_E, *PHTIOT_PEER_E;
 
@@ -301,14 +299,6 @@ enum SCAN_STATE
 	SCAN_STATE_MAX,
 };
 
-enum WIFI_INDICATE_MODE
-{
-	WIFI_INDICATE_DISABLE = 0,
-	WIFI_INDICATE_NORMAL = 1,
-	WIFI_INDICATE_WILD = 2,
-	WIFI_INDICATE_MAX,
-};
-
 struct mlme_handler {
 	unsigned int   num;
 	unsigned int (*func)(_adapter *padapter, union recv_frame *precv_frame);
@@ -319,7 +309,7 @@ struct action_handler {
 	unsigned int (*func)(_adapter *padapter, union recv_frame *precv_frame);
 };
 
-struct	ss_res
+struct	ss_res	
 {
 	int	state;
 	int	bss_cnt;
@@ -392,17 +382,17 @@ struct FW_Sta_Info
 
 /*
  * Usage:
- * When one iface acted as AP mode and the other iface is STA mode and scanning,
+ * When one iface acted as AP mode and the other iface is STA mode and scanning, 
  * it should switch back to AP's operating channel periodically.
  * Parameters info:
  * When the driver scanned RTW_SCAN_NUM_OF_CH channels, it would switch back to AP's operating channel for
  * RTW_STAY_AP_CH_MILLISECOND * SURVEY_TO milliseconds.
  * Example:
- * For chip supports 2.4G + 5GHz and AP mode is operating in channel 1,
+ * For chip supports 2.4G + 5GHz and AP mode is operating in channel 1, 
  * RTW_SCAN_NUM_OF_CH is 8, RTW_STAY_AP_CH_MILLISECOND is 3 and SURVEY_TO is 100.
- * When it's STA mode gets set_scan command,
- * it would
- * 1. Doing the scan on channel 1.2.3.4.5.6.7.8
+ * When it's STA mode gets set_scan command, 
+ * it would 
+ * 1. Doing the scan on channel 1.2.3.4.5.6.7.8 
  * 2. Back to channel 1 for 300 milliseconds
  * 3. Go through doing site survey on channel 9.10.11.36.40.44.48.52
  * 4. Back to channel 1 for 300 milliseconds
@@ -410,8 +400,8 @@ struct FW_Sta_Info
  */
 #if defined CONFIG_STA_MODE_SCAN_UNDER_AP_MODE && defined CONFIG_CONCURRENT_MODE
 #define RTW_SCAN_NUM_OF_CH			8
-#define RTW_STAY_AP_CH_MILLISECOND	3	// this value is a multiplier,for example, when this value is 3, it would stay AP's op ch for
-											// 3 * SURVEY_TO millisecond.
+#define RTW_STAY_AP_CH_MILLISECOND	3	// this value is a multiplier,for example, when this value is 3, it would stay AP's op ch for 
+											// 3 * SURVEY_TO millisecond. 
 #endif //defined CONFIG_STA_MODE_SCAN_UNDER_AP_MODE && defined CONFIG_CONCURRENT_MODE
 
 struct mlme_ext_info
@@ -437,7 +427,7 @@ struct mlme_ext_info
 	u8	ERP_enable;
 	u8	ERP_IE;
 	u8	HT_enable;
-	u8	HT_caps_enable;
+	u8	HT_caps_enable;	
 	u8	HT_info_enable;
 	u8	HT_protection;
 	u8	turboMode_cts2self;
@@ -458,9 +448,7 @@ struct mlme_ext_info
 	struct WMM_para_element	WMM_param;
 	struct HT_caps_element	HT_caps;
 	struct HT_info_element		HT_info;
-#ifdef CONFIG_MCC_MODE
-	WLAN_BSSID_EX			network;//join network or bss_network, if in ap mode, it is the same to cur_network.network. //use mlme_priv->cur_network.network. YJ,del,140408
-#endif
+	//WLAN_BSSID_EX			network;//join network or bss_network, if in ap mode, it is the same to cur_network.network. //use mlme_priv->cur_network.network. YJ,del,140408
 	struct FW_Sta_Info		FW_sta_info[NUM_STA];
 
 #ifdef CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
@@ -510,7 +498,7 @@ typedef struct _cus_ie
 {
 	u8 *ie;
 	u8 type;
-}rtw_custom_ie_t, *p_rtw_custom_ie_t;
+}cus_ie, *p_cus_ie;
 #endif /* _CUS_IE_ */
 #endif
 
@@ -528,7 +516,7 @@ struct mlme_ext_priv
 #endif /* CONFIG_IEEE80211W */
 
 	//struct fw_priv 	fwpriv;
-
+	
 	u8	cur_channel;
 	u8	cur_bwmode;
 	u8	cur_ch_offset;//PRIME_CHNL_OFFSET
@@ -545,8 +533,8 @@ struct mlme_ext_priv
 #endif
 	u8	basicrate[NumRates];
 	u8	datarate[NumRates];
-
-	struct ss_res		sitesurvey_res;
+	
+	struct ss_res		sitesurvey_res;		
 	struct mlme_ext_info	mlmext_info;//for sta/adhoc mode, including current scanning/connecting/connected related info.
                                                      //for ap mode, network includes ap's cap_info
 	_timer		survey_timer;
@@ -558,17 +546,17 @@ struct mlme_ext_priv
 	u8	tx_rate; // TXRATE when USERATE is set.
 
 	u8	retry; //retry for issue probereq
-
+	
 	u64 TSFValue;
 
-#ifdef CONFIG_AP_MODE
+#ifdef CONFIG_AP_MODE	
 	unsigned char bstart_bss;
 #endif
 
 #ifdef CONFIG_80211D
 	u8 update_channel_plan_by_ap_done;
 #endif
-	//recv_decache check for Action_public frame
+	//recv_decache check for Action_public frame 
 	u16 	 action_public_rxseq;
 
 	/* for softap power save */
@@ -592,21 +580,14 @@ struct mlme_ext_priv
 #endif
 	u8 partial_scan;
 #ifdef CONFIG_CUSTOM_IE
-	p_rtw_custom_ie_t cus_ven_ie;
+	p_cus_ie cus_ven_ie;
 	u8 ie_num;
 #endif
 
-	_timer csa_timer;
-	u8 csa_channel;
-	
 #ifdef CONFIG_CONCURRENT_MODE
 	u8 bChDeauthDisabled;
 	u8 bConcurrentFlushingSTA;
 #endif
-	_timer update_csa_timer;
-	u8 *csa_ie;
-	u8 ap_switch_chl_flag;
-	_sema ap_switch_chl_sema;
 };
 
 int init_mlme_ext_priv(_adapter* padapter);
@@ -720,8 +701,7 @@ extern u8 set_tx_beacon_cmd(_adapter*padapter);
 unsigned int setup_beacon_frame(_adapter *padapter, unsigned char *beacon_frame);
 void update_mgnt_tx_rate(_adapter *padapter, u8 rate);
 void update_mgntframe_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
-void update_mgntframe_attrib_addr(_adapter *padapter, struct xmit_frame *pmgntframe);
-int dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe);
+void dump_mgntframe(_adapter *padapter, struct xmit_frame *pmgntframe);
 s32 dump_mgntframe_and_wait(_adapter *padapter, struct xmit_frame *pmgntframe, int timeout_ms);
 
 #ifdef CONFIG_P2P
@@ -748,8 +728,6 @@ void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char act
 #ifdef CONFIG_IEEE80211W
 void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short tid, u8 key_type);
 #endif
-void issue_action_spct_ch_switch(_adapter *padapter, unsigned char *da, unsigned char new_channel, unsigned char switch_mode, unsigned char switch_cnt);
-int rtw_ap_switch_chl_and_inform(unsigned char new_channel);
 unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr);
 unsigned int send_beacon(_adapter *padapter);
 
@@ -781,7 +759,6 @@ unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame
 #endif
 unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_p2p(_adapter *padapter, union recv_frame *precv_frame);
-unsigned int OnAction_csa(_adapter *padapter, union recv_frame *precv_frame);
 
 
 void mlmeext_joinbss_event_callback(_adapter *padapter, int join_res);
@@ -828,15 +805,10 @@ int concurrent_chk_start_clnt_join(_adapter *padapter);
 void concurrent_chk_joinbss_done(_adapter *padapter, int join_res);
 #endif //CONFIG_CONCURRENT_MODE
 
-#ifdef CONFIG_PLATFORM_ARM_SUN8I
-	#define BUSY_TRAFFIC_SCAN_DENY_PERIOD	8000
-#else
-	#define BUSY_TRAFFIC_SCAN_DENY_PERIOD	12000
-#endif
 
 struct cmd_hdl {
 	uint	parmsize;
-	u8 (*h2cfuns)(struct _ADAPTER *padapter, u8 *pbuf);
+	u8 (*h2cfuns)(struct _ADAPTER *padapter, u8 *pbuf);	
 };
 
 //TODO
@@ -856,7 +828,7 @@ u8 join_cmd_hdl(_adapter *padapter, u8 *pbuf);
 u8 disconnect_hdl(_adapter *padapter, u8 *pbuf);
 u8 createbss_hdl(_adapter *padapter, u8 *pbuf);
 u8 setopmode_hdl(_adapter *padapter, u8 *pbuf);
-u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf);
+u8 sitesurvey_cmd_hdl(_adapter *padapter, u8 *pbuf);	
 u8 setauth_hdl(_adapter *padapter, u8 *pbuf);
 u8 setkey_hdl(_adapter *padapter, u8 *pbuf);
 u8 set_stakey_hdl(_adapter *padapter, u8 *pbuf);
@@ -871,42 +843,17 @@ u8 set_chplan_hdl(_adapter *padapter, unsigned char *pbuf);
 u8 led_blink_hdl(_adapter *padapter, unsigned char *pbuf);
 u8 set_csa_hdl(_adapter *padapter, unsigned char *pbuf);	//Kurt: Handling DFS channel switch announcement ie.
 u8 tdls_hdl(_adapter *padapter, unsigned char *pbuf);
-void rtw_set_sigstat_fast_enable(int enable);
-int rtw_get_sigstat_fast_enable(void);
 
-/*
-    when rtw_set_lowrssi_use_b_enable enable = ENABLE
-    if rssi < bgn_chose_rssi_threshold sta use 802.11bg mode to connect ap
-        if rssi > bgn_chose_rssi_threshold sta use 11bgn mode to connect ap
-    when rtw_set_lowrssi_use_b_enable enable = DISABLE
-        sta use 802.11bgn to connect ap
-*/
-void rtw_set_lowrssi_use_b_enable(int enable);
-int rtw_get_lowrssi_use_b_enable(void);
-/*
-    set bgn chose rssi threshold,e.g. -50,-60,-70
-*/
-void rtw_set_bgn_chose_rssi_threshold(int rssi);
-int rtw_get_bgn_chose_rssi_threshold(void);
-/*
-* set lowrssi use bg enable and set the rssi
-* @param enable if use the function or not
-* @param rssi when < rssi use bg mode else use bgn mode
-* @return NULL
-*/
-void rtw_set_lowrssi_use_b(int enable,int rssi);
 #if CONFIG_AUTO_RECONNECT
 extern void reconnect_timer_hdl(void *FunctionContext);
 #endif
-
-extern void csa_timer_hdl(void *FunctionContext);
 
 #define GEN_DRV_CMD_HANDLER(size, cmd)	{size, &cmd ## _hdl},
 #define GEN_MLME_EXT_HANDLER(size, cmd)	{size, cmd},
 
 #ifdef _RTW_CMD_C_
 
-const struct cmd_hdl wlancmds[] =
+const struct cmd_hdl wlancmds[] = 
 {
 	GEN_DRV_CMD_HANDLER(0, NULL) /*0*/
 	GEN_DRV_CMD_HANDLER(0, NULL)
@@ -921,7 +868,7 @@ const struct cmd_hdl wlancmds[] =
 	GEN_MLME_EXT_HANDLER(0, NULL) /*10*/
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(0, NULL)
+	GEN_MLME_EXT_HANDLER(0, NULL)		
 	GEN_MLME_EXT_HANDLER(sizeof (struct joinbss_parm), join_cmd_hdl) /*14*/
 	GEN_MLME_EXT_HANDLER(sizeof (struct disconnect_parm), disconnect_hdl)
 //TODO
@@ -959,8 +906,8 @@ const struct cmd_hdl wlancmds[] =
 #if RX_AGGREGATION
 	GEN_MLME_EXT_HANDLER(sizeof(struct addBaReq_parm), add_ba_hdl)
 #else
-	GEN_MLME_EXT_HANDLER(sizeof(struct addBaReq_parm), NULL)
-#endif
+	GEN_MLME_EXT_HANDLER(sizeof(struct addBaReq_parm), NULL)		
+#endif	
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
@@ -969,7 +916,7 @@ const struct cmd_hdl wlancmds[] =
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
 	GEN_MLME_EXT_HANDLER(0, NULL)
-	GEN_MLME_EXT_HANDLER(0, NULL)
+	GEN_MLME_EXT_HANDLER(0, NULL) 
 	GEN_MLME_EXT_HANDLER(sizeof(struct Tx_Beacon_param), tx_beacon_hdl) /*55*/
 	GEN_MLME_EXT_HANDLER(0, mlme_evt_hdl) /*56*/
 	GEN_MLME_EXT_HANDLER(0, rtw_drvextra_cmd_hdl) /*57*/
@@ -983,8 +930,8 @@ const struct cmd_hdl wlancmds[] =
 //	GEN_MLME_EXT_HANDLER(sizeof(struct LedBlink_param), led_blink_hdl) /*60*/
 	GEN_MLME_EXT_HANDLER(0, NULL) /*60*/
 //TODO
-	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), set_csa_hdl) /*61*/
-//	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), NULL) /*61*/
+//	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), set_csa_hdl) /*61*/
+	GEN_MLME_EXT_HANDLER(sizeof(struct SetChannelSwitch_param), NULL) /*61*/
 //TODO
 //	GEN_MLME_EXT_HANDLER(sizeof(struct TDLSoption_param), tdls_hdl) /*62*/
 	GEN_MLME_EXT_HANDLER(sizeof(struct TDLSoption_param), NULL) /*62*/
@@ -1003,13 +950,13 @@ struct C2HEvent_Header
 	unsigned int len:16;
 	unsigned int ID:8;
 	unsigned int seq:8;
-
+	
 #elif defined(CONFIG_BIG_ENDIAN)
 
 	unsigned int seq:8;
 	unsigned int ID:8;
 	unsigned int len:16;
-
+	
 #else
 
 #  error "Must be LITTLE or BIG Endian"
@@ -1031,25 +978,25 @@ enum rtw_c2h_event
  	GEN_EVT_CODE(_Read_EEPROM),
  	GEN_EVT_CODE(_Read_EFUSE),
 	GEN_EVT_CODE(_Read_CAM),			/*5*/
- 	GEN_EVT_CODE(_Get_BasicRate),
- 	GEN_EVT_CODE(_Get_DataRate),
+ 	GEN_EVT_CODE(_Get_BasicRate),  
+ 	GEN_EVT_CODE(_Get_DataRate),   
  	GEN_EVT_CODE(_Survey),	 /*8*/
  	GEN_EVT_CODE(_SurveyDone),	 /*9*/
-
+ 	
  	GEN_EVT_CODE(_JoinBss) , /*10*/
  	GEN_EVT_CODE(_AddSTA),
  	GEN_EVT_CODE(_DelSTA),
  	GEN_EVT_CODE(_AtimDone) ,
- 	GEN_EVT_CODE(_TX_Report),
+ 	GEN_EVT_CODE(_TX_Report),  
 	GEN_EVT_CODE(_CCX_Report),			/*15*/
  	GEN_EVT_CODE(_DTM_Report),
  	GEN_EVT_CODE(_TX_Rate_Statistics),
- 	GEN_EVT_CODE(_C2HLBK),
+ 	GEN_EVT_CODE(_C2HLBK), 
  	GEN_EVT_CODE(_FWDBG),
 	GEN_EVT_CODE(_C2HFEEDBACK),               /*20*/
 	GEN_EVT_CODE(_ADDBA),
 	GEN_EVT_CODE(_C2HBCN),
-	GEN_EVT_CODE(_ReportPwrState),		//filen: only for PCIE, USB
+	GEN_EVT_CODE(_ReportPwrState),		//filen: only for PCIE, USB	
 	GEN_EVT_CODE(_CloseRF),				//filen: only for PCIE, work around ASPM
 #ifdef CONFIG_IEEE80211W
 	GEN_EVT_CODE(_TimeoutSTA),
@@ -1058,9 +1005,9 @@ enum rtw_c2h_event
 };
 
 
-#ifdef _RTW_MLME_EXT_C_
+#ifdef _RTW_MLME_EXT_C_		
 
-const static struct fwevent wlanevents[] =
+const static struct fwevent wlanevents[] = 
 {
 	{0, rtw_dummy_event_callback}, 	/*0*/
 	{0, NULL},
@@ -1074,7 +1021,7 @@ const static struct fwevent wlanevents[] =
 	{sizeof (struct surveydone_event), &rtw_surveydone_event_callback},	/*9*/
 	{0, &rtw_joinbss_event_callback},		/*10*/
 	{sizeof(struct stassoc_event), &rtw_stassoc_event_callback},
-	{sizeof(struct stadel_event), &rtw_stadel_event_callback},
+	{sizeof(struct stadel_event), &rtw_stadel_event_callback},	
 //TODO
 //	{0, &rtw_atimdone_event_callback},
 	{0, NULL},	/*rtw_atimdone_event_callback*/
@@ -1088,13 +1035,10 @@ const static struct fwevent wlanevents[] =
 	{0, NULL},	/*rtw_fwdbg_event_callback*/
 	{0, NULL},	/*20*/
 	{0, NULL},
-	{0, NULL},
-	{0, NULL},
-	{0, NULL},
+	{0, NULL},	
 #if defined(CONFIG_IEEE80211W) && defined(CONFIG_AP_MODE)
 	{sizeof(struct stadel_event), &rtw_sta_timeout_event_callback},	/*25*/
 #endif /* CONFIG_IEEE80211W */
-
 //TODO
 //	{0, &rtw_cpwm_event_callback},
 	{0, NULL},	/*rtw_cpwm_event_callback*/

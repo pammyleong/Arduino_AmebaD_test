@@ -28,7 +28,6 @@ s8 sdio_sd_setProtection(bool protection);
 s8 sdio_sd_getCSD(u8* CSD);
 s8 sdio_sd_isReady();
 s8 sdio_sd_setClock(SD_CLK_FREQUENCY SDCLK);
-u8 card_insert_status(void);
 
 
 s8 sdio_read_blocks(u32 sector, u8 *buffer, u32 count);

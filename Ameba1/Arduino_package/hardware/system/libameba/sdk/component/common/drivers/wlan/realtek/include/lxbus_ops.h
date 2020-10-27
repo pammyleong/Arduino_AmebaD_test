@@ -50,6 +50,7 @@ extern void ClearWlPmcInterrupt8195a(PADAPTER padapter);
 extern BOOLEAN	InterruptRecognized8195a(PADAPTER Adapter);
 #elif  defined(CONFIG_RTL8711B)
 
+extern VOID InitLxDmaRtl8711b(_adapter * Adapter);
 extern u32 rtl8711b_init_desc_ring(_adapter * padapter);
 extern u32 rtl8711b_free_desc_ring(_adapter * padapter);
 extern void rtl8711b_reset_desc_ring(_adapter * padapter);
@@ -68,7 +69,6 @@ extern VOID UpdateInterruptMask8711b(PADAPTER Adapter, u32 *pAddMSRB, u32 *pRemo
 
 #ifdef CONFIG_WOWLAN
 extern void ClearInterrupt8711b(PADAPTER padapter);
-extern void DisableInterruptButCpwm28711b(PADAPTER padapter);
 #endif
 
 extern void ClearWlPmcInterrupt8711b(PADAPTER padapter);

@@ -202,11 +202,6 @@ struct sta_info {
 	_list auth_list;
 	 
 	unsigned int expire_to;
-#ifdef CONFIG_AP_POLLING_CLIENT_ALIVE
-	unsigned int tx_null0;
-	unsigned int tx_null0_fail;
-	unsigned int tx_null0_retry;
-#endif
 	unsigned int auth_seq;
 	unsigned int authalg;
 	unsigned char chg_txt[128];

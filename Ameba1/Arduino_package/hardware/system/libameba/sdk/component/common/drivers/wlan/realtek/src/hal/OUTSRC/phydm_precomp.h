@@ -332,7 +332,6 @@
 #include "rtl8195a/phydm_RegConfig8195A.h"
 #include "rtl8195a/ROM_RTL8195A_PHYDM.h"
 #include "rtl8195a/Hal8195ARateAdaptive.h"
-#include "rtl8195a/version_rtl8195a.h"
 #endif
 
 #if (RTL8711B_SUPPORT==1) 
@@ -345,6 +344,7 @@
 #include "rtl8711b/phydm_RTL8711B.h"
 #include "rtl8711b/phydm_RegConfig8711B.h"
 #include "rtl8711b/ROM_RTL8711B_PHYDM.h"
+#include "rtl8711b/Hal8711BRateAdaptive.h"
 #endif
 
 #endif	// __ODM_PRECOMP_H__

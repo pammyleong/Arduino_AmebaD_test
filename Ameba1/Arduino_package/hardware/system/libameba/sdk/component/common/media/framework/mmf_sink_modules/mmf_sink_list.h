@@ -6,5 +6,5 @@
 extern msink_module_t rtsp_module;
 extern msink_module_t rtsp2_module;
 extern msink_module_t i2s_sink_module;
-extern msink_module_t mp3_sink_module;
+extern msink_module_t mp4_module;
 #endif

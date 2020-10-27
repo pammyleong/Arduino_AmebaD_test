@@ -8,9 +8,11 @@ INCLUDE "export-rom_v03.txt"
 MEMORY
 {
   TCM (rwx) : ORIGIN = 0x1FFF0000, LENGTH = 65536
-  ROM_USED_RAM (rwx)  : ORIGIN = 0x10000bc8, LENGTH = 13368
-  RECY_RAM (rwx)  : ORIGIN = 0x10002114, LENGTH = 16108
+  ROM_USED_RAM (rwx)  : ORIGIN = 0x10000bc8, LENGTH = 21560
+  //RECY_RAM (rwx)  : ORIGIN = 0x10002100, LENGTH = 16128
   BD_RAM (rwx)  : ORIGIN = 0x10006000, LENGTH = 434176
+  RECY_RAM (rwx)  : ORIGIN = 0x10002100, LENGTH = 7936
+  //BD_RAM (rwx)  : ORIGIN = 0x10004000, LENGTH = 442368
   SDRAM_RAM (rwx)  : ORIGIN = 0x30000000, LENGTH = 2M
 }
 
@@ -21,6 +23,7 @@ SECTIONS
   __rom_bss_start__ = 0x10000300;
   __rom_bss_end__ = 0x10000bc8;
 
+/*
   .ram.start.table :
   {
     __ram_image1_text_start__ = .;
@@ -29,7 +32,7 @@ SECTIONS
     __ram_start_table_end__ = .;
     
   } > ROM_USED_RAM
-
+*/
 
 /*  Add . to assign the start address of the section,                                     * 
   *  to prevent the change of the start address by ld doing section alignment */  
@@ -47,9 +50,7 @@ SECTIONS
     KEEP(*(.cutb.ram.data*))
     KEEP(*(.cutc.ram.data*))
     KEEP(*(.hal.ram.data*))
-    .ram_image1.bss$$Base = .;
     __image1_bss_start__ = .;
-    .ram_image1.bss$$Limit = .;
     __image1_bss_end__ = .;
     __ram_image1_data_end__ = .;
     
@@ -57,55 +58,56 @@ SECTIONS
     *(.infra.ram.text*)
     __ram_image1_text_end__ = .;
   } > ROM_USED_RAM
-
+*/
+/*
   .tcm :
   {
     __tcm_start__ = .;
     *(.tcm.heap)
+    *mem.o (.bss)
+    *memp.o (.bss)
     __tcm_end__ = .;
-    end = __tcm_end__;
   } > TCM
-
-
-  .sdr_text :
+*/
+  
+  .bootloader :
   {
-    __sdram_data_start__ = .;
-    *(.sdram.text*)
-    *(.p2p.text*)
-    *(.wps.text*)
-    *(.websocket.text*)
-  } > SDRAM_RAM
-
-  .sdr_rodata :
+    KEEP(*(.loader.data*))
+  } > ROM_USED_RAM
+  
+  OVERLAY 0x1FFF0000:
   {
-    *(.sdram.rodata*)
-    *(.p2p.rodata*)
-    *(.wps.rodata*)
-    *(.websocket.rodata*)
-  } > SDRAM_RAM
-
-  .sdr_data : 
-  {
-    INCLUDE "sdram_obj_text.txt"
-    *(.sdram.data*)
-    *(.p2p.data*)
-    *(.wps.data*)
-    *(.websocket.data*)
-    __sdram_data_end__ = .;
-  } > SDRAM_RAM
-
-  .sdr_bss :
-  {
-    __sdram_bss_start__ = .;
-    *(.sdram.bss*)
-    *mem.o(.bss*)
-    *memp.o(.bss*)
-    *(.p2p.bss*)
-    *(.wps.bss*)
-    *(.websocket.bss*)
-    *(.uvc.ram.bss*)
-    __sdram_bss_end__ = .;
-  } > SDRAM_RAM
+  	.valid
+  	{ 
+  		__tcm_bss_start__ = .;
+	    *mem.o (.bss*)
+	    *memp.o (.bss*)
+	    *(.tcm.heap)
+	    __tcm_bss_end__ = .;
+  	}
+  	.dummy 
+  	{ 
+	  	__ram_image1_text_start__ = .;
+	    __ram_start_table_start__ = .;
+	    KEEP(*(SORT(.start.ram.data*)))
+	    __ram_start_table_end__ = .;
+		__image1_validate_code__ = .;
+	    KEEP(*(.image1.validate.rodata*))
+	    KEEP(*(.infra.ram.data*))
+	    KEEP(*(.timer.ram.data*))
+	    KEEP(*(EXCLUDE_FILE(*hal_sdr_controller.o).cutb.ram.data*))
+	    KEEP(*(.cutc.ram.data*))
+	    KEEP(*(EXCLUDE_FILE(*hal_sdr_controller.o).hal.ram.data*))
+	    __image1_bss_start__ = .;
+	    .ram_image1.bss$$Base = .;
+    	__image1_bss_end__ = .;
+    	.ram_image1.bss$$Limit = .;
+    	__ram_image1_data_end__ = .;
+	    
+	    *(.hal.ram.text*)    
+	    *(.infra.ram.text*)
+  	}
+  } > TCM
 
   .image2.start.table :
   {
@@ -121,48 +123,29 @@ SECTIONS
   .ram_image2.text :
   {
     KEEP(*(.infra.ram.start*))
-
-    PROVIDE (_init = .);
-
-    . = ALIGN(4);
-    KEEP(*(.init))
-
-    /* init data */
-    . = ALIGN(4);
-    PROVIDE (__init_array_start = .);
-    KEEP(*(SORT(.init_array.*)))
-    KEEP(*(.init_array))
-    PROVIDE (__init_array_end = .);
-
-    . = ALIGN(4);
-    KEEP(*(.fini))
-
-    . = ALIGN(4);
-    PROVIDE (__fini_array_start = .);
-    KEEP(*(SORT(.fini_array.*)))
-    KEEP(*(.fini_array))
-    PROVIDE (__fini_array_end = .);
-
     *(.mon.ram.text*)
-    *(.rodata*)
     *(.hal.flash.text*)    
     *(.hal.sdrc.text*)
     *(.hal.gpio.text*)
-    *(.fwu.rodata*)
     *(.fwu.text*)
-    *(.otg.rom.text*)
-    *(.text*)
-    *(.wlan.text*)
+    *(.text*)    
+  } > BD_RAM
+
+  .ram_image2.rodata :
+  {
+    *(.rodata*)
+    *(.fwu.rodata*)
   } > BD_RAM
 
   .ram.data : 
   {
     __data_start__ = .;
     *(.data*)
-    *(.wlan.data*)
+    *hal_sdr_controller.o(.cutb.ram.data*)
+    *hal_sdr_controller.o(.hal.ram.data*)
     . = ALIGN(4);
     __data_end__ = .;
-    __ram_image2_text_end__ = .;    
+  	__ram_image2_text_end__ = .;    
   } > BD_RAM
   
   .ram.bss :
@@ -174,9 +157,7 @@ SECTIONS
     *(.hal.gpio.data*)
     *(.fwu.data*)
     *(.bss*)
-    *(.wlan.bss*)
     *(COMMON)
-    *(.wlan.bdsram.data*)
     *(.bdsram.data*)
     __bss_end__ = .;
     .ram.bss$$Limit = .;
@@ -197,12 +178,52 @@ SECTIONS
     
   } > RECY_RAM
 
-  .heap :
+  .sdr_text :
   {
-    __end__ = .;
-    *(.heap*)
-    __HeapLimit = .;
-  } > BD_RAM
+    __sdram_data_start__ = .;
+    *(.sdram.text*)
+    *(.p2p.text*)
+    *(.wps.text*)
+    *(.websocket.text*)
+  } > SDRAM_RAM
+
+  .sdr_rodata :
+  {
+    *(.sdram.rodata*)
+    *(.p2p.rodata*)
+    *(.wps.rodata*)
+    *(.websocket.rodata*)
+  } > SDRAM_RAM
+
+  .sdr_data : 
+  {
+    *(.sdram.data*)
+    *(.p2p.data*)
+    *(.wps.data*)
+    *(.websocket.data*)
+    . = ALIGN(256);
+    *(.fpb.remap*)
+    . = ALIGN(4);
+    __sdram_data_end__ = .;
+  } > SDRAM_RAM
+
+  .sdr_bss :
+  {
+    __sdram_bss_start__ = .;
+    *(.sdram.bss*)
+    *(.p2p.bss*)
+    *(.wps.bss*)
+    *(.websocket.bss*)
+    __sdram_bss_end__ = .;
+  } > SDRAM_RAM
+
+ .heap :
+ {
+	__end__ = .;
+	end = __end__;
+	*(.heap*)
+	__HeapLimit = .;
+ } > BD_RAM
 
 	/* .stack_dummy section doesn't contains any symbols. It is only
 	 * used for linker to calculate size of stack sections, and assign

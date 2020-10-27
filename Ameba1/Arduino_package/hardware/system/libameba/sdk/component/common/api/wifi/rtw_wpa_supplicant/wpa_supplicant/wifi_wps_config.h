@@ -14,12 +14,6 @@
   ****************************************************************************** 
   */
 
-/** @addtogroup wpsp2p WPS/P2P
- *  @ingroup    wlan
- *  @brief      WPS/P2P functions
- *  @{
- */
-
 /**
  * @brief  Start WPS enrollee process.
  * @warning  Before invoking this function, the Wi-Fi should be enabled by using @ref wifi_on().
@@ -72,4 +66,3 @@ void wifi_start_ap_wps_thread(u16 config_methods, char *pin);
  */
 void cmd_ap_wps(int argc, char **argv);
 
-/*\@}*/

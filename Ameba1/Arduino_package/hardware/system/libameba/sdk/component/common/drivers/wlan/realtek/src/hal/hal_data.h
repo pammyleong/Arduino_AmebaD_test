@@ -9,11 +9,6 @@
 #include "OUTSRC/phydm_precomp.h"
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-	#include <hal_btcoex.h>
-	#include "gpio_irq_api.h"
-#endif
-
 #ifdef CONFIG_RTL8723A
 #include "rtl8723a/rtl8723a_hal.h"
 #endif
@@ -332,23 +327,13 @@ typedef struct hal_com_data
 
 	struct dm_priv	dmpriv;
 	DM_ODM_T 		odmpriv;
-#if defined(CONFIG_RTL8195A)
-	struct phy_info phy_info_mpdu;
-#endif
 	//_lock			odm_stainfo_lock;
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv srestpriv;
 #endif
 
 #ifdef CONFIG_BT_COEXIST
-	u8	ant_path; /* for 8723B s0/s1 selection	 */
-	u8	EEPROMBluetoothCoexist;
-	u8	EEPROMBluetoothType;
-	u8	EEPROMBluetoothAntNum;
-	BT_COEXIST	bt_coexist;
-	u16	rfe_type;
-	/* Upper and Lower Signal threshold for Rate Adaptive*/
-	int			entry_min_undecorated_smoothed_pwdb;
+	struct btcoexist_priv	bt_coexist;
 #endif
 
 //#ifdef CONFIG_ANTENNA_DIVERSITY
@@ -446,8 +431,14 @@ typedef struct hal_com_data
 
 #if defined (CONFIG_PCI_HCI) || defined(CONFIG_LX_HCI)
 //	u32	TransmitConfig;	
+#if defined(CONFIG_RTL8711B)
+	u32	IntArray[2];
+	u32	IntrMask[2];
+#else
 	u32	IntArray[3];
 	u32	IntrMask[3];
+#endif
+	
 //	u8	bDefaultAntenna;
 //	u8	bIQKInitialized;
 	
@@ -477,7 +468,6 @@ typedef struct hal_com_data
     BOOLEAN             PMUTaskRAEn;
 
     u8                  BcnIgnoreEdccaEn;
-	u8                  BtCoexInitFlag;
 
     #ifdef CONFIG_POWER_SAVING
     struct task_struct  enter32kpriv;
@@ -489,12 +479,6 @@ typedef struct hal_com_data
     PS_PARM             PSParmpriv;
     u8                  ScanEn;
     #endif //#ifdef CONFIG_POWER_SAVING
-	#ifdef CONFIG_BT_MAILBOX
-    BtCoex_info         BtCoex;
-    C2H_INFO            C2hInfo;
-    struct task_struct  C2Hpriv;
-    gpio_irq_t          BtbxGpioBtn;
-    #endif //#ifdef CONFIG_BT_MAILBOX     
 #endif
 
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;

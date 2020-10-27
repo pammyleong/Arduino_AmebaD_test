@@ -44,9 +44,6 @@ void rtw_set_macaddr_acl(_adapter *padapter, int mode);
 int rtw_acl_add_sta(_adapter *padapter, u8 *addr);
 int rtw_acl_remove_sta(_adapter *padapter, u8 *addr);
 int rtw_generate_bcn_ie(_adapter *adapter, u8 *ssid, u16 ssid_len, u8 *ie);
-#ifdef CONFIG_PLATFORM_8711B
-void softap_adjust_phy(void);
-#endif
 #if USE_DEDICATED_BCN_TX
 struct xmit_frame *alloc_bcn_xmitframe(_adapter *padapter);
 #endif

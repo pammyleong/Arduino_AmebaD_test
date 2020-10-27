@@ -91,10 +91,10 @@ enum h2c_cmd_8195A{
 #define H2C_8195A_KEEP_ALIVE_CTRL_LEN	2
 #define H2C_8195A_DISCON_DECISION_LEN	 	3
 //#define H2C_8195A_AP_OFFLOAD_LEN		3
-#define H2C_8195A_PWRMODE_LEN			12
+#define H2C_8195A_PWRMODE_LEN			11
 #define H2C_8195A_PSTUNEPARAM_LEN			4
 #define H2C_8195A_MACID_CFG_LEN	 	7
-#define H2C_8195A_BTMP_OPER_LEN			5
+#define H2C_8195A_BTMP_OPER_LEN			4
 #define H2C_8195A_WOWLAN_LEN			3
 #define H2C_8195A_REMOTE_WAKE_CTRL_LEN	1
 #define H2C_8195A_AOAC_GLOBAL_INFO_LEN	2
@@ -191,7 +191,6 @@ enum h2c_cmd_8195A{
 #define SET_8723B_H2CCMD_PWRMODE_PARM_TDMA_PERIOD_LEN_1(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+8, 0, 8, __Value)
 #define SET_8723B_H2CCMD_PWRMODE_PARM_TDMA_PERIOD_LEN_2(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+9, 0, 8, __Value)
 #define SET_8723B_H2CCMD_PWRMODE_PARM_TDMA_PERIOD_LEN_3(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+10, 0, 8, __Value)
-#define SET_8723B_H2CCMD_PWRMODE_PARM_TDMA_NETWORK_TYPE(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+11, 0, 8, __Value)
 
 #define GET_8723B_H2CCMD_PWRMODE_PARM_MODE(__pH2CCmd)					LE_BITS_TO_1BYTE(__pH2CCmd, 0, 8)
 
@@ -305,7 +304,7 @@ typedef struct _RSVDPAGE_LOC {
 void rtl8195a_set_FwPwrMode_cmd(PADAPTER padapter, u8 Mode);
 void rtl8195a_set_FwJoinBssRpt_cmd(PADAPTER padapter, u8 mstatus);
 #ifdef CONFIG_BT_COEXIST
-void rtl8195a_download_BTCoex_AP_mode_rsvd_page(PADAPTER padapter);
+void rtl8195a_set_BTCoex_AP_mode_FwRsvdPkt_cmd(PADAPTER padapter);
 #endif
 void rtl8195a_set_rssi_cmd(PADAPTER padapter, u8 *param);
 void rtl8195a_Add_RateATid(PADAPTER pAdapter, u32 bitmap, u8* arg, u8 rssi_level);

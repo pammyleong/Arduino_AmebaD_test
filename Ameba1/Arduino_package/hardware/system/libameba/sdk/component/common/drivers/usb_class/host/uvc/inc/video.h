@@ -16,6 +16,7 @@
 #if 0
 #include <linux/types.h>
 #endif
+#include "uvc_os_wrap_via_osdep_api.h"
 
 /* --------------------------------------------------------------------------
  * UVC constants

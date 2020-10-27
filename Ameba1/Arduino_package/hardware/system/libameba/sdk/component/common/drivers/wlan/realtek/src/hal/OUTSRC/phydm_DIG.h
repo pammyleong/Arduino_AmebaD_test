@@ -52,8 +52,6 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	s1Byte		BackoffVal_range_min;
 	u1Byte		rx_gain_range_max;
 	u1Byte		rx_gain_range_min;
-	u1Byte		rx_gain_range_max_promisc;
-	u1Byte		rx_gain_range_min_promisc;
 	u1Byte		Rssi_val_min;
 
 	u1Byte		PreCCK_CCAThres;
@@ -75,7 +73,6 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u4Byte		RSSI_max;
 
 	u1Byte		*pbP2pLinkInProgress;
-    u4Byte		cckFaMa;
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	BOOLEAN		bTpTarget;
@@ -83,10 +80,6 @@ typedef struct _Dynamic_Initial_Gain_Threshold_
 	u4Byte		TpTrainTH_min;
 	u1Byte		IGIOffset_A;
 	u1Byte		IGIOffset_B;
-#endif
-
-#if (RTL8711B_SUPPORT == 1)
-	u1Byte		DefCCK_CsRatio;
 #endif
 }DIG_T,*pDIG_T;
 
@@ -190,16 +183,11 @@ typedef enum tag_DIG_Connect_Definition
 
 #define		DM_DIG_MAX_NIC				0x3e
 #define		DM_DIG_MIN_NIC				0x20 //0x1e
-#define		DM_DIG_MIN_NIC_GREE			0x24 //0x1e
 #define		DM_DIG_MAX_OF_MIN_NIC		0x3e
-
-#define		DM_DIG_MAX_PROMISC			0x50
-#define		DM_DIG_MIN_PROMISC			0x30
 
 #define		DM_DIG_MAX_AP					0x3e
 #define		DM_DIG_MIN_AP					0x1c
-#define		DM_DIG_MAX_OF_MIN				0x2A	//0x32
-#define		DM_DIG_MAX_OF_MIN_GREE			0x2e	//0x32
+#define		DM_DIG_MAX_OF_MIN			0x2A	//0x32
 #define		DM_DIG_MIN_AP_DFS				0x20
 
 #define		DM_DIG_MAX_NIC_HP			0x46

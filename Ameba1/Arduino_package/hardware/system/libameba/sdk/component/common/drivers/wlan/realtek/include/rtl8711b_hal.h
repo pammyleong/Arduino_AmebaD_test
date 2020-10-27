@@ -92,7 +92,7 @@
 #define FW_8711B_START_ADDRESS	0x1000
 #define FW_8711B_END_ADDRESS		0x1FFF //0x5FFF
 
-#define IS_FW_HEADER_EXIST_8711B(_pFwHdr)	((GET_FIRMWARE_HDR_SIGNATURE(_pFwHdr)&0xFFF0) == 0x10B0)
+#define IS_FW_HEADER_EXIST_8711B(_pFwHdr)	((GET_FIRMWARE_HDR_SIGNATURE(_pFwHdr)&0xFFF0) == 0x5300)
 
 typedef struct _RT_FIRMWARE {
 	FIRMWARE_SOURCE	eFWSource;
@@ -162,6 +162,7 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 #define RX_DMA_RESERVED_SIZE_8711B          0x80	// 128B, reserved for tx report
 #define RX_DMA_BOUNDARY_8711B               (RX_DMA_SIZE_8711B - RX_DMA_RESERVED_SIZE_8711B - 1)
 
+
 // Note: We will divide number of page equally for each queue other than public queue!
 
 //For General Reserved Page Number(Beacon Queue is reserved page)
@@ -224,6 +225,36 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 #include "HalVerDef.h"
 #include "hal_com.h"
 
+#define EFUSE_OOB_PROTECT_BYTES 		(52+28+16+32) // Security + RF + MAC + OTP = 128
+
+#define HWSET_MAX_SIZE_8711B            512
+#define EFUSE_REAL_CONTENT_LEN_8711B    256
+#define EFUSE_MAP_LEN_8711B             512
+#define EFUSE_MAX_SECTION_8711B			64
+
+#define EFUSE_IC_ID_OFFSET			506	//For some inferiority IC purpose. added by Roger, 2009.09.02.
+#define AVAILABLE_EFUSE_ADDR(addr) 	(addr < EFUSE_REAL_CONTENT_LEN_8711B)
+
+#define EFUSE_ACCESS_ON			0x69	// For RTL8723 only.
+#define EFUSE_ACCESS_OFF			0x00	// For RTL8723 only.
+
+#ifdef CONFIG_LITTLE_WIFI_MCU_FUNCTION_THREAD
+#define LITTLE_WIFI_STACKSIZE           512
+#define LITTLE_WIFI_TASK_PRIORITY      6// TASK_PRORITY_LOW
+
+#ifdef CONFIG_POWER_SAVING
+#define CHECK_IN_REQ_STATE_STACKSIZE        256
+#define CHECK_IN_REQ_STATE_TASK_PRIORITY    1
+
+#ifdef TDMA_POWER_SAVING
+#define TDMA_CHANGE_STATE_STACKSIZE         256
+#define TDMA_CHANGE_STATE_TASK_PRIORITY     3
+#endif //#ifdef TDMA_POWER_SAVING
+
+#endif
+
+#endif
+
 #define LX_DMA_IMR_DISABLED 0
 #define FW_IMR_DISABLED     0
 #define WL_PMC_IMR_DISABLED 0
@@ -243,29 +274,19 @@ typedef struct _RT_8723B_FIRMWARE_HDR
 
 // Description: Determine the types of C2H events that are the same in driver and Fw.
 // Fisrt constructed by tynli. 2009.10.09.
-typedef enum _C2H_EVT {
-	C2H_DBG = 0x00,
-	C2H_LB = 0x01,
-	C2H_TXBF = 0x02,
-	C2H_CCX_TX_RPT = 0x03,
-	C2H_TX_DRP_RPT = 0x04,
-	C2H_FW_SCAN_COMPLETE = 0x7,
-	C2H_BT_INFO = 0x09,
-	C2H_BT_MP_INFO = 0x0B,
-	C2H_RA_RPT = 0x0C,
-	C2H_RA_PARA_RPT = 0x0E,
-	C2H_FW_CHNL_SWITCH_COMPLETE = 0x10,
-	C2H_IQK_FINISH = 0x11,
-	C2H_MAILBOX_STATUS = 0x15,
-	C2H_P2P_RPORT = 0x16,
-	C2H_MCC = 0x17,
-	C2H_MAC_HIDDEN_RPT = 0x19,
-	C2H_MAC_HIDDEN_RPT_2 = 0x1A,
-	C2H_BCN_EARLY_RPT = 0x1E,
-	C2H_DEFEATURE_DBG = 0x22,
-	C2H_PLCPHDR_RPT = 0x2B,
-	C2H_DEFEATURE_RSVD = 0xFD,
-	C2H_EXTEND = 0xff,
+typedef enum _C2H_EVT
+{
+	C2H_DBG = 0,
+	C2H_TSF = 1,
+	C2H_AP_RPT_RSP = 2,
+	C2H_CCX_TX_RPT = 3,	// The FW notify the report of the specific tx packet.
+	C2H_BT_RSSI = 4,
+	C2H_BT_OP_MODE = 5,
+	C2H_EXT_RA_RPT = 6,
+	C2H_8723B_BT_INFO = 9,
+	C2H_HW_INFO_EXCH = 10,
+	C2H_8723B_BT_MP_INFO = 11,
+	MAX_C2HEVENT
 } C2H_EVT;
 
 typedef _PACKED struct _C2H_EVT_HDR
@@ -277,30 +298,24 @@ typedef _PACKED struct _C2H_EVT_HDR
 
 typedef enum tag_Package_Definition
 {
-	PACKAGE_SMIC_QFN32,
-	PACKAGE_SMIC_QFN48_MCM,
-	PACKAGE_SMIC_QFN48,
-	PACKAGE_SMIC_QFN68,
-	PACKAGE_UMC_QFN32,
-	PACKAGE_UMC_QFN48_MCM,
-	PACKAGE_UMC_QFN48,
-	PACKAGE_UMC_QFN68,
+	PACKAGE_DEFAULT,
+	PACKAGE_QFN56,
+	PACKAGE_QFN48,
+	PACKAGE_BGA96,
+	PACKAGE_QFN88,
+	PACKAGE_QFN216
 }PACKAGE_TYPE_E;
 
 typedef enum tag_ChipID_Definition
 {
-	CHIPID_8710BN = 0xFF, /* PACKAGE_QFN32 */
-	CHIPID_8710BU = 0xFE, /* PACKAGE_QFN48_MCM */
-	CHIPID_8711BN = 0xFD, /* PACKAGE_QFN48 */
-	CHIPID_8711BU = 0xFC, /* PACKAGE_QFN68 */
-	CHIPID_8710BN_L0 = 0xFB, /* PACKAGE_QFN32, cpu clk: 62.5M, sram: 200K, flash io: 2-bit mode */
-	CHIPID_8710BN_VV2 = 0xFA, /* PACKAGE_QFN32, sram: 200k, special for Haier */
-	CHIPID_8710BN_A0_VV2 = 0xF8, /* PACKAGE_QFN32, the same as CHIPID_8710BN */
-	CHIPID_8710BL_A0 = 0xF5, /* PACKAGE_QFN32, flash io: 2-bit mode */
-	CHIPID_8710BX_A0 = 0xF4, /* PACKAGE_QFN32, cpu clk: 62.5M, flash io: 2-bit mode */
-	CHIPID_8710BL_A1 = 0xF7, /* PACKAGE_QFN32, flash io: 2-bit mode */
-	CHIPID_8710BX_A1 = 0xF6, /* PACKAGE_QFN32, cpu clk: 62.5M, flash io: 2-bit mode */	
+	CHIPID_8711AM = 0xFF,
+	CHIPID_8711BM = 0xFE,
+	CHIPID_8711AF = 0xFD,
+	CHIPID_8710AF = 0xFC,
+	CHIPID_8711AN = 0xFB,
+	CHIPID_8710AM = 0xFA
 }CHIP_TD_E;
+
 
 #define INCLUDE_MULTI_FUNC_BT(_Adapter)		(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_BT)
 #define INCLUDE_MULTI_FUNC_GPS(_Adapter)	(GET_HAL_DATA(_Adapter)->MultiFunc & RT_MULTI_FUNC_GPS)
@@ -319,13 +334,9 @@ typedef enum tag_ChipID_Definition
 #define TX_BKQ_DESC_NUM         4
 #define TX_BEQ_DESC_NUM         4
 #endif
-#ifdef CONFIG_CONCURRENT_MODE
-#define TX_BCNQ_DESC_NUM        4
-#else
 #define TX_BCNQ_DESC_NUM        2
-#endif
 #define TX_MGQ_DESC_NUM         4
-#define TX_H0Q_DESC_NUM         4  // Increase Tx Hi Queue for BMcast Packets in SoftAP mode
+#define TX_H0Q_DESC_NUM         2
 #define TX_H1Q_DESC_NUM         2
 #define TX_H2Q_DESC_NUM         2
 #define TX_H3Q_DESC_NUM         2
@@ -533,13 +544,6 @@ void rtl8711bb_hal_check_bt_hang(_adapter * adapter);
 void rtw_get_current_ip_address(PADAPTER padapter, u8 *pcurrentip);
 void rtw_get_sec_iv(PADAPTER padapter, u8*pcur_dot11txpn, u8 *StaAddr);
 #endif
-
-u32 rtl8710b_wlan_suspend(u32 expected_idle_time, void *param);
-u32 rtl8710b_ipsdev_suspend(u32 expected_idle_time, void *param);
-u32 rtl8710b_ipsdev_resume(u32 expected_idle_time, void *param);
-u32 rtl8710b_wlan_late_resume(u32 expected_idle_time, void *param);
-u32 rtl8710b_wlan_resume(u32 expected_idle_time, void *param);
-void rtl8711b_tcp_suspend_indicate(struct xmit_frame *pxmitframe);
 
 #ifdef CONFIG_GPIO_WAKEUP
 void HalSetOutPutGPIO(PADAPTER padapter, u8 index, u8 OutPutValue);

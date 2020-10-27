@@ -2153,10 +2153,12 @@
 //#define SSL_CACHE_DEFAULT_MAX_ENTRIES      50 /**< Maximum entries in cache */
 
 /* SSL options */
-#define SSL_MAX_CONTENT_LEN                5120 /**< Size of the input / output buffer */
+#define SSL_MAX_CONTENT_LEN                4096 /**< Size of the input / output buffer */
 //#define SSL_DEFAULT_TICKET_LIFETIME     86400 /**< Lifetime of session tickets (if enabled) */
 //#define POLARSSL_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default 256 bits) */
 
+
+#define RTL_CRYPTO_FRAGMENT               15360 /* 15*1024 < 16000 */
 
 /**
  * Complete list of ciphersuites to use, in order of preference.

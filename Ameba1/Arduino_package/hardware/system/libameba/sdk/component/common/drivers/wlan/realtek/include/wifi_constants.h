@@ -17,12 +17,6 @@
 #ifndef _WIFI_CONSTANTS_H
 #define _WIFI_CONSTANTS_H
 
-/** @addtogroup nic NIC
- *  @ingroup    wlan
- *  @brief      NIC functions
- *  @{
- */
-
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -399,15 +393,6 @@ typedef enum {
 }rtw_scan_mode_t;
 
 /**
-  * @brief  The enumeration lists the supported autoreconnect mode by WIFI driver.
-  */
-typedef enum{
-    RTW_AUTORECONNECT_DISABLE,
-    RTW_AUTORECONNECT_FINITE,
-    RTW_AUTORECONNECT_INFINITE
-} rtw_autoreconnect_mode_t;
-
-/**
   * @brief  The enumeration lists the status to describe the connection link.
   */
 typedef enum {
@@ -431,7 +416,6 @@ typedef enum {
     RTW_BSS_TYPE_INFRASTRUCTURE = 0, /**< Denotes infrastructure network                  */
     RTW_BSS_TYPE_ADHOC          = 1, /**< Denotes an 802.11 ad-hoc IBSS network           */
     RTW_BSS_TYPE_ANY            = 2, /**< Denotes either infrastructure or ad-hoc network */
-
     RTW_BSS_TYPE_UNKNOWN        = -1 /**< May be returned by scan function if BSS type is unknown. Do not pass this to the Join function */
 } rtw_bss_type_t;
 
@@ -477,7 +461,7 @@ typedef enum {
 typedef enum {
 	RTW_POSITIVE_MATCHING  = 0, /**< Receive the data matching with this pattern and discard the other data   */
 	RTW_NEGATIVE_MATCHING  = 1  /**< Discard the data matching with this pattern and receive the other data */
-} rtw_packet_filter_rule_t;
+} rtw_packet_filter_rule_e;
 
 /**
   * @brief  The enumeration lists the promisc levels.
@@ -510,9 +494,6 @@ typedef enum{
 	RTW_WRONG_PASSWORD = 3 ,
 	RTW_4WAY_HANDSHAKE_TIMEOUT = 4,
 	RTW_DHCP_FAIL = 5,
-	RTW_AUTH_FAIL = 6,
-	RTW_ASSOC_FAIL =7,
-	RTW_DEAUTH_DEASSOC = 8,
 	RTW_UNKNOWN,
 }rtw_connect_error_flag_t;
 
@@ -523,15 +504,6 @@ typedef enum {
 	RTW_TX_PWR_PERCENTAGE_25 = 3, /* 25% */
 	RTW_TX_PWR_PERCENTAGE_12_5 = 4, /* 12.5% */
 }rtw_tx_pwr_percentage_t;
-
-typedef enum {
-	RTW_TX_PWR_OFFSET_0_DB = 0, /* default target output power.	 */
-	RTW_TX_PWR_OFFSET_SUB_3_DB = 1, /* -3 dB */
-	RTW_TX_PWR_OFFSET_SUB_7_DB = 2, /* -7 dB */
-	RTW_TX_PWR_OFFSET_SUB_11_DB = 3, /* -11 dB */
-	RTW_TX_PWR_OFFSET_ADD_3_DB = 4, /* +3 dB */
-	RTW_TX_PWR_OFFSET_ADD_6_DB = 5, /* +6 dB */
-}rtw_tx_pwr_offset_t;
 
 /**
   * @brief  The enumeration is event type indicated from wlan driver.
@@ -553,15 +525,9 @@ typedef enum _WIFI_EVENT_INDICATE{
 	WIFI_EVENT_EAPOL_RECVD = 13,
 	WIFI_EVENT_NO_NETWORK = 14,
 	WIFI_EVENT_BEACON_AFTER_DHCP = 15,
-	WIFI_EVENT_IP_CHANGED = 16,
-	WIFI_EVENT_ICV_ERROR = 17,
-	WIFI_EVENT_CHALLENGE_FAIL = 18,
 	WIFI_EVENT_MAX,
-}rtw_event_indicate_t;
+}WIFI_EVENT_INDICATE;
 #ifdef	__cplusplus
 }
 #endif
-
-/*\@}*/
-
 #endif /* _WIFI_CONSTANTS_H */

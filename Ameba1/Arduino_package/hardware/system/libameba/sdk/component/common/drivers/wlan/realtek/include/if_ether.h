@@ -89,15 +89,13 @@
 /*
  *	This is an Ethernet frame header.
  */
-//CONFIG_MEMORY_ACCESS_ALIGNED for 4byte aligned,ethdhr size is 16,leading error in wlanhdr_to_ethdr
-RTW_PACK_STRUCT_BEGIN
+ 
 struct ethhdr 
 {
 	unsigned char	h_dest[ETH_ALEN];	/* destination eth addr	*/
 	unsigned char	h_source[ETH_ALEN];	/* source ether addr	*/
 	unsigned short	h_proto;		/* packet type ID field	*/
-} RTW_PACK_STRUCT_STRUCT;
-RTW_PACK_STRUCT_END
+};
 
 struct _vlan {
    unsigned short       h_vlan_TCI;                // Encapsulates priority and VLAN ID

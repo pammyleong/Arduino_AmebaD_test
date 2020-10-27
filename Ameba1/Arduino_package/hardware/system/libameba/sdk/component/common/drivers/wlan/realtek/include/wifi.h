@@ -1375,11 +1375,11 @@ enum P2P_PS
 
 #ifndef _CUSTOM_IE_TYPE_
 #define _CUSTOM_IE_TYPE_
-typedef enum CUSTOM_IE_TYPE{
+enum CUSTOM_IE_TYPE{
 	PROBE_REQ = BIT(0),
 	PROBE_RSP = BIT(1),
 	BEACON	  = BIT(2),
-}rtw_custom_ie_type_t;
+};
 #endif /* _CUSTOM_IE_TYPE_ */
 
 #endif // _WIFI_H_

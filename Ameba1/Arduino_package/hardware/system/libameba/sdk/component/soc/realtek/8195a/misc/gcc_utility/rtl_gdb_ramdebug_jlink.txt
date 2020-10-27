@@ -37,12 +37,7 @@ set debug remote 0
 #===============================================================================
 monitor reset 1
 monitor sleep 20
-# Watchdog reset
-set {int}0x40002800=0x41a50021
-monitor sleep 20
-monitor halt
-monitor reset 1
-monitor sleep 20
+monitor clrbp
 #===============================================================================
 #Init SDRAM here
 	# init System
@@ -97,8 +92,6 @@ monitor sleep 3
 monitor MemU32 0x40000300=0x0006005e	
 monitor sleep 3
 #===============================================================================
-monitor clrbp
-#===============================================================================
 #Load flash download file
 file ./application/Debug/bin/application.axf
 
@@ -109,7 +102,7 @@ monitor MemU32 0x40000210=0x8011157
 lo
 
 #Run to main
-hbreak main
+b main
 continue
 clear main
 

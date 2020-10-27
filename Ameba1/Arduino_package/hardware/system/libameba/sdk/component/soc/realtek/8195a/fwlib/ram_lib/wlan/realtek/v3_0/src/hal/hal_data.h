@@ -12,8 +12,6 @@
 #endif
 #ifdef CONFIG_RTL8195A
 #include "rtl8195a_hal.h"
-#include "osdep_api.h"
-#include "mailbox.h"
 #endif
 #if defined(CONFIG_RTL8711B)
 #include "rtl8195a_hal.h"
@@ -413,12 +411,6 @@ typedef struct hal_com_data
     PS_PARM             PSParmpriv;
     u8                  ScanEn;
     #endif //#ifdef CONFIG_POWER_SAVING
-    
-    #ifdef CONFIG_BT_MAILBOX
-    BtCoex_info         BtCoex;
-    C2H_INFO            C2hInfo;
-    struct task_struct  C2Hpriv;
-    #endif //#ifdef CONFIG_BT_MAILBOX 
 #endif
 
 } HAL_DATA_COMMON, *PHAL_DATA_COMMON;

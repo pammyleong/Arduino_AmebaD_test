@@ -5,19 +5,10 @@
 #include "section_config.h"
 #include "rom_ssl_ram_map.h"
 #define RTL_HW_CRYPTO
-#elif defined(CONFIG_HARDWARE_8188F)
 #define SUPPORT_HW_SW_CRYPTO
-#endif
-
-/* RTL_CRYPTO_FRAGMENT should be less than 16000, and should be 16bytes-aligned */
-#if defined (CONFIG_PLATFORM_8195A)
-#define RTL_CRYPTO_FRAGMENT                4096
-#else
-#define RTL_CRYPTO_FRAGMENT               15360
 #endif
 
 #if defined (CONFIG_SSL_ROM) //define in ROM makefile
-#define SUPPORT_HW_SW_CRYPTO
 #include "polarssl/ssl_rom_lib.h"
 #include "polarssl/config_rom.h"
 #elif CONFIG_PROJECT_CUSTOM

@@ -351,7 +351,7 @@
 #include "diag.h"
 #include "strproc.h"
 #include "basic_types.h"
-#include "memproc.h"
+#include "hal_misc.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "section_config.h"

@@ -378,6 +378,9 @@ BLEClient* BLEDevice::addClient(uint8_t connId) {
         return newClient;
     }
 
+    if (_clientPtrList[connId] != nullptr) {
+        return _clientPtrList[connId];
+    }
     T_CLIENT_ID client_id;
     newClient = new BLEClient();
     if (newClient == nullptr) {

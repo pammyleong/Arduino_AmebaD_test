@@ -29,13 +29,13 @@
 //	0x0000h ~ 0x00FFh	System Configuration
 //
 //-----------------------------------------------------
-#define REG_BT_WIFI_ANTENNA_SWITCH_8195A	0x0038
-#define REG_PAD_CTRL1_8195A					0x0064
-#define REG_AFE_CTRL_4_8195A				0x0078
-#define REG_HMEBOX_DBG_0_8195A				0x0088
-#define REG_HMEBOX_DBG_1_8195A				0x008A
-#define REG_HMEBOX_DBG_2_8195A				0x008C
-#define REG_HMEBOX_DBG_3_8195A				0x008E
+#define REG_BT_WIFI_ANTENNA_SWITCH_8723B	0x0038
+#define REG_PAD_CTRL1_8723B		0x0064
+#define REG_AFE_CTRL_4_8723B		0x0078
+#define REG_HMEBOX_DBG_0_8723B	0x0088
+#define REG_HMEBOX_DBG_1_8723B	0x008A
+#define REG_HMEBOX_DBG_2_8723B	0x008C
+#define REG_HMEBOX_DBG_3_8723B	0x008E
 
 //-----------------------------------------------------
 //

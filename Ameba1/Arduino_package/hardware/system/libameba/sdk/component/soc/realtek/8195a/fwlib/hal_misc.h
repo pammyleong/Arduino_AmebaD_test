@@ -30,8 +30,7 @@ enum _HAL_RESET_REASON{
 	REASON_SOFT_WDT_RST,        /**< software watch dog reset, GPIO status won't change */
 	REASON_SOFT_RESTART,        /**< software restart ,system_restart , GPIO status won't change */
 	REASON_DEEP_SLEEP_AWAKE,    /**< wake up from deep-sleep */
-	REASON_EXT_SYS_RST,          /**< external system reset */
-	REASON_UNKNOWN,         /**< unknown reset */
+	REASON_EXT_SYS_RST          /**< external system reset */
 };
 typedef u32 HAL_RESET_REASON;
 
@@ -55,5 +54,6 @@ extern _LONG_CALL_ROM_ int _strcmp(const char *cs, const char *ct);
 
 VOID HalSetResetCause(IN HAL_RESET_REASON reason);
 HAL_RESET_REASON HalGetResetCause(VOID);
+
 
 #endif  //_MISC_H_

@@ -22,15 +22,14 @@
 
 #ifndef CONFIG_INIC_EN
 #define CONFIG_INIC_EN 0 //For iNIC project
-#endif
-
 #if CONFIG_INIC_EN
 #define CONFIG_LWIP_LAYER    0
+#endif
 #endif
 
 #define CONFIG_LITTLE_ENDIAN
 #define CONFIG_80211N_HT 
-#define CONFIG_RECV_REORDERING_CTRL
+//#define CONFIG_RECV_REORDERING_CTRL
 #define RTW_NOTCH_FILTER 0
 #define CONFIG_EMBEDDED_FWIMG
 #define CONFIG_PHY_SETTING_WITH_ODM
@@ -62,7 +61,6 @@
 #endif // CONFIG_PLATFORM_AMEBA_X
 
 //#define CONFIG_DONT_CARE_TP
-//#define CONFIG_HIGH_TP
 //#define CONFIG_MEMORY_ACCESS_ALIGNED
 #define CONFIG_POWER_SAVING
 #ifdef CONFIG_POWER_SAVING
@@ -72,20 +70,21 @@
 	#define CONFIG_LPS_32K
 	#define TDMA_POWER_SAVING
 	#define CONFIG_WAIT_PS_ACK
-	#if defined(CONFIG_PLATFORM_8711B)
-		#define CONFIG_WLAN_LOW_PW // only for AmebaZ
-	#endif
 #endif
 
 #define BAD_MIC_COUNTERMEASURE 1
 #define DEFRAGMENTATION 1
 
-#define WIFI_LOGO_CERTIFICATION 0
-#define RX_AGGREGATION 1
-#define RX_AMSDU 1
+// enable RX_AGGREGATION will solve ping timeout regularly issue on TL-WR886N
+#define RX_AGGREGATION 0
 
-#if defined(CONFIG_PLATFORM_8711B)
-	#define CONFIG_FW_C2H_PKT
+#define WIFI_LOGO_CERTIFICATION 0
+#if WIFI_LOGO_CERTIFICATION
+    #define RX_AGGREGATION 1
+	#define RX_AMSDU 1
+#else
+    #define RX_AGGREGATION 0
+	#define RX_AMSDU 0
 #endif
 
 #if defined(CONFIG_PLATFORM_AMEBA_X)
@@ -132,16 +131,14 @@
 #define NOT_SUPPORT_VHT
 #define NOT_SUPPORT_40M
 #define NOT_SUPPORT_80M
-#ifndef CONFIG_PLATFORM_8711B
 #define NOT_SUPPORT_BBSWING
-#endif
 #define NOT_SUPPORT_OLD_CHANNEL_PLAN
 #define NOT_SUPPORT_BT
 
 #define CONFIG_WIFI_SPEC	0
 #define CONFIG_FAKE_EFUSE	0
 #if CONFIG_FAKE_EFUSE
-	#define FAKE_CHIPID		CHIPID_8710BN
+	#define FAKE_CHIPID		CHIPID_8711AN
 #endif
 
 #define CONFIG_AUTO_RECONNECT 1
@@ -150,8 +147,6 @@
 #if !defined(CONFIG_PLATFORM_AMEBA_X)
 #define BE_I_CUT			1
 #endif
-
-#define CONFIG_WLAN_SWITCH_MODE 0
 
 /* For WPA2 */
 #define CONFIG_INCLUDE_WPA_PSK
@@ -171,9 +166,11 @@
 #define CONFIG_SAE_DH_SUPPORT 1
 #define ALL_DH_GROUPS
 #endif
-
 /* For promiscuous mode */
 #define CONFIG_PROMISC
+#ifdef CONFIG_PROMISC
+//#define CONFIG_PROMISC_SCAN_CONCURENT
+#endif
 
 #define PROMISC_DENY_PAIRWISE	0
 
@@ -191,17 +188,10 @@
 #endif
 
 /* For STA+AP Concurrent MODE */
+#if !defined(CONFIG_PLATFORM_8711B)
 #define CONFIG_CONCURRENT_MODE
+#endif
 #ifdef CONFIG_CONCURRENT_MODE
-  //#define CONFIG_MCC_MODE
-  #ifdef CONFIG_MCC_MODE
-     //#define CONFIG_MCC_STA_AP_MODE
-     #ifdef CONFIG_MCC_STA_AP_MODE
-        #undef CONFIG_PMKSA_CACHING
-        #undef CONFIG_IEEE80211W
-        #undef CONFIG_SAE_SUPPORT
-     #endif
-  #endif
   #if defined(CONFIG_PLATFORM_8195A)
     #define CONFIG_RUNTIME_PORT_SWITCH
   #endif
@@ -226,11 +216,8 @@
 
 // DO NOT change the below config of EAP
 #ifdef PRE_CONFIG_EAP
-#undef CONFIG_TLS
 #define CONFIG_TLS	1
-#undef CONFIG_PEAP
 #define CONFIG_PEAP	1
-#undef CONFIG_TTLS
 #define CONFIG_TTLS	1
 #endif
 
@@ -267,9 +254,6 @@
 #endif
 #endif
 
-/*For DPP */
-#define CONFIG_DPP
-
 #define CONFIG_NEW_SIGNAL_STAT_PROCESS
 #define CONFIG_SKIP_SIGNAL_SCALE_MAPPING
 
@@ -288,10 +272,6 @@ extern unsigned int g_ap_sta_num;
 #define AP_STA_NUM 3//g_ap_sta_num
 #endif
 #ifdef CONFIG_AP_MODE
-#if defined(CONFIG_PLATFORM_8195A)  
-	 //softap sent qos null0 polling client alive or not
-	#define CONFIG_AP_POLLING_CLIENT_ALIVE 
-#endif
 	#define CONFIG_NATIVEAP_MLME
 #if defined(CONFIG_PLATFORM_AMEBA_X)
 	#define CONFIG_INTERRUPT_BASED_TXBCN
@@ -351,17 +331,9 @@ extern unsigned int g_ap_sta_num;
 		//Control wifi mcu function
 		#define CONFIG_LITTLE_WIFI_MCU_FUNCTION_THREAD
 		#define CONFIG_ODM_REFRESH_RAMASK
-		#define CONFIG_ANTENNA_DIVERSITY
-		//#define CONFIG_ANTENNA_DIVERSITY_FORCE_ON
-		//#define CONFIG_BT_COEXIST
+		//#define CONFIG_ANTENNA_DIVERSITY
 	#endif
 #endif // #ifdef CONFIG_MP_INCLUDED
-
-#ifdef CONFIG_BT_COEXIST
-	#undef NOT_SUPPORT_BT
-	#define CONFIG_BT_MAILBOX
-	//#define CONFIG_BT_TWO_ANTENNA
-#endif
 
 #if defined(CONFIG_PLATFORM_AMEBA_X)
 	#if defined(CONFIG_PLATFORM_8195A)
@@ -370,18 +342,8 @@ extern unsigned int g_ap_sta_num;
 	#endif
 	#if defined(CONFIG_PLATFORM_8711B)
 		#ifndef CONFIG_RTL8711B 
-			#define CONFIG_RTL8711B
+			#define CONFIG_RTL8711B 
 		#endif
-		#undef CONFIG_ADAPTOR_INFO_CACHING_FLASH
-		#define CONFIG_ADAPTOR_INFO_CACHING_FLASH 0
-		//#undef CONFIG_EAP
-		//#undef CONFIG_IPS
-		#define CONFIG_8710B_MOVE_TO_ROM
-		#define CONFIG_EFUSE_SEPARATE
-		#define CONFIG_MOVE_PSK_TO_ROM
-		#define CONFIG_WOWLAN
-		#define CONFIG_TRAFFIC_PROTECT
-		#define CONFIG_FABVERSION_UMC			0
 	#endif
 #elif defined(CONFIG_HARDWARE_8188F)
 #define CONFIG_RTL8188F
@@ -429,7 +391,6 @@ extern unsigned int g_ap_sta_num;
 #if defined(CONFIG_PLATFORM_AMEBA_X)
 #if(DBG == 0)
 	#define ROM_E_RTW_MSG 1
-	#define ROM_F_RTW_MSG 1
 	/* For DM debug*/
 	// BB
 	#define DBG_RX_INFO 1
@@ -450,9 +411,6 @@ extern unsigned int g_ap_sta_num;
 /* For DM support */
 #if defined(CONFIG_RTL8188F)
 #define RATE_ADAPTIVE_SUPPORT 0
-#elif defined(CONFIG_PLATFORM_8711B)
-#define RATE_ADAPTIVE_SUPPORT 0
-#define CONFIG_ODM_REFRESH_RAMASK
 #else
 #define RATE_ADAPTIVE_SUPPORT 1
 #endif
@@ -486,8 +444,8 @@ extern unsigned int g_ap_sta_num;
 #if (SKB_PRE_ALLOCATE_RX == 1)
 	#define EXCHANGE_LXBUS_RX_SKB 0
 #endif
-#ifdef CONFIG_FPGA
-	//Enable mac loopback for test mode (Ameba)
+#if defined(CONFIG_PLATFORM_8711B)
+//Enable mac loopback for test mode (Ameba)
 	#define CONFIG_TWO_MAC_DRIVER // for test mode
 #endif
 
@@ -530,7 +488,4 @@ extern unsigned int g_ap_sta_num;
 #undef NOT_SUPPORT_40M
 #undef CONFIG_CONCURRENT_MODE
 #endif
-#define CONFIG_DFS
-//#define CONFIG_EMPTY_EFUSE_PG_ENABLE
-//#define CONFIG_WIFI_MESH	1
 #endif //WLANCONFIG_H

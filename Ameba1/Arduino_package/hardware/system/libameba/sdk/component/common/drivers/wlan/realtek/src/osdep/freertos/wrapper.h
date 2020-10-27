@@ -410,7 +410,6 @@ typedef struct {
 	unsigned int rx_busy;
 	unsigned char enable;
 	unsigned char mac[6];
-	_sema netif_rx_sema;            /* prevent race condition on .skb in rltk_netif_rx() */
 } Rltk_wlan_t;
 
 #define netdev_priv(dev)		dev->priv

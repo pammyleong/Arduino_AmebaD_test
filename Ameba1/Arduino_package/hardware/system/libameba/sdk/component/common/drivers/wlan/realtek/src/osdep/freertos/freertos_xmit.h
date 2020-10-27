@@ -33,12 +33,8 @@ struct pkt_file {
 #if USE_XMIT_EXTBUFF
 #define NR_XMITFRAME	16	//NR_XMITBUFF + NR_XMIT_EXTBUFF
 #else
-#ifndef CONFIG_HIGH_TP
 //#define NR_XMITFRAME	8
 #define NR_XMITFRAME	6  //Decrease recv frame due to memory limitation - YangJue
-#else
-#define NR_XMITFRAME	100
-#endif
 #endif
 
 extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);

@@ -276,6 +276,17 @@ enum wpa_states {
 #define MLME_SETPROTECTION_KEY_TYPE_GROUP 0
 #define MLME_SETPROTECTION_KEY_TYPE_PAIRWISE 1
 
+
+/**
+ * enum mfp_options - Management frame protection (IEEE 802.11w) options
+ */
+enum mfp_options {
+	NO_MGMT_FRAME_PROTECTION = 0,
+	MGMT_FRAME_PROTECTION_OPTIONAL = 1,
+	MGMT_FRAME_PROTECTION_REQUIRED = 2,
+};
+#define MGMT_FRAME_PROTECTION_DEFAULT 3
+
 /**
  * enum hostapd_hw_mode - Hardware mode
  */

@@ -4,7 +4,7 @@ ROM_E_RTW_MSGPOOL(PWR_INDEX_1,	"BandWidth = %d, Rate = %d, Channel = %d\n\r")
 ROM_E_RTW_MSGPOOL(PWR_INDEX_2,	"Base = %d, DiffByRate = %d, limit = %d, DiffByTrack = %d, Tx Power = %d\n\n\r")
 // DBG_RX_INFO
 ROM_E_RTW_MSGPOOL(RX_INFO_1,	"============ Rx Info dump ===================\n")
-ROM_E_RTW_MSGPOOL(RX_INFO_2,	"bLinked = %d, RSSI_Min = %d(%%), IGI = 0x%x\n")
+ROM_E_RTW_MSGPOOL(RX_INFO_2,	"bLinked = %d, RSSI_Min = %d(%%), CurrentIGI = 0x%x\n")
 ROM_E_RTW_MSGPOOL(RX_INFO_3,	"Cnt_Cck_fail = %d, Cnt_Ofdm_fail = %d, Total False Alarm = %d\n")
 ROM_E_RTW_MSGPOOL(RX_INFO_4,	"RxRate = 0x%x, RSSI_A = %d(%%), RSSI_B = %d(%%)\n")
 // DBG_TX_RATE
@@ -35,6 +35,12 @@ ROM_E_RTW_MSGPOOL(RF_IQK_5,	"LCK finished\n")
 ROM_E_RTW_MSGPOOL(DM_ADAPTIVITY_1, "IGI_Base=0x%x, TH_L2H_ini = %d, TH_EDCCA_HL_diff = %d\n")
 ROM_E_RTW_MSGPOOL(DM_ADAPTIVITY_2, "DynamicLinkAdaptivity = %d, Adaptivity_enable = %d\n")
 ROM_E_RTW_MSGPOOL(DM_ADAPTIVITY_3, "IGI=0x%x, TH_L2H_dmc = 0x%x, TH_H2L_dmc = 0x%x\n\n")
+// DBG_DM_ANT_DIV
+ROM_E_RTW_MSGPOOL(DM_ANT_DIV_1, "\n*** Main_Cnt= (( %u )), Main_Cnt_CCK= (( %u )), Main_RSSI= (( %u )) \n")
+ROM_E_RTW_MSGPOOL(DM_ANT_DIV_2, "*** Aux_Cnt = (( %u )), Aux_Cnt_CCK = (( %u )), Aux_RSSI = (( %u )) \n")
+ROM_E_RTW_MSGPOOL(DM_ANT_DIV_3, "*** MAC ID:[ %u ] , TargetAnt = (( %s )), decision_type = (( %u ))\n")
+ROM_E_RTW_MSGPOOL(DM_ANT_DIV_4, "*** Phy_AntSel_A=[ %d, %d, %d] \n")
+ROM_E_RTW_MSGPOOL(DM_ANT_DIV_5, "[ Update Rx-Idle-Ant ] RxIdleAnt =%s\n")
 
 // freertos_ioctl.c
 // mac_reg_dump, bb_reg_dump, rf_reg_dump
@@ -61,6 +67,10 @@ ROM_E_RTW_MSGPOOL(WRITE_BB_1,	"write_bbreg(0x%x)=0x%x\n")
 ROM_E_RTW_MSGPOOL(READ_RF_1,	"read RF_reg path(0x%02x),offset(0x%x),value(0x%08x)\n")
 // 0x75 write rf
 ROM_E_RTW_MSGPOOL(WRITE_RF_1,	"write RF_reg path(0x%02x),offset(0x%x),value(0x%08x)\n")
+// 0x76 read sys
+ROM_E_RTW_MSGPOOL(READ_SYS_1,	"read sys_reg(0x%x)=0x%x\n")
+// 0x77 write sys
+ROM_E_RTW_MSGPOOL(WRITE_SYS_1,	"write sys_reg(0x%x)=0x%x\n")
 // 0x17 fix channel
 ROM_E_RTW_MSGPOOL(FIX_CHANNEL_1,	"=>Fixed channel to %d\n")
 ROM_E_RTW_MSGPOOL(FIX_CHANNEL_2,	"Invalid channel number(%d)\n")
@@ -83,6 +93,7 @@ ROM_E_RTW_MSGPOOL(DUMP_INFO_5,	"OFDM 54~24(0xe04)= 0x%x\n")
 ROM_E_RTW_MSGPOOL(DUMP_INFO_6,	"MCS 3~0(0xe10)= 0x%x\n")
 ROM_E_RTW_MSGPOOL(DUMP_INFO_7,	"MCS 7~4(0xe14)= 0x%x\n")
 ROM_E_RTW_MSGPOOL(DUMP_INFO_8,	"Country code: 0x%x\n")
+ROM_E_RTW_MSGPOOL(DUMP_INFO_9,	"ID: 0x%02x\n")
 // 0xee turn on/off dynamic funcs
 ROM_E_RTW_MSGPOOL(DM_FUNC_FLAG_1,	" === DMFlag(0x%08x) === \n")
 ROM_E_RTW_MSGPOOL(DM_FUNC_FLAG_2,	"extra_arg = 0 - disable all dynamic func\n")

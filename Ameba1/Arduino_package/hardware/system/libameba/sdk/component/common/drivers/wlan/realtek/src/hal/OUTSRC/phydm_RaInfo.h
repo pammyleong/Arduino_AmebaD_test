@@ -23,27 +23,6 @@
 
 #define RAINFO_VERSION	"1.0"
 
-#define	H2C_0X42_LENGTH	5
-#define	H2C_MAX_LENGTH	7
-
-#define	RA_FLOOR_UP_GAP		3
-#define	RA_FLOOR_TABLE_SIZE	7
-
-#define	ACTIVE_TP_THRESHOLD	150
-#define	RA_RETRY_DESCEND_NUM	2
-#define	RA_RETRY_LIMIT_LOW	4
-#define	RA_RETRY_LIMIT_HIGH	32
-
-#define RAINFO_BE_RX_STATE			BIT0  // 1:RX    //ULDL
-#define RAINFO_STBC_STATE			BIT1
-//#define RAINFO_LDPC_STATE 			BIT2
-#define RAINFO_NOISY_STATE 			BIT2    // set by Noisy_Detection
-#define RAINFO_SHURTCUT_STATE 		BIT3
-#define RAINFO_SHURTCUT_FLAG 		BIT4
-#define RAINFO_INIT_RSSI_RATE_STATE  BIT5
-#define RAINFO_BF_STATE 				BIT6
-#define RAINFO_BE_TX_STATE 			BIT7 // 1:TX
-
 #define AP_InitRateAdaptiveState	ODM_RateAdaptiveStateApInit
 
 #define		DM_RATR_STA_INIT			0
@@ -60,14 +39,6 @@ typedef struct _Rate_Adaptive_Table_{
 	#if(DM_ODM_SUPPORT_TYPE==ODM_WIN)
 	BOOLEAN		PT_collision_pre;
 	#endif
-
-    	//u1Byte	link_tx_rate[ODM_ASSOCIATE_ENTRY_NUM];
-	u1Byte	highest_client_tx_order;
-	u2Byte	highest_client_tx_rate_order;
-	u1Byte	power_tracking_flag;
-	u1Byte	RA_threshold_offset;
-	u1Byte	RA_offset_direction;
-    
 }RA_T, *pRA_T;
 #endif
 
@@ -103,13 +74,6 @@ VOID
 odm_RSSIMonitorCheck(
 	IN	 	PVOID	 	 pDM_VOID
 	);
-
-VOID
-phydm_modify_RA_PCR_threshold(
-	IN		PVOID		pDM_VOID,
-	IN		u1Byte		RA_offset_direction,
-	IN		u1Byte		RA_threshold_offset
-);
 
 #if(DM_ODM_SUPPORT_TYPE==ODM_WIN)
 VOID
@@ -182,17 +146,6 @@ odm_RefreshBasicRateMask(
 	IN	PVOID	pDM_VOID
 	);
 
-VOID
-phydm_ra_info_init(
-	IN	PVOID	pDM_VOID
-	);
-
-VOID
-phydm_c2h_ra_report_handler(
-	IN PVOID	pDM_VOID,
-	IN pu1Byte   CmdBuf,
-	IN u1Byte   CmdLen
-);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 VOID

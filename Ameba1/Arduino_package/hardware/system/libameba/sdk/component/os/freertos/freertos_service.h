@@ -6,20 +6,13 @@
 //----- ------------------------------------------------------------------
 //#include "wireless.h"
 #include "dlist.h"
-#include "FreeRTOS.h"
-#include "task.h"
-#include "event_groups.h"
-#include "semphr.h"
-#include "queue.h"
-#include "timers.h"
+
 // --------------------------------------------
 //	Platform dependent include file
 // --------------------------------------------
-#if defined(CONFIG_PLATFORM_8195A)
+#if defined(CONFIG_PLATFORM_8195A) || defined(CONFIG_PLATFORM_8711B)
 #include "platform/platform_stdlib.h"
 extern VOID RtlUdelayOS(u32 us);
-#elif defined(CONFIG_PLATFORM_8711B)
-#include "platform/platform_stdlib.h"
 #else
 // other MCU may use standard library 
 #include <string.h>
@@ -147,13 +140,6 @@ void save_and_cli(void);
 void restore_flags(void);
 void cli(void);
 
-#ifndef mdelay
-#define mdelay(t)					((t/portTICK_RATE_MS)>0)?(vTaskDelay(t/portTICK_RATE_MS)):(vTaskDelay(1))
-#endif
-
-#ifndef udelay
-#define udelay(t)					((t/(portTICK_RATE_MS*1000))>0)?vTaskDelay(t/(portTICK_RATE_MS*1000)):(vTaskDelay(1))
-#endif
 //----- ------------------------------------------------------------------
 // Common Definition
 //----- ------------------------------------------------------------------
@@ -190,9 +176,9 @@ void cli(void);
 #define HALT()				do { cli(); for(;;);} while(0)
 #undef ASSERT
 #define ASSERT(x)			do { \
-						if((x) == 0){\
+						if((x) == 0) \
 							printf("\n\rAssert(" #x ") failed on line %d in file %s", __LINE__, __FILE__); \
-						HALT();}\
+						HALT(); \
 					} while(0)
 
 #undef DBG_ASSERT
@@ -255,9 +241,5 @@ extern u32	rtw_is_list_empty(_list *phead);
 extern void	rtw_list_insert_head(_list *plist, _list *phead);
 extern void	rtw_list_insert_tail(_list *plist, _list *phead);
 extern void	rtw_list_delete(_list *plist);
-
-#if CONFIG_PLATFORM_8711B
-extern u32 random_seed;
-#endif
 
 #endif /* _FREERTOS_SERVICE_H_ */

@@ -31,9 +31,9 @@
 #define kMFiAuthReg_DeviceCertificateSize		0x30
 #define kMFiAuthReg_DeviceCertificateData1		0x31 // Note: auto-increments so next read is Data2, Data3, etc.
 
-uint16_t	MFi_i2c_tx(uint8_t reg, const uint8_t* buf, uint16_t count, uint8_t retry);
-uint16_t	MFi_i2c_rx(uint8_t reg, uint8_t* buf, uint16_t count, uint8_t retry);
-int			MFi_auth_io(uint8_t reg, const uint8_t *write_buf, uint16_t write_count, uint8_t *read_buf, uint16_t read_count, uint8_t retry_count);
+uint16_t	MFi_i2c_tx(uint8_t reg, const uint8_t* buf, uint16_t count);
+uint16_t	MFi_i2c_rx(uint8_t reg, uint8_t* buf, uint16_t count);
+int			MFi_auth_io(uint8_t reg, const uint8_t *write_buf, uint16_t write_count, uint8_t *read_buf, uint16_t read_count);
 void		MFi_auth_init(void);
 void		MFi_auth_deinit(void);
 

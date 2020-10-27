@@ -166,9 +166,6 @@ enum rtw_drvextra_cmd_id
 	INTEl_WIDI_WK_CID,
 	C2H_WK_CID,
 	RTP_TIMER_CFG_WK_CID,
-#ifdef CONFIG_BT_COEXIST
-	BTINFO_WK_CID,
-#endif
 	MAX_WK_CID
 };
 
@@ -180,7 +177,6 @@ enum LPS_CTRL_TYPE
 	LPS_CTRL_DISCONNECT=3,
 	LPS_CTRL_SPECIAL_PACKET=4,
 	LPS_CTRL_LEAVE=5,
-	LPS_CTRL_DENY=6,
 };
 
 enum RFINTFS {
@@ -642,8 +638,7 @@ struct geth2clbk_rsp {
 // CMD param Formart for driver extra cmd handler
 struct drvextra_cmd_parm {
 	int ec_id; //extra cmd id
-	int type; /* Can use this field as the type id or command size */
-	int size; /* buffer size */
+	int type_size; // Can use this field as the type id or command size
 	unsigned char *pbuf;
 };
 
@@ -905,7 +900,6 @@ struct LedBlink_param
 struct SetChannelSwitch_param
 {
 	u8 new_ch_no;
-	u8 count;
 };
 
 /*H2C Handler index: 62 */ 
@@ -986,17 +980,13 @@ extern u8 rtw_ps_cmd(_adapter*padapter);
 u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
 #endif
 
-#ifdef CONFIG_BT_COEXIST
-u8 rtw_btinfo_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
-#endif
-
 extern u8 rtw_set_chplan_cmd(_adapter*padapter, u8 chplan, u8 enaueue);
 //TODO
 //extern u8 rtw_led_blink_cmd(_adapter*padapter, PLED_871x pLed);
 extern u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
 extern u8 rtw_tdls_cmd(_adapter*padapter, u8 *addr, u8 option);
 
-extern u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length, u8 type);
+extern u8 rtw_c2h_wk_cmd(PADAPTER padapter);
 
 u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf);
 #ifdef CONFIG_P2P_NEW

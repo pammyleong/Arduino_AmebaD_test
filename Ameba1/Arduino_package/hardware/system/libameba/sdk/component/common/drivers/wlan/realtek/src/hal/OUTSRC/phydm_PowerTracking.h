@@ -31,7 +31,6 @@
 #define TXPWR_TRACK_TABLE_SIZE 	30
 #define DELTA_SWINGIDX_SIZE     30
 #define BAND_NUM 				4
-#define CCK_TABLE_SIZE_8711B	41
 
 #define AVG_THERMAL_NUM		8
 #define HP_THERMAL_NUM		8
@@ -46,7 +45,7 @@
 
 
 #define IQK_Matrix_REG_NUM	8
-#if defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8195A) || defined (CONFIG_RTL8711B)
+#if defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8195A)
 #define IQK_Matrix_Settings_NUM	14
 #else
 #define IQK_Matrix_Settings_NUM	14+24+21 // Channels_2_4G_NUM + Channels_5G_20M_NUM + Channels_5G
@@ -64,11 +63,11 @@ extern const u1Byte CCKFCCTable_Ch14_8195A[16];
 #endif
 
 #if (RTL8711B_SUPPORT == 1)
-
+extern const u1Byte CCKSwingTable_Ch1_Ch13_8711B[CCK_TABLE_SIZE][9];
+extern const u1Byte CCKSwingTable_Ch14_8711B[CCK_TABLE_SIZE][9];
 extern const u1Byte CCKFCCTable_8711B[16];
 extern const u1Byte CCKCETable_8711B[16];
 extern const u1Byte CCKFCCTable_Ch14_8711B[16];
-extern const u4Byte CCKSwingTable_Ch1_Ch14_8711B[CCK_TABLE_SIZE_8711B];
 #endif
 
 extern const u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE];
@@ -84,7 +83,7 @@ extern const u1Byte CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
 	BOOLEAN 	bIQKDone;
-#if defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8195A) || defined(CONFIG_RTL8711B)
+#if defined(CONFIG_RTL8188E) || defined(CONFIG_RTL8195A)
 	s4Byte		Value[1][IQK_Matrix_REG_NUM];
 #else
 	s4Byte		Value[3][IQK_Matrix_REG_NUM];

@@ -9,9 +9,9 @@
 #define BIT(n)                   (1<<n)
 #endif
 
-#ifdef CONFIG_PLATFORM_8195A
 #define DEFAULT_WAKEUP_EVENT (SLEEP_WAKEUP_BY_STIMER | SLEEP_WAKEUP_BY_GTIMER | SLEEP_WAKEUP_BY_GPIO_INT | SLEEP_WAKEUP_BY_WLAN)
 
+#ifdef CONFIG_PLATFORM_8195A
 typedef enum PMU_DEVICE {
 
     PMU_OS = 0,
@@ -27,34 +27,24 @@ typedef enum PMU_DEVICE {
 #endif
 
 #ifdef CONFIG_PLATFORM_8711B
-typedef enum {
-	PMU_OS					=0,
-	
-	PMU_UART0_DEVICE		=1,
-	PMU_UART1_DEVICE		=2,
-	
-	PMU_WLAN_DEVICE		=3,
-	PMU_LOGUART_DEVICE	=4,
-	PMU_SDIO_DEVICE		=5,
+typedef enum PMU_DEVICE {
+    PMU_OS = 0,
+    PMU_WLAN_DEVICE = 1,
+    PMU_LOGUART_DEVICE = 2,
+    PMU_SDIO_DEVICE = 3,
+    PMU_UART0_DEVICE = 4,
+    PMU_UART1_DEVICE = 5,
+    PMU_I2C0_DEVICE = 6,
+    PMU_I2C1_DEVICE = 7,
+    PMU_USOC_DEVICE = 8,
+    PMU_DONGLE_DEVICE = 9,
+    PMU_RTC_DEVICE = 10,
+    PMU_CONSOLE_DEVICE = 11,
 
-	PMU_I2C0_DEVICE		=6,
-	PMU_I2C1_DEVICE		=7,
-	PMU_USOC_DEVICE		=8,
-	PMU_DONGLE_DEVICE	=9,
-	PMU_RTC_DEVICE		=10,
-	PMU_CONSOL_DEVICE	=11,
-	PMU_ADC_DEVICE	=12,
-	PMU_WAKWLOCK_TIMEOUT=13,
-	PMU_IPS_DEVICE			=14,
-	PMU_DEV_USER_BASE	=16,
+    PMU_DEV_USER_BASE= 16,
 
-	PMU_MAX				=31
+    PMU_MAX = 31
 } PMU_DEVICE;
-
-enum SLEEP_TYPE {
-	SLEEP_PG	= 0,
-	SLEEP_CG	= 1,
-};
 #endif
 
 // default locked by OS and not to sleep until OS release wakelock in somewhere
@@ -70,39 +60,23 @@ typedef uint32_t (*PSM_HOOK_FUN)( unsigned int, void* param_ptr );
  *
  *  If wakelock is not equals to 0, then the system won't enter sleep.
  *
- *  @param nDeviceId        : The bit which is attempt to add into wakelock
+ *  @param lock_id        : The bit which is attempt to add into wakelock
  */
-void pmu_acquire_wakelock(uint32_t nDeviceId);
+void pmu_acquire_wakelock(uint32_t lock_id);
 
 /** Release wakelock
  *
  *  If wakelock equals to 0, then the system may enter sleep state if it is in idle state.
  *
- *  @param nDeviceId        : The bit which is attempt to remove from wakelock
+ *  @param lock_id        : The bit which is attempt to remove from wakelock
  */
-void pmu_release_wakelock(uint32_t nDeviceId);
-
-/** Acquire wakelock from isr
- *
- *  If wakelock is not equals to 0, then the system won't enter sleep.
- *
- *  @param nDeviceId        : The bit which is attempt to add into wakelock
- */
-void pmu_acquire_wakelock_from_isr(uint32_t nDeviceId);
-
-/** Release wakelock from isr
- *
- *  If wakelock equals to 0, then the system may enter sleep state if it is in idle state.
- *
- *  @param nDeviceId        : The bit which is attempt to remove from wakelock
- */
-void pmu_release_wakelock_from_isr(uint32_t nDeviceId);
+void pmu_release_wakelock(uint32_t lock_id);
 
 /** Get current wakelock bit map value
  *
  *  @return               : the current wakelock bit map value
  */
-uint32_t pmu_get_wakelock_status(void);
+uint32_t pmu_get_wakelock_status();
 
 #if (configGENERATE_RUN_TIME_STATS == 1)
 
@@ -125,19 +99,9 @@ void pmu_get_wakelock_hold_stats( char *pcWriteBuffer );
  *  By default the wakelock statics is calculated from system boot up.
  *  If we want to debug power saving killer from a specified timestamp, we can reset the statics.
  */
-void pmu_clean_wakelock_stat(void);
+void pmu_clean_wakelock_stat();
 
 #endif
-
-/**
-  * @brief  set system active time, system can not sleep beore timeout.
-  * @param  nDeviceId: PMU_DEVICE 
-  * @param  timeout: system can not sleep beore timeout, unit is ms.
-  * @retval status value:
-  *          - 0: _FAIL
-  *          - 1: _SUCCESS   
-  */
-uint32_t pmu_set_sysactive_time(uint32_t timeout_ms);
 
 void pmu_add_wakeup_event(uint32_t event);
 void pmu_del_wakeup_event(uint32_t event);
@@ -152,5 +116,27 @@ void pmu_unregister_sleep_callback(uint32_t nDeviceId);
  */
 void pmu_set_pll_reserved(unsigned char reserve);
 #endif
+
+/** Deprecated definitions */
+#define WAKELOCK_OS                      BIT(0)
+#define WAKELOCK_WLAN                    BIT(1)
+#define WAKELOCK_LOGUART                 BIT(2)
+#define WAKELOCK_SDIO_DEVICE             BIT(3)
+#define WAKELOCK_USER_BASE               BIT(16)
+
+typedef void (*freertos_sleep_callback)( unsigned int );
+
+/** Deprecated APIs */
+#define acquire_wakelock(lock_id)              pmu_acquire_wakelock(lock_id)
+#define release_wakelock(lock_id)              pmu_release_wakelock(lock_id)
+#define get_wakelock_status()                  pmu_get_wakelock_status()
+#define get_wakelock_hold_stats(pcWriteBuffer) pmu_get_wakelock_hold_stats(pcWriteBuffer)
+#define clean_wakelock_stat()                  pmu_clean_wakelock_stat()
+#define add_wakeup_event(event)                pmu_add_wakeup_event(event)
+#define del_wakeup_event(event)                pmu_del_wakeup_event(event)
+
+void register_sleep_callback_by_module( unsigned char is_pre_sleep, freertos_sleep_callback sleep_cb, uint32_t module );
+void register_pre_sleep_callback( freertos_sleep_callback pre_sleep_cb );
+void register_post_sleep_callback( freertos_sleep_callback post_sleep_cb );
 
 #endif

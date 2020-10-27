@@ -24,7 +24,7 @@
 #include "rtl8195a.h"
 #endif
 #if (RTL8711B_SUPPORT == 1)
-#include "ameba_soc.h"
+#include "rtl8195a.h"
 #endif
 /*--------------------------Define efuse Parameters-------------------------*/
 #define	EFUSE_ERROE_HANDLE		1

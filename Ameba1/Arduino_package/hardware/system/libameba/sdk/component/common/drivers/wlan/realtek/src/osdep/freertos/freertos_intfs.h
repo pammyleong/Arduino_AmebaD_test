@@ -98,9 +98,9 @@ typedef struct _driver_priv {
 	int drv_registered;
 
 	_mutex hw_init_mutex;
-	_mutex h2c_fwcmd_mutex;
 #if defined(CONFIG_CONCURRENT_MODE) || defined(CONFIG_DUALMAC_CONCURRENT)
 	//global variable
+	_mutex h2c_fwcmd_mutex;
 	_mutex setch_mutex;
 	_mutex setbw_mutex;
 #endif

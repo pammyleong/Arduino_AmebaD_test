@@ -66,7 +66,6 @@ typedef struct _ADAPTIVITY_STATISTICS {
 	BOOLEAN			DynamicLinkAdaptivity;
 	u1Byte			APNumTH;
 	u1Byte			AdajustIGILevel;
-    BOOLEAN			bStopEDCCA;
 } ADAPTIVITY_STATISTICS, *PADAPTIVITY_STATISTICS;
 
 VOID

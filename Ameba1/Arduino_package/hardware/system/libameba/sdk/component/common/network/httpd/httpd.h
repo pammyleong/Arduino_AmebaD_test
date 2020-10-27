@@ -22,14 +22,13 @@
  */
 
 #include "platform_stdlib.h"
-#include "platform_opts.h"
 
 #define HTTPD_SECURE_NONE        0   /*!< Running with HTTP server */
 #define HTTPD_SECURE_TLS         1   /*!< Running with HTTPS server */
 #define HTTPD_SECURE_TLS_VERIFY  2   /*!< Running with HTTPS server and verify client */
 
-#define HTTPD_THREAD_SINGLE      0   /*!< Single-thread mode for request handling */
-#define HTTPD_THREAD_MULTIPLE    1   /*!< Multi-thread mode for request handling */
+#define HTTPD_THREAD_SINGLE      0   /*!< Multi-thread mode for request handling */
+#define HTTPD_THREAD_MULTIPLE    1   /*!< Single-thread mode for request handling */
 
 #define HTTPD_DEBUG_OFF          0   /*!< Disable httpd debug log */
 #define HTTPD_DEBUG_ON           1   /*!< Enable httpd debug log */
@@ -38,11 +37,7 @@
 #define HTTPD_TLS_POLARSSL       0    /*!< Use PolarSSL for TLS when HTTPS */
 #define HTTPD_TLS_MBEDTLS        1    /*!< Use mbedTLS for TLS when HTTPS */
 
-#if CONFIG_USE_POLARSSL
 #define HTTPD_USE_TLS            HTTPD_TLS_POLARSSL
-#elif CONFIG_USE_MBEDTLS
-#define HTTPD_USE_TLS            HTTPD_TLS_MBEDTLS
-#endif
 
 /**
   * @brief  The structure is the context used for HTTP request header parsing.
@@ -74,7 +69,6 @@ struct httpd_conn {
 	struct http_request request;     /*!< Context for HTTP request */
 	void *tls;                       /*!< Context for TLS connection */
 	uint8_t *response_header;        /*!< Pointer to transmission buffer of HTTP response header */
-	uint32_t last_req_time;          /*!< Last request time in system ticks */
 };
 
 /**
@@ -94,13 +88,6 @@ int httpd_start(uint16_t port, uint8_t max_conn, uint32_t stack_bytes, uint8_t t
  * @return    None
  */
 void httpd_stop(void);
-
-/**
- * @brief     This function is used to check whether httpd server is running
- * @return    1 : if is running
- * @return    0 : if is not running
- */
-int httpd_is_running(void);
 
 /**
  * @brief     This function is used to register a callback function for a Web page request handling.
@@ -126,20 +113,6 @@ void httpd_clear_page_callbacks(void);
 void httpd_setup_debug(uint8_t debug);
 
 /**
- * @brief     This function is used to setup httpd server priority.
- * @param[in] priority: the default priority is defined to 1
- * @return    None
- */
-void httpd_setup_priority(uint8_t priority);
-
-/**
- * @brief     This function is used to setup connection idle timeout for server.
- * @param[in] idle_timeout: timeout in seconds
- * @return    None
- */
-void httpd_setup_idle_timeout(int idle_timeout);
-
-/**
  * @brief     This function is used to setup certificate and key for server before starting with HTTPS.
  * @param[in] server_cert: string of server certificate
  * @param[in] server_key: string of server private key
@@ -148,7 +121,7 @@ void httpd_setup_idle_timeout(int idle_timeout);
  * @return    -1 : if error occurred
  * @note      Must be used before httpd_start() if staring HTTPS server
  */
-int httpd_setup_cert(const char *server_cert, const char *server_key, const char *ca_certs);
+int httpd_setup_cert(char *server_cert, char *server_key, char *ca_certs);
 
 /**
  * @brief     This function is used to setup authorization for server.

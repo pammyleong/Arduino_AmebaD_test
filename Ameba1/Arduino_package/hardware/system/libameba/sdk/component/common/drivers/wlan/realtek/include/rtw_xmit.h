@@ -75,11 +75,7 @@
 #if defined(PLATFORM_ECOS)
 #define NR_XMITBUFF	(8)	
 #elif defined(PLATFORM_FREERTOS)
-#ifndef CONFIG_HIGH_TP
 #define NR_XMITBUFF	(2)	//Decrease recv frame (8->2) due to memory limitation - YangJue
-#else 
-#define NR_XMITBUFF (128)
-#endif
 #else
 #define NR_XMITBUFF	(128)
 #endif	//#ifdef PLATFORM_ECOS
@@ -429,14 +425,6 @@ struct pkt_attrib
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
 	u8	hw_tcp_csum;
 #endif
-#ifdef CONFIG_MCC_MODE
-	u8   navusehdr;//NAVUSEHDR
-	u8   spe_rpt;
-	u8   null_0;
-	u8   null_1;
-	u16 sw_define;
-	u8   raw;
-#endif
 };
 #endif
 
@@ -708,11 +696,10 @@ struct	xmit_priv	{
 
 	_adapter	*adapter;
 
-	u8	vcs_setting;
+	u8   	vcs_setting;
 	u8	vcs;
 	u8	vcs_type;
 	//u16  rts_thresh;
-	u8	tx_power_offset;
 
 	u64	tx_bytes;
 	u64	tx_pkts;

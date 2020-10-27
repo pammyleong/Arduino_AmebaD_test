@@ -14,16 +14,18 @@
 #include "platform_stdlib.h"
 #include "wifi_constants.h"
 #include "wifi_structures.h"
-#if CONFIG_AIRKISS
 /* airkiss 2.0 */
 #include "airkiss.h"
-#endif
+//#include "jd_smnt.h"
+#include "joylink_smnt.h"
+#include "jd_aes.h"
+
 
 #define WHC_DBG_FULL 2
 #define WHC_DBG_IMPORTANT 1
 #define WHC_DBG_NOTHING 0
 /* if too much log, change this */
-#define WHC_DBG_LEVEL WHC_DBG_IMPORTANT
+#define WHC_DBG_LEVEL WHC_DBG_FULL
 #define WHC_TRACE(LEVEL, fmt, ...) \
 do {	\
     if (LEVEL <= WHC_DBG_LEVEL) \
@@ -31,16 +33,23 @@ do {	\
 } while (0)	
 
 enum airkiss_fix_reason {
+	WHC_FIX_WITH_REALTEK_SIMPLE_CONFIG,
 	WHC_FIX_WITH_AIRKISS,
-	WHC_FIX_WITH_SIMPLE_CONFIG,
+	WHC_FIX_WITH_SMNT,
+	WHC_FIX_WITH_VENDOR_SIMPLE_CONFIG,
  };
 
 enum wifi_info_reason {
+	WHC_FINISH_WITH_REALTEK_SIMPLE_CONFIG,
 	WHC_FINISH_WITH_AIRKISS,
-	WHC_FINISH_WITH_SIMPLE_CONFIG,
+	WHC_FINISH_WITH_SMNT,
+	WHC_FINISH_WITH_VENDOR_SIMPLE_CONFIG,
 
 };
-	
+
+#define WHC_SMNT
+
+
 ////////////////////////////// copied //////////////////////////////////////////
 struct rtk_test_sc {
 	int			pattern_type;
@@ -70,7 +79,7 @@ struct rtk_test_sc {
 
 ////////////////////////////////////////////////////////////////////////
 
-#if CONFIG_AIRKISS
+
 struct whc_airkiss {
 
 	airkiss_context_t context;
@@ -80,6 +89,17 @@ struct whc_airkiss {
 	bool finished;
 	u8 encrypt;
 
+};
+
+#ifdef WHC_SMNT
+struct whc_smnt {
+
+	bool finished;
+	bool relock_flag;
+	u8 encrypt;
+	const u8 jd_iv[16];
+	u8 *g_cfg_ptr;
+	joylinkResult_t *pjoylinkResult ;
 };
 #endif
 
@@ -118,8 +138,9 @@ struct wifi_hybrid_config {
 	bool need_check_profile_packet;
 	#endif
 
-#if CONFIG_AIRKISS
 	struct whc_airkiss airkiss;
+#ifdef WHC_SMNT
+	struct whc_smnt smnt;
 #endif
 };
 
@@ -153,11 +174,8 @@ struct rtk_sc {
 
 #endif
 
-
-int whc_vendor_init(struct wifi_hybrid_config *config);
-void whc_vendor_deinit();
-void whc_vendor_promisc_callback(unsigned char *buf, unsigned int len, void* userdata,
-					struct wifi_hybrid_config *config);
+void whc_switch_channel(struct wifi_hybrid_config *config);
+void whc_promisc_callback(unsigned char * buf, unsigned int len, void * userdata);
 
 /* simple config external API */
 extern void remove_filter();

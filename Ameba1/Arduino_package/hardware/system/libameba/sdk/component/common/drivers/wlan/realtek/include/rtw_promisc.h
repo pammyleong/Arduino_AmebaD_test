@@ -26,15 +26,16 @@ void promisc_deinit(_adapter *padapter);
 //void promisc_set_enable(_adapter *padapter, u8 enabled, u8 len_used);
 int promisc_recv_func(_adapter *padapter, union recv_frame *rframe);
 int promisc_recv_lens_func(void *padapter, u8 *payload, u8 plen);
-int promisc_filter_with_len(u16 len);
 #endif
 int promisc_set(rtw_rcr_level_t enabled, void (*callback)(unsigned char*, unsigned int, void*), unsigned char len_used);
 unsigned char is_promisc_enabled(void);
 int promisc_get_fixed_channel(void * fixed_bssid, u8 * ssid, int *ssid_length);
 void promisc_issue_probereq(void);
 void promisc_issue_probersp(unsigned char *da);
+#ifdef CONFIG_PROMISC_SCAN_CONCURENT
 void promisc_stop_tx_beacn(void);
 void promisc_resume_tx_beacn(void);
 void promisc_get_ap_info(rtw_result_t (*func)(char *ssid, u8 ssid_len, s16 rssi, char channel, char security));
+#endif
 #endif	//_RTW_PROMISC_H_
 

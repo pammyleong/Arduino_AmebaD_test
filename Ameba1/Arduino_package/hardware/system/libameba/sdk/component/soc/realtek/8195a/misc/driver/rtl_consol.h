@@ -17,8 +17,7 @@
 #include "platform_opts.h"
 #endif
 
-//#include "osdep_api.h"
-#include "osdep_service.h"
+#include "osdep_api.h"
 #include "hal_diag.h"
 #include "platform_stdlib.h"
 
@@ -67,8 +66,7 @@ typedef struct _UART_LOG_CTL_ {
 #endif
 #ifdef CONFIG_KERNEL
 		u32		TaskRdy;
-		//_Sema	Sema;	
-		_sema	Sema;
+		_Sema	Sema;
 #else
         // Since ROM code will reference this typedef, so keep the typedef same size
         u32     TaskRdy;

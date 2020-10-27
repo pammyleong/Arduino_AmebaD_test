@@ -361,8 +361,6 @@ static inline void NdisRawReadPortUlong(u32 port, u32 *pval)
 	//*pval = readl((u8 *)RegAddr(port));
 }
 #elif defined(CONFIG_LX_HCI)
-#define GSPI_CMD_LEN		0
-#define GSPI_STATUS_LEN		0
 #include "lxbus/lxbus_spec.h"
 #endif // interface define
 
