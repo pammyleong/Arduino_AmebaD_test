@@ -1,8 +1,6 @@
 #ifndef PLATFORM_STDLIB_8721D_H
 #define PLATFORM_STDLIB_8721D_H
 
-//zzw arduino
-//#define STD_PRINTF
 #define CONFIG_PLATFORM_AMEBA_X 1
 
 #if defined (__IARSTDLIB__)

@@ -3,7 +3,7 @@
 
 #include <platform_opts.h>
     
-#if defined(CONFIG_USBH_UVC) || defined(REFER_USBH_UVC)
+#ifdef CONFIG_USBH_UVC
 
 #include "uvc_os_wrap_via_osdep_api.h"
 /*

@@ -17,13 +17,13 @@
 #include "mesh_config.h"
 
 /* always publish regardless of state change */
-#define MODEL_ENABLE_PUBLISH_ALL_TIME                      1
+#define MODEL_ENABLE_PUBLISH_ALL_TIME                      0
 
 /* enable delay message response */
-#define MODEL_ENABLE_DELAY_MSG_RSP                         1
+#define MODEL_ENABLE_DELAY_MSG_RSP                         0
 
 /* enable  parallel adv */
-#define MODEL_ENABLE_PARALLEL_ADV                          1
+#define MODEL_ENABLE_PARALLEL_ADV                          0
 
 /* set this value to 1 if need to notify application when user stop transition */
 #define MODEL_ENABLE_USER_STOP_TRANSITION_NOTIFICATION     0

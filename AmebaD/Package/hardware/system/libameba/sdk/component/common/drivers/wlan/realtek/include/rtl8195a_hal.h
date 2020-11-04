@@ -41,6 +41,10 @@
 #include "rtl8195a/Hal8195APhyCfg.h"
 #include "rtl8195a/rom_Hal8195APhyCfg.h"
 
+#ifdef DBG_CONFIG_ERROR_DETECT
+#include "rtl8195a/rtl8195a_sreset.h"
+#endif
+
 #include "../src/hal/OUTSRC/phydm_precomp.h"
 
 #if (RTL8195A_SUPPORT==1)

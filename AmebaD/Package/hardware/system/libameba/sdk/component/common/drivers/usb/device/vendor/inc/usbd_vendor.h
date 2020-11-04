@@ -10,13 +10,16 @@
 // Test options
 #define CONFIG_USBD_VENDOR_ISO_IN_TEST          1
 #define CONFIG_USBD_VENDOR_ISO_OUT_TEST         1
+#define CONFIG_USBD_VENDOR_ISO_INOUT_TEST       0
 #define CONFIG_USBD_VENDOR_BULK_INOUT_TEST      0
 #define CONFIG_USBD_VENDOR_ISO_IN_REQ_ASAP      1
 #define CONFIG_USBD_VENDOR_ISO_OUT_REQ_ASAP     0
+#define CONFIG_USBD_VENDOR_ISO_DBG_TIMER        1
+#define CONFIG_USBD_VENDOR_ISO_DBG_GPIO         0
 
 #define USBD_VENDOR_ISO_REQ_NUM                 2
 #define USBD_VENDOR_ISO_OUT_XFER_CNT		    100
-#define USBD_VENDOR_ISO_IN_CNT                  100
+#define USBD_VENDOR_ISO_IN_CNT                  512
 
 /* Debug options */
 #define USBD_VENDOR_DEBUG                       0
@@ -54,9 +57,6 @@ struct usb_vendor_device_t {
     struct usb_ep       *bulk_out_ep;
     struct usb_ep       *iso_in_ep;
     struct usb_ep       *iso_out_ep;
-
-    struct usb_request *bulk_out_req;
-    struct usb_request *bulk_in_req;
 
     struct usb_iso_request *iso_out_req;
     u8 *iso_out_req_buf[USBD_VENDOR_ISO_REQ_NUM];

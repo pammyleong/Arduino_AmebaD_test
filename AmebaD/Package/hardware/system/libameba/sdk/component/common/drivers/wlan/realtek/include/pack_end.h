@@ -9,5 +9,8 @@
 #pragma pack()
 #endif
 
+#if defined(PLATFORM_WINDOWS)
+#pragma pack(pop)
+#endif
 
 

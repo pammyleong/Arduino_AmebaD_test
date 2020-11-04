@@ -13,7 +13,7 @@
 
 #include <platform_opts.h>
     
-#if defined(CONFIG_USBH_UVC) || defined(REFER_USBH_UVC)
+#ifdef CONFIG_USBH_UVC
 
 #ifndef _VIDEO_H_
 #define _VIDEO_H_
