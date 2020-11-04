@@ -214,26 +214,16 @@ static IR_DataType ConvertToCarrierCycle(uint32_t time, uint32_t freq) {
 void IRDevice::send(const unsigned int buf[], uint16_t len) {
     u32 tx_count = 0;
     const u8 tx_thres = 1;
-    uint16_t index = 0;
     uint16_t bufLen = 0;
-    uint32_t Log1[MAX_LOG_WAVFORM_SIZE];
-    uint32_t Log0[MAX_LOG_WAVFORM_SIZE];
     uint32_t inputTime = 0;
-    IR_ProtocolTypeDef *IR_Protocol = (IR_ProtocolTypeDef *)(&NEC_PROTOCOL);
 
     IR_DataStruct.carrierFreq = IR_InitStruct.IR_Freq;
     IR_DataStruct.codeLen = len;
 
-    /* Encoding logical 1 and logical 0 */
-    for (index = 0; index < MAX_LOG_WAVFORM_SIZE; index++) {
-        Log0[index] = ConvertToCarrierCycle(IR_Protocol->log0Buf[index], IR_DataStruct.carrierFreq);
-        Log1[index] = ConvertToCarrierCycle(IR_Protocol->log1Buf[index], IR_DataStruct.carrierFreq);
-    }
-
     for (unsigned int i = 1; i <= IR_DataStruct.codeLen; i++) {
         IR_DataStruct.irBuf[i] = buf[i - 1];
 
-        if (i & 1 == 1) {
+        if ((i & 1) == 1) {
             inputTime = IR_DataStruct.irBuf[i] | PULSE_HIGH;
             IR_DataStruct.irBuf[i] = ConvertToCarrierCycle(inputTime, IR_DataStruct.carrierFreq);
         } else {
@@ -251,9 +241,6 @@ void IRDevice::send(const unsigned int buf[], uint16_t len) {
     tx_count += IR_TX_FIFO_SIZE;
 
     while ((IR_DataStruct.bufLen - tx_count) > 0) {
-        // while (IR_GetTxFIFOFreeLen(IR_DEV) < tx_thres) {
-        //     taskYIELD();
-        // }
         if ((IR_DataStruct.bufLen - tx_count) > tx_thres) {
             IR_SendBuf(IR_DEV, (IR_DataStruct.irBuf + tx_count), tx_thres, FALSE);
             tx_count += tx_thres;
@@ -279,7 +266,7 @@ void IRDevice::beginNEC(uint8_t receivePin, uint8_t transmitPin, uint32_t irMode
     if (irMode == IR_MODE_TX) {
         _frequency = 38000;  // Tx mode frequency corresponds to IR carrier frequency
         _mode = irMode;
-    } else if (irMode = IR_MODE_RX) {
+    } else if (irMode == IR_MODE_RX) {
         _frequency = 10000000;  // Rx mode frequency corresponds to Ameba sampling frequency
         _mode = irMode;
         IR_InitStruct.IR_RxFIFOThrLevel = 2;
@@ -338,7 +325,7 @@ uint8_t IRDevice::recvNEC(uint8_t &adr, uint8_t &cmd, uint32_t timeout) {
     adr = 0;
     cmd = 0;
     uint8_t data[4] = {0, 0, 0, 0};
-    uint8_t result;
+    // uint8_t result;
     uint8_t data_received = 0;
 
     IR_DataStruct.bufLen = 0;
@@ -360,7 +347,7 @@ uint8_t IRDevice::recvNEC(uint8_t &adr, uint8_t &cmd, uint32_t timeout) {
         if (IR_RX_INVERTED) {
             InvertPulse(IR_DataStruct.irBuf, IR_DataStruct.bufLen);
         }
-        result = IR_NECDecode(IR_InitStruct.IR_Freq, (uint8_t *)&data, &IR_DataStruct);
+        // result = IR_NECDecode(IR_InitStruct.IR_Freq, (uint8_t *)&data, &IR_DataStruct);
         adr = data[0];
         cmd = data[2];
         //printf("result %d RX %2x%2x\n",result, adr, cmd);
@@ -412,7 +399,6 @@ void IRDevice::sendSONY(unsigned long data, uint16_t len) {
     uint16_t bufLen = 0;
     uint32_t Log1[MAX_LOG_WAVFORM_SIZE];
     uint32_t Log0[MAX_LOG_WAVFORM_SIZE];
-    uint32_t inputTime = 0;
     int nbits = len;
     IR_ProtocolTypeDef *IR_Protocol = (IR_ProtocolTypeDef *)(&SONY_PROTOCOL);
 
