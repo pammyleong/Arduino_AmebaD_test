@@ -2,16 +2,26 @@
 /*
  * Release Note
  */
-  	v1.0.1.82
+	v1.0.1.96
+	2020/08/27
+	GCID b41ecd11f85d38ba, PGCID facb7c3890b577aa
+	1. Fix a bug of adverstising report release issue for mesh.
+	
+	v1.0.1.86
+	2020/06/11
+	GCID 447aae1172f2b602, PGCID a9d4f48a740ba490
+	1. Add API le_disconnect_with_reason.
+	
+	v1.0.1.82
 	2020/03/24
-    GCID 2d3af055e9d7cb5c, PGCID 2c4822d9fd32bf97
+	GCID 2d3af055e9d7cb5c, PGCID 2c4822d9fd32bf97
 	1. Fix a bug for receiving write commands.
-
-  	v1.0.1.80
+	
+   	v1.0.1.80
 	2020/02/25
     GCID 1ff58df62e93fb06, PGCID b3b1ecde8bb31085
 	1. Rename os_timer_start and os_timer_stop
-
+	
   	v1.0.1.69
 	2019/11/12
     GCID db7943ddb59af187, PGCID 463cedfa36d03b9a
