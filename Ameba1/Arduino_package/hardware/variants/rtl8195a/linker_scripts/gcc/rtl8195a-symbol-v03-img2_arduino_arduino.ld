@@ -58,7 +58,11 @@ SECTIONS
   .tcm :
   {
     __tcm_start__ = .;
+    __tcm_bss_start__ = .;
+    *mem.o (.bss*)
+    *memp.o (.bss*)
     *(.tcm.heap)
+    __tcm_bss_end__ = .;
     __tcm_end__ = .;
     end = __tcm_end__;
   } > TCM
@@ -95,8 +99,8 @@ SECTIONS
   {
     __sdram_bss_start__ = .;
     *(.sdram.bss*)
-    *mem.o(.bss*)
-    *memp.o(.bss*)
+/*zzw    *mem.o(.bss*)    */
+/*zzw    *memp.o(.bss*)    */
     *(.p2p.bss*)
     *(.wps.bss*)
     *(.websocket.bss*)
@@ -196,7 +200,8 @@ SECTIONS
     *(.heap*)
     __HeapLimit = .;
   } > BD_RAM
-
+
+
 	/* .stack_dummy section doesn't contains any symbols. It is only
 	 * used for linker to calculate size of stack sections, and assign
 	 * values to stack symbols later */
