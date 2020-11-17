@@ -272,7 +272,9 @@ int start_ssl_client(sslclient_context *ssl_client, uint32_t ipAddress, uint32_t
                 printf("ERROR: mbedtls ssl handshake failed: -0x%04X \r\n", -ret);
                 ret = -1;
             } else { 
-                if (ARDUINO_MBEDTLS_DEBUG_LEVEL > 0 ) printf("mbedTLS SSL handshake success \r\n");
+                if (ARDUINO_MBEDTLS_DEBUG_LEVEL > 0) {
+					printf("mbedTLS SSL handshake success \r\n");
+				}
             }
             //mbedtls_debug_set_threshold(ARDUINO_MBEDTLS_DEBUG_LEVEL);
         }
