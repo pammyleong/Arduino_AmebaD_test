@@ -116,7 +116,11 @@ int main(int argc, char **argv) {
     int sockfd, optval;
 
     struct sockaddr_in serveraddr, clientaddr;
+#if __CYGWIN__
     int clientaddr_len = sizeof(clientaddr);
+#else
+	unsigned int clientaddr_len = sizeof(clientaddr);
+#endif
 
     struct hostent *hostp;
     char *hostaddrp;
