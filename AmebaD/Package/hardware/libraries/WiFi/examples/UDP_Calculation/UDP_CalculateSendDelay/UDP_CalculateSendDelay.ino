@@ -9,7 +9,7 @@
 #include <WiFiUdp.h>
 
 int status = WL_IDLE_STATUS;
-char ssid[] = "mynetwork";      //  your network SSID (name)
+char ssid[] = "mynetwork";      // your network SSID (name)
 char pass[] = "mypassword";     // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;               // your network key Index number (needed only for WEP)
 
