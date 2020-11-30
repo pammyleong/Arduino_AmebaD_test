@@ -41,9 +41,9 @@ SECTIONS
     KEEP(*(.image1.validate.rodata*))
     KEEP(*(.infra.ram.data*))
     KEEP(*(.timer.ram.data*))
-    KEEP(*(.cutb.ram.data*))
+    KEEP(*(EXCLUDE_FILE(*hal_sdr_controller.o).cutb.ram.data*))
     KEEP(*(.cutc.ram.data*))
-    KEEP(*(.hal.ram.data*))
+    KEEP(*(EXCLUDE_FILE(*hal_sdr_controller.o).hal.ram.data*))
     .ram_image1.bss$$Base = .;
     __image1_bss_start__ = .;
     .ram_image1.bss$$Limit = .;
@@ -55,6 +55,8 @@ SECTIONS
     __ram_image1_text_end__ = .;
   } > ROM_USED_RAM
 
+
+/* zzw 
   .tcm :
   {
     __tcm_start__ = .;
@@ -64,9 +66,17 @@ SECTIONS
     *(.tcm.heap)
     __tcm_bss_end__ = .;
     __tcm_end__ = .;
-    end = __tcm_end__;
+   end = __tcm_end__;
   } > TCM
+*/
 
+  .tcm :
+  {
+    __tcm_bss_start__ = .;
+    *(.tcm.heap)
+    __tcm_bss_end__ = .;
+    end = __tcm_bss_end__;
+  } > TCM
 
   .sdr_text :
   {
@@ -99,8 +109,10 @@ SECTIONS
   {
     __sdram_bss_start__ = .;
     *(.sdram.bss*)
-/*zzw    *mem.o(.bss*)    */
-/*zzw    *memp.o(.bss*)    */
+/* zzw    *mem.o(.bss*)    */
+/* zzw    *memp.o(.bss*)    */
+    *mem.o(.bss*)
+    *memp.o(.bss*)
     *(.p2p.bss*)
     *(.wps.bss*)
     *(.websocket.bss*)
@@ -159,17 +171,19 @@ SECTIONS
   {
     __data_start__ = .;
     *(.data*)
-    __data_end__ = .;
+    *hal_sdr_controller.o(.cutb.ram.data*)
+    *hal_sdr_controller.o(.hal.ram.data*)
     . = ALIGN(4);
-    __ram_image2_text_end__ = .;    
+    __data_end__ = .;
+    __ram_image2_text_end__ = .;
   } > BD_RAM
   
   .ram.bss :
   {
     __bss_start__ = .;
     .ram.bss$$Base = .;
-    *(.hal.flash.data*)    
-    *(.hal.sdrc.data*)    
+    *(.hal.flash.data*)
+    *(.hal.sdrc.data*)
     *(.hal.gpio.data*)
     *(.fwu.data*)
     *(.bss*)

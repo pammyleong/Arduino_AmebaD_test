@@ -130,9 +130,8 @@
  *
  * Enable this layer to allow use of alternative memory allocators.
  */
-#ifdef CONFIG_HARDWARE_8188F
-#define POLARSSL_PLATFORM_MEMORY
-#endif
+//#define POLARSSL_PLATFORM_MEMORY
+
 /**
  * \def POLARSSL_PLATFORM_NO_STD_FUNCTIONS
  *
@@ -441,7 +440,7 @@
  *      TLS_ECDHE_PSK_WITH_3DES_EDE_CBC_SHA
  *      TLS_ECDHE_PSK_WITH_RC4_128_SHA
  */
-//#define POLARSSL_KEY_EXCHANGE_ECDHE_PSK_ENABLED
+#define POLARSSL_KEY_EXCHANGE_ECDHE_PSK_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_RSA_PSK_ENABLED
@@ -545,7 +544,7 @@
  *      TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
  *      TLS_ECDHE_RSA_WITH_RC4_128_SHA
  */
-//#define POLARSSL_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+#define POLARSSL_KEY_EXCHANGE_ECDHE_RSA_ENABLED
 
 /**
  * \def POLARSSL_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
@@ -1212,7 +1211,7 @@
  *          library/x509write_crt.c
  *          library/x509write_csr.c
  */
-#define POLARSSL_ASN1_WRITE_C
+//#define POLARSSL_ASN1_WRITE_C
 
 /**
  * \def POLARSSL_BASE64_C
@@ -1332,7 +1331,7 @@
  *
  * This module is used for testing (ssl_client/server).
  */
-//#define POLARSSL_CERTS_C
+#define POLARSSL_CERTS_C
 
 /**
  * \def POLARSSL_CIPHER_C
@@ -1428,7 +1427,7 @@
  *
  * Requires: POLARSSL_ECP_C
  */
-//#define POLARSSL_ECDH_C
+#define POLARSSL_ECDH_C
 
 /**
  * \def POLARSSL_ECDSA_C
@@ -1496,7 +1495,7 @@
  * This module enables the AES-GCM and CAMELLIA-GCM ciphersuites, if other
  * requisites are enabled as well.
  */
-//#define POLARSSL_GCM_C
+#define POLARSSL_GCM_C
 
 /**
  * \def POLARSSL_HAVEGE_C
@@ -1923,7 +1922,7 @@
  *
  * This module is required for SSL/TLS server support.
  */
-//#define POLARSSL_SSL_SRV_C
+#define POLARSSL_SSL_SRV_C
 
 /**
  * \def POLARSSL_SSL_TLS_C
@@ -2153,7 +2152,7 @@
 //#define SSL_CACHE_DEFAULT_MAX_ENTRIES      50 /**< Maximum entries in cache */
 
 /* SSL options */
-#define SSL_MAX_CONTENT_LEN                4096 /**< Size of the input / output buffer */
+#define SSL_MAX_CONTENT_LEN               16384 /**< Size of the input / output buffer */
 //#define SSL_DEFAULT_TICKET_LIFETIME     86400 /**< Lifetime of session tickets (if enabled) */
 //#define POLARSSL_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default 256 bits) */
 

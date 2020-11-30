@@ -1265,7 +1265,7 @@ struct ieee80211_assoc_response_frame {
 #define IEEE80211_PS_UNICAST IEEE80211_DTIM_UCAST
 #define IEEE80211_PS_MBCAST IEEE80211_DTIM_MBCAST
 #define IW_ESSID_MAX_SIZE 32
-#define IW_PASSPHRASE_MAX_SIZE 64
+#define IW_PASSPHRASE_MAX_SIZE 128
 #if 0
 struct ieee80211_network {
 	/* These entries are used to identify a unique network */
