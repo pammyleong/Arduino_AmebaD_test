@@ -15,11 +15,6 @@ struct dh_group {
 	size_t generator_len;
 	const u8 *prime;
 	size_t prime_len;
-#if (CONFIG_SAE_DH_SUPPORT == 1)
-	const u8 *order;
-	size_t order_len;
-	unsigned int safe_prime:1;
-#endif
 };
 
 const struct dh_group * dh_groups_get(int id);

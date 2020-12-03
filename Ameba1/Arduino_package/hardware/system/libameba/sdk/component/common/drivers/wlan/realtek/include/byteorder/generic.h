@@ -112,8 +112,6 @@
 
 #endif	//#if 0
 
-#define cpu_to_le64 __cpu_to_le64
-#define le64_to_cpu __le64_to_cpu
 #define cpu_to_le32 __cpu_to_le32
 #define le32_to_cpu __le32_to_cpu
 #define cpu_to_le16 __cpu_to_le16

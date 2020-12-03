@@ -29,17 +29,6 @@
 #define _WEP104_			0x5
 #define _WEP_WPA_MIXED_		0x07  // WEP + WPA
 #define _SMS4_				0x06
-#ifdef CONFIG_IEEE80211W
-#define _BIP_				0x8
-#endif /* CONFIG_IEEE80211W */
-#define _GCMP_ 0x07
-#define _GCMP_256_ (_GCMP_ | BIT(3))
-#define _CCMP_256_ (_AES_ | BIT(3))
-
-/* 802.11W use wrong key */
-#define IEEE80211W_RIGHT_KEY	0x0
-#define IEEE80211W_WRONG_KEY	0x1
-#define IEEE80211W_NO_KEY		0x2
 
 #define is_wep_enc(alg) (((alg) == _WEP40_) || ((alg) == _WEP104_))
 
@@ -56,7 +45,6 @@ typedef enum {
 	ENCRYP_PROTOCOL_WEP,       //WEP
 	ENCRYP_PROTOCOL_WPA,       //WPA
 	ENCRYP_PROTOCOL_WPA2,      //WPA2
-	ENCRYP_PROTOCOL_WPA_WPA2,  //WPA & WPA2
 	ENCRYP_PROTOCOL_WAPI,      //WAPI: Not support in this version
 	ENCRYP_PROTOCOL_MAX
 }ENCRYP_PROTOCOL_E;
@@ -104,6 +92,22 @@ struct {
 
 };
 
+union Keytype {
+        u8   skey[16];
+        u32  lkey[4];
+};
+
+
+typedef struct _RT_PMKID_LIST
+{
+	u8						bUsed;
+	u8 						Bssid[6];
+	u8						PMKID[16];
+	u8						SsidBuf[33];
+	u8*						ssid_octet;
+	u16 						ssid_length;
+} RT_PMKID_LIST, *PRT_PMKID_LIST;
+
 
 struct security_priv
 {
@@ -116,7 +120,6 @@ struct security_priv
 	u32 	dot11DefKeylen[4];
 
 	u32 dot118021XGrpPrivacy;	// This specify the privacy algthm. used for Grp key 
-	u32 AuthKeyMgmt;	// This specify the auth key algthm. used for 11w 
 	u32	dot118021XGrpKeyid;		// key id used for Grp Key ( tx key index)
 	union Keytype	dot118021XGrpKey[4];	// 802.1x Group Key, for inx0 and inx1	
 	union Keytype	dot118021XGrptxmickey[4];
@@ -139,16 +142,6 @@ struct security_priv
 	int wps_ie_len;
 #endif	
 	
-#ifdef CONFIG_IEEE80211W
-	u8   ieee80211w;//11w capability
-	//u8	mfp_enable;//enable mfp or not
-	u8	binstallBIPkey;
-	u32	dot11wBIPKeyid;						/* key id used for BIP Key ( tx key index) */
-	union Keytype	dot11wBIPKey[6];		/* BIP Key, for index4 and index5 */
-	//u64		dot11wBIPtxpn;			/* PN48 used for Grp Key xmit. */
-	//u64		dot11wBIPrxpn;			/* PN48 used for Grp Key recv. */
-#endif
-
 	u8	binstallGrpkey;
 	u8	busetkipkey;
 	//_timer tkip_timer;
@@ -189,7 +182,18 @@ struct security_priv
 	u8	btkip_countermeasure;
 	u8	btkip_wait_report;
 	u32 btkip_countermeasure_time;
-	
+#ifdef CONFIG_WPA2_PREAUTH
+	//---------------------------------------------------------------------------
+	// For WPA2 Pre-Authentication.
+	//---------------------------------------------------------------------------
+	//u8				RegEnablePreAuth;				// Default value: Pre-Authentication enabled or not, from registry "EnablePreAuth". Added by Annie, 2005-11-01.
+	//u8				EnablePreAuthentication;		// Current Value: Pre-Authentication enabled or not.
+	RT_PMKID_LIST		PMKIDList[NUM_PMKID_CACHE];		// Renamed from PreAuthKey[NUM_PRE_AUTH_KEY]. Annie, 2006-10-13.
+	u8					PMKIDIndex;
+	//u32				PMKIDCount;						// Added by Annie, 2006-10-13.
+	//u8				szCapability[256];				// For WPA2-PSK using zero-config, by Annie, 2005-09-20.
+#endif
+
 #ifdef CONFIG_INCLUDE_WPA_PSK
 	WPA_GLOBAL_INFO		wpa_global_info;
 #if defined(CONFIG_AP_MODE) && defined(CONFIG_MULTIPLE_WPA_STA)
@@ -409,10 +413,6 @@ void rtw_wep_encrypt(_adapter *padapter, u8  *pxmitframe);
 u32 rtw_aes_decrypt(_adapter *padapter, u8  *precvframe);
 u32 rtw_tkip_decrypt(_adapter *padapter, u8  *precvframe);
 void rtw_wep_decrypt(_adapter *padapter, u8  *precvframe);
-
-#ifdef CONFIG_IEEE80211W
-u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe);
-#endif /* CONFIG_IEEE80211W */
 
 #ifdef CONFIG_TDLS
 void wpa_tdls_generate_tpk(_adapter *padapter, struct sta_info *psta);

@@ -15,9 +15,7 @@
 
 #define GMK_LEN					32
 #define GTK_LEN					32
-#define IGTK_LEN				16
 #define PMK_LEN					32
-#define PMKID_LEN				16
 #define KEY_NONCE_LEN			32
 #define NumGroupKey				4
 #define KEY_RC_LEN				8
@@ -31,11 +29,6 @@
 #define PTK_LEN_TKIP           	64
 #define PTK_LEN_CCMP            48
 #define LIB1X_ETHER_EAPOL_TYPE	0x888E
-
-#ifdef CONFIG_IEEE80211W
-#define WPA_IGTK_LEN 16
-#define WPA_IGTK_MAX_LEN 32
-#endif /* CONFIG_IEEE80211W */
 
 #define DescTypePos				0
 #define KeyInfoPos				1
@@ -78,7 +71,6 @@
 #define PMK_EXPANSION_CONST_SIZE		22
 #define GMK_EXPANSION_CONST				"Group key expansion"
 #define GMK_EXPANSION_CONST_SIZE		19
-#define IGTK_EXPANSION_CONST				"IGTK key expansion"
 #define RANDOM_EXPANSION_CONST			"Init Counter"
 #define RANDOM_EXPANSION_CONST_SIZE		12
 
@@ -124,8 +116,7 @@ typedef enum {
 
 typedef enum {
 	key_desc_ver1 	= 1,
-	key_desc_ver2 	= 2,
-	key_desc_ver3 	= 3 //AES_128_CMAC, for 802.11w
+	key_desc_ver2 	= 2
 } KeyDescVer;
 
 enum {
@@ -175,15 +166,6 @@ typedef union  _OCTET32_INTEGER {
 	} field;
 } OCTET32_INTEGER;
 
-#ifdef CONFIG_IEEE80211W
-#define WPA_IGTK_KDE_PREFIX_LEN (2 + 6)
-struct wpa_igtk_kde {
-	u8 keyid[2];
-	u8 pn[6];
-	u8 igtk[WPA_IGTK_MAX_LEN];
-} ;
-#endif /* CONFIG_IEEE80211W */
-
 // group key info
 typedef struct _wpa_global_info {
 	OCTET32_INTEGER		Counter;
@@ -197,7 +179,6 @@ typedef struct _wpa_global_info {
 	OCTET_STRING		AuthInfoElement;
 	unsigned char		AuthInfoBuf[INFO_ELEMENT_SIZE];
 	unsigned char		MulticastCipher;
-	unsigned int		AuthKeyMgmt;	// add for 802.11w
 	OCTET_STRING		GNonce;
 	unsigned char		GNonceBuf[KEY_NONCE_LEN];
 	unsigned char		GTK[NumGroupKey][GTK_LEN];
@@ -207,14 +188,6 @@ typedef struct _wpa_global_info {
 	int					GTKRekey;
 #ifdef CONFIG_GK_REKEY
 	struct timer_list	GKRekeyTimer;
-#endif
-
-#ifdef CONFIG_IEEE80211W
-	unsigned char		IGTK_IPN[2][8];
-	unsigned char		IGTK[2][WPA_IGTK_MAX_LEN];
-	int				GN_igtk;
-	int				GM_igtk;
-	int		IGTK_len;
 #endif
 } WPA_GLOBAL_INFO;
 
@@ -336,12 +309,6 @@ typedef enum{
 #define Octet16IntegerZero(x)				memset(&x.charData, 0, 16)
 #define SetNonce(ocDst, oc32Counter)		SetEAPOL_KEYIV(ocDst, oc32Counter)
 
-#if defined(CONFIG_IEEE80211W) || defined(CONFIG_SAE_SUPPORT)
-extern const unsigned char igtk_expansion_const[];
-#endif
-
-int wpa_key_mgmt_sae(int akm);
-int wpa_key_mgmt_sha256(int akm);
 void ClientSendEAPOL(_adapter *padapter, struct sta_info *psta, int resend);
 void SendEAPOL(_adapter *padapter, struct sta_info *psta, int resend);
 void EAPOLKeyRecvd(_adapter *padapter, struct sta_info *psta);
@@ -351,16 +318,6 @@ void psk_init(_adapter *padapter, unsigned char *pie, unsigned short ielen);
 void psk_derive(_adapter *padapter, unsigned char *passphrase, unsigned char *ssid);
 u16 psk_strip_rsn_pairwise(u8 *ie, u16 ie_len);
 u16 psk_strip_wpa_pairwise(u8 *ie, u16 ie_len);
-u16 psk_strip_rsn_akmp(u8 *ie, u16 ie_len);
-/**
-  *@brief This function calculate pmk to meet customer's need of fast setup softap or connect to ap.
-  *@param[in] ssid
-  *@param[in] ssid_len
-  *@param[in] passphrase
-  *@param[in] passphrase_len
-  *@param[out] pmk pmk is a pointer to the PMK buffer with a length of 32 in bytes.
-  *@return >=0 the operation completed successfully, <0 the operation failed.
-*/
-int wpa_pmk_derive(unsigned char *ssid, unsigned char ssid_length, unsigned char *passphrase, unsigned char passphrase_length, unsigned char *pmk);
+
 #endif // _RTW_PSK_H_
 

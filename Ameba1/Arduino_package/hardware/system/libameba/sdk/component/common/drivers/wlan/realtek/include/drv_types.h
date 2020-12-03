@@ -141,12 +141,6 @@ typedef struct _ADAPTER _adapter, ADAPTER,*PADAPTER;
 #ifdef CONFIG_INCLUDE_WPA_PSK
 #include <rtw_psk.h>
 #endif
-#ifdef CONFIG_SAE_SUPPORT
-#include "rtw_sae.h"
-#endif
-#ifdef CONFIG_PMKSA_CACHING
-#include "rtw_pmksa_cache.h"
-#endif
 #include <rtw_security.h>
 #include <rom_rtw_security.h>
 #include <rtw_pwrctrl.h>

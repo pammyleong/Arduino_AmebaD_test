@@ -454,16 +454,6 @@ struct mlme_ext_info
 #ifdef CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
 	u8 scan_cnt;
 #endif //CONFIG_STA_MODE_SCAN_UNDER_AP_MODE
-#ifdef CONFIG_SAE_SUPPORT
-	u8 user_group_id;			//for user to set group id
-	struct sae_data *sae_priv;
-#endif
-
-#ifdef CONFIG_PMKSA_CACHING
-	int pmk_cache_enable;
-	struct pmksa_cache *pmksa;
-#endif
-
 };
 
 // The channel information about this channel including joining, scanning, and power constraints.
@@ -508,13 +498,7 @@ struct mlme_ext_priv
 	u8	mlmeext_init;
 	ATOMIC_T		event_seq;
 	u16	mgnt_seq;
-#ifdef CONFIG_IEEE80211W
-	u16	sa_query_seq;
-	u64 mgnt_80211w_IPN;
-	u64 mgnt_80211w_IPN_rx;
-	u8 key_type_11w; // for debug
-#endif /* CONFIG_IEEE80211W */
-
+	
 	//struct fw_priv 	fwpriv;
 	
 	u8	cur_channel;
@@ -595,9 +579,6 @@ int init_hw_mlme_ext(_adapter *padapter);
 void free_mlme_ext_priv (struct mlme_ext_priv *pmlmeext);
 extern void init_mlme_ext_timer(_adapter *padapter);
 extern void init_addba_retry_timer(_adapter *padapter, struct sta_info *psta);
-#ifdef CONFIG_IEEE80211W
-extern void init_dot11w_expire_timer(_adapter *padapter, struct sta_info *psta);
-#endif /* CONFIG_IEEE80211W */
 extern struct xmit_frame *alloc_mgtxmitframe(struct xmit_priv *pxmitpriv);
 extern struct xmit_frame *alloc_FwRsvdframe(struct xmit_priv *pxmitpriv, u32 size);
 //void fill_fwpriv(_adapter * padapter, struct fw_priv *pfwpriv);
@@ -725,9 +706,6 @@ void issue_nulldata(_adapter *padapter, unsigned int power_mode);
 void issue_qos_nulldata(_adapter *padapter, unsigned char *da, u16 tid);
 void issue_deauth(_adapter *padapter, unsigned char *da, u32 reason);
 void issue_action_BA(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short status);
-#ifdef CONFIG_IEEE80211W
-void issue_action_SA_Query(_adapter *padapter, unsigned char *raddr, unsigned char action, unsigned short tid, u8 key_type);
-#endif
 unsigned int send_delba(_adapter *padapter, u8 initiator, u8 *addr);
 unsigned int send_beacon(_adapter *padapter);
 
@@ -754,9 +732,6 @@ unsigned int OnAction_dls(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_back(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_public(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_ht(_adapter *padapter, union recv_frame *precv_frame);
-#ifdef CONFIG_IEEE80211W
-unsigned int OnAction_sa_query(_adapter *padapter, union recv_frame *precv_frame);
-#endif
 unsigned int OnAction_wmm(_adapter *padapter, union recv_frame *precv_frame);
 unsigned int OnAction_p2p(_adapter *padapter, union recv_frame *precv_frame);
 
@@ -770,10 +745,6 @@ void linked_status_chk(_adapter *padapter);
 void survey_timer_hdl (_adapter *padapter);
 void link_timer_hdl (_adapter *padapter);
 void addba_timer_hdl(struct sta_info *psta);
-#ifdef CONFIG_IEEE80211W
-void sa_query_timer_hdl(struct sta_info *psta);
-#endif /* CONFIG_IEEE80211W */
-
 //void reauth_timer_hdl(_adapter *padapter);
 //void reassoc_timer_hdl(_adapter *padapter);
 
@@ -998,9 +969,6 @@ enum rtw_c2h_event
 	GEN_EVT_CODE(_C2HBCN),
 	GEN_EVT_CODE(_ReportPwrState),		//filen: only for PCIE, USB	
 	GEN_EVT_CODE(_CloseRF),				//filen: only for PCIE, work around ASPM
-#ifdef CONFIG_IEEE80211W
-	GEN_EVT_CODE(_TimeoutSTA),
-#endif /* CONFIG_IEEE80211W */
  	MAX_C2HEVT
 };
 
@@ -1036,9 +1004,6 @@ const static struct fwevent wlanevents[] =
 	{0, NULL},	/*20*/
 	{0, NULL},
 	{0, NULL},	
-#if defined(CONFIG_IEEE80211W) && defined(CONFIG_AP_MODE)
-	{sizeof(struct stadel_event), &rtw_sta_timeout_event_callback},	/*25*/
-#endif /* CONFIG_IEEE80211W */
 //TODO
 //	{0, &rtw_cpwm_event_callback},
 	{0, NULL},	/*rtw_cpwm_event_callback*/

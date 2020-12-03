@@ -123,10 +123,6 @@ struct sta_info {
 	union Keytype	dot118021x_UncstKey;	
 	union pn48		dot11txpn;			// PN48 used for Unicast xmit.
 	union pn48		dot11rxpn;			// PN48 used for Unicast recv.
-#ifdef CONFIG_IEEE80211W
-	union pn48		dot11wtxpn;			/* PN48 used for Unicast mgmt xmit. */
-	_timer dot11w_expire_timer;
-#endif /* CONFIG_IEEE80211W */
 
 
 	u8	bssrateset[16];
@@ -170,9 +166,6 @@ struct sta_info {
 
 	//for A-MPDU TX, ADDBA timeout check	
 	_timer addba_retry_timer;
-
-	//for empty defrag queue	
-	_timer defrag_queue_timer;
 #ifdef CONFIG_RECV_REORDERING_CTRL
 	//for A-MPDU Rx reordering buffer control 
 	struct recv_reorder_ctrl recvreorder_ctrl[16];
@@ -195,7 +188,6 @@ struct sta_info {
 	//curr_network(mlme_priv/security_priv/qos/ht) : AP CAP/INFO
 	//sta_info: (AP & STA) CAP/INFO
 		
-	u8 bpairwise_key_installed;
 #ifdef CONFIG_AP_MODE
 
 	_list asoc_list;
@@ -216,6 +208,7 @@ struct sta_info {
 	int wpa_pairwise_cipher;
 	int wpa2_pairwise_cipher;	
 
+	u8 bpairwise_key_installed;
 
 #ifdef CONFIG_NATIVEAP_MLME
 	u8 wpa_ie[32];

@@ -179,19 +179,6 @@ do{\
 	dot11txpn.val = dot11txpn.val == 0xffffffffffffULL ? 0: (dot11txpn.val+1);\
 }while(0)
 
-#define GCMP_IV(pattrib_iv, dot11txpn, keyidx)\
-do {\
-	pattrib_iv[0] = dot11txpn._byte_.TSC0;\
-	pattrib_iv[1] = dot11txpn._byte_.TSC1;\
-	pattrib_iv[2] = 0;\
-	pattrib_iv[3] = BIT(5) | ((keyidx & 0x3)<<6);\
-	pattrib_iv[4] = dot11txpn._byte_.TSC2;\
-	pattrib_iv[5] = dot11txpn._byte_.TSC3;\
-	pattrib_iv[6] = dot11txpn._byte_.TSC4;\
-	pattrib_iv[7] = dot11txpn._byte_.TSC5;\
-	dot11txpn.val = dot11txpn.val == 0xffffffffffffULL ? 0 : (dot11txpn.val+1);\
-} while (0)
-
 
 #define HWXMIT_ENTRY	4
 
@@ -225,12 +212,6 @@ do {\
 #endif
 
 #define TX_FRAGMENTATION_THRESHOLD 			2346
-
-union Keytype {
-        u8   skey[16];
-        u32  lkey[4];
-        //u8  llkey[32];
-};
 
 // Suppose (TX_DESC_MODE=1) ==> Segment number for each tx_buf_desc is 4. 2X4 = 8 (double words).
 struct tx_buf_desc {	
@@ -848,9 +829,6 @@ extern s32 rtw_xmit_mgnt(_adapter * padapter, struct xmit_frame *pmgntframe);
 extern s32 rtw_xmit_data(PADAPTER padapter, struct xmit_frame *pxmitframe);
 extern s32 rtw_xmit_xmitbuf(_adapter * padapter, struct xmit_buf *pxmitbuf);
 extern u32 ffaddr2deviceId(struct dvobj_priv *pdvobj, u32 addr);
-#ifdef CONFIG_IEEE80211W
-extern s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
-#endif
 extern unsigned int nr_xmitframe;
 extern unsigned int nr_xmitbuff;
 #endif	//_RTL871X_XMIT_H_

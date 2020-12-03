@@ -66,33 +66,15 @@ void tkip_phase2(u8 *rc4key,const u8 *tk,const u16 *p1k,u16 iv16);
 // AES related
 //===============================
 void aes1_encrypt(u8 *key, u8 *data, u8 *ciphertext);
-#ifdef CONFIG_IEEE80211W
-void aesccmp_construct_mic_iv(
-	u8 *mic_iv, sint qc_exists, sint a4_exists, 
-	u8 *mpdu, uint payload_length,u8 *pn_vector, uint frtype);
-void aesccmp_construct_mic_header1(u8 *mic_header1, sint header_length, u8 *mpdu, uint frtype);
-void aesccmp_construct_ctr_preload(
-	u8 *ctr_preload, sint a4_exists, sint qc_exists,
-	u8 *mpdu, u8 *pn_vector, sint c, uint frtype);
-void __wrap_aesccmp_construct_mic_iv(
-	u8 *mic_iv, sint qc_exists, sint a4_exists, 
-	u8 *mpdu, uint payload_length,u8 *pn_vector, uint frtype);
-void __wrap_aesccmp_construct_mic_header1(u8 *mic_header1, sint header_length, u8 *mpdu, uint frtype);
-void __wrap_aesccmp_construct_ctr_preload(
-	u8 *ctr_preload, sint a4_exists, sint qc_exists,
-	u8 *mpdu, u8 *pn_vector, sint c, uint frtype);
-
-#else
 void aesccmp_construct_mic_iv(
 	u8 *mic_iv, sint qc_exists, sint a4_exists, 
 	u8 *mpdu, uint payload_length,u8 *pn_vector);
 void aesccmp_construct_mic_header1(u8 *mic_header1, sint header_length, u8 *mpdu);
+void aesccmp_construct_mic_header2(
+	u8 *mic_header2, u8 *mpdu, sint a4_exists, sint qc_exists);
 void aesccmp_construct_ctr_preload(
 	u8 *ctr_preload, sint a4_exists, sint qc_exists,
 	u8 *mpdu, u8 *pn_vector, sint c);
-#endif
-void aesccmp_construct_mic_header2(
-	u8 *mic_header2, u8 *mpdu, sint a4_exists, sint qc_exists);
 
 u32 aes_80211_encrypt(
 	u8 *pframe, u32 wlan_hdr_len, \

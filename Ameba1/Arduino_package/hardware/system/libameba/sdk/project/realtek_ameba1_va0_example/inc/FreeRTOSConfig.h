@@ -91,14 +91,14 @@ extern uint32_t SystemCoreClock;
 #define configCPU_CLOCK_HZ				( SystemCoreClock )
 #define configTICK_RATE_HZ				( ( uint32_t ) 1000 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 70 )
+
 #ifdef CONFIG_UVC
 #define configTOTAL_HEAP_SIZE			( ( size_t ) ( 110 * 1024 ) )	// use HEAP5
-#endif
-#if defined(ARDUINO_SDK)
-#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 60 * 1024 ) )	// use HEAP5
-#endif
 
-#ifndef configTOTAL_HEAP_SIZE
+#elif defined(ARDUINO_SDK)
+#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 60 * 1024 ) )	// use HEAP5
+
+#else
 #define configTOTAL_HEAP_SIZE			( ( size_t ) ( 60 * 1024 ) )	// use HEAP5
 #endif
 

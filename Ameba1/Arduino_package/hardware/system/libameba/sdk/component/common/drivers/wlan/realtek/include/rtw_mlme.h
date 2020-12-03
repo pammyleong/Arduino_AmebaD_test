@@ -97,27 +97,10 @@ enum dot11AuthAlgrthmNum {
  dot11AuthAlgrthm_Open = 0,
  dot11AuthAlgrthm_Shared,
  dot11AuthAlgrthm_8021X,
- dot11AuthAlgrthm_SAE,
  dot11AuthAlgrthm_Auto,
  dot11AuthAlgrthm_WAPI,
- dot11AuthAlgrthm_FT_PSK,
  dot11AuthAlgrthm_MaxNum
 };
-
-/**
- * enum mfp_options - Management frame protection (IEEE 802.11w) options
- */
-enum mfp_options {
-	NO_MGMT_FRAME_PROTECTION = 0,
-	MGMT_FRAME_PROTECTION_OPTIONAL = 1,
-	MGMT_FRAME_PROTECTION_REQUIRED = 2,
-};
-#define MGMT_FRAME_PROTECTION_DEFAULT 3
-
-#define WPA_CAPABILITY_MFPR BIT(6)
-#define WPA_CAPABILITY_MFPC BIT(7)
-
-#define adapter_mac_addr(adapter) (adapter->eeprompriv.mac_addr)
 
 // Scan type including active and passive scan.
 typedef enum _RT_SCAN_TYPE
@@ -585,9 +568,6 @@ extern void rtw_surveydone_event_callback(_adapter *adapter, u8 *pbuf);
 extern void rtw_joinbss_event_callback(_adapter *adapter, u8 *pbuf);
 extern void rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf);
 extern void rtw_stadel_event_callback(_adapter *adapter, u8 *pbuf);
-#if defined(CONFIG_IEEE80211W) && defined(CONFIG_AP_MODE)
-extern void rtw_sta_timeout_event_callback(_adapter *adapter, u8 *pbuf);
-#endif /* CONFIG_IEEE80211W */
 extern void rtw_atimdone_event_callback(_adapter *adapter, u8 *pbuf);
 extern void rtw_cpwm_event_callback(_adapter *adapter, u8 *pbuf);
 

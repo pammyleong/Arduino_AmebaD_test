@@ -123,20 +123,12 @@ enum {
 
 #define	IEEE_CRYPT_ALG_NAME_LEN			16
 
-#define WPA_CIPHER_NONE 			BIT(0)
-#define WPA_CIPHER_WEP40 			BIT(1)
-#define WPA_CIPHER_WEP104 		BIT(2)
-#define WPA_CIPHER_TKIP 			BIT(3)
-#define WPA_CIPHER_CCMP 			BIT(4)
-#define WPA_CIPHER_AES_128_CMAC 	BIT(5)
-#define WPA_CIPHER_GCMP 			BIT(6)
-#define WPA_CIPHER_SMS4 			BIT(7)
-#define WPA_CIPHER_GCMP_256 		BIT(8)
-#define WPA_CIPHER_CCMP_256 		BIT(9)
-#define WPA_CIPHER_BIP_GMAC_128 	BIT(11)
-#define WPA_CIPHER_BIP_GMAC_256 	BIT(12)
-#define WPA_CIPHER_BIP_CMAC_256 	BIT(13)
-#define WPA_CIPHER_GTK_NOT_USED 	BIT(14)
+#define WPA_CIPHER_NONE 	BIT(0)
+#define WPA_CIPHER_WEP40 	BIT(1)
+#define WPA_CIPHER_WEP104 BIT(2)
+#define WPA_CIPHER_TKIP 	BIT(3)
+#define WPA_CIPHER_CCMP 	BIT(4)
+
 
 
 #define WPA_SELECTOR_LEN 4
@@ -145,31 +137,6 @@ enum {
 //extern u8 WPA_AUTH_KEY_MGMT_UNSPEC_802_1X[];
 //extern u8 WPA_AUTH_KEY_MGMT_PSK_OVER_802_1X[];
 //extern u8 WPA_CIPHER_SUITE_WRAP[];
-
-#define WPA_KEY_MGMT_IEEE8021X BIT(0)
-#define WPA_KEY_MGMT_PSK BIT(1)
-#define WPA_KEY_MGMT_NONE BIT(2)
-#define WPA_KEY_MGMT_IEEE8021X_NO_WPA BIT(3)
-#define WPA_KEY_MGMT_WPA_NONE BIT(4)
-#define WPA_KEY_MGMT_FT_IEEE8021X BIT(5)
-#define WPA_KEY_MGMT_FT_PSK BIT(6)
-#define WPA_KEY_MGMT_IEEE8021X_SHA256 BIT(7)
-#define WPA_KEY_MGMT_PSK_SHA256 BIT(8)
-#define WPA_KEY_MGMT_WPS BIT(9)
-#define WPA_KEY_MGMT_SAE BIT(10)
-#define WPA_KEY_MGMT_FT_SAE BIT(11)
-#define WPA_KEY_MGMT_WAPI_PSK BIT(12)
-#define WPA_KEY_MGMT_WAPI_CERT BIT(13)
-#define WPA_KEY_MGMT_CCKM BIT(14)
-#define WPA_KEY_MGMT_OSEN BIT(15)
-#define WPA_KEY_MGMT_IEEE8021X_SUITE_B BIT(16)
-#define WPA_KEY_MGMT_IEEE8021X_SUITE_B_192 BIT(17)
-#define WPA_KEY_MGMT_FILS_SHA256 BIT(18)
-#define WPA_KEY_MGMT_FILS_SHA384 BIT(19)
-#define WPA_KEY_MGMT_FT_FILS_SHA256 BIT(20)
-#define WPA_KEY_MGMT_FT_FILS_SHA384 BIT(21)
-#define WPA_KEY_MGMT_OWE BIT(22)
-#define WPA_KEY_MGMT_DPP BIT(23)
 
 #define RSN_HEADER_LEN 4
 #define RSN_SELECTOR_LEN 4
@@ -666,11 +633,6 @@ struct ieee80211_snap_hdr {
 #define WLAN_STATUS_ASSOC_DENIED_NOPBCC 20
 #define WLAN_STATUS_ASSOC_DENIED_NOAGILITY 21
 
-/* WPA3-SAE*/
-#define WLAN_STATUS_ANTI_CLOGGING_TOKEN_REQ 		76
-#define WLAN_STATUS_UNSUPPORTED_FCC_GROUP   		77
-#define WLAN_STATUS_UNKNOWN_PASSWORD_IDENTIFIER		123
-
 /* Reason codes */
 #define WLAN_REASON_UNSPECIFIED 1
 #define WLAN_REASON_PREV_AUTH_NOT_VALID 2
@@ -1007,10 +969,6 @@ struct ieee80211_softmac_stats{
 #define WEP_KEYS 4
 #define WEP_KEY_LEN 13
 
-#ifdef CONFIG_IEEE80211W
-	#define BIP_MAX_KEYID 5
-	#define BIP_AAD_SIZE  20
-#endif /* CONFIG_IEEE80211W */
 
 
 #if defined(PLATFORM_LINUX) || defined(CONFIG_RTL8711FW)
@@ -1265,7 +1223,7 @@ struct ieee80211_assoc_response_frame {
 #define IEEE80211_PS_UNICAST IEEE80211_DTIM_UCAST
 #define IEEE80211_PS_MBCAST IEEE80211_DTIM_MBCAST
 #define IW_ESSID_MAX_SIZE 32
-#define IW_PASSPHRASE_MAX_SIZE 128
+#define IW_PASSPHRASE_MAX_SIZE 64
 #if 0
 struct ieee80211_network {
 	/* These entries are used to identify a unique network */
@@ -1421,9 +1379,7 @@ enum rtw_ieee80211_category {
 	RTW_WLAN_CATEGORY_FT = 6,
 	RTW_WLAN_CATEGORY_HT = 7,
 	RTW_WLAN_CATEGORY_SA_QUERY = 8,
-	RTW_WLAN_CATEGORY_UNPROTECTED_WNM = 11, /* add for CONFIG_IEEE80211W, none 11w also can use */
 	RTW_WLAN_CATEGORY_TDLS = 12,
-	RTW_WLAN_CATEGORY_SELF_PROTECTED = 15, /* add for CONFIG_IEEE80211W, none 11w also can use */
 	RTW_WLAN_CATEGORY_WMM = 17,
 	RTW_WLAN_CATEGORY_P2P = 0x7f,//P2P action frames
 };
@@ -1563,7 +1519,6 @@ int rtw_get_wfd_attr_content(u8 *wfd_ie, uint wfd_ielen, u8 target_attr_id ,u8 *
 //int rtw_generate_ie(struct registry_priv *pregistrypriv);
 
 void rtw_get_bcn_info(struct wlan_network *pnetwork);
-int rtw_parse_sec_ie_akm_mgc(u8* ie, int ie_len, int *auth_key_mgmt, int *mgmt_group_cipher);
 
 void rtw_macaddr_cfg(u8 *mac_addr);
 

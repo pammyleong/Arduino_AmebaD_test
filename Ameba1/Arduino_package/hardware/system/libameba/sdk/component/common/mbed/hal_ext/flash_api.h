@@ -19,6 +19,16 @@ extern "C" {
 
 typedef struct flash_s flash_t;
 
+/**
+  * global data structure
+  */   
+extern flash_t	        flash;
+
+enum {
+  FLASH_COMPLETE = 0,
+  FLASH_ERROR_2 = 1,
+};
+
 //void flash_init         		(flash_t *obj);
 void flash_erase_sector			(flash_t *obj, uint32_t address);
 void flash_erase_block(flash_t * obj, uint32_t address);
@@ -42,9 +52,6 @@ void flash_global_unlock(void);
 void flash_individual_lock(uint32_t address);
 void flash_individual_unlock(uint32_t address);
 int flash_read_individual_lock_state(uint32_t address);
-void flash_mxic_enter_otp(void);
-void flash_mxic_exit_otp(void);
-void flash_mxic_lock_otp(void);
 
 #ifdef __cplusplus
 }

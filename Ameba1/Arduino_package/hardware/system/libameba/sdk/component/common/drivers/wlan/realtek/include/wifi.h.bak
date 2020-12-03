@@ -211,7 +211,6 @@ enum WIFI_STATUS_CODE {
 	_STATS_AUTH_TIMEOUT_		= 16,
 	_STATS_UNABLE_HANDLE_STA_	= 17,
 	_STATS_RATE_FAIL_			= 18,
-	_STATS_REFUSED_TEMPORARILY_ = 30,
 };
 
 /* Status codes (IEEE 802.11-2007, 7.3.1.9, Table 7-23) */
@@ -379,19 +378,10 @@ enum WIFI_REG_DOMAIN {
 
 #define GetFrameType(pbuf)	(le16_to_cpu(*(unsigned short *)(pbuf)) & (BIT(3) | BIT(2)))
 
-#define get_frame_sub_type(pbuf)	(cpu_to_le16(*(unsigned short *)(pbuf)) & (BIT(7) | BIT(6) | BIT(5) | BIT(4) | BIT(3) | BIT(2)))
-
-
-#define set_frame_sub_type(pbuf, type) \
-	do {    \
-		*(unsigned short *)(pbuf) &= cpu_to_le16(~(BIT(7) | BIT(6) | BIT(5) | BIT(4) | BIT(3) | BIT(2))); \
-		*(unsigned short *)(pbuf) |= cpu_to_le16(type); \
-	} while (0)
-
 #define SetFrameType(pbuf,type)	\
 	do { 	\
-		*(unsigned short *)(pbuf) &= cpu_to_le16(~(BIT(3) | BIT(2))); \
-		*(unsigned short *)(pbuf) |= cpu_to_le16(type); \
+		*(unsigned short *)(pbuf) &= __constant_cpu_to_le16(~(BIT(3) | BIT(2))); \
+		*(unsigned short *)(pbuf) |= __constant_cpu_to_le16(type); \
 	} while(0)
 
 #define GetFrameSubType(pbuf)	(cpu_to_le16(*(unsigned short *)(pbuf)) & (BIT(7) | BIT(6) | BIT(5) | BIT(4) | BIT(3) | BIT(2)))
@@ -624,9 +614,6 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 #define	EID_BSSCoexistence			72 // 20/40 BSS Coexistence
 #define	EID_BSSIntolerantChlReport	73
 #define _RIC_Descriptor_IE_			75
-#ifdef CONFIG_IEEE80211W
-#define _MME_IE_					76 /* 802.11w Management MIC element */
-#endif /* CONFIG_IEEE80211W */
 
 #define _LINK_ID_IE_					101
 #define _CH_SWITCH_TIMING_		104
@@ -685,10 +672,6 @@ __inline static int IsFrameTypeCtrl(unsigned char *pframe)
 #define _WEP_WPA_MIXED_PRIVACY_ 6	// WEP + WPA
 */
 				
-#ifdef CONFIG_IEEE80211W
-#define _MME_IE_LENGTH_  18
-#endif /* CONFIG_IEEE80211W */
-
 /*-----------------------------------------------------------------------------
 				Below is the definition for WMM
 ------------------------------------------------------------------------------*/
