@@ -1,0 +1,16 @@
+
+
+
+Version 2.0.8 - 2020/04/21
+    Feature:
+    - AmebaCloud_SmartCurtain examples
+    - AmebaCloud_WindowSecuritySystem example
+    - Update MQTT, Http, PowerSave and SoftwareSerial examples
+Version 2.0.7 - 2020/03/03
+    Feature:
+    - Update wlan library
+Version 2.0.6 - 2020/01/08
+    Feature:
+    - Add board Ameba RTL8711AM
+    - Update the Ameba tools
+    - Update related libraries for alexa_basic example

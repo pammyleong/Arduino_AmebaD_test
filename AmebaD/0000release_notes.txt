@@ -1,0 +1,28 @@
+    //update BT lib and add BT example
+
+
+v3.0.5
+    add zip lib Eink and examples
+        add example EinkDisplayImage
+        add example EinkDisplayQR
+        add example EinkDisplayText
+
+    add google cloud examples
+    update Amazon AWS related examples
+
+    add power save support
+        add example TicklessMode
+        add example DeepSleepMode
+        add example DeepSleep_DHT_LCD_Example
+        add example DeepSleep_DHT_Eink_Example
+
+v3.0.4
+    update BT
+        add example BLEBatteryClient
+        add example BLEWIfiConfig
+
+    delete polarssl
+    add mbedtls 2.4.0 suppport
+        add example Amazon_AWS_IoT_Basic
+        add example MQTT_TLS
+
