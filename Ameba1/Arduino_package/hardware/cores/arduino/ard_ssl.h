@@ -4,9 +4,9 @@
 struct ssl_context;
 
 typedef struct {
-	int socket;
+    int socket;
     int recvTimeout;
-	ssl_context *ssl;
+    ssl_context *ssl;
 } sslclient_context;
 
 int start_ssl_client(sslclient_context *ssl_client, uint32_t ipAddress, uint32_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key);

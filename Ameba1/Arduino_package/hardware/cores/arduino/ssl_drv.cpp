@@ -1,28 +1,29 @@
+
 #include "ssl_drv.h"
+
 #ifdef __cplusplus
 extern "C" {
 #include "platform_stdlib.h"
 }
 #endif
 
-uint16_t SSLDrv::availData(sslclient_context *ssl_client)
-{
-	int ret;
+uint16_t SSLDrv::availData(sslclient_context *ssl_client) {
+    int ret;
 
-	if (ssl_client->socket < 0)		
-		return 0;
-	
-	if(_available) {
-		return 1;
-	} else {
-	    return getData(ssl_client, c, 1);
-	}
+    if (ssl_client->socket < 0) {
+        return 0;
+    }
+
+    if (_available) {
+        return 1;
+    } else {
+        return getData(ssl_client, c, 1);
+    }
 }
 
-bool SSLDrv::getData(sslclient_context *ssl_client, uint8_t *data, uint8_t peek)
-{
-	int ret = 0;
-	int flag = 0;
+bool SSLDrv::getData(sslclient_context *ssl_client, uint8_t *data, uint8_t peek) {
+    int ret = 0;
+    int flag = 0;
 
     if (_available) {
         /* we already has data to read */
@@ -39,24 +40,23 @@ bool SSLDrv::getData(sslclient_context *ssl_client, uint8_t *data, uint8_t peek)
         flag |= 1;
     }
 
-	ret = get_ssl_receive(ssl_client, c, 1, flag);
+    ret = get_ssl_receive(ssl_client, c, 1, flag);
 
-	if (ret == 1) {
+    if (ret == 1) {
         data[0] = c[0];
         if (peek) {
             _available = true;
         } else {
             _available = false;
         }
-		return true;
-	}
- 
-	return false;
+        return true;
+    }
+
+    return false;
 }
 
-int SSLDrv::getDataBuf(sslclient_context *ssl_client, uint8_t *_data, uint16_t _dataLen)
-{
-	int ret;
+int SSLDrv::getDataBuf(sslclient_context *ssl_client, uint8_t *_data, uint16_t _dataLen) {
+    int ret;
 
     if (_available) {
         /* there is one byte cached */
@@ -78,47 +78,41 @@ int SSLDrv::getDataBuf(sslclient_context *ssl_client, uint8_t *_data, uint16_t _
         ret = get_ssl_receive(ssl_client, _data, _dataLen, 0);
     }
 
-	return ret;
+    return ret;
 }
 
-void SSLDrv::stopClient(sslclient_context *ssl_client)
-{
-	stop_ssl_socket(ssl_client);
+void SSLDrv::stopClient(sslclient_context *ssl_client) {
+    stop_ssl_socket(ssl_client);
     _available = false;
 }
 
-bool SSLDrv::sendData(sslclient_context *ssl_client, const uint8_t *data, uint16_t len)
-{
+bool SSLDrv::sendData(sslclient_context *ssl_client, const uint8_t *data, uint16_t len) {
     int ret;
 
-    if (ssl_client->socket < 0)
-        return false;        	
+    if (ssl_client->socket < 0) {
+        return false;
+    }
 
     ret = send_ssl_data(ssl_client, data, len);
 
-    if (ret == 0) {  
+    if (ret == 0) {
         return false;
     }
 
     return true;
 }
 
-int SSLDrv::startClient(sslclient_context *ssl_client, uint32_t ipAddress, uint32_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key)
-{
+int SSLDrv::startClient(sslclient_context *ssl_client, uint32_t ipAddress, uint32_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key) {
     int ret;
-
     ret = start_ssl_client(ssl_client, ipAddress, port, rootCABuff, cli_cert, cli_key);
 
     return ret;
 }
 
-int SSLDrv::getLastErrno(sslclient_context *ssl_client)
-{
+int SSLDrv::getLastErrno(sslclient_context *ssl_client) {
     return get_ssl_sock_errno(ssl_client);
 }
 
-int SSLDrv::setSockRecvTimeout(int sock, int timeout)
-{
+int SSLDrv::setSockRecvTimeout(int sock, int timeout) {
     return setSockRecvTimeout(sock, timeout);
 }
-
