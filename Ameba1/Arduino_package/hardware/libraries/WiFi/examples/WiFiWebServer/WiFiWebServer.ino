@@ -1,7 +1,7 @@
 #include <WiFi.h>
 
-char ssid[] = "SINGTEL-D45F";      // your network SSID (name)
-char pass[] = "mooxuteeth";         // your network password
+char ssid[] = "yourNetwork";      // your network SSID (name)
+char pass[] = "Password";         // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
