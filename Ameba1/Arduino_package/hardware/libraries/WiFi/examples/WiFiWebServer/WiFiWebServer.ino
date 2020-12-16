@@ -1,7 +1,7 @@
 #include <WiFi.h>
 
 char ssid[] = "yourNetwork";      // your network SSID (name)
-char pass[] = "Password";   // your network password
+char pass[] = "Password";         // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
@@ -63,7 +63,7 @@ void loop() {
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");
           // output the value of each analog input pin
-          for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
+          for (int analogChannel = 1; analogChannel < 4; analogChannel++) {
             int sensorReading = analogRead(analogChannel);
             client.print("analog input ");
             client.print(analogChannel);
@@ -109,4 +109,3 @@ void printWifiStatus() {
   Serial.print(rssi);
   Serial.println(" dBm");
 }
-
