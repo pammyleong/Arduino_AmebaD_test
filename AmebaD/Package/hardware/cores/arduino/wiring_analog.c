@@ -55,7 +55,7 @@ bool g_dac_enabled[] = {
 static int _readResolution = 10;
 extern void *gpio_pin_struct[];
 static int _writeResolution = 8;
-static int _writePeriod = 20000;
+static int _writePeriod = 1000;
 
 void analogReadResolution(int res) {
     _readResolution = res;
@@ -191,7 +191,7 @@ void analogOutputInit(void) {
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
 // to digital output.
-void analogWrite(uint32_t ulPin, uint32_t ulValue) 
+void analogWrite(uint32_t ulPin, int32_t ulValue) 
 {
     //pwmout_t *obj;
 
