@@ -28,9 +28,11 @@ char given_name[] = "Gump";
 char additional_name[] = "";
 char honorific_prefix[] = "";
 char honorific_suffixes[] = "Mr.";
-char work_phone[] = "(444) 555-1212";
+//char work_phone[] = "(444) 555-1212";
 char home_phone[] = "(111) 555-1212";
-char email[] = "email@email.com";
+//char email[] = "email@email.com";
+//char org[] = "";
+//char title[] = "";
 
 void setup() {
   int vcard_len = 0;
@@ -44,8 +46,8 @@ void setup() {
   // For vcard version 2.1
   sprintf(vcard_str, "%sN:%s;%s;%s;%s;%s;\n", vcard_str, given_name, family_name, additional_name, honorific_prefix, honorific_suffixes);
   sprintf(vcard_str, "%sFN:%s\n", vcard_str, name);
-  //sprintf(vcard_str, "%sORG:\n", vcard_str);
-  //sprintf(vcard_str, "%sTITLE:\n", vcard_str);
+  //sprintf(vcard_str, "%sORG:%s\n", vcard_str, org);
+  //sprintf(vcard_str, "%sTITLE:%s\n", vcard_str, title);
   //sprintf(vcard_str, "%sTEL;WORK;VOICE:%s\n", vcard_str, work_phone);
   sprintf(vcard_str, "%sTEL;HOME;VOICE:%s\n", vcard_str, home_phone);
   //sprintf(vcard_str, "%sEMAIL;PREF;INTERNET:%s\n", vcard_str, email);
