@@ -8,7 +8,7 @@ extern "C" {
     #include "errno.h"
 }
 
-WiFiSSLClient::WiFiSSLClient(){
+WiFiSSLClient::WiFiSSLClient() {
     _is_connected = false;
     _sock = -1;
 
@@ -19,6 +19,9 @@ WiFiSSLClient::WiFiSSLClient(){
     _rootCABuff = NULL;
     _cli_cert = NULL;
     _cli_key = NULL;
+    _psKey = NULL;
+    _pskIdent = NULL;
+    _sni_hostname = NULL;
 }
 
 WiFiSSLClient::WiFiSSLClient(uint8_t sock) {
@@ -28,13 +31,17 @@ WiFiSSLClient::WiFiSSLClient(uint8_t sock) {
     sslclient.ssl = NULL;
     sslclient.recvTimeout = 3000;
 
-    if (sock >= 0) {
-        _is_connected = true;
-    }
+//    if(sock >= 0) {
+//        _is_connected = true;
+//    }
+    _is_connected = true;
 
     _rootCABuff = NULL;
     _cli_cert = NULL;
     _cli_key = NULL;
+    _psKey = NULL;
+    _pskIdent = NULL;
+    _sni_hostname = NULL;
 }
 
 uint8_t WiFiSSLClient::connected() {
@@ -44,7 +51,7 @@ uint8_t WiFiSSLClient::connected() {
     } else {
         if (_is_connected) {
             return 1;
-        } else{
+        } else {
             stop();
             return 0;
         }
@@ -64,12 +71,14 @@ int WiFiSSLClient::available() {
             return 1;
         } else {
             err = ssldrv.getLastErrno(&sslclient);
-            if (err != EAGAIN) {
+            if ((err > 0) && (err != EAGAIN)) {
                 _is_connected = false;
             }
         }
         return 0;
     }
+
+    return 0;
 }
 
 int WiFiSSLClient::read() {
@@ -86,7 +95,7 @@ int WiFiSSLClient::read() {
         return b[0];
     } else {
         err = ssldrv.getLastErrno(&sslclient);
-        if (err != EAGAIN) {
+        if ((err > 0) && (err != EAGAIN)) {
             _is_connected = false;
         }
     }
@@ -101,7 +110,7 @@ int WiFiSSLClient::read(uint8_t* buf, size_t size) {
     ret = ssldrv.getDataBuf(&sslclient, buf, _size);
     if (ret <= 0) {
         err = ssldrv.getLastErrno(&sslclient);
-        if (err != EAGAIN) {
+        if ((err > 0) && (err != EAGAIN)) {
             _is_connected = false;
         }
     }
@@ -109,6 +118,7 @@ int WiFiSSLClient::read(uint8_t* buf, size_t size) {
 }
 
 void WiFiSSLClient::stop() {
+
     if (sslclient.socket < 0) {
         return;
     }
@@ -144,19 +154,32 @@ size_t WiFiSSLClient::write(const uint8_t *buf, size_t size) {
 }
 
 WiFiSSLClient::operator bool() {
-    return sslclient.socket >= 0;
+    return (sslclient.socket >= 0);
 }
 
 int WiFiSSLClient::connect(IPAddress ip, uint16_t port) {
-    connect(ip, port, _rootCABuff, _cli_cert, _cli_key);
+    if (_psKey != NULL && _pskIdent != NULL)
+        return connect(ip, port, _pskIdent, _psKey);
+    return connect(ip, port, _rootCABuff, _cli_cert, _cli_key);
 }
 
 int WiFiSSLClient::connect(const char *host, uint16_t port) {
-    connect(host, port, _rootCABuff, _cli_cert, _cli_key);
+
+    if (_sni_hostname == NULL) {
+        _sni_hostname = (char*)host;
+    }
+
+    if (_psKey != NULL && _pskIdent != NULL)
+        return connect(host, port, _pskIdent, _psKey);
+    return connect(host, port, _rootCABuff, _cli_cert, _cli_key);
 }
 
 int WiFiSSLClient::connect(const char* host, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key) {
     IPAddress remote_addr;
+
+    if (_sni_hostname == NULL) {
+        _sni_hostname = (char*)host;
+    }
 
     if (WiFi.hostByName(host, remote_addr)) {
         return connect(remote_addr, port, rootCABuff, cli_cert, cli_key);
@@ -166,7 +189,8 @@ int WiFiSSLClient::connect(const char* host, uint16_t port, unsigned char* rootC
 
 int WiFiSSLClient::connect(IPAddress ip, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key) {
     int ret = 0;
-    ret = ssldrv.startClient(&sslclient, ip, port, rootCABuff, cli_cert, cli_key);
+
+    ret = ssldrv.startClient(&sslclient, ip, port, rootCABuff, cli_cert, cli_key, NULL, NULL, _sni_hostname);
 
     if (ret < 0) {
         _is_connected = false;
@@ -177,11 +201,42 @@ int WiFiSSLClient::connect(IPAddress ip, uint16_t port, unsigned char* rootCABuf
 
     return 1;
 }
+
+int WiFiSSLClient::connect(const char *host, uint16_t port, unsigned char* pskIdent, unsigned char* psKey) {
+    IPAddress remote_addr;
+
+    if (_sni_hostname == NULL) {
+        _sni_hostname = (char*)host;
+    }
+
+    if (WiFi.hostByName(host, remote_addr)) {
+        return connect(remote_addr, port, pskIdent, psKey);
+    }
+    return 0;
+}
+
+int WiFiSSLClient::connect(IPAddress ip, uint16_t port, unsigned char* pskIdent, unsigned char* psKey) {
+    int ret = 0;
+
+    ret = ssldrv.startClient(&sslclient, ip, port, NULL, NULL, NULL, pskIdent, psKey, _sni_hostname);
+
+    if (ret < 0) {
+        _is_connected = false;
+        return 0;
+    } else {
+        _is_connected = true;
+    }
+
+    return 1;
+}
+
 int WiFiSSLClient::peek() {
     uint8_t b;
+
     if (!available()) {
         return -1;
     }
+
     ssldrv.getData(&sslclient, &b, 1);
 
     return b;
@@ -201,9 +256,16 @@ void WiFiSSLClient::setClientCertificate(unsigned char *client_ca, unsigned char
     _cli_key = private_key;
 }
 
+void WiFiSSLClient::setPreSharedKey(unsigned char *pskIdent, unsigned char *psKey) {
+    _psKey = psKey;
+    _pskIdent = pskIdent;
+}
+
 int WiFiSSLClient::setRecvTimeout(int timeout) {
     sslclient.recvTimeout = timeout;
     if (connected()) {
         ssldrv.setSockRecvTimeout(sslclient.socket, sslclient.recvTimeout);
     }
+
+    return 0;
 }
