@@ -36,7 +36,7 @@
  *
  * In general case, 2 NDEF message is enough for most application.
  */
-#define NFC_MAX_NDEF_NUM 2
+#define NFC_MAX_NDEF_NUM 99
 
 /**
  * @defgroup tnf_message_type tnf_message_type
