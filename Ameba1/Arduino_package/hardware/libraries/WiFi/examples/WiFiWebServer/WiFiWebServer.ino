@@ -64,7 +64,7 @@ void loop() {
           client.println("<html>");
           // output the value of each analog input pin
           for (int analogChannel = 1; analogChannel < 4; analogChannel++) {
-            int outputValue = map( analogRead(analogChannel), 488, 1023, 0, 255);
+            int sensorReading = map( analogRead(analogChannel), 488, 1023, 0, 255);
             client.print("analog input ");
             client.print(analogChannel);
             client.print(" is ");

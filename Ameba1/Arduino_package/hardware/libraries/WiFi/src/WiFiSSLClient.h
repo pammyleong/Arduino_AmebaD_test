@@ -1,14 +1,14 @@
 #ifndef wifisslclient_h
 #define wifisslclient_h
 
-#include "Arduino.h"
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
 #include "ssl_drv.h"
 
-struct ssl_context;
+struct mbedtls_ssl_context;
 class WiFiSSLClient : public Client {
+
     public:
         WiFiSSLClient();
         WiFiSSLClient(uint8_t sock);
@@ -29,12 +29,14 @@ class WiFiSSLClient : public Client {
 
         void setRootCA(unsigned char *rootCA);
         void setClientCertificate(unsigned char *client_ca, unsigned char *private_key);
+        void setPreSharedKey(unsigned char *pskIdent, unsigned char *psKey);  // psKey expressed as hexadecimal string
 
-        int connect(IPAddress ip, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key);
         int connect(const char *host, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key);
+        int connect(IPAddress ip, uint16_t port, unsigned char* rootCABuff, unsigned char* cli_cert, unsigned char* cli_key);
+        int connect(const char *host, uint16_t port, unsigned char* pskIdent, unsigned char* psKey);
+        int connect(IPAddress ip, uint16_t port, unsigned char* pskIdent, unsigned char* psKey);
 
         using Print::write;
-
         int setRecvTimeout(int timeout);
 
     private:
@@ -46,6 +48,9 @@ class WiFiSSLClient : public Client {
         unsigned char *_rootCABuff;
         unsigned char *_cli_cert;
         unsigned char *_cli_key;
+        unsigned char *_psKey;
+        unsigned char *_pskIdent;
+        char *_sni_hostname;
 };
 
 #endif
