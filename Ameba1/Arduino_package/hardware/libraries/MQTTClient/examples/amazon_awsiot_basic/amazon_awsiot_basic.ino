@@ -7,7 +7,7 @@
 #include <PubSubClient.h>
 
 #if defined(BOARD_RTL8710)
-#error "RTL8710 does not support AWSIOT"
+#error "RTL8710 does not support example amazon_awsiot_basic.ino"
 #endif
 
 // Update these with values suitable for your network.
