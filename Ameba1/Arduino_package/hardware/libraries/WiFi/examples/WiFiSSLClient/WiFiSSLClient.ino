@@ -1,5 +1,9 @@
 #include <WiFi.h>
 
+#if defined(BOARD_RTL8710)
+#error "RTL8710 does not support example WiFISSLClient.ino"
+#endif
+
 char ssid[] = "yourNetwork";        // your network SSID (name)
 char pass[] = "yourPassword";     	// your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;                   // your network key Index number (needed only for WEP)
