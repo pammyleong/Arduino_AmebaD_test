@@ -33,7 +33,7 @@ extern "C"{
 
 #define MAIN_THREAD_STACK_SIZE        (4096 * 4)
 
-#define TOTAL_GPIO_PIN_NUM            (23)
+#define TOTAL_GPIO_PIN_NUM            (24)
 #define TOTAL_PWM_PIN_NUM             (9)
 
 #define LED_BUILTIN                   (PA_9)
