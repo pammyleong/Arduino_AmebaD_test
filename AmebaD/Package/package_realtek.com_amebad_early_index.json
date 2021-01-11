@@ -25,7 +25,7 @@
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"},
-            {"name": "RTL8722DM_mini"},
+            {"name": "RTL8722DM_mini"}
           ],
           "toolsDependencies": [
             {
