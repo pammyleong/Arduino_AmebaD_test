@@ -1264,17 +1264,17 @@
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "ameba_d_tools_linux-1.0.4.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.4.tar.gz",
-              "checksum": "SHA-256:053fc5ba3897438e43c3031bfb8b77982d1d68e643b0b7466d3c26159fdeafad",
-              "size": "8799158"
+              "archiveFileName": "ameba_d_tools_linux-1.0.5.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.5.tar.gz",
+              "checksum": "SHA-256:3739f475c69423d174e1cee52c3b39042ee3ddb8b56a08f14f03a764bd1cc1be",
+              "size": "3602578"
             },
             {
               "host": "x86_64-apple-darwin",
-              "archiveFileName": "ameba_d_tools_macos-1.0.4.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_macos-1.0.4.tar.gz",
-              "checksum": "SHA-256:d3bb85155631fb0d14552b4424e45149ce53cd273fd7d9d3393e1c52357f1f9b",
-              "size": "6077070"
+              "archiveFileName": "ameba_d_tools_macos-1.0.5.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_macos-1.0.5.tar.gz",
+              "checksum": "SHA-256:1ae558ed2c3f9d7f79a244f5006f7616949a216af46854ec4e6a30a4521b4542",
+              "size": "661518"
             }
           ]
         },
