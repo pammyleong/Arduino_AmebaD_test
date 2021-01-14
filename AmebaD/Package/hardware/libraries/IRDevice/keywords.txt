@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map for GPIO
+# Syntax Coloring Map for IRDevice
 #######################################
 
 #######################################
@@ -20,7 +20,7 @@ recv		KEYWORD2
 beginNEC	KEYWORD2
 sendNEC		KEYWORD2
 recvNEC		KEYWORD2
-sendSONY    KEYWORD2
+sendSONY	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

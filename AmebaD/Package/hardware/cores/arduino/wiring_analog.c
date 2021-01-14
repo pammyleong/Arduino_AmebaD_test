@@ -36,7 +36,7 @@ analogin_t   adc4;
 analogin_t   adc5;
 analogin_t   adc6;
 
-static const float ADC_slope1 = (3.3)/(255.0 - 16.0);
+//static const float ADC_slope1 = (3.3)/(255.0 - 16.0);
 //static const float ADC_slope2 = (3.3 - 3.12)/(3454.0-3410.0);
 
 bool g_adc_enabled[] = {
@@ -89,15 +89,13 @@ static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
 
 eAnalogReference analog_reference = AR_DEFAULT;
 
-void analogReference(eAnalogReference ulMode)
-{
+void analogReference(eAnalogReference ulMode) {
     analog_reference = ulMode;
 }
 
-uint32_t analogRead(uint32_t ulPin)
-{
+uint32_t analogRead(uint32_t ulPin) {
     uint16_t ret = 0;
-    float    voltage;
+//    float    voltage;
     uint32_t mv;
 
     if ((_offset == 0) || (_gain == 0)) {
@@ -206,8 +204,7 @@ void analogOutputInit(void) {
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
 // to digital output.
-void analogWrite(uint32_t ulPin, int32_t ulValue) 
-{
+void analogWrite(uint32_t ulPin, int32_t ulValue)  {
     //pwmout_t *obj;
 
 #ifdef FEATURE_DAC
@@ -254,8 +251,7 @@ typedef struct _tone_argument {
     uint32_t timer_id;
 }tone_argument;
 
-void _tone_timer_handler(void const *argument)
-{
+void _tone_timer_handler(void const *argument) {
     tone_argument *arg = (tone_argument *)argument;
 
     //uint32_t ulPin = (uint32_t)argument;
@@ -267,15 +263,13 @@ void _tone_timer_handler(void const *argument)
     free((tone_argument *)arg);
 }
 
-void _tone(uint32_t ulPin, unsigned int frequency, unsigned long duration)
-{
+void _tone(uint32_t ulPin, unsigned int frequency, unsigned long duration) {
     //pwmout_t *obj;
     if ((g_APinDescription[ulPin].ulPinAttribute & PIO_PWM) != PIO_PWM) {
         return;
     }
 
-    if (g_APinDescription[ulPin].ulPinType != PIO_PWM)
-    {
+    if (g_APinDescription[ulPin].ulPinType != PIO_PWM) {
         if ((g_APinDescription[ulPin].ulPinType == PIO_GPIO) || (g_APinDescription[ulPin].ulPinType == PIO_GPIO_IRQ)) {
             pinRemoveMode(ulPin);
         }
@@ -306,8 +300,7 @@ void _tone(uint32_t ulPin, unsigned int frequency, unsigned long duration)
     delay(5);
 }
 
-void noTone(uint32_t ulPin)
-{
+void noTone(uint32_t ulPin) {
     pinRemoveMode(ulPin);
 }
 

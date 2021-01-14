@@ -20,4 +20,4 @@ update	KEYWORD2
 #######################################
 
 buf_size	LITERAL1
-buf	LITERAL1
+buf			LITERAL1
