@@ -256,8 +256,7 @@ void TwoWire::onRequest (void(*function)(void)) {
 //#else
 //#endif
 
-#if defined(BOARD_RTL8721D)
-
+#if defined(BOARD_RTL8722D)
 // SDA SCL
 // HW: I2C0
 TwoWire Wire  = TwoWire(PA_26, PA_25);
@@ -265,4 +264,11 @@ TwoWire Wire  = TwoWire(PA_26, PA_25);
 // HW: I2C1
 TwoWire Wire1 = TwoWire(PB_6, PB_5);
 
+#elif defined(BOARD_RTL8722DM_MINI)
+// SDA SCL
+// HW: I2C0
+TwoWire Wire  = TwoWire(PB_0, PA_31);
+//TwoWire Wire  = TwoWire(PB_6, PB_5);
+#else
+#error chack the borad supported
 #endif
