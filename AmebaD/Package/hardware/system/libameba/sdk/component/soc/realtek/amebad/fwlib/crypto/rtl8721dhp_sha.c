@@ -19,7 +19,6 @@
   */
 
 #include "ameba_soc.h"
-#include "hal_crypto.h"
 
 unsigned char *hmac_sha1_key = NULL;
 uint32_t hmac_sha1_keylen = 0;

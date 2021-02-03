@@ -5,7 +5,6 @@
 
 // zzw arduino
 #include "cmsis_gcc.h"
-
 #define CMSIS_OS_ERR(fmt, args...)          _DbgDump("\n\r%s: " fmt, __FUNCTION__, ## args)
 
 extern void *_memset( void *s, int c, SIZE_T n );

@@ -149,6 +149,28 @@ enum {
 ///@}
 #endif //CONFIG_PLATFORM_8711B || CONFIG_PLATFORM_8721D
 
+#if defined(CONFIG_PLATFORM_AMEBAD2) && (CONFIG_PLATFORM_AMEBAD2 == 1)
+///@name AmebaD2 Only 
+///@{
+
+
+enum { 
+    TIMER0 = 0,    
+    TIMER1 = 1,   
+    TIMER2 = 2,    
+    TIMER3 = 3,   
+    TIMER4 = 4,
+    TIMER5 = 5,
+    TIMER6 = 6,
+    TIMER7 = 7,
+    TIMER8 = 8,
+    TIMER9 = 9,
+
+    GTIMER_MAX = 10    
+};
+
+///@}
+#endif //CONFIG_PLATFORM_AMEBAD2
 
 #if (defined(CONFIG_PLATFORM_8195BHP) && (CONFIG_PLATFORM_8195BHP == 1))  ||  (defined(CONFIG_PLATFORM_8195BLP) && (CONFIG_PLATFORM_8195BLP == 1)) \
     || (defined(CONFIG_PLATFORM_8710C) && (CONFIG_PLATFORM_8710C == 1))

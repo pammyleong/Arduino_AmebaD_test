@@ -177,10 +177,14 @@ static void _freertos_mutex_free(_mutex *pmutex)
 
 static int __in_interrupt(void)
 {
+#ifdef ARM_CORE_CA7
+	return __get_mode()!=CPSR_M_USR;
+#else
 #if defined(__ICCARM__)
 	return (__get_PSR()&0x1FF)!=0;
 #elif defined(__GNUC__)
 	return (__get_xPSR()&0x1FF)!=0;
+#endif
 #endif
 }
 
@@ -686,7 +690,7 @@ static int _freertos_arc4random(void)
 {
 #if defined(CONFIG_PLATFORM_8721D)|| (defined CONFIG_PLATFORM_AMEBAD2)
 
-#if defined(CONFIG_PLATFORM_AMEBAD2)//Temporary modification. need to modify when remove 'CONFIG_PLATFORM_8721D'
+#if defined(CONFIG_PLATFORM_AMEBAD2)
 	int value = (int)rand();
 #else
 	int value = (int)Rand();

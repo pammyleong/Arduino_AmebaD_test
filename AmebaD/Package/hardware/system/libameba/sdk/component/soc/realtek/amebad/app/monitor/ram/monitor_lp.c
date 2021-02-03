@@ -10,7 +10,6 @@
 
 #include "ameba_soc.h"
 #include "freertos_pmu.h"
-#include "rom_map.h"
 
 u32
 CmdRamHelp(

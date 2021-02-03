@@ -95,6 +95,10 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+#ifdef CONFIG_INIC_IPC
+#include "inic_ipc.h"
+rtw_mode_t wifi_mode = RTW_MODE_STA;
+#endif
 
 struct netif xnetif[NET_IF_NUM]; /* network interface structure */
 /* Private functions ---------------------------------------------------------*/
@@ -104,8 +108,10 @@ struct netif xnetif[NET_IF_NUM]; /* network interface structure */
   * @retval None
   */
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 extern  int error_flag;
 extern rtw_mode_t wifi_mode;
+#endif
 #endif
 
 int lwip_init_done = 0;
@@ -285,9 +291,13 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 			case DHCP_START:
 			{
 				/*acqurie wakelock to guarantee dhcp*/
+#ifndef CONFIG_INIC_IPC
 				rtw_wakelock_timeout(4*1000);
+#endif
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 				wifi_unreg_event_handler(WIFI_EVENT_BEACON_AFTER_DHCP, wifi_rx_beacon_hdl);
+#endif
 #endif
 
 #if defined(CONFIG_FAST_DHCP) && CONFIG_FAST_DHCP
@@ -374,7 +384,9 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 #endif
 				DHCP_state = DHCP_ADDRESS_ASSIGNED;	
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 				wifi_reg_event_handler(WIFI_EVENT_BEACON_AFTER_DHCP, wifi_rx_beacon_hdl, NULL);
+#endif
 #endif
 				
 				/* Stop DHCP */
@@ -401,7 +413,9 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 #endif
 
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 				error_flag = RTW_NO_ERROR;
+#endif
 #endif
 				return DHCP_ADDRESS_ASSIGNED;
 			}
@@ -443,7 +457,9 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 #endif
 
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 					error_flag = RTW_DHCP_FAIL;
+#endif
 #endif
 
 #if CONFIG_ETHERNET
@@ -457,7 +473,9 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 		break;
 		case DHCP_RELEASE_IP:
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 			wifi_unreg_event_handler(WIFI_EVENT_BEACON_AFTER_DHCP, wifi_rx_beacon_hdl);
+#endif
 #endif
 			printf("\n\rLwIP_DHCP: Release ip");
 #if LWIP_VERSION_MAJOR >= 2
@@ -469,7 +487,9 @@ uint8_t LwIP_DHCP(uint8_t idx, uint8_t dhcp_state)
 			return DHCP_RELEASE_IP;
 		case DHCP_STOP:
 #if CONFIG_WLAN
+#ifndef CONFIG_INIC_IPC
 			wifi_unreg_event_handler(WIFI_EVENT_BEACON_AFTER_DHCP, wifi_rx_beacon_hdl);
+#endif
 #endif
 			printf("\n\rLwIP_DHCP: dhcp stop.");
 			dhcp_stop(pnetif);

@@ -41,17 +41,17 @@
 
 /* No test marker by default. */
 #ifndef mtCOVERAGE_TEST_MARKER
-	#define mtCOVERAGE_TEST_MARKER()
+#define mtCOVERAGE_TEST_MARKER()
 #endif
 
 /* No tracing by default. */
 #ifndef traceMALLOC
-	#define traceMALLOC( pvReturn, xWantedSize )
+#define traceMALLOC( pvReturn, xWantedSize )
 #endif
 
 /* No tracing by default. */
 #ifndef traceFREE
-	#define traceFREE( pv, xBlockSize )
+#define traceFREE( pv, xBlockSize )
 #endif
 
 /* Block sizes must not get too small. */
@@ -63,21 +63,19 @@
 
 /* Allocate the memory for the heap. */
 #if defined ( configAPPLICATION_ALLOCATED_HEAP ) && (configAPPLICATION_ALLOCATED_HEAP == 1)
-	/* The application writer has already defined the array used for the RTOS
-	 * heap - probably so it can be placed in a special segment or address. */
-	extern uint8_t ucHeap[ secureconfigTOTAL_HEAP_SIZE ];
+/* The application writer has already defined the array used for the RTOS
+ * heap - probably so it can be placed in a special segment or address. */
+extern uint8_t ucHeap[ secureconfigTOTAL_HEAP_SIZE ];
 #else /* configAPPLICATION_ALLOCATED_HEAP */
-	#include "ameba_soc.h"
-	
-	static unsigned char ucHeap_sram[ secureconfigTOTAL_SRAM_HEAP_SIZE ];
-	PSRAM_HEAP_SECTION static unsigned char ucHeap_psram[ secureconfigTOTAL_PSRAM_HEAP_SIZE ];
+#include "ameba_soc.h"
 
-	HeapRegion_t xHeapRegions[] = 		/* blocks are passed in with increasing start addresses. */
-	{
-		{ ucHeap_psram, sizeof(ucHeap_psram) }, // Define a block from PSRAM_S
-		{ ucHeap_sram, sizeof(ucHeap_sram) },	// Defines a block from SRAM_S
-		{ NULL, 0 } 							// Terminates the array.
-	};
+static unsigned char ucHeap[ secureconfigTOTAL_SRAM_HEAP_SIZE ];
+
+HeapRegion_t xHeapRegions[] = 		/* blocks are passed in with increasing start addresses. */
+{
+	{ ucHeap, sizeof(ucHeap) },		// Defines a block
+	{ NULL, 0 } 					// Terminates the array.
+};
 #endif /* configAPPLICATION_ALLOCATED_HEAP */
 
 /**
@@ -114,7 +112,8 @@ static void prvInsertBlockIntoFreeList( BlockLink_t *pxBlockToInsert );
  * @brief The size of the structure placed at the beginning of each allocated
  * memory block must by correctly byte aligned.
  */
-static const size_t xHeapStructSize = ( sizeof( BlockLink_t ) + ( ( size_t ) ( secureportBYTE_ALIGNMENT - 1 ) ) ) & ~( ( size_t ) secureportBYTE_ALIGNMENT_MASK );
+static const size_t xHeapStructSize = ( sizeof( BlockLink_t ) + ( ( size_t ) ( secureportBYTE_ALIGNMENT - 1 ) ) ) & ~( (
+		size_t ) secureportBYTE_ALIGNMENT_MASK );
 
 /**
  * @brief Create a couple of list links to mark the start and end of the list.
@@ -140,12 +139,12 @@ static size_t xBlockAllocatedBit = 0;
 
 void vPortDefineHeapRegions( const HeapRegion_t * const pxHeapRegions )
 {
-BlockLink_t *pxFirstFreeBlockInRegion = NULL, *pxPreviousFreeBlock;
-size_t xAlignedHeap;
-size_t xTotalRegionSize, xTotalHeapSize = 0;
-size_t xDefinedRegions = 0;
-size_t xAddress;
-const HeapRegion_t *pxHeapRegion;
+	BlockLink_t *pxFirstFreeBlockInRegion = NULL, *pxPreviousFreeBlock;
+	size_t xAlignedHeap;
+	size_t xTotalRegionSize, xTotalHeapSize = 0;
+	size_t xDefinedRegions = 0;
+	size_t xAddress;
+	const HeapRegion_t *pxHeapRegion;
 
 	/* Can only call once! */
 	secureportASSERT( pxEnd == NULL );
@@ -235,8 +234,8 @@ const HeapRegion_t *pxHeapRegion;
 
 static void prvInsertBlockIntoFreeList( BlockLink_t *pxBlockToInsert )
 {
-BlockLink_t *pxIterator;
-uint8_t *puc;
+	BlockLink_t *pxIterator;
+	uint8_t *puc;
 
 	/* Iterate through the list until a block is found that has a higher address
 	 * than the block being inserted. */
@@ -296,20 +295,13 @@ uint8_t *puc;
 
 void *pvPortMalloc( size_t xWantedSize )
 {
-BlockLink_t *pxBlock, *pxPreviousBlock, *pxNewBlockLink;
-void *pvReturn = NULL;
+	BlockLink_t *pxBlock, *pxPreviousBlock, *pxNewBlockLink;
+	void *pvReturn = NULL;
 
 	/* If this is the first call to malloc then the heap will require
 	 * initialisation to setup the list of free blocks. */
 	if( pxEnd == NULL )
 	{
-		if(FALSE == psram_dev_config.psram_dev_enable) {
-			xHeapRegions[0].pucStartAddress = ucHeap_sram;
-			xHeapRegions[0].xSizeInBytes = sizeof(ucHeap_sram);
-			xHeapRegions[1].pucStartAddress = NULL;
-			xHeapRegions[1].xSizeInBytes = 0;
-		} 
-		
 		vPortDefineHeapRegions(xHeapRegions);
 	}
 	else
@@ -428,7 +420,7 @@ void *pvReturn = NULL;
 
 	traceMALLOC( pvReturn, xWantedSize );
 
-	#if defined ( secureconfigUSE_MALLOC_FAILED_HOOK ) && (secureconfigUSE_MALLOC_FAILED_HOOK == 1) 
+#if defined ( secureconfigUSE_MALLOC_FAILED_HOOK ) && (secureconfigUSE_MALLOC_FAILED_HOOK == 1)
 	{
 		if( pvReturn == NULL )
 		{
@@ -440,7 +432,7 @@ void *pvReturn = NULL;
 			mtCOVERAGE_TEST_MARKER();
 		}
 	}
-	#endif
+#endif
 
 	secureportASSERT( ( ( ( size_t ) pvReturn ) & ( size_t ) secureportBYTE_ALIGNMENT_MASK ) == 0 );
 	return pvReturn;
@@ -449,8 +441,8 @@ void *pvReturn = NULL;
 
 void vPortFree( void *pv )
 {
-uint8_t *puc = ( uint8_t * ) pv;
-BlockLink_t *pxLink;
+	uint8_t *puc = ( uint8_t * ) pv;
+	BlockLink_t *pxLink;
 
 	if( pv != NULL )
 	{
@@ -515,7 +507,7 @@ void vPortInitialiseBlocks( void )
 
 void vApplicationMallocFailedHook( void )
 {
-    DiagPrintf( "Malloc secure memory failed [free heap size: %d]\r\n", xPortGetFreeHeapSize() );
-    for( ;; );
+	DiagPrintf( "Malloc secure memory failed [free heap size: %d]\r\n", xPortGetFreeHeapSize() );
+	for( ;; );
 }
 
