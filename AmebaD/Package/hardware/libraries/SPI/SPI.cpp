@@ -267,5 +267,13 @@ void SPIClass::setDefaultFrequency(int _frequency)
     defaultFrequency = _frequency;
 }
 
+#if defined(BOARD_RTL8722D)
 SPIClass SPI((void *)(&spi_obj0), 11, 12, 13, 10);
 SPIClass SPI1((void *)(&spi_obj1), 21, 20, 19, 18);
+
+#elif defined(BOARD_RTL8722DM_MINI)
+SPIClass SPI((void *)(&spi_obj0), 9, 10, 11, 12);
+
+#else
+#error chack the borad supported
+#endif
