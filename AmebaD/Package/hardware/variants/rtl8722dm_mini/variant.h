@@ -31,13 +31,16 @@ extern "C"{
 }
 #endif
 
-#define MAIN_THREAD_STACK_SIZE        (4096 * 4)
+#define MAIN_THREAD_STACK_SIZE          (4096 * 4)
 
-#define TOTAL_GPIO_PIN_NUM            (24)
-#define TOTAL_PWM_PIN_NUM             (9)
+#define TOTAL_GPIO_PIN_NUM              (27)
+#define TOTAL_PWM_PIN_NUM               (9)
 
-#define LED_BUILTIN                   (PA_9)
-#define LED_BUILTIN_SECOND            (PA_10)
+#define LED_B                           (24)
+#define LED_G                           (25)
+#define LED_BUILTIN                     (LED_B)
+
+#define PUSH_BTN                        (26)
 
 #define FEATURE_ADC
 //#define FEATURE_DAC

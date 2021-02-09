@@ -53,7 +53,10 @@ PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
     {PA_23,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL},   //D20
     {PA_24,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL},   //D21
     {PA_31,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL},   //D22
-    {PA_24,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}    //D23
+    {PA_24,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL},   //D23
+    {PA_9,      NOT_INITIAL, PIO_GPIO                             , NOT_INITIAL},   //LED_B         D24
+    {PA_10,     NOT_INITIAL, PIO_GPIO                             , NOT_INITIAL},   //LED_G         D25
+    {PA_17,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}    //PUSH_BTN      D26
 };
 
 void *gpio_pin_struct[TOTAL_GPIO_PIN_NUM] = {NULL};
