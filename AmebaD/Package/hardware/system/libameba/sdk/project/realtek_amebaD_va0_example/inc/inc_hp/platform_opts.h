@@ -619,6 +619,18 @@ in lwip_opt.h for support uart adapter*/
 // zzw arduino
 /******************  For Arduino SDK customize config   *******************/
 #ifdef ARDUINO_SDK
+
+/* For FATFS*/
+#define CONFIG_FATFS_EN	1
+#if CONFIG_FATFS_EN
+// fatfs version
+#define FATFS_R_10C
+// fatfs disk interface
+#define FATFS_DISK_USB	0
+#define FATFS_DISK_SD 	1
+#define FATFS_DISK_FLASH 	0
+#endif
+
 #endif
 /****************** End of Arduino SDK customize config *******************/
 

@@ -204,7 +204,7 @@ void analogOutputInit(void) {
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
 // to digital output.
-void analogWrite(uint32_t ulPin, int32_t ulValue)  {
+void analogWrite (uint32_t ulPin, int32_t ulValue) {
     //pwmout_t *obj;
 
 #ifdef FEATURE_DAC
