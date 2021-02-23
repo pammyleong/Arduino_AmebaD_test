@@ -42,6 +42,8 @@ TwoWire::TwoWire (uint32_t dwSDAPin, uint32_t dwSCLPin) {
 
     if ((dwSDAPin == PA_26) && (dwSCLPin == PA_25)) {
         this->pI2C = (void *)&i2cwire0;
+    } else if ((dwSDAPin == PB_0) && (dwSCLPin == PA_31)) {
+        this->pI2C = (void *)&i2cwire0;
     } else if ((dwSDAPin == PB_6) && (dwSCLPin == PB_5)) {
         this->pI2C = (void *)&i2cwire1;
     } else {

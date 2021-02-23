@@ -75,7 +75,7 @@ void SPIClass::endTransaction(void)
 
 void SPIClass::begin(void)
 {
-    if (pinMOSI == 11) {
+    if ((pinMOSI == 11) || (pinMOSI == 9)) {
         ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI0;
     } else if (pinMOSI == 21) {
         ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI1;
@@ -83,7 +83,7 @@ void SPIClass::begin(void)
         printf("spi_init: error, wrong spi_idx \r\n");
         return;
     }
-    
+
     spi_init(
         (spi_t *)pSpiMaster, 
         (PinName)g_APinDescription[pinMOSI].pinname, 
@@ -97,7 +97,7 @@ void SPIClass::begin(void)
 
 void SPIClass::begin(int ss)
 {
-    if (pinMOSI == 11) {
+    if ((pinMOSI == 11) || (pinMOSI == 9)) {
         ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI0;
     } else if (pinMOSI == 21) {
         ((spi_t *)pSpiMaster)->spi_idx = MBED_SPI1;

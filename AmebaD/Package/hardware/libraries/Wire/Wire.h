@@ -105,12 +105,12 @@ class TwoWire : public Stream {
         static const uint32_t TWI_CLOCK = 100000;
         uint32_t twiClock;
 
-        // Timeouts (
+        // Timeouts
         static const uint32_t RECV_TIMEOUT = 100000;
         static const uint32_t XMIT_TIMEOUT = 100000;
 };
 
-#if defined(BOARD_RTL8721D)
+#if defined(BOARD_RTL8722D)
 extern TwoWire Wire;
 extern TwoWire Wire1;
 #elif defined(BOARD_RTL8722DM_MINI)
