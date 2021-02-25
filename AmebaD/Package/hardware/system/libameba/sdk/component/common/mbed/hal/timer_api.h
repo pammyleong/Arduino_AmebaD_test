@@ -176,8 +176,21 @@ enum {
     || (defined(CONFIG_PLATFORM_8710C) && (CONFIG_PLATFORM_8710C == 1))
 ///@name AmebaPro and AmebaZ2 Only 
 ///@{
+#if defined (CONFIG_PLATFORM_8710C)
+enum {
+    TIMER0 = 0,
+    TIMER1 = 1,
+    TIMER2 = 2,
+    TIMER3 = 3,
+    TIMER4 = 4,
+    TIMER5 = 5,
+    TIMER6 = 6,
+    TIMER7 = 7,
+    TIMER8 = 8,
 
-#if defined (CONFIG_PLATFORM_8195BLP) || defined (CONFIG_PLATFORM_8710C)
+    GTIMER_MAX = 9
+};
+#elif defined (CONFIG_PLATFORM_8195BLP)
 enum {
     TIMER0 = 1,
     TIMER1 = 2,

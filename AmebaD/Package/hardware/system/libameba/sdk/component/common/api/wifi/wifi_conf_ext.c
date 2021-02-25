@@ -226,14 +226,19 @@ int wifi_enable_powersave(void)
 	return wext_enable_powersave(WLAN0_NAME, 1, 1);
 }
 
+/* wext_resume_powersave() will result in calling sscanf,
+ sscanf have stack size usage different on IAR and GCC.
+ use rltk_wlan_resume_powersave() to avoid calling of sscanf */
+extern int rltk_wlan_resume_powersave(void);
+extern int rltk_wlan_disable_powersave(void);
 int wifi_resume_powersave(void)
 {
-	return wext_resume_powersave(WLAN0_NAME);
+	return rltk_wlan_resume_powersave();
 }
 
 int wifi_disable_powersave(void)
 {
-	return wext_disable_powersave(WLAN0_NAME);
+	return rltk_wlan_disable_powersave();
 }
 
 //----------------------------------------------------------------------------//
