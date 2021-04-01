@@ -74,7 +74,6 @@
 #endif
 // Add in define to remove excessive -Wundef warnings in TFLite
 #define __ARM_FEATURE_MVE 0
-//wyy
 
 /* ###########################  Core Function Access  ########################### */
 /** \ingroup  CMSIS_Core_FunctionInterface
