@@ -173,7 +173,7 @@ size_t LOGUARTClass::write(const uint8_t uc_data)
     return 1;
 }
 
-#if defind(BOARD_RTL8720DN_BW16)
+#if defined(BOARD_RTL8720DN_BW16)
 LOGUARTClass Serial1(UART_LOG_IRQ, &rx_buffer0);
 bool Serial1_available() {
     return Serial1.available() > 0;
