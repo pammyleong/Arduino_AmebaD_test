@@ -106,15 +106,15 @@
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="2560"
      inkscape:window-height="1377"
      id="namedview1716"
      showgrid="false"
-     inkscape:zoom="3.6568818"
-     inkscape:cx="132.85697"
-     inkscape:cy="76.696908"
+     inkscape:zoom="5.1716118"
+     inkscape:cx="163.3548"
+     inkscape:cy="84.596076"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -20553,240 +20553,6 @@
        x="101.63139"
        y="12.171866">RTL8722DM_mini EVB</tspan></text>
   <g
-     id="g18770"
-     transform="translate(26.044126)"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231">
-    <path
-       id="path1007-8"
-       d="m 252.95297,36.709778 h -80"
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <ellipse
-       ry="1.0158954"
-       rx="0.913665"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       cy="36.709778"
-       cx="171.8575"
-       id="path1728-3-95-48"
-       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3193"
-       width="15.900417"
-       height="3.15938"
-       x="183.6824"
-       y="35.130089" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
-       x="194.11649"
-       y="35.725182"
-       id="text1045-7"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         id="tspan1078"
-         sodipodi:role="line"
-         x="194.11649"
-         y="35.725182">GPIOB_2</tspan></text>
-    <rect
-       y="34.894901"
-       x="204.94122"
-       height="3.6297538"
-       width="6.876514"
-       id="rect1330"
-       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1374"
-       y="35.926147"
-       x="216.89461"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         id="tspan1424"
-         sodipodi:role="line"
-         x="216.89461"
-         y="35.926147">INT</tspan></text>
-    <rect
-       y="35.103344"
-       x="216.91032"
-       height="3.2128704"
-       width="6.9382596"
-       id="rect1427"
-       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.06174;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1431"
-       y="35.929878"
-       x="230.50664"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         sodipodi:role="line"
-         id="tspan19274"
-         x="230.50664"
-         y="35.929878">A1</tspan></text>
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       style="fill:#d501ff;fill-opacity:1;stroke:#d501ff;stroke-width:1.63546;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1555"
-       width="21.36454"
-       height="3.117784"
-       x="247.19769"
-       y="35.150887" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       x="261.0343"
-       y="35.668404"
-       id="text1583"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         sodipodi:role="line"
-         id="tspan5447"
-         x="261.0343"
-         y="35.668404">Serial2_RX(a)</tspan></text>
-  </g>
-  <g
-     id="g18789"
-     transform="translate(26.044126)"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231">
-    <path
-       id="path1007"
-       d="m 252.36355,31.055758 h -80"
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <ellipse
-       ry="1.0158954"
-       rx="0.913665"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       cy="31.055758"
-       cx="171.8575"
-       id="path1728-3-95-96"
-       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       y="29.476068"
-       x="183.6824"
-       height="3.15938"
-       width="15.900417"
-       id="rect3191"
-       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1049-0"
-       y="30.363184"
-       x="194.11649"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         id="tspan1080"
-         sodipodi:role="line"
-         x="194.11649"
-         y="30.363184">GPIOB_1</tspan></text>
-    <rect
-       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1328"
-       width="6.876514"
-       height="3.6297538"
-       x="204.94122"
-       y="29.240881"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       x="216.89461"
-       y="30.56415"
-       id="text1378"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         id="tspan1426"
-         sodipodi:role="line"
-         x="216.89461"
-         y="30.56415">INT</tspan></text>
-    <rect
-       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1425"
-       width="6.8765135"
-       height="3.6297538"
-       x="216.94119"
-       y="29.240881"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       x="230.44463"
-       y="30.563402"
-       id="text1435"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         sodipodi:role="line"
-         id="tspan19272"
-         x="230.44463"
-         y="30.563402">A0</tspan></text>
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       y="29.49687"
-       x="247.19769"
-       height="3.11778"
-       width="21.364571"
-       id="rect1553"
-       style="fill:#d501ff;fill-opacity:1;stroke:#d501ff;stroke-width:1.63543;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1587"
-       y="30.30641"
-       x="261.0343"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         sodipodi:role="line"
-         id="tspan5445"
-         x="261.0343"
-         y="30.30641">Serial2_TX(a)</tspan></text>
-  </g>
-  <g
      id="g15752"
      transform="translate(111.35774,-102.24635)"
      inkscape:export-xdpi="96.357231"
@@ -22007,123 +21773,6 @@
          y="100.27026">SWDIO</tspan></text>
   </g>
   <g
-     id="g19403"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231"
-     transform="translate(31.400056)">
-    <ellipse
-       ry="1.0158954"
-       rx="0.913665"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       cy="42.36385"
-       cx="166.50157"
-       id="path1728-3-95-04"
-       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 223.42366,42.36385 H 167.336"
-       id="path1005-5-94" />
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3123-1"
-       width="15.900417"
-       height="3.15938"
-       x="178.32648"
-       y="40.784161" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
-       x="188.46886"
-       y="41.087223"
-       id="text1245"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         id="tspan1082"
-         sodipodi:role="line"
-         x="188.46886"
-         y="41.087223">GPIOB_3</tspan></text>
-    <rect
-       y="40.548973"
-       x="199.5853"
-       height="3.6297538"
-       width="6.876514"
-       id="rect1326"
-       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1406"
-       y="41.288185"
-       x="211.24698"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         id="tspan1428"
-         sodipodi:role="line"
-         x="211.24698"
-         y="41.288185">INT</tspan></text>
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.06174;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1178"
-       width="6.9382596"
-       height="3.2128704"
-       x="211.5544"
-       y="40.757416" />
-    <text
-       transform="scale(0.94835073,1.0544622)"
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       x="224.7955"
-       y="41.311344"
-       id="text1194"
-       inkscape:transform-center-x="0.4463946"
-       inkscape:transform-center-y="-1.489006"><tspan
-         sodipodi:role="line"
-         id="tspan19276"
-         x="224.7955"
-         y="41.311344">A2</tspan></text>
-    <rect
-       inkscape:export-ydpi="96.357231"
-       inkscape:export-xdpi="96.357231"
-       y="40.804958"
-       x="223.84151"
-       height="3.1177833"
-       width="12.365"
-       id="rect1360-2-0-3"
-       style="fill:#ffbe00;fill-opacity:1;stroke:#ffbe00;stroke-width:1.635;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1372-1-4-4"
-       y="41.288185"
-       x="236.92911"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         sodipodi:role="line"
-         id="tspan18640"
-         x="236.92911"
-         y="41.288185">SWCLK</tspan></text>
-  </g>
-  <g
      id="g19155"
      transform="translate(23.341592)"
      inkscape:export-xdpi="96.357231"
@@ -22304,21 +21953,132 @@
          y="73.286148">Serial1_TX(a)</tspan></text>
   </g>
   <g
-     id="g5784"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231"
-     transform="translate(31.400056)">
+     id="g5554">
+    <ellipse
+       ry="1.0158954"
+       rx="0.913665"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       cy="42.36385"
+       cx="197.90163"
+       id="path1728-3-95-04"
+       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
     <path
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 247.304,64.97998 h -80"
+       d="M 254.82372,42.36385 H 198.73606"
+       id="path1005-5-94" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3123-1"
+       width="15.900417"
+       height="3.15938"
+       x="209.72653"
+       y="40.784161" />
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
+       x="221.57903"
+       y="41.087223"
+       id="text1245"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         id="tspan1082"
+         sodipodi:role="line"
+         x="221.57903"
+         y="41.087223">GPIOB_3</tspan></text>
+    <rect
+       y="40.548973"
+       x="230.98535"
+       height="3.6297538"
+       width="6.876514"
+       id="rect1326"
+       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1406"
+       y="41.288185"
+       x="244.35715"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         id="tspan1428"
+         sodipodi:role="line"
+         x="244.35715"
+         y="41.288185">INT</tspan></text>
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.06174;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1178"
+       width="6.9382596"
+       height="3.2128704"
+       x="242.95445"
+       y="40.757416" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       y="40.804958"
+       x="255.24156"
+       height="3.1177833"
+       width="12.365"
+       id="rect1360-2-0-3"
+       style="fill:#ffbe00;fill-opacity:1;stroke:#ffbe00;stroke-width:1.635;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1372-1-4-4"
+       y="41.288185"
+       x="270.03928"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         sodipodi:role="line"
+         id="tspan18640"
+         x="270.03928"
+         y="41.288185">SWCLK</tspan></text>
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1164"
+       y="41.285946"
+       x="257.88922"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         sodipodi:role="line"
+         id="tspan19284"
+         x="257.88922"
+         y="41.285946">A6</tspan></text>
+  </g>
+  <g
+     id="g5634">
+    <path
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 278.70406,64.97998 h -80"
        id="path1005-5-52" />
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="63.400295"
-       x="178.32646"
+       x="209.72652"
        height="3.15938"
        width="15.900417"
        id="rect3119"
@@ -22328,7 +22088,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1053"
        y="62.535248"
-       x="188.46886"
+       x="221.57903"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22336,14 +22096,14 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          id="tspan1070"
          sodipodi:role="line"
-         x="188.46886"
+         x="221.57903"
          y="62.535248">GPIOB_7</tspan></text>
     <rect
        style="fill:#0000ff;fill-opacity:1;stroke:#0101ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1173"
        width="6.876514"
        height="3.6297538"
-       x="199.58528"
+       x="230.98534"
        y="63.165112"
        inkscape:export-xdpi="96.357231"
        inkscape:export-ydpi="96.357231" />
@@ -22353,44 +22113,29 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="211.24698"
+       x="244.35715"
        y="62.736214"
        id="text1140"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          y="62.736214"
-         x="211.24698"
+         x="244.35715"
          sodipodi:role="line"
          id="tspan1138">INT</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="63.373547"
-       x="211.55441"
+       x="242.95447"
        height="3.2128704"
        width="6.9382596"
        id="rect1148"
        style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.06174;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       inkscape:transform-center-y="-1.489006"
-       inkscape:transform-center-x="0.4463946"
-       id="text1164"
-       y="62.733971"
-       x="224.77908"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       xml:space="preserve"
-       inkscape:export-xdpi="96.357231"
-       inkscape:export-ydpi="96.357231"
-       transform="scale(0.94835073,1.0544622)"><tspan
-         sodipodi:role="line"
-         id="tspan19284"
-         x="224.77908"
-         y="62.733971">A6</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="63.327541"
-       x="223.74817"
+       x="255.14822"
        height="3.304889"
        width="12.551649"
        id="rect1337"
@@ -22400,7 +22145,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1395"
        y="62.739952"
-       x="236.82825"
+       x="269.93842"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22408,7 +22153,7 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5481"
-         x="236.82825"
+         x="269.93842"
          y="62.739952">PWM17</tspan></text>
     <ellipse
        ry="1.0158954"
@@ -22416,7 +22161,7 @@
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        cy="64.97998"
-       cx="166.50157"
+       cx="197.90163"
        id="path1728-3-95-97-7"
        style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
     <rect
@@ -22426,14 +22171,14 @@
        id="rect1269-7-6-9"
        width="21.364559"
        height="3.1177833"
-       x="241.84172"
+       x="273.24179"
        y="63.421089" />
     <text
        inkscape:transform-center-y="-1.489006"
        inkscape:transform-center-x="0.4463946"
        id="text1286-2-7-7"
        y="62.562141"
-       x="255.38666"
+       x="288.49683"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22441,19 +22186,31 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5455"
-         x="255.38666"
+         x="288.49683"
          y="62.562141">SPI1_CS(b)</tspan></text>
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="257.92136"
+       y="62.73621"
+       id="text1160"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         sodipodi:role="line"
+         id="tspan19278"
+         x="257.92136"
+         y="62.73621">A3</tspan></text>
   </g>
   <g
-     id="g5722"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231"
-     transform="translate(31.400056)">
+     id="g5573">
     <path
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 247.404,48.017887 h -80"
+       d="m 278.80406,48.017887 h -80"
        id="path1005-5-1" />
     <rect
        inkscape:export-ydpi="96.357231"
@@ -22462,7 +22219,7 @@
        id="rect3113"
        width="15.900417"
        height="3.15938"
-       x="178.32646"
+       x="209.72652"
        y="46.438198" />
     <text
        transform="scale(0.94835073,1.0544622)"
@@ -22470,18 +22227,18 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="188.46886"
+       x="221.57903"
        y="46.449234"
        id="text1065"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          id="tspan1072"
          sodipodi:role="line"
-         x="188.46886"
+         x="221.57903"
          y="46.449234">GPIOB_4</tspan></text>
     <rect
        y="46.203014"
-       x="199.58528"
+       x="230.98534"
        height="3.6297538"
        width="6.876514"
        id="rect1167"
@@ -22493,7 +22250,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1241"
        y="46.6502"
-       x="211.24698"
+       x="244.35715"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22501,7 +22258,7 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          id="tspan1272"
          sodipodi:role="line"
-         x="211.24698"
+         x="244.35715"
          y="46.6502">INT</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
@@ -22510,23 +22267,23 @@
        id="rect1142"
        width="6.9382596"
        height="3.2128704"
-       x="211.55441"
+       x="242.95447"
        y="46.411449" />
     <text
        transform="scale(0.94835073,1.0544622)"
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="224.81119"
-       y="46.6502"
-       id="text1160"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       x="257.90717"
+       y="46.649448"
+       id="text1435"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          sodipodi:role="line"
-         id="tspan19278"
-         x="224.81119"
-         y="46.6502">A3</tspan></text>
+         id="tspan19272"
+         x="257.90717"
+         y="46.649448">A0</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
@@ -22534,7 +22291,7 @@
        id="rect1331"
        width="12.551649"
        height="3.304889"
-       x="223.74817"
+       x="255.14822"
        y="46.365444" />
     <text
        transform="scale(0.94835073,1.0544622)"
@@ -22542,14 +22299,14 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="237.79572"
+       x="270.90588"
        y="46.6502"
        id="text1381"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          sodipodi:role="line"
          id="tspan5477"
-         x="237.79572"
+         x="270.90588"
          y="46.6502">PWM8</tspan></text>
     <ellipse
        ry="1.0158954"
@@ -22557,7 +22314,7 @@
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        cy="48.017887"
-       cx="166.50157"
+       cx="197.90163"
        id="path1728-3-95-97-1"
        style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
     <rect
@@ -22567,14 +22324,14 @@
        id="rect1265-0-0"
        width="21.364559"
        height="3.1177833"
-       x="241.84172"
+       x="273.24179"
        y="46.458996" />
     <text
        inkscape:transform-center-y="-1.489006"
        inkscape:transform-center-x="0.4463946"
        id="text1277-8-0"
        y="46.476128"
-       x="255.38666"
+       x="288.49683"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22582,25 +22339,136 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5449"
-         x="255.38666"
+         x="288.49683"
          y="46.476128">SPI1_MOSI(b)</tspan></text>
   </g>
   <g
-     id="g5744"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231"
-     transform="translate(31.400056)">
+     id="g5522">
+    <path
+       id="path1007"
+       d="m 278.40768,31.055758 h -80"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <ellipse
+       ry="1.0158954"
+       rx="0.913665"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       cy="31.055758"
+       cx="197.90163"
+       id="path1728-3-95-96"
+       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       y="29.476068"
+       x="209.72653"
+       height="3.15938"
+       width="15.900417"
+       id="rect3191"
+       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1049-0"
+       y="30.363184"
+       x="221.57903"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         id="tspan1080"
+         sodipodi:role="line"
+         x="221.57903"
+         y="30.363184">GPIOB_1</tspan></text>
+    <rect
+       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1328"
+       width="6.876514"
+       height="3.6297538"
+       x="230.98535"
+       y="29.240881"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       x="244.35715"
+       y="30.56415"
+       id="text1378"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         id="tspan1426"
+         sodipodi:role="line"
+         x="244.35715"
+         y="30.56415">INT</tspan></text>
+    <rect
+       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1425"
+       width="6.8765135"
+       height="3.6297538"
+       x="242.98532"
+       y="29.240881"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       y="29.49687"
+       x="273.24182"
+       height="3.11778"
+       width="21.364571"
+       id="rect1553"
+       style="fill:#d501ff;fill-opacity:1;stroke:#d501ff;stroke-width:1.63543;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1587"
+       y="30.30641"
+       x="288.49686"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         sodipodi:role="line"
+         id="tspan5445"
+         x="288.49686"
+         y="30.30641">Serial2_TX(a)</tspan></text>
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1156"
+       y="30.56415"
+       x="257.88025"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         sodipodi:role="line"
+         id="tspan19280"
+         x="257.88025"
+         y="30.56415">A4</tspan></text>
+  </g>
+  <g
+     id="g5595">
     <path
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        style="fill:none;stroke:#000000;stroke-width:0.499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 272.336,53.67191 h -105"
+       d="m 303.73606,53.67191 h -105"
        id="path1005-5-2" />
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="52.09222"
-       x="178.32646"
+       x="209.72652"
        height="3.15938"
        width="15.900417"
        id="rect3115"
@@ -22610,7 +22478,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1061"
        y="51.811226"
-       x="188.46886"
+       x="221.57903"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22618,14 +22486,14 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          id="tspan1074"
          sodipodi:role="line"
-         x="188.46886"
+         x="221.57903"
          y="51.811226">GPIOB_5</tspan></text>
     <rect
        style="fill:#0000ff;fill-opacity:1;stroke:#0101ff;stroke-width:1.12348;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1169"
        width="6.8765159"
        height="3.6297529"
-       x="199.58528"
+       x="230.98534"
        y="51.857037"
        inkscape:export-xdpi="96.357231"
        inkscape:export-ydpi="96.357231" />
@@ -22635,20 +22503,20 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="211.24698"
+       x="244.35715"
        y="52.012192"
        id="text1237"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          id="tspan1274"
          sodipodi:role="line"
-         x="211.24698"
+         x="244.35715"
          y="52.012192">INT</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="52.065472"
-       x="211.55441"
+       x="242.95447"
        height="3.2128704"
        width="6.9382596"
        id="rect1144"
@@ -22656,23 +22524,23 @@
     <text
        inkscape:transform-center-y="-1.489006"
        inkscape:transform-center-x="0.4463946"
-       id="text1156"
-       y="52.012192"
-       x="224.77011"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="text1431"
+       y="52.01593"
+       x="257.96918"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
        inkscape:export-ydpi="96.357231"
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
-         id="tspan19280"
-         x="224.77011"
-         y="52.012192">A4</tspan></text>
+         id="tspan19274"
+         x="257.96918"
+         y="52.01593">A1</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="52.019466"
-       x="223.74817"
+       x="255.14822"
        height="3.304889"
        width="12.551649"
        id="rect1333"
@@ -22682,7 +22550,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1377"
        y="52.012939"
-       x="237.80542"
+       x="270.91559"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22690,7 +22558,7 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5479"
-         x="237.80542"
+         x="270.91559"
          y="52.012939">PWM9</tspan></text>
     <ellipse
        ry="1.0158954"
@@ -22698,14 +22566,14 @@
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        cy="53.671909"
-       cx="166.50157"
+       cx="197.90163"
        id="path1728-3-95-97-6"
        style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="52.113018"
-       x="241.84172"
+       x="273.24179"
        height="3.1177833"
        width="21.364559"
        id="rect1267-7-7"
@@ -22716,20 +22584,20 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
-       x="255.38666"
+       x="288.49683"
        y="51.838123"
        id="text1281-9-5"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          sodipodi:role="line"
          id="tspan5451"
-         x="255.38666"
+         x="288.49683"
          y="51.838123">SPI1_MISO(b)</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="52.113018"
-       x="268.84219"
+       x="300.24225"
        height="3.1177833"
        width="21.36454"
        id="rect1360-2-7"
@@ -22739,7 +22607,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1372-1-6"
        y="51.838123"
-       x="283.85315"
+       x="316.96332"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22747,19 +22615,130 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5441"
-         x="283.85315"
+         x="316.96332"
          y="51.838123">I2C0_SCL(b)</tspan></text>
   </g>
   <g
-     id="g5764"
-     inkscape:export-xdpi="96.357231"
-     inkscape:export-ydpi="96.357231"
-     transform="translate(31.400056)">
+     id="g5538">
+    <path
+       id="path1007-8"
+       d="m 278.9971,36.709778 h -80"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <ellipse
+       ry="1.0158954"
+       rx="0.913665"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       cy="36.709778"
+       cx="197.90163"
+       id="path1728-3-95-48"
+       style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       style="fill:#808080;fill-opacity:1;stroke:#808080;stroke-width:1.59386;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3193"
+       width="15.900417"
+       height="3.15938"
+       x="209.72653"
+       y="35.130089" />
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:2.29503"
+       x="221.57903"
+       y="35.725182"
+       id="text1045-7"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         id="tspan1078"
+         sodipodi:role="line"
+         x="221.57903"
+         y="35.725182">GPIOB_2</tspan></text>
+    <rect
+       y="34.894901"
+       x="230.98535"
+       height="3.6297538"
+       width="6.876514"
+       id="rect1330"
+       style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:1.12349;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <text
+       inkscape:transform-center-y="-1.489006"
+       inkscape:transform-center-x="0.4463946"
+       id="text1374"
+       y="35.926147"
+       x="244.35715"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       xml:space="preserve"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231"
+       transform="scale(0.94835073,1.0544622)"><tspan
+         id="tspan1424"
+         sodipodi:role="line"
+         x="244.35715"
+         y="35.926147">INT</tspan></text>
+    <rect
+       y="35.103344"
+       x="242.95445"
+       height="3.2128704"
+       width="6.9382596"
+       id="rect1427"
+       style="fill:#33cc66;fill-opacity:1;stroke:#33cc66;stroke-width:1.06174;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="96.357231"
+       inkscape:export-ydpi="96.357231" />
+    <rect
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       style="fill:#d501ff;fill-opacity:1;stroke:#d501ff;stroke-width:1.63546;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1555"
+       width="21.36454"
+       height="3.117784"
+       x="273.24182"
+       y="35.150887" />
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       x="288.49686"
+       y="35.668404"
+       id="text1583"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         sodipodi:role="line"
+         id="tspan5447"
+         x="288.49686"
+         y="35.668404">Serial2_RX(a)</tspan></text>
+    <text
+       transform="scale(0.94835073,1.0544622)"
+       inkscape:export-ydpi="96.357231"
+       inkscape:export-xdpi="96.357231"
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="257.91464"
+       y="35.902985"
+       id="text1152"
+       inkscape:transform-center-x="0.4463946"
+       inkscape:transform-center-y="-1.489006"><tspan
+         sodipodi:role="line"
+         id="tspan19282"
+         x="257.91464"
+         y="35.902985">A5</tspan></text>
+  </g>
+  <g
+     id="g5614">
     <path
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        style="fill:none;stroke:#000000;stroke-width:0.499997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 272.00764,59.325946 h -105"
+       d="m 303.4077,59.325946 h -105"
        id="path1005-5" />
     <rect
        inkscape:export-ydpi="96.357231"
@@ -22768,7 +22747,7 @@
        id="rect3117"
        width="15.900417"
        height="3.15938"
-       x="178.32646"
+       x="209.72652"
        y="57.746258" />
     <text
        transform="scale(0.94835073,1.0544622)"
@@ -22776,18 +22755,18 @@
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="188.46886"
+       x="221.57903"
        y="57.173241"
        id="text1057"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          id="tspan1076"
          sodipodi:role="line"
-         x="188.46886"
+         x="221.57903"
          y="57.173241">GPIOB_6</tspan></text>
     <rect
        y="57.511074"
-       x="199.58528"
+       x="230.98534"
        height="3.6297538"
        width="6.876514"
        id="rect1171"
@@ -22799,7 +22778,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1233"
        y="57.374207"
-       x="211.24698"
+       x="244.35715"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22807,7 +22786,7 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          id="tspan1276"
          sodipodi:role="line"
-         x="211.24698"
+         x="244.35715"
          y="57.374207">INT</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
@@ -22816,30 +22795,30 @@
        id="rect1146"
        width="6.9382596"
        height="3.2128704"
-       x="211.55441"
+       x="242.95447"
        y="57.719509" />
     <text
        transform="scale(0.94835073,1.0544622)"
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="224.80447"
-       y="57.351044"
-       id="text1152"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
+       x="257.90567"
+       y="57.397362"
+       id="text1194"
        inkscape:transform-center-x="0.4463946"
        inkscape:transform-center-y="-1.489006"><tspan
          sodipodi:role="line"
-         id="tspan19282"
-         x="224.80447"
-         y="57.351044">A5</tspan></text>
+         id="tspan19276"
+         x="257.90567"
+         y="57.397362">A2</tspan></text>
     <ellipse
        ry="1.0158954"
        rx="0.913665"
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        cy="59.325947"
-       cx="166.50157"
+       cx="197.90163"
        id="path1728-3-95-04-8"
        style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.746862;stroke-opacity:1" />
     <rect
@@ -22849,14 +22828,14 @@
        id="rect1269-7-69"
        width="21.364559"
        height="3.1177833"
-       x="241.84172"
+       x="273.24179"
        y="57.767056" />
     <text
        inkscape:transform-center-y="-1.489006"
        inkscape:transform-center-x="0.4463946"
        id="text1286-2-4"
        y="57.200134"
-       x="255.38666"
+       x="288.49683"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.29503;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22864,13 +22843,13 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5453"
-         x="255.38666"
+         x="288.49683"
          y="57.200134">SPI1_CLK(b)</tspan></text>
     <rect
        inkscape:export-ydpi="96.357231"
        inkscape:export-xdpi="96.357231"
        y="57.767056"
-       x="268.84219"
+       x="300.24225"
        height="3.1177833"
        width="21.36454"
        id="rect1360-6"
@@ -22880,7 +22859,7 @@
        inkscape:transform-center-x="0.4463946"
        id="text1372-3"
        y="57.200134"
-       x="283.85312"
+       x="316.96329"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.06003px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.295;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-xdpi="96.357231"
@@ -22888,7 +22867,7 @@
        transform="scale(0.94835073,1.0544622)"><tspan
          sodipodi:role="line"
          id="tspan5439"
-         x="283.85312"
+         x="316.96329"
          y="57.200134">I2C0_SDA(b)</tspan></text>
   </g>
   <g
