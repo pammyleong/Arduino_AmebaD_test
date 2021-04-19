@@ -18,8 +18,8 @@ void setup() {
     fft.getFrequencyBins(freq_bins, SAMPLECOUNT, SAMPLERATE);
 
     for (i = 0; i < (SAMPLECOUNT/2); i++) {
-      Serial.print(freq_bins[i]);
-      Serial.print(" Hz | ");
+        Serial.print(freq_bins[i]);
+        Serial.print(" Hz | ");
     }
     Serial.println();
     
@@ -32,12 +32,12 @@ void loop() {
         Codec.readDataPage(audio_buffer, SAMPLECOUNT);    // read latest received data from buffer
         fft.calculate(audio_buffer, fft_buffer, SAMPLECOUNT);
         for (i = 0; i < (SAMPLECOUNT/2); i++) {
-          if (fft_buffer[i] > 0.01) {
-            Serial.print(fft_buffer[i],2);
-			Serial.print(" | ");
-          } else {
-            Serial.print(" - |");
-          }
+            if (fft_buffer[i] > 0.01) {
+                Serial.print(fft_buffer[i],2);
+                Serial.print(" | ");
+            } else {
+                Serial.print(" - |");
+            }
         }
         Serial.println();
     }
