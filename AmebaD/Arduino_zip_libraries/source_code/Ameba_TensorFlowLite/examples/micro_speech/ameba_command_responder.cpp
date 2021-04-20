@@ -28,10 +28,10 @@ limitations under the License.
 #define LEDB LED_B
 #define LEDW LED_G
 #else
-#define LEDR 3
-#define LEDG 4
-#define LEDB 5
-#define LEDW 6
+#define LEDR 8
+#define LEDG 9
+#define LEDB 10
+#define LEDW 11
 #endif
 
 // Toggles the built-in LED every inference, and lights a colored LED depending
