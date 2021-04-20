@@ -134,7 +134,7 @@ IRDevice::IRDevice() {
 
 void IRDevice::setPins(uint8_t receivePin, uint8_t transmitPin) {
     if (receivePin == 3) {
-        Pinmux_Config(_PB_31, PINMUX_FUNCTION_IR);
+        Pinmux_Config(_PB_29, PINMUX_FUNCTION_IR);
     } else if (receivePin == 8) {
         Pinmux_Config(_PB_22, PINMUX_FUNCTION_IR);
     } else if (receivePin == 17) {
@@ -145,7 +145,7 @@ void IRDevice::setPins(uint8_t receivePin, uint8_t transmitPin) {
     }
 
     if (transmitPin == 6) {
-        Pinmux_Config(_PB_29, PINMUX_FUNCTION_IR);
+        Pinmux_Config(_PB_31, PINMUX_FUNCTION_IR);
     } else if (transmitPin == 9) {
         Pinmux_Config(_PB_23, PINMUX_FUNCTION_IR);
     } else if (transmitPin == 16) {
