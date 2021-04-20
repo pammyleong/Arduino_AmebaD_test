@@ -1,1 +1,1 @@
-Please download and unzip for all zip libraries for source code. 
+Please download and unzip all zip libraries for source code. 
