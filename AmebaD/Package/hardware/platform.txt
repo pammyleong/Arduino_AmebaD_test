@@ -12,7 +12,7 @@ version=3.0.9
 # ----------------------
 
 #ameba.sdkpath={build.system.path}/libameba/sdk
-ameba.sdkpath={build.sdk.path}
+ameba.sdkpath={build.system.path}
 ameba.project=realtek_amebaD_va0_example
 
 # Ameba compile variables
