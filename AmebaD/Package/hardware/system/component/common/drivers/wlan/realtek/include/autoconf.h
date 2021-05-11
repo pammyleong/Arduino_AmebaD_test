@@ -862,12 +862,13 @@ extern unsigned int g_ap_sta_num;
 
 #define TIME_THRES	20
 
+// zzw
 /* 80211 - K V R */
-#define CONFIG_IEEE80211K
-#define CONFIG_LAYER2_ROAMING
+//#define CONFIG_IEEE80211K
+//#define CONFIG_LAYER2_ROAMING
 #ifdef CONFIG_LAYER2_ROAMING
-    #define CONFIG_RTW_WNM
-    #define CONFIG_IEEE80211R
+    //#define CONFIG_RTW_WNM
+    //#define CONFIG_IEEE80211R
 #endif
 
 #endif //WLANCONFIG_H
