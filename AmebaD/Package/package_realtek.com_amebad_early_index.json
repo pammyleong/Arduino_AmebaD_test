@@ -8,7 +8,6 @@
       "help": {
         "online": "https://www.amebaiot.com/"
       },
-
       "platforms": [
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
