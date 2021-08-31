@@ -13,15 +13,15 @@
 #include "SPI.h"
 #include "AmebaILI9341.h"
 
-#if defined(BOARD_RTL8195A)
+#if defined(BOARD_RTL8195AM)
 #define TFT_RESET       8
 #define TFT_DC          9
 #define TFT_CS          10
-#elif defined(BOARD_RTL8710)
+#elif defined(BOARD_RTL8710AF)
 #define TFT_RESET       5
 #define TFT_DC          2
 #define TFT_CS          10
-#elif defined(BOARD_RTL8722D)
+#elif defined(BOARD_RTL8722DM)
 #define TFT_RESET       8
 #define TFT_DC          9
 #define TFT_CS          10
@@ -29,6 +29,10 @@
 #define TFT_RESET       8
 #define TFT_DC          13
 #define TFT_CS          12
+#elif defined(BOARD_RTL8720DN_BW16)
+#define TFT_RESET       2
+#define TFT_DC          8
+#define TFT_CS          9
 #endif
 
 AmebaILI9341 tft = AmebaILI9341(TFT_CS, TFT_DC, TFT_RESET);
