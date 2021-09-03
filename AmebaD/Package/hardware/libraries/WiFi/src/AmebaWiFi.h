@@ -1,5 +1,5 @@
 /*
-  WiFi.h - Library for Arduino Wifi shield.
+  AmebaWiFi.h - Library for Arduino Wifi shield.
   Copyright (c) 2011-2014 Arduino LLC.  All right reserved.
 
   This library is free software; you can redistribute it and/or
@@ -29,10 +29,10 @@ extern "C" {
 }
 
 #include "IPAddress.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
-#include "WiFiSSLClient.h"
-#include "WiFiUdp.h"
+#include "AmebaWiFiClient.h"
+#include "AmebaWiFiServer.h"
+#include "AmebaWiFiSSLClient.h"
+#include "AmebaWiFiUdp.h"
 
 class WiFiClass
 {

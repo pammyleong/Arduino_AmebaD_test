@@ -1,5 +1,5 @@
-#include "WiFi.h"
-#include "WiFiSSLClient.h"
+#include "AmebaWiFi.h"
+#include "AmebaWiFiSSLClient.h"
 
 extern "C" {
     #include "wl_definitions.h"

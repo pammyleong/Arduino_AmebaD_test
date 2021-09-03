@@ -19,10 +19,10 @@
 #include <string.h>
 #include "server_drv.h"
 #include "wifi_drv.h"
-#include "WiFi.h"
-#include "WiFiUdp.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
+#include "AmebaWiFi.h"
+#include "AmebaWiFiUdp.h"
+#include "AmebaWiFiClient.h"
+#include "AmebaWiFiServer.h"
 
 #ifdef __cplusplus
 extern "C" {
