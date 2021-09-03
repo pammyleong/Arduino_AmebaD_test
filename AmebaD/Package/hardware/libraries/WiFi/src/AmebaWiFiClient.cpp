@@ -1,4 +1,4 @@
-#include "WiFi.h"
+#include "AmebaWiFi.h"
 
 extern "C" {
     #include "wl_definitions.h"
@@ -8,8 +8,8 @@ extern "C" {
     #include "update.h"
 }
 
-#include "WiFiClient.h"
-#include "WiFiServer.h"
+#include "AmebaWiFiClient.h"
+#include "AmebaWiFiServer.h"
 #include "server_drv.h"
 
 

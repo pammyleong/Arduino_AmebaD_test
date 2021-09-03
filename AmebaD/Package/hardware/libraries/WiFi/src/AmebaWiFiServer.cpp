@@ -19,9 +19,9 @@
 
 #include <string.h>
 #include "server_drv.h"
-#include "WiFi.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
+#include "AmebaWiFi.h"
+#include "AmebaWiFiClient.h"
+#include "AmebaWiFiServer.h"
 
 WiFiServer::WiFiServer(uint16_t port)
 {
