@@ -19,8 +19,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t10-ipv6.tar.gz",
           "archiveFileName": "ameba_d-3.0.9-t10-ipv6.tar.gz",
-          "checksum": "SHA-256:c090e029148c2155c04d94185b8c2e7e22c64c02acd29588869d4b7478fc9050",
-          "size": "44119392",
+          "checksum": "SHA-256:f9737d41c72c5a8cecbb2f62538d520291b4288d5746853503c18189a894f0eb",
+          "size": "44120037",
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"},
