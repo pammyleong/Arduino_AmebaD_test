@@ -12,6 +12,37 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
+          "version": "3.0.9-t11",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t11.tar.gz",
+          "archiveFileName": "ameba_d-3.0.9-t11.tar.gz",
+          "checksum": "SHA-256:93f8d49eca03c41b25a84bd732d45aef8d91f783762c51117467f6ef09e4b573",
+          "size": "48471965",
+          "boards": [
+            {"name": "RTL8722DM"},
+            {"name": "RTL8722CSM"},
+            {"name": "RTL8722DM_MINI"},
+            {"name": "RTL8720DN/BW16"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_d_asdk_toolchain",
+              "version": "1.0.1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_d_tools",
+              "version": "1.0.5"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
+          "architecture": "AmebaD",
           "version": "3.0.9-t10-ipv6",
           "category": "Contributed",
           "help": {
@@ -410,10 +441,10 @@
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "ameba_d_tools_linux-1.0.5.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.5.tar.gz",
-              "checksum": "SHA-256:5bb57ffff6cdf75c0951ddcc4e23f14bf8f8445f88ec2697fa8350d97f2c6b72",
-              "size": "2526007"
+              "archiveFileName": "ameba_d_tools_linux-1.0.5-v02.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.5-v02.tar.gz",
+              "checksum": "SHA-256:d790f242db750575d5307670bf106da69e63b19b77e3e46a59b7550ee0313555",
+              "size": "2496623"
             },
             {
               "host": "x86_64-apple-darwin",
