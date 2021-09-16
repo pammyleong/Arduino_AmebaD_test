@@ -42,7 +42,7 @@ build.extra_flags=
 
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
-compiler.c.elf.extra_flags= -Wl,--cref -Wl,--gc-sections  -Wl,--entry=Reset_Handler -Wl,--no-enum-size-warning -Wl,--no-wchar-size-warning -Wl,--undefined=InfraStart
+compiler.c.elf.extra_flags= -Wl,--cref -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--no-enum-size-warning -Wl,--no-wchar-size-warning -Wl,--undefined=InfraStart -Wl,-wrap,malloc -Wl,-wrap,free -Wl,-wrap,realloc -Wl,-wrap,_malloc_r -Wl,-wrap,_free_r -Wl,-wrap,_realloc_r -Wl,-wrap,rom_psk_CalcGTK -Wl,-wrap,rom_psk_CalcPTK -Wl,-wrap,aes_80211_encrypt -Wl,-wrap,aes_80211_decrypt
 compiler.cpp.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
