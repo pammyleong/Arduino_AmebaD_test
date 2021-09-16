@@ -5,13 +5,13 @@
 # For more info:
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
-name=Ameba ARM (32-bits) Boards
-version=2.0.9
+name=Ameba1 ARM (32-bits) Boards
+version=2.0.X
 
 # Ameba project settings
 # ----------------------
 
-ameba.sdkpath={build.system.path}/libameba/sdk
+ameba.sdkpath={build.system.path}
 ameba.project=realtek_ameba1_va0_example
 
 # Ameba compile variables
