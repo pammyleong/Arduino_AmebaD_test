@@ -156,7 +156,7 @@
 #endif
 //#define AP_PSK_SUPPORT_TKIP
 
-#ifndef ARDUINO_SDK
+#if 0
 #define CONFIG_PMKSA_CACHING
 
 /* For WPA3 */
