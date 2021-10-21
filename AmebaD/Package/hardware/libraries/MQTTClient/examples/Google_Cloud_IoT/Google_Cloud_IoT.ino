@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <AmebaWiFi.h>
+#include <WiFi.h>
 #include <NTPClient.h>
 #include <PubSubClient.h>
 #include "src/jwt.h"
@@ -152,4 +152,3 @@ void loop() {
 
   timeClient.update();
 }
-

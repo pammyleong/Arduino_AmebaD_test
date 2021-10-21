@@ -12,15 +12,15 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
-          "version": "3.0.9-t11",
+          "version": "3.1.0-t01",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t11.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t11.tar.gz",
-          "checksum": "SHA-256:93f8d49eca03c41b25a84bd732d45aef8d91f783762c51117467f6ef09e4b573",
-          "size": "48471965",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.1.0-t01.tar.gz",
+          "archiveFileName": "ameba_d-3.1.0-t01.tar.gz",
+          "checksum": "SHA-256:996ee36cd20e748b13e1d461817846b9bc2e7b314afc37576564388e4e589fe1",
+          "size": "36336037",
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"},
@@ -43,144 +43,20 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
-          "version": "3.0.9-t10-ipv6",
+          "version": "3.0.9-t11",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t10-ipv6.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t10-ipv6.tar.gz",
-          "checksum": "SHA-256:f9737d41c72c5a8cecbb2f62538d520291b4288d5746853503c18189a894f0eb",
-          "size": "44120037",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t11.tar.gz",
+          "archiveFileName": "ameba_d-3.0.9-t11.tar.gz",
+          "checksum": "SHA-256:93f8d49eca03c41b25a84bd732d45aef8d91f783762c51117467f6ef09e4b573",
+          "size": "48471965",
           "boards": [
             {"name": "RTL8722DM"},
             {"name": "RTL8722CSM"},
             {"name": "RTL8722DM_MINI"},
-            {"name": "RTL8720DN_BW16"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_d_tools",
-              "version": "1.0.5"
-            }
-          ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
-          "architecture": "AmebaD",
-          "version": "3.0.9-t10",
-          "category": "Contributed",
-          "help": {
-            "online": "http://www.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t10.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t10.tar.gz",
-          "checksum": "SHA-256:97fb069ddb76ced4a3cc63d60cf9bdca99bd034c700d26c107fd04ea0605494e",
-          "size": "43645538",
-          "boards": [
-            {"name": "RTL8722DM"},
-            {"name": "RTL8722CSM"},
-            {"name": "RTL8722DM_MINI"},
-            {"name": "RTL8720DN_BW16"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_d_tools",
-              "version": "1.0.5"
-            }
-          ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
-          "architecture": "AmebaD",
-          "version": "3.0.9-t09",
-          "category": "Contributed",
-          "help": {
-            "online": "http://www.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t09.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t09.tar.gz",
-          "checksum": "SHA-256:ff9070ec6eebe06caddc015d4fb3e720473b3f050e016528346e73a7cac7f146",
-          "size": "43669116",
-          "boards": [
-            {"name": "RTL8722DM"},
-            {"name": "RTL8722CSM"},
-            {"name": "RTL8722DM_MINI"},
-            {"name": "RTL8720DN_BW16"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_d_tools",
-              "version": "1.0.5"
-            }
-          ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
-          "architecture": "AmebaD",
-          "version": "3.0.9-t08",
-          "category": "Contributed",
-          "help": {
-            "online": "http://www.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t08.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t08.tar.gz",
-          "checksum": "SHA-256:6fceba27d99aec8ade2c3beddd7c9f38b00f70b7c0e4d90b58ca3a80fcb6fdf3",
-          "size": "43664755",
-          "boards": [
-            {"name": "RTL8722DM"},
-            {"name": "RTL8722CSM"},
-            {"name": "RTL8722DM_MINI"},
-            {"name": "RTL8720DN_BW16"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_d_asdk_toolchain",
-              "version": "1.0.1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_d_tools",
-              "version": "1.0.5"
-            }
-          ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
-          "architecture": "AmebaD",
-          "version": "3.0.9-t07",
-          "category": "Contributed",
-          "help": {
-            "online": "http://www.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.0.9-t07.tar.gz",
-          "archiveFileName": "ameba_d-3.0.9-t07.tar.gz",
-          "checksum": "SHA-256:70907dc10020dd04172b7b53bbd1b65fa1e99156db105805bd1e8b16038b257e",
-          "size": "43670933",
-          "boards": [
-            {"name": "RTL8722DM"},
-            {"name": "RTL8722CSM"},
-            {"name": "RTL8722DM_MINI"},
-            {"name": "RTL8720DN_BW16"}
+            {"name": "RTL8720DN/BW16"}
           ],
           "toolsDependencies": [
             {
