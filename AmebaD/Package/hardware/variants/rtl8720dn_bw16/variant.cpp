@@ -53,14 +53,14 @@ PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
     {PA_7,      NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 2, Serial(0) TX
     {PA_25,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL}, //Arduino pin 3, PWM, Default Serial2 TX, I2C0 SCL, IR TX
     {PB_3,      NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 4, A2,
-    {PA_12,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL}  //Arduino pin 5, SPI1 MOSI, PWM, RED LED
+    {PA_12,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL}, //Arduino pin 5, SPI1 MOSI, PWM, RED LED
     {PA_30,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 6
     {PA_14,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 7, SPI1 CLK, GREEN LED
     {PA_13,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL}, //Arduino pin 8, SPI1 MISO, PWM, BLUE LED
     {PA_8,      NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 9, Serial(0) RX
     {PA_26,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM    , NOT_INITIAL}, //Arduino pin 10, PWM, Default Serial2 RX, I2C0 SDA, IR RX
     {PA_27,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 11
-    {PA_15,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 12, SPI1 CS
+    {PA_15,     NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}  //Arduino pin 12, SPI1 CS
     };
 #endif
 
