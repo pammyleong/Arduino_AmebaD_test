@@ -17,29 +17,26 @@
  * CTS is pin PA_15 (connect to the other device RTS)
 
  The circuit: (BOARD RTL8720DN/BW16)
- * RX is digital pin PB2 / 1 (connect to the other device TX)
- * TX is digital pin PB1 / 0 (connect to the other device RX)
+ * RX is digital pin PB2 (connect to the other device TX)
+ * TX is digital pin PB1 (connect to the other device RX)
  * RTS is pin PA_14 (connect to the other device CTS)
  * CTS is pin PA_15 (connect to the other device RTS)
  */
 
 #include <SoftwareSerial.h>
 
+//RTS and CTS pins are fixed, it should not be changed by default.
 #define RTS_PIN PA_14
 #define CTS_PIN PA_15
 
 #if defined(BOARD_RTL8722DM)
-SoftwareSerial mySerial(0, 1); // RX, TX
-
+    SoftwareSerial mySerial(0, 1); // RX, TX
 #elif defined(BOARD_RTL8722DM_MINI)
-SoftwareSerial mySerial(2, 1); // RX, TX
-
+    SoftwareSerial mySerial(2, 1); // RX, TX
 #elif defined(BOARD_RTL8720DN_BW16)
-SoftwareSerial mySerial(PB2, PB1); // RX, TX
-//SoftwareSerial mySerial(1, 0); // RX, TX
-
+    SoftwareSerial mySerial(PB2, PB1); // RX, TX
 #else
-SoftwareSerial mySerial(0, 1); // RX, TX
+    SoftwareSerial mySerial(0, 1); // RX, TX
 #endif
 
 

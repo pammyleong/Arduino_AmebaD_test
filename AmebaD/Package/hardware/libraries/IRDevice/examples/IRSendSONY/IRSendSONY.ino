@@ -7,8 +7,8 @@
 #elif defined(BOARD_RTL8722DM_MINI)
 #error Sorry, RTL8722DM_MINI do not support.
 #elif defined(BOARD_RTL8720DN_BW16)
-#define IR_RX_PIN       PA26  // 10
-#define IR_TX_PIN       PA25  // 3
+#define IR_RX_PIN       PA26
+#define IR_TX_PIN       PA25
 #endif
 
 #define CARRIER_FREQ  40000

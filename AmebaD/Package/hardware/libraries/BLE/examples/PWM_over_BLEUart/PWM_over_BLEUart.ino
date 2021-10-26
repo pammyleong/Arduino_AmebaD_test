@@ -11,9 +11,9 @@
 #define LED_GRN      5
 #define LED_BLU      7
 #elif defined(BOARD_RTL8720DN_BW16)
-#define LED_RED      PA25  // 3
-#define LED_GRN      PA12  // 5
-#define LED_BLU      PA13  // 8
+#define LED_RED      PA25
+#define LED_GRN      PA12
+#define LED_BLU      PA13
 #endif
 
 #define UART_SERVICE_UUID      "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"

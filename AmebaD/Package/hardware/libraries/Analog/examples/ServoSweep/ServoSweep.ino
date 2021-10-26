@@ -26,8 +26,7 @@ void setup() {
     // attaches the servo on PWM pin 7 to the servo object
     myservo.attach(7);
 #elif defined(BOARD_RTL8720DN_BW16)
-    // attaches the servo on PWM pin PA25/3 to the servo object
-    //myservo.attach(3);
+    // attaches the servo on PWM pin PA25 to the servo object
     myservo.attach(PA25);
 #else
     // attaches the servo on PWM pin 10 to the servo object

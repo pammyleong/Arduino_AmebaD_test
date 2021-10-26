@@ -313,7 +313,6 @@ SPIClass SPI((void *)(&spi_obj0), 9, 10, 11, 12);
 
 #elif defined(BOARD_RTL8720DN_BW16)
 SPIClass SPI((void *)(&spi_obj0), PA12, PA13, PA14, PA15);
-//SPIClass SPI((void *)(&spi_obj0), 5, 8, 7, 12);
 
 #else
 #error chack the borad supported

@@ -32,12 +32,12 @@
     GND  : connect to GND
 
   For RTL8720DN/BW16, ILI9341 TFT LCD with SPI interface has these pins:
-    RST  : connect to pin PA27  // 11
-    D/C  : connect to pin PA26  // 10
-    CS   : connect to pin PA15  // 12
-    MOSI : connect to pin PA12  // 5
-    MISO : connect to pin PA13  // 8
-    CLK  : connect to pin PA14  // 7
+    RST  : connect to pin PA27
+    D/C  : connect to pin PA26
+    CS   : connect to pin PA15
+    MOSI : connect to pin PA12
+    MISO : connect to pin PA13
+    CLK  : connect to pin PA14
     VCC  : connect to 3V3
     GND  : connect to GND
  */
@@ -66,10 +66,9 @@ SoftwareSerial mySerial(2, 1); // RX, TX
 #elif defined(BOARD_RTL8720DN_BW16)
 // RTL8720DN/BW16 -- Do NOT change this pin setting, as softserial is currently only supported on selected pins
 SoftwareSerial mySerial(PB2, PB1); // RX, TX
-//SoftwareSerial mySerial(1, 0); // RX, TX
-#define TFT_RESET       PA27    // 11
-#define TFT_DC          PA26    // 10
-#define TFT_CS          PA15    // 12
+#define TFT_RESET       PA27
+#define TFT_DC          PA26
+#define TFT_CS          PA15
 
 #endif
 

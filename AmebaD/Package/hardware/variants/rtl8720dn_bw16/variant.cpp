@@ -28,7 +28,7 @@ void __libc_init_array(void);
 /*
  * Pins descriptions
  */
-#if 0
+#if 1
 PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
 {
     {PA_7,      NOT_INITIAL, PIO_GPIO | PIO_GPIO_IRQ              , NOT_INITIAL}, //Arduino pin 0, Serial(0) TX
