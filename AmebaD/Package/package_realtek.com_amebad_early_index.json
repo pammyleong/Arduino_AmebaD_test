@@ -13,6 +13,37 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
+          "version": "3.1.0-t02",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.1.0-t02.tar.gz",
+          "archiveFileName": "ameba_d-3.1.0-t02.tar.gz",
+          "checksum": "SHA-256:437595d795645aaecba6a820c63ebf886dfee9fb3bca35c606d09753ddd1c1dd",
+          "size": "36357368",
+          "boards": [
+            {"name": "RTL8722DM"},
+            {"name": "RTL8722CSM"},
+            {"name": "RTL8722DM_MINI"},
+            {"name": "RTL8720DN/BW16"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_d_asdk_toolchain",
+              "version": "1.0.1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_d_tools",
+              "version": "1.0.7"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
+          "architecture": "AmebaD",
           "version": "3.1.0-t01",
           "category": "Contributed",
           "help": {
@@ -302,6 +333,60 @@
               "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_toolchain_macos-1.0.1.tar.bz2",
               "checksum":"SHA-256:cc52c2c3650e21ef636bc10242432f75cd0f4884b1188f328982e77030d91787",
               "size":"91538901"
+            }
+          ]
+        },
+		{
+          "name": "ameba_d_tools",
+          "version": "1.0.7",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "ameba_d_tools_windows-1.0.7.tar.gz",
+              "url": "https://github.com/ambiot/ambd_arduino/raw/dev/Arduino_package/release/ameba_d_tools_windows-1.0.7.tar.gz",
+              "checksum": "SHA-256:6540bb41e93ee280a8ef03cbd20b24f41e11c720e0dea9303599de1a6289c9bd",
+              "size": "6768417"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "ameba_d_tools_linux-1.0.6.tar.gz",
+              "url": "https://github.com/ambiot/ambd_arduino/raw/dev/Arduino_package/release/ameba_d_tools_linux-1.0.6.tar.gz",
+              "checksum": "SHA-256:19113681cf13fc494821f3dec5e6cd3e3b2490b9b868e91a232c6d8d45f36b02",
+              "size": "2492822"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "ameba_d_tools_macos-1.0.6.tar.gz",
+              "url": "https://github.com/ambiot/ambd_arduino/raw/dev/Arduino_package/release/ameba_d_tools_macos-1.0.6.tar.gz",
+              "checksum": "SHA-256:da7f1ecfe2766eedde259ce1295e0495064e541a44941b18a0b8a44c9c5bc542",
+              "size": "631285"
+            }
+          ]
+        },
+		{
+          "name": "ameba_d_tools",
+          "version": "1.0.6",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "ameba_d_tools_windows-1.0.6.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_windows-1.0.6.tar.gz",
+              "checksum": "SHA-256:35e05fe9c4c127a32eda20f0ab1941849cdbc4e20365c96f558b9b8a6c20b60d",
+              "size": "6122829"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "ameba_d_tools_linux-1.0.5-v02.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.6.tar.gz",
+              "checksum": "SHA-256:19113681cf13fc494821f3dec5e6cd3e3b2490b9b868e91a232c6d8d45f36b02",
+              "size": "2492822"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "ameba_d_tools_macos-1.0.5.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_macos-1.0.6.tar.gz",
+              "checksum": "SHA-256:da7f1ecfe2766eedde259ce1295e0495064e541a44941b18a0b8a44c9c5bc542",
+              "size": "631285"
             }
           ]
         },

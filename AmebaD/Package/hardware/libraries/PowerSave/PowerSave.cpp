@@ -110,26 +110,52 @@ void PMUClass::RTCWakeSetup(uint32_t duration_d, uint32_t duration_h, uint32_t d
 
 void PMUClass::enable(void) {
     DSLP_Para.dlps_enable = TRUE;
+    asm volatile ("cpsid i" : : : "memory");
     ipc_send_message(IPC_INT_KM4_TICKLESS_INDICATION, (uint32_t)&DSLP_Para);
+    asm volatile ("wfe");
+    asm volatile ("wfe");
+    asm volatile ("cpsie i" : : : "memory");
 }
 
 uint32_t PMUClass::AONWakeReason(void) {
     uint32_t aon_wake_event = SOCPS_AONWakeReason();
     if (BIT_GPIO_WAKE_STS & aon_wake_event) {
-        return 11;
+        return AONWakeReason_AON_GPIO;
     }
     if (BIT_AON_WAKE_TIM0_STS & aon_wake_event) {
-        return 22;
+        return AONWakeReason_AON_TIMER;
     }
     if (BIT_RTC_WAKE_STS & aon_wake_event) {
-        return 33;
+        return AONWakeReason_RTC;
+    }
+    return 0;
+}
+
+int PMUClass::WakePinCheck_GPIO(void) {
+    int checkpin_number = SOCPS_WakePinCheck();
+    printf("checkpin_number_gpio %d  \r\n", checkpin_number);
+// PA20; D27
+    if (checkpin_number == 1) {
+        return 20;
+    }
+// PA21; D26
+    if (checkpin_number == 2) {
+        return 21;
+    }
+//PA_25; D16
+    if (checkpin_number == 4) {
+        return 25;
+    }
+//PA_26; D17
+    if (checkpin_number == 8) {
+        return 26;
     }
     return 0;
 }
 
 int PMUClass::WakePinCheck(void) {
     int checkpin_number = SOCPS_WakePinCheck();
-    //printf("checkpin_number %d  \r\n", checkpin_number);
+    printf("checkpin_number %d  \r\n", checkpin_number);
 // PA20; D27
     if (checkpin_number == 1) {
         return 27;
@@ -146,7 +172,7 @@ int PMUClass::WakePinCheck(void) {
     if (checkpin_number == 8) {
         return 17;
     }
-    return 111;
+    return 0;
 }
 
 void PMUClass::AONWakeClear(void) {
@@ -173,8 +199,61 @@ void PMUClass::TL_wakelock(uint32_t select_lock) {
     }
 }
 
-//void TL_sleep_callback(uint32_t *suspend, uint32_t *resume) {
-    //pmu_register_sleep_callback(PMU_LOGUART_DEVICE, (PSM_HOOK_FUN)suspend, NULL, (PSM_HOOK_FUN)resume, NULL);
-//}
+void PMUClass::TL_sleep_callback(uint32_t suspend(void), uint32_t resume(void)) {
+    TL_wakelock(1);
+    pmu_register_sleep_callback(PMU_LOGUART_DEVICE, (PSM_HOOK_FUN)suspend, NULL, (PSM_HOOK_FUN)resume, NULL);
+    TL_wakelock(0);
+}
 
+
+void PMUClass::DS_AON_TIMER_WAKEUP(void) {
+    printf("Set Deepsleep wakeup AON timer.    \r\n");
+}
+void PMUClass::DS_RTC_WAKEUP(void) {
+    printf("Set Deepsleep wakeup RTC.    \r\n");
+}
+
+void PMUClass::TL_UART_WAKEUP(void) {
+    printf("Set Tickless wakeup LOGUART.    \r\n");
+}
+void PMUClass::TL_RTC_WAKEUP(void) {
+    printf("Set Tickless wakeup RTC.    \r\n");
+}
+
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA12(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA12.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA13(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA13.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA14(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA14.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA15(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA15.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA16(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA16.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA17(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA17.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA18(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA18.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA19(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA19.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA20(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA20.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA21(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA21.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA25(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA25.    \r\n");
+}
+void PMUClass::AON_WAKEPIN_WAKEUP_GPIOA26(void) {
+    printf("Set Deepsleep wakeup AON pin GPIOA26.    \r\n");
+}
 PMUClass PowerSave;
