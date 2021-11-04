@@ -6,27 +6,27 @@
 //SET_DS_AON_TIMER_WAKEUP
 //SET_DS_RTC_WAKEUP
 //For board RTL8722DM chose aways on GPIO pin bellow
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA25    D16
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA26    D17
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA21    D26
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA20    D27
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA19    D28
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA25    // D16
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA26    // D17
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA21    // D26
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA20    // D27
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA19    // D28
 //For board RTL8722DM_MINI chose aways on GPIO pin bellow
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA12    D9
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA13    D10
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA14    D11
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA15    D12
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA16    D13
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA18    D15
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA19    D16
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA21    D18
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA12    // D9
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA13    // D10
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA14    // D11
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA15    // D12
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA16    // D13
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA18    // D15
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA19    // D16
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA21    // D18
 //For board RTL8720DN_BW16 chose aways on GPIO pin bellow
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA25    PA25 / D7
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA26    PA26 / D8
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA15    PA15 / D9
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA14    PA14 / D10
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA13    PA13 / D11
-    //SET_DS_AON_GPIO_WAKEUP_GPIOA12    PA12 / D12
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA25    // D7
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA26    // D8
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA15    // D9
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA14    // D10
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA13    // D11
+    //SET_DS_AON_GPIO_WAKEUP_GPIOA12    // D12
 #define DS_WAKEUP_SOURCE                SET_DS_AON_TIMER_WAKEUP
 
 #define AON_TIMER_SLEEP_DURATION        5000
@@ -40,7 +40,7 @@ void DeepSleep_wakeup(void) {
     uint32_t wakereason_number = PowerSave.AONWakeReason();
 
     if (wakereason_number == AONWakeReason_AON_GPIO) {
-        printf("AonWakepin wakeup, wakepin is GPIOA%d / D%d. Wait 5s sleep again.    \r\n", PowerSave.WakePinCheck_GPIO(), PowerSave.WakePinCheck());
+        printf("AonWakepin wakeup. Wait 5s sleep again.    \r\n");
         delay(5000);
     } else if (wakereason_number == AONWakeReason_AON_TIMER) {
         PowerSave.AONTimerCmd();

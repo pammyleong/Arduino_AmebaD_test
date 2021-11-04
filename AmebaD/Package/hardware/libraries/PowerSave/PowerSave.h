@@ -15,27 +15,6 @@
 #define SET_DS_AON_GPIO_WAKEUP_GPIOA21      21
 #define SET_DS_AON_GPIO_WAKEUP_GPIOA25      25
 #define SET_DS_AON_GPIO_WAKEUP_GPIOA26      26
-#if defined(BOARD_RTL8722DM)
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA12
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA13
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA14
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA15
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA16
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA17
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA18
-#elif defined(BOARD_RTL8720DN_BW16)
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA17
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA20
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA25
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA26
-#elif defined(BOARD_RTL8722DM_MINI)
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA16
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA17
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA18
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA19
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA20
-    #undef SET_DS_AON_GPIO_WAKEUP_GPIOA21
-#endif
 
 #define DEEPSLEEP_MODE                  11
 #define SET_DS_AON_TIMER_WAKEUP         0
@@ -76,7 +55,6 @@ public:
 
     uint32_t AONWakeReason(void);
 
-    int WakePinCheck_GPIO(void);
     int WakePinCheck(void);
 
     void AONWakeClear(void);
