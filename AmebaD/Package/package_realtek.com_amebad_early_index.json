@@ -13,13 +13,13 @@
 		{
           "name": "Realtek Ameba Boards (32-bits ARM Cortex-M4 @200MHz)",
           "architecture": "AmebaD",
-          "version": "3.1.0-t02",
+          "version": "3.1.1-t01",
           "category": "Contributed",
           "help": {
             "online": "http://www.amebaiot.com/"
           },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.1.0-t02.tar.gz",
-          "archiveFileName": "ameba_d-3.1.0-t02.tar.gz",
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d-3.1.1-t01.tar.gz",
+          "archiveFileName": "ameba_d-3.1.1-t01.tar.gz",
           "checksum": "SHA-256:d5ccc8f06afef378e4de80f0c42aadbdf07937e2e58b8909299378ff5faec55b",
           "size": "36355022",
           "boards": [
