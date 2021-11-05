@@ -3,8 +3,8 @@
 Compile:
 
 macos:
-g++ -o postbuild_img2_arduino_macos postbuild_img2_arduino_macos.cpp
-g++ -o postbuild_img2_arduino_macos.cpp
+g++ -o tools/macos/postbuild_img2_arduino_macos tools/macos/src/postbuild_img2_arduino_macos.cpp
+
 */
 
 #include <iostream>
