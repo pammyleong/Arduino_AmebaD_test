@@ -380,10 +380,10 @@
             },
             {
               "host": "x86_64-pc-linux-gnu",
-              "archiveFileName": "ameba_d_tools_linux-1.0.6.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.6.tar.gz",
-              "checksum": "SHA-256:19113681cf13fc494821f3dec5e6cd3e3b2490b9b868e91a232c6d8d45f36b02",
-              "size": "2492822"
+              "archiveFileName": "ameba_d_tools_linux-1.0.7.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaD/Package/release/ameba_d_tools_linux-1.0.7.tar.gz",
+              "checksum": "SHA-256:ac1215e0cf86a95344bf518b7a165b898f52187de579cda0e2fc43c52abe14b4",
+              "size": "2923950"
             },
             {
               "host": "x86_64-apple-darwin",
