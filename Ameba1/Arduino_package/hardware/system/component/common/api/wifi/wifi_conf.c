@@ -170,9 +170,6 @@ static int wifi_connect_local(rtw_network_info_t *pWifi)
 		case RTW_SECURITY_WPA2_AES_PSK:
 		case RTW_SECURITY_WPA2_MIXED_PSK:
 		case RTW_SECURITY_WPA_WPA2_MIXED:
-#ifdef CONFIG_SAE_SUPPORT
-		case RTW_SECURITY_WPA3_AES_PSK:			
-#endif			
 			ret = wext_set_auth_param(WLAN0_NAME, IW_AUTH_80211_AUTH_ALG, IW_AUTH_ALG_OPEN_SYSTEM);
 			if(ret == 0)
 				ret = wext_set_key_ext(WLAN0_NAME, IW_ENCODE_ALG_CCMP, NULL, 0, 0, 0, 0, NULL, 0);
@@ -377,11 +374,6 @@ void restore_wifi_info_to_flash()
 			case RTW_SECURITY_WPA2_AES_PSK:
 			    data_to_flash->security_type = RTW_SECURITY_WPA2_AES_PSK;
 			    break;
-#ifdef CONFIG_SAE_SUPPORT
-			case RTW_SECURITY_WPA3_AES_PSK:
-				 data_to_flash->security_type = RTW_SECURITY_WPA3_AES_PSK;
-				break;
-#endif
 			default:
 			    break;
 		}
@@ -437,11 +429,7 @@ int wifi_connect(
              ( security_type == RTW_SECURITY_WPA_AES_PSK ) ||
              ( security_type == RTW_SECURITY_WPA2_AES_PSK ) ||
              ( security_type == RTW_SECURITY_WPA2_TKIP_PSK ) ||
-             ( security_type == RTW_SECURITY_WPA2_MIXED_PSK )
-#ifdef CONFIG_SAE_SUPPORT
-	    || ( security_type == RTW_SECURITY_WPA3_AES_PSK)
-#endif
-	) ) ) {
+             ( security_type == RTW_SECURITY_WPA2_MIXED_PSK ) ) )) {
              error_flag = RTW_WRONG_PASSWORD;
 		return RTW_INVALID_KEY;
 	}
@@ -938,10 +926,6 @@ _WEAK void wifi_set_mib(void)
 {
 	// adaptivity
 	wext_set_adaptivity(RTW_ADAPTIVITY_DISABLE);
-#ifdef CONFIG_SAE_SUPPORT
-	// set to 'ENABLE' when using WPA3
-	wext_set_support_wpa3(ENABLE);
-#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -1126,25 +1110,6 @@ int wifi_get_last_error(void)
 int wpas_wps_init(const char* ifname);
 #endif
 
-int wifi_set_mfp_support(unsigned char value)
-{
-	return wext_set_mfp_support(WLAN0_NAME, value);
-}
-
-#ifdef CONFIG_SAE_SUPPORT
-int wifi_set_group_id(unsigned char value)
-{
-	return wext_set_group_id(WLAN0_NAME, value);
-}
-#endif
-
-#ifdef CONFIG_PMKSA_CACHING
-int wifi_set_pmk_cache_enable(unsigned char value)
-{
-	return wext_set_pmk_cache_enable(WLAN0_NAME, value);
-}
-#endif
-
 int wifi_start_ap(
 	char 				*ssid,
 	rtw_security_t		security_type,
@@ -1181,15 +1146,6 @@ int wifi_start_ap(
 			if(ret == 0)
 				ret = wext_set_passphrase(ifname, (u8*)password, password_len);
 			break;
-#ifdef CONFIG_IEEE80211W
-		case RTW_SECURITY_WPA2_AES_CMAC:
-			ret = wext_set_auth_param(ifname, IW_AUTH_80211_AUTH_ALG, IW_AUTH_ALG_OPEN_SYSTEM);
-			if(ret == 0)
-				ret = wext_set_key_ext(ifname, IW_ENCODE_ALG_AES_CMAC, NULL, 0, 0, 0, 0, NULL, 0);
-			if(ret == 0)
-				ret = wext_set_passphrase(ifname, (u8*)password, password_len);
-			break;
-#endif
 		default:
 			ret = -1;
 			printf("\n\rWIFICONF: security type is not supported");
@@ -1834,35 +1790,8 @@ static void wifi_autoreconnect_thread(void *param)
 	int ret = RTW_ERROR;
 	struct wifi_autoreconnect_param *reconnect_param = (struct wifi_autoreconnect_param *) param;
 	printf("\n\rauto reconnect ...\n");
-
-#ifdef CONFIG_SAE_SUPPORT
-	if(reconnect_param->security_type == RTW_SECURITY_WPA2_AES_PSK){
-		if(wext_get_support_wpa3()==1){
-			wext_set_support_wpa3(DISABLE);
-			ret = wifi_connect(reconnect_param->ssid, reconnect_param->security_type, reconnect_param->password,
-		    	               reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
-			wext_set_support_wpa3(ENABLE);
-		}else{
-			ret = wifi_connect(reconnect_param->ssid, reconnect_param->security_type, reconnect_param->password,
-		    	               reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
-		}
-	}
-#ifdef CONFIG_PMKSA_CACHING
-	else if(reconnect_param->security_type == RTW_SECURITY_WPA3_AES_PSK){
-		wifi_set_pmk_cache_enable(0);
-		ret = wifi_connect(reconnect_param->ssid, reconnect_param->security_type, reconnect_param->password,
-		                   reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
-		wifi_set_pmk_cache_enable(1);
-	}
-#endif
-	else
-#endif	
-	{
-		ret = wifi_connect(reconnect_param->ssid, reconnect_param->security_type, reconnect_param->password,
-						   reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
-	}
-
-
+	ret = wifi_connect(reconnect_param->ssid, reconnect_param->security_type, reconnect_param->password,
+	                   reconnect_param->ssid_len, reconnect_param->password_len, reconnect_param->key_id, NULL);
 #if CONFIG_LWIP_LAYER
 	if(ret == RTW_SUCCESS) {
 #if ATCMD_VER == ATVER_2

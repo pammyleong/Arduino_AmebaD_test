@@ -5,9 +5,6 @@
 #include <websocket/wsclient_api.h>
 
 void (*ws_receive_cb)(wsclient_context *, int) = NULL;
-int max_data_len = 0;
-int wsclient_recv_timeout = 0;
-int wsclient_send_timeout = 0;
 
 static void ws_dispatchBinary(wsclient_context *wsclient, int rlen) {
 	int data_start = 0;//the lenth of data already read
@@ -63,6 +60,7 @@ static void ws_dispatchBinary(wsclient_context *wsclient, int rlen) {
 			ws.masking_key[3] = 0;
 		}
 		if (rxbuf_len < ws.header_size+ws.N) { 
+			WSCLIENT_ERROR("ERROR: Didn't get the whole message: length exceeded\n"); 
 			return; /* Need: ws.header_size+ws.N - rxbuf.size() */ 
 		}
 
@@ -74,7 +72,7 @@ static void ws_dispatchBinary(wsclient_context *wsclient, int rlen) {
 					wsclient->rxbuf[i+ws.header_size] ^= ws.masking_key[i&0x3]; 
 				} 
 			}
-			memset(wsclient->receivedData, 0, max_data_len);
+			memset(wsclient->receivedData, 0, MAX_DATA_LEN);
 			memcpy(wsclient->receivedData, (wsclient->rxbuf + data_start + ws.header_size), ws.N);
 			
 			if (ws.fin != 0) {
@@ -98,14 +96,13 @@ static void ws_dispatchBinary(wsclient_context *wsclient, int rlen) {
 		}
 		else if (ws.opcode == PONG) { }
 		else if (ws.opcode == CLOSE) { 
-			wsclient->fun_ops.client_close(wsclient); 
+			ws_close(wsclient); 
 		}
 		else { 
 			WSCLIENT_ERROR("ERROR: Got unexpected WebSocket message.\n"); 
 			wsclient->fun_ops.client_close(wsclient); 
 		}
 		data_start = data_start + ws.header_size + ws.N;
-		wsclient->rx_len = 0;
 	}
 }
 
@@ -143,23 +140,18 @@ int ws_set_fun_ops(wsclient_context *wsclient){
 }
 
 void ws_close(wsclient_context *wsclient) {
-	if(wsclient->readyState == CLOSING)
+	if(wsclient->readyState == CLOSING || wsclient->readyState == CLOSED)
 		return;
 	wsclient->readyState = CLOSING;
 	uint8_t pong_Frame[6] = {0x88, 0x80, 0x00, 0x00, 0x00, 0x00};
 	wsclient->fun_ops.client_send(wsclient, pong_Frame, 6);
-	if (wsclient->readyState == CLOSING){
+	if (wsclient->readyState == CLOSING)
 		wsclient->fun_ops.client_close(wsclient);
-		ws_free(wsclient);
-	}
 	printf("\r\n\r\n\r\n>>>>>>>>>>>>>>>Closing the Connection with websocket server<<<<<<<<<<<<<<<<<<\r\n\r\n\r\n");
 }
 
 readyStateValues ws_getReadyState(wsclient_context *wsclient){
-	if(wsclient)
-		return wsclient->readyState;
-	else
-		return CLOSED;
+	return wsclient->readyState;
 }
 
 void ws_dispatch(void (*callback)(wsclient_context *, int)) {
@@ -167,6 +159,7 @@ void ws_dispatch(void (*callback)(wsclient_context *, int)) {
 }
 
 void ws_poll(int timeout, wsclient_context *wsclient) { // timeout in milliseconds
+	int total_rlen = 0;
 	int ret = 0;
 
 	if (wsclient->readyState == CLOSED) {
@@ -183,14 +176,14 @@ void ws_poll(int timeout, wsclient_context *wsclient) { // timeout in millisecon
 		FD_ZERO(&rfds);
 		FD_ZERO(&wfds);
 		FD_SET(wsclient->sockfd, &rfds);
-		if (wsclient->tx_len) { 
+		if (sizeof(wsclient->txbuf)) { 
 			FD_SET(wsclient->sockfd, &wfds); 
 		}
 		select(wsclient->sockfd + 1, &rfds, &wfds, 0, timeout > 0 ? &tv : 0);
 	}
 
 	while (1) {
-		ret = wsclient->fun_ops.client_read(wsclient, &wsclient->rxbuf[wsclient->rx_len], (max_data_len - wsclient->rx_len) > 1500 ? 1500 : (max_data_len - wsclient->rx_len));
+		ret = wsclient->fun_ops.client_read(wsclient, &wsclient->rxbuf[total_rlen], (MAX_DATA_LEN - total_rlen));
 		if(ret == 0)
 			break;
 		else if(ret < 0){
@@ -199,32 +192,26 @@ void ws_poll(int timeout, wsclient_context *wsclient) { // timeout in millisecon
 			break;
 		}
 		else{		
-			WSCLIENT_DEBUG("\r\nreceiving the message length : %d\r\n", ret);
-			wsclient->rx_len += ret;
+			WSCLIENT_DEBUG("\r\nreceiving the message: %s, length : %d\r\n", wsclient->rxbuf[total_rlen], ret);
+			total_rlen += ret;
 		}
 	}
-	ws_dispatchBinary(wsclient, wsclient->rx_len);
-			
-	if(wsclient->readyState == CLOSED)
-		return;
+	
+	ws_dispatchBinary(wsclient, total_rlen);
 
 	if(wsclient->tx_len > 0){
-		int remain_len = wsclient->tx_len;
-		do{
-			ret = wsclient->fun_ops.client_send(wsclient, wsclient->txbuf + (wsclient->tx_len - remain_len), (remain_len > 1500 ? 1500 : remain_len));
-			if (ret == 0) {
-			}
-			else if(ret < 0){ 
-				wsclient->fun_ops.client_close(wsclient);
-				WSCLIENT_ERROR("ERROR: Send data faild!\n");
-				return;
-			}
-			else
-				WSCLIENT_DEBUG("Send %d bytes data to websocket server\n", ret);
-			remain_len -= ret;
-		}while (remain_len > 0);
+		ret = wsclient->fun_ops.client_send(wsclient, wsclient->txbuf, wsclient->tx_len);
+		if (ret == 0) {
+		}
+		else if(ret < 0){ 
+			wsclient->fun_ops.client_close(wsclient);
+			WSCLIENT_ERROR("ERROR: Send data faild!\n");
+			return;
+		}
+		else
+			WSCLIENT_DEBUG("Send %d bytes data to websocket server\n", ret);
 
-		memset(wsclient->txbuf, 0, max_data_len + 16);
+		memset(wsclient->txbuf, 0, MAX_DATA_LEN + 16);
 		wsclient->tx_len = 0;
 	}
 	
@@ -232,13 +219,13 @@ void ws_poll(int timeout, wsclient_context *wsclient) { // timeout in millisecon
 		wsclient->fun_ops.client_close(wsclient);
 }
 
-void ws_sendPing(int use_mask, wsclient_context *wsclient) {
-	ws_sendData(PING, 0, NULL, use_mask, wsclient);
+void ws_sendPing(wsclient_context *wsclient) {
+	ws_sendData(PING, 0, NULL, 0, wsclient);
 }
 
 void ws_sendBinary(uint8_t* message, int message_len, int use_mask, wsclient_context *wsclient) {
-	if(message_len > max_data_len){
-		WSCLIENT_ERROR("ERROR: The length of data exceeded the tx buf len: %d\n", max_data_len);
+	if(message_len > MAX_DATA_LEN){
+		WSCLIENT_ERROR("ERROR: The length of data exceeded the MAX_DATA_LEN\n");
 		return;
 	}
 	ws_sendData(BINARY_FRAME, message_len, (uint8_t*)message, use_mask, wsclient);
@@ -246,8 +233,8 @@ void ws_sendBinary(uint8_t* message, int message_len, int use_mask, wsclient_con
 
 void ws_send(char* message, int message_len, int use_mask, wsclient_context *wsclient) {
 	WSCLIENT_DEBUG("Send data: %s\n", message);
-	if(message_len > max_data_len){
-		WSCLIENT_ERROR("ERROR: The length of data exceeded the tx buf len: %d\n", max_data_len);
+	if(message_len > MAX_DATA_LEN){
+		WSCLIENT_ERROR("ERROR: The length of data exceeded the MAX_DATA_LEN\n");
 		return;
 	}
 	ws_sendData(TEXT_FRAME, message_len, (uint8_t*)message, use_mask, wsclient);
@@ -259,7 +246,6 @@ int ws_connect_url(wsclient_context *wsclient) {
 	ret = wsclient->fun_ops.hostname_connect(wsclient);
 	if (ret == -1) {
 		wsclient->fun_ops.client_close(wsclient);
-		ws_free(wsclient);
 		return -1;
 	}
 	else{	
@@ -267,7 +253,6 @@ int ws_connect_url(wsclient_context *wsclient) {
 		if(ret <= 0){
 			WSCLIENT_ERROR("ERROR: Sending handshake failed\n");
 			wsclient->fun_ops.client_close(wsclient);
-			ws_free(wsclient);
 			return -1;
 		}
 		else{
@@ -277,7 +262,6 @@ int ws_connect_url(wsclient_context *wsclient) {
 			else{
 				WSCLIENT_ERROR("ERROR: Response header is wrong\n");
 				wsclient->fun_ops.client_close(wsclient);
-				ws_free(wsclient);
 				return -1;
 			}
 		}
@@ -294,51 +278,17 @@ int ws_connect_url(wsclient_context *wsclient) {
     	}
 		else{
 			wsclient->fun_ops.client_close(wsclient);
-			ws_free(wsclient);
 			return -1;
 		}
 	}
 	else {
 		wsclient->fun_ops.client_close(wsclient);
-		ws_free(wsclient);
 		WSCLIENT_ERROR("ERROR: Failed to set socket option\n");
 		return -1;
 	}
 }
 
-int ws_add_extra_request_header(wsclient_context *wsclient, char *name, char *value)
-{
-	int ret = 0;
-	uint8_t *extra_header_item = NULL;
-	size_t extra_header_len = 0;
-
-	extra_header_len = strlen(wsclient->extraHeader)+strlen(name)+strlen(": ")+strlen(value)+strlen("\r\n");
-
-	extra_header_item = (uint8_t *)ws_malloc(extra_header_len+1);
-
-	if(extra_header_item) {
-		memset(extra_header_item, 0, extra_header_len + 1);
-		sprintf(extra_header_item, "%s", wsclient->extraHeader);
-		sprintf(extra_header_item + strlen(extra_header_item), "%s: %s\r\n", name, value);
-		ws_free(wsclient->extraHeader);
-		wsclient->extraHeader = extra_header_item;
-	}
-	else {
-		WSCLIENT_ERROR("ERROR: ws_add_extra_request_header Malloc fail");
-		ret = -1;
-		goto exit;
-	}
-exit:
-	return ret;
-}
-
-void ws_setsockopt_connect_timeout(uint32_t recv_timeout, uint32_t send_timeout)
-{
-	wsclient_recv_timeout = recv_timeout;
-	wsclient_send_timeout = send_timeout;
-}
-
-wsclient_context *create_wsclient(char *url, int port, char *path, char* origin, int buf_len){
+wsclient_context *create_wsclient(char *url, int port, char *path, char* origin){
 
 	wsclient_context *wsclient = (wsclient_context *)ws_malloc(sizeof(wsclient_context));	
 	if(wsclient == NULL){
@@ -347,8 +297,6 @@ wsclient_context *create_wsclient(char *url, int port, char *path, char* origin,
 		return NULL;
 	}
 	memset(wsclient, 0, sizeof(wsclient_context));
-
-	max_data_len = buf_len;
 
 	wsclient->port = port;
 	if (strlen(origin) >= 200) {
@@ -392,28 +340,25 @@ wsclient_context *create_wsclient(char *url, int port, char *path, char* origin,
 	wsclient->readyState = CLOSED;
 	wsclient->sockfd = -1;
 	wsclient->tx_len = 0;
-	wsclient->rx_len = 0;
-	wsclient->tls = NULL;
+	wsclient->ssl = NULL;
 	
-	wsclient->txbuf = (uint8_t *)ws_malloc(max_data_len + 16);
-	wsclient->rxbuf = (uint8_t *)ws_malloc(max_data_len + 16);
-	wsclient->receivedData = (uint8_t *)ws_malloc(max_data_len);
-	wsclient->extraHeader = "";
+	wsclient->txbuf = (uint8_t *)ws_malloc(MAX_DATA_LEN + 16);
+	wsclient->rxbuf = (uint8_t *)ws_malloc(MAX_DATA_LEN + 16);
+	wsclient->receivedData = (uint8_t *)ws_malloc(MAX_DATA_LEN);
+
 	if(!wsclient->txbuf || !wsclient->rxbuf || !wsclient->receivedData)
 	{
   		WSCLIENT_ERROR("ERROR: Malloc tx rx buffer memory fail\n");
 		ws_client_close(wsclient);
-		ws_free(wsclient);
   		return NULL;
   	}
-	memset(wsclient->txbuf, 0, max_data_len + 16);
-	memset(wsclient->rxbuf, 0, max_data_len + 16);
-	memset(wsclient->receivedData, 0, max_data_len);
+	memset(wsclient->txbuf, 0, MAX_DATA_LEN + 16);
+	memset(wsclient->rxbuf, 0, MAX_DATA_LEN + 16);
+	memset(wsclient->receivedData, 0, MAX_DATA_LEN);
 
 	if(wsclient_set_fun_ops(wsclient) < 0){
 		WSCLIENT_ERROR("ERROR: Init function failed\n");
 		ws_client_close(wsclient);
-		ws_free(wsclient);
 		return NULL;
 	}
 
