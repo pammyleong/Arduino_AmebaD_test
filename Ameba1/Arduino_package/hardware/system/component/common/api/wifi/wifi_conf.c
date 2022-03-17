@@ -439,7 +439,7 @@ int wifi_connect(
              ( security_type == RTW_SECURITY_WPA2_TKIP_PSK ) ||
              ( security_type == RTW_SECURITY_WPA2_MIXED_PSK )
 #ifdef CONFIG_SAE_SUPPORT
-	    || ( security_type == RTW_SECURITY_WPA3_AES_PSK)
+	     ||( security_type == RTW_SECURITY_WPA3_AES_PSK)
 #endif
 	) ) ) {
              error_flag = RTW_WRONG_PASSWORD;

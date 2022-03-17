@@ -82,7 +82,10 @@ typedef unsigned int            BOOL;
 typedef unsigned char           BOOL;
 #endif
 #ifndef bool
+
+#ifndef __cplusplus
 typedef unsigned char           bool;
+#endif
 #endif
 #endif
 
