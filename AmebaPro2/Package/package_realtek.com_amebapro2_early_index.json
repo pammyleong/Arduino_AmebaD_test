@@ -1,0 +1,100 @@
+{
+  "packages": [
+    {
+      "name": "realtek",
+      "maintainer": "Realtek",
+      "websiteURL": "https://www.amebaiot.com/",
+      "email": "ameba.arduino@gmail.com",
+      "help": {
+        "online": "https://www.amebaiot.com/"
+      },
+
+      "platforms": [
+		{
+          "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
+          "architecture": "AmebaPro2",
+          "version": "4.0.0-t01",
+          "category": "Contributed",
+          "help": {
+            "online": "http://www.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t01.tar.gz",
+          "archiveFileName": "ameba_pro2-4.0.0-t01.tar.gz",
+          "checksum": "SHA-256:ec8d76dd5b9f5f0905afddf62653ed6c71302814421139ec169d0bd96f60162f",
+          "size": "36454239",
+          "boards": [
+            {"name": "AMB82-MINI"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_toolchain",
+              "version": "1.0.0"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_tools",
+              "version": "1.0.0"
+            }
+          ]
+        }
+      ],
+      "tools": [
+		{
+          "name": "ameba_pro2_toolchain",
+          "version":"1.0.0",
+          "systems": [
+            {
+              "host":"i686-mingw32",
+              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0.tar.bz2",
+              "checksum":"SHA-256:1157b225e207bcf4703aaeb42acbb4b10d1c0efa0696005d2e000866ba1249f0",
+              "size":"99360611"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "archiveFileName":"ameba_pro2_toolchain_linux-1.0.0.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_linux-1.0.0.tar.bz2",
+              "checksum":"SHA-256:340ab2af5100102f7a1f5ba89b3490a843fa2aed05276427f5cc6c6c01032cd7",
+              "size":"87899387"
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "archiveFileName":"ameba_pro2_toolchain_macos-1.0.0.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_macos-1.0.0.tar.bz2",
+              "checksum":"SHA-256:cc52c2c3650e21ef636bc10242432f75cd0f4884b1188f328982e77030d91787",
+              "size":"91538901"
+            }
+          ]
+        },
+		{
+          "name": "ameba_pro2_tools",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "archiveFileName": "ameba_pro2_tools_windows-1.0.0.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_windows-1.0.0.tar.gz",
+              "checksum": "SHA-256:b2d5ed48ef5490f6692a8a249a569b33a2911e4745e9ad13c056c548b48b70a9",
+              "size": "6768547"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "archiveFileName": "ameba_pro2_tools_linux-1.0.0.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_linux-1.0.0.tar.gz",
+              "checksum": "SHA-256:ac1215e0cf86a95344bf518b7a165b898f52187de579cda0e2fc43c52abe14b4",
+              "size": "2923950"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "archiveFileName": "ameba_pro2_tools_macos-1.0.0.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_macos-1.0.0.tar.gz",
+              "checksum": "SHA-256:e3b92b950fce29bf8f47674957e376f3dfd106fda5100286f38e6780002cdf89",
+              "size": "1079434"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
