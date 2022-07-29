@@ -4,7 +4,11 @@
       "name": "realtek",
       "maintainer": "Realtek",
       "websiteURL": "https://www.amebaiot.com/",
-      "help": "https://www.amebaiot.com/",
+      "email": "ameba.arduino@gmail.com",
+      "help": {
+        "online": "https://forum.amebaiot.com/"
+      },
+
       "platforms": [
 		{
           "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
@@ -12,7 +16,7 @@
           "version": "4.0.0-t01",
           "category": "Contributed",
           "help": {
-            "online": "http://www.amebaiot.com/"
+            "online": "https://forum.amebaiot.com/"
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t01.tar.gz",
           "archiveFileName": "ameba_pro2-4.0.0-t01.tar.gz",
