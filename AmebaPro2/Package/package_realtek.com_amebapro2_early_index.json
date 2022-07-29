@@ -20,8 +20,8 @@
           },
           "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t01.tar.gz",
           "archiveFileName": "ameba_pro2-4.0.0-t01.tar.gz",
-          "checksum": "SHA-256:ec8d76dd5b9f5f0905afddf62653ed6c71302814421139ec169d0bd96f60162f",
-          "size": "36454239",
+          "checksum": "SHA-256:ce6f16e116c0aa3de58c2941d48bbe7f1a8072a710e6bc48ff786970c87bb073",
+          "size": "46331028",
           "boards": [
             {"name": "AMB82-MINI"}
           ],
@@ -29,7 +29,12 @@
             {
               "packager": "realtek",
               "name": "ameba_pro2_toolchain",
-              "version": "1.0.0"
+              "version": "1.0.0-p1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_toolchain",
+              "version": "1.0.0-p2"
             },
             {
               "packager": "realtek",
@@ -42,28 +47,55 @@
       "tools": [
 		{
           "name": "ameba_pro2_toolchain",
-          "version":"1.0.0",
+          "version":"1.0.0-p1",
           "systems": [
             {
               "host":"i686-mingw32",
-              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0.tar.bz2",
-              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0.tar.bz2",
-              "checksum":"SHA-256:1157b225e207bcf4703aaeb42acbb4b10d1c0efa0696005d2e000866ba1249f0",
-              "size":"99360611"
+              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p1.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p1.tar.bz2",
+              "checksum":"SHA-256:129cd843149575932c58a9ff458826529f0310aea1116ca12ebc5bbbc56d2964",
+              "size":"96393135"
             },
             {
               "host":"x86_64-pc-linux-gnu",
-              "archiveFileName":"ameba_pro2_toolchain_linux-1.0.0.tar.bz2",
-              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_linux-1.0.0.tar.bz2",
-              "checksum":"SHA-256:340ab2af5100102f7a1f5ba89b3490a843fa2aed05276427f5cc6c6c01032cd7",
-              "size":"87899387"
+              "archiveFileName":"ameba_pro2_toolchain_linux-1.0.0-p1.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_linux-1.0.0-p1.tar.bz2",
+              "checksum":"SHA-256:",
+              "size":""
             },
             {
               "host":"x86_64-apple-darwin",
-              "archiveFileName":"ameba_pro2_toolchain_macos-1.0.0.tar.bz2",
-              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_macos-1.0.0.tar.bz2",
-              "checksum":"SHA-256:cc52c2c3650e21ef636bc10242432f75cd0f4884b1188f328982e77030d91787",
-              "size":"91538901"
+              "archiveFileName":"ameba_pro2_toolchain_macos-1.0.0-p1.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_macos-1.0.0-p1.tar.bz2",
+              "checksum":"SHA-256:",
+              "size":""
+            }
+          ]
+        },
+		{
+          "name": "ameba_pro2_toolchain",
+          "version":"1.0.0-p2",
+          "systems": [
+            {
+              "host":"i686-mingw32",
+              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
+              "checksum":"SHA-256:1f09e8abeb40911985e789af77de47126f5f4034a3ee00f1c3157272979c9770",
+              "size":"69958537"
+            },
+            {
+              "host":"x86_64-pc-linux-gnu",
+              "archiveFileName":"ameba_pro2_toolchain_linux-1.0.0-p2.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_linux-1.0.0-p2.tar.bz2",
+              "checksum":"SHA-256:",
+              "size":""
+            },
+            {
+              "host":"x86_64-apple-darwin",
+              "archiveFileName":"ameba_pro2_toolchain_macos-1.0.0-p2.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_macos-1.0.0-p2.tar.bz2",
+              "checksum":"SHA-256:",
+              "size":""
             }
           ]
         },
@@ -75,22 +107,22 @@
               "host": "i686-mingw32",
               "archiveFileName": "ameba_pro2_tools_windows-1.0.0.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_windows-1.0.0.tar.gz",
-              "checksum": "SHA-256:b2d5ed48ef5490f6692a8a249a569b33a2911e4745e9ad13c056c548b48b70a9",
-              "size": "6768547"
+              "checksum": "SHA-256:daad0cccfb9d686154c5b77a1cf1af2124a159ef8009cb83df57505dc8a28f90",
+              "size": "1547533"
             },
             {
               "host": "x86_64-pc-linux-gnu",
               "archiveFileName": "ameba_pro2_tools_linux-1.0.0.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_linux-1.0.0.tar.gz",
-              "checksum": "SHA-256:ac1215e0cf86a95344bf518b7a165b898f52187de579cda0e2fc43c52abe14b4",
-              "size": "2923950"
+              "checksum": "SHA-256:",
+              "size": ""
             },
             {
               "host": "x86_64-apple-darwin",
               "archiveFileName": "ameba_pro2_tools_macos-1.0.0.tar.gz",
               "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_macos-1.0.0.tar.gz",
-              "checksum": "SHA-256:e3b92b950fce29bf8f47674957e376f3dfd106fda5100286f38e6780002cdf89",
-              "size": "1079434"
+              "checksum": "SHA-256:",
+              "size": ""
             }
           ]
         }
