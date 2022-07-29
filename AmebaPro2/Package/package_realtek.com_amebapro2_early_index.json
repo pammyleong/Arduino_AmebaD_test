@@ -4,7 +4,6 @@
       "name": "realtek",
       "maintainer": "Realtek",
       "websiteURL": "https://www.amebaiot.com/",
-      "email": "ameba.arduino@gmail.com",
       "help": {
         "online": "https://www.amebaiot.com/"
       },
