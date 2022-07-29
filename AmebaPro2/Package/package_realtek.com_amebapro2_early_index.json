@@ -4,10 +4,7 @@
       "name": "realtek",
       "maintainer": "Realtek",
       "websiteURL": "https://www.amebaiot.com/",
-      "help": {
-        "online": "https://www.amebaiot.com/"
-      },
-
+      "help": "https://www.amebaiot.com/",
       "platforms": [
 		{
           "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
