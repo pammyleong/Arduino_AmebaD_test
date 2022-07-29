@@ -13,6 +13,35 @@
 		{
           "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
           "architecture": "AmebaPro2",
+          "version": "4.0.0-t02",
+          "category": "Contributed",
+          "help": {
+            "online": "https://forum.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t02.tar.gz",
+          "archiveFileName": "ameba_pro2-4.0.0-t02.tar.gz",
+          "checksum": "SHA-256:b52dffb703e35926ba70f3fb2b55ad4750062d0acccf6cf1d9d732d2ba827947",
+          "size": "46331084",
+          "boards": [
+            {"name": "AMB82"},
+            {"name": "AMB82-MINI"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_toolchain",
+              "version": "1.0.0"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_tools",
+              "version": "1.0.0"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
+          "architecture": "AmebaPro2",
           "version": "4.0.0-t01",
           "category": "Contributed",
           "help": {
@@ -29,12 +58,7 @@
             {
               "packager": "realtek",
               "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p2"
+              "version": "1.0.0"
             },
             {
               "packager": "realtek",
@@ -47,7 +71,7 @@
       "tools": [
 		{
           "name": "ameba_pro2_toolchain",
-          "version":"1.0.0-p1",
+          "version":"1.0.0",
           "systems": [
             {
               "host":"i686-mingw32",
@@ -55,13 +79,7 @@
               "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p1.tar.bz2",
               "checksum":"SHA-256:129cd843149575932c58a9ff458826529f0310aea1116ca12ebc5bbbc56d2964",
               "size":"96393135"
-            }
-          ]
-        },
-		{
-          "name": "ameba_pro2_toolchain",
-          "version":"1.0.0-p2",
-          "systems": [
+            },
             {
               "host":"i686-mingw32",
               "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",

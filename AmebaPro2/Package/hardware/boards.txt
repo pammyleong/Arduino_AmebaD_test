@@ -17,8 +17,8 @@ ameba_rtl8735b.upload.use_1200bps_touch=false
 ameba_rtl8735b.upload.wait_for_upload_port=false
 ameba_rtl8735b.upload.native_usb=false
 
-ameba_rtl8721d.build.tarch=Arm-v8M
-ameba_rtl8721d.build.mcu=RTL8735B
+ameba_rtl8735b.build.tarch=Arm-v8M
+ameba_rtl8735b.build.mcu=RTL8735B
 ameba_rtl8735b.build.f_cpu=500000000L
 ameba_rtl8735b.build.usb_product="AMB82-MINI"
 ameba_rtl8735b.build.board=AMEBA
