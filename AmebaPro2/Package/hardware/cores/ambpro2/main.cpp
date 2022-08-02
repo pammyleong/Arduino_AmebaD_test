@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#if 0 
+
 #define ARDUINO_MAIN
 #include "Arduino.h"
 #include "cmsis_os.h"
@@ -134,3 +136,17 @@ int main(void)
 #ifdef __cplusplus
 }
 #endif
+
+
+#else 
+
+int main(void)
+
+    printf("   zzw    \r\n");
+
+    while(1);
+
+    return 0;
+}
+#endif
+

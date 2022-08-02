@@ -7,6 +7,8 @@
 
 name=AmebaPro2 ARM (32-bits) Boards
 version=4.0.X
+toolchian_version_p1=1.0.0-p1
+toolchian_version_p2=1.0.0-p2
 
 # Ameba project settings
 # ----------------------
@@ -142,3 +144,9 @@ tools.ameba_pro2_tools.upload.pattern.macosx="{runtime.tools.ameba_pro2_tools.pa
 
 #tools.ameba_pro2_tools.upload.network_pattern="{runtime.tools.ameba_pro2_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_pro2_tools.path}\ota.bin"
 #tools.ameba_pro2_tools.upload.network_pattern.windows="{runtime.tools.ameba_pro2_tools.path}/upload_ota.exe" -i "{serial.port}" -p "{network.port}" -f "{runtime.tools.ameba_pro2_tools.path}\ota.bin"
+
+recipe.hooks.sketch.prebuild.1.pattern.windows = {runtime.tools.ameba_pro2_tools.path}/prebuild_windows.exe {runtime.tools.ameba_pro2_toolchain.path} {toolchian_version_p1} {toolchian_version_p2}
+
+
+
+
