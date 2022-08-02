@@ -131,6 +131,7 @@
           "version":"1.0.0-p2",
           "systems": [
             {
+              "host":"i686-mingw32",
               "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
               "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
               "checksum":"SHA-256:1f09e8abeb40911985e789af77de47126f5f4034a3ee00f1c3157272979c9770",
