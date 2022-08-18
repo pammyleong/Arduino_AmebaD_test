@@ -107,7 +107,10 @@ typedef struct mm_queue_item_s {
 	uint32_t hw_timestamp;
 	uint32_t type;
 	uint32_t size;
-	uint32_t index;			// for RTSP
+	union {
+		uint32_t index;			// for RTSP
+		uint32_t priv_data;
+	};
 	uint32_t in_idx;		// input index
 } mm_queue_item_t;
 

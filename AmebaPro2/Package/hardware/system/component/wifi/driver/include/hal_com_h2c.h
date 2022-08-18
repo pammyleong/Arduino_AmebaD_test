@@ -108,6 +108,7 @@ enum h2c_cmd {
 #ifdef CONFIG_WOWLAN_SSL_KEEP_ALIVE
 	H2C_SSL_OFFLOAD = 0x93,
 #endif
+	H2C_PNO = 0x94,
 	H2C_RESET_TSF = 0xC0,
 	H2C_BCNHWSEQ = 0xC5,
 	H2C_TSF_LATCH = 0xC9,
@@ -123,6 +124,7 @@ enum h2c_cmd {
 
 #define H2C_KEEP_ALIVE_CTRL_LEN	6
 #define H2C_DISCON_DECISION_LEN		3
+#define H2C_PNO_LEN		        4
 #define H2C_TCP_KEEP_ALIVE_CTRL_LEN 6
 #define H2C_DHCP_RENEW_CTRL_LEN 6
 
@@ -275,6 +277,13 @@ s32 rtw_hal_set_FwMediaStatusRpt_range_cmd(_adapter *adapter, bool opmode, bool 
 #define SET_H2CCMD_DISCONDECISION_PARM_CHECK_PERIOD(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE(__pH2CCmd+1, 0, 8, __Value)
 #define SET_H2CCMD_DISCONDECISION_PARM_TRY_PKT_NUM(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE(__pH2CCmd+2, 0, 8, __Value)
 
+/* _PMO_CMD_0x94 */
+#define SET_H2CCMD_PNO_PARM_ENABLE(__pH2CCmd, __Value)						SET_BITS_TO_LE_1BYTE(__pH2CCmd, 0, 1, __Value)
+#define SET_H2CCMD_PNO_PARM_DTIM(__pH2CCmd, __Value)					    SET_BITS_TO_LE_1BYTE(__pH2CCmd, 1, 4, __Value)
+#define SET_H2CCMD_PNO_PARM_INTERVAL_L(__pH2CCmd, __Value)					SET_BITS_TO_LE_1BYTE(__pH2CCmd+1, 0, 8, __Value)
+#define SET_H2CCMD_PNO_PARM_INTERVAL_H(__pH2CCmd, __Value)					SET_BITS_TO_LE_1BYTE(__pH2CCmd+2, 0, 8, __Value)
+#define SET_H2CCMD_PNO_PARM_FORCE_WAKEUP(__pH2CCmd, __Value)				SET_BITS_TO_LE_1BYTE(__pH2CCmd+3, 0, 8, __Value)
+
 /* _TCP_KEEP_ALIVE_CMD_0x07 */
 #define SET_H2CCMD_TCP_KEEPALIVE_PARM_ENABLE(__pH2CCmd, __Value)			SET_BITS_TO_LE_1BYTE(__pH2CCmd, 0, 1, __Value)
 #define SET_H2CCMD_TCP_KEEPALIVE_PARM_ADOPT(__pH2CCmd, __Value)				SET_BITS_TO_LE_1BYTE(__pH2CCmd, 1, 1, __Value)
@@ -403,6 +412,7 @@ s32 rtw_hal_set_FwMediaStatusRpt_range_cmd(_adapter *adapter, bool opmode, bool 
 #define SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_ACTION(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+2, 0, 1, __Value)
 #define SET_H2CCMD_REMOTE_WAKE_CTRL_FW_PARSING_UNTIL_WAKEUP(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+2, 4, 1, __Value)
 #define SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_POWER_BIT_EN(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE((__pH2CCmd)+2, 7, 1, __Value)
+#define SET_H2CCMD_REMOTE_WAKE_CTRL_ARP_RESPONSE_BLOCK(__pH2CCmd, __Value)    SET_BITS_TO_LE_1BYTE((__pH2CCmd)+4, 3, 1, __Value)
 
 /* AOAC_GLOBAL_INFO_0x82 */
 #define SET_H2CCMD_AOAC_GLOBAL_INFO_PAIRWISE_ENC_ALG(__pH2CCmd, __Value)	SET_BITS_TO_LE_1BYTE(__pH2CCmd, 0, 8, __Value)

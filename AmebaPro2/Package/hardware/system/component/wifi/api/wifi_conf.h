@@ -890,6 +890,10 @@ int wifi_wowlan_set_arp_rsp_keep_alive(int enable);
 int wifi_wowlan_set_dtimto(uint8_t dtimto_enable, uint8_t retry_inc, uint8_t ack_timeout, uint8_t dtim);
 #endif
 
+#ifdef CONFIG_SMART_DTIM
+int wifi_wowlan_set_smartdtim(uint8_t check_period, uint8_t threshold, uint8_t change_dtim, uint8_t dtim);
+#endif
+
 #ifdef CONFIG_WOWLAN_PARAM
 int wifi_wowlan_set_wowlan_param(u8  fwdis_period,
 								 u8  fwdis_trypktnum,

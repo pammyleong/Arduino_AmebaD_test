@@ -34,6 +34,7 @@
 #define CONFIG_LOG_SERVICE_LOCK		    0
 #define CONFIG_ATCMD_MP			        0   //support MP AT command
 #define CONFIG_ISP						0   //support ISP AT command
+#define CONFIG_TUNING					0   //support IQ Tuning
 #define CONFIG_FTL						0   //support FTL AT command
 #define USE_MODE                        1   //for test
 // For UART Module AT command //

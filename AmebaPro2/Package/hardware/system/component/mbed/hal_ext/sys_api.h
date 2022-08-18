@@ -58,6 +58,12 @@ void sys_reset(void);
   */
 uint8_t sys_get_boot_sel(void);
 
+/**
+  * @brief  system wdt reset patch.
+  * @retval none
+  */
+void sys_setup(void);
+
 ///@}
 
 #if ((defined(CONFIG_PLATFORM_AMEBAD2) && (CONFIG_PLATFORM_AMEBAD2 == 1)) || \

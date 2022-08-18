@@ -25,19 +25,20 @@
 #include <string.h>
 #include <math.h>
 
-//#define Arduino_STD_PRINTF
+#include "binary.h"
 
+//#define Arduino_STD_PRINTF
 #ifdef Arduino_STD_PRINTF
 #include <stdio.h>
 #endif
-
-#include "binary.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
+
 #include "wiring_constants.h"
+//#include "diag.h"
 
 extern uint32_t SystemCoreClock;
 
@@ -51,16 +52,36 @@ void yield(void);
 #define yield(x) {}
 #endif
 
-extern uint32_t                     DiagPrintf(const char *fmt, ...);
-extern int                          _rtl_printf(const char *fmt, ...);
-extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
+//extern int                          _rtl_printf(const char *fmt, ...);
+//extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
+//extern int                          _rtl_printf(const char *fmt, ...);
+//extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
+
+///extern uint32_t stdio_printf_stubs;
+
+//extern const stdio_printf_func_stubs_t stdio_printf_stubs;
+
+extern int                          dbg_printf(const char *fmt, ...);
+extern int                          dbg_sprintf(char* str, const char* fmt, ...);
+
+
+#if 0
+extern int _rtl_printf(const char *fmt, ...);
+extern int _rtl_sprintf(char *buf, const char *fmt, ...);
+extern int _rtl_snprintf(char *buf, size_t size, const char *fmt, ...);
+
+extern int _xprintf(const char *fmt, ...);
+extern int _xsprintf(char *buf, const char *fmt, ...);
+extern int _xsnprintf(char *buf, size_t size, const char *fmt, ...);
+#endif
+
 
 #ifndef Arduino_STD_PRINTF
 #ifndef printf
-#define printf                      _rtl_printf
+#define printf                      dbg_printf
 #endif
 #ifndef sprintf
-#define sprintf                     _rtl_sprintf
+#define sprintf                     dbg_sprintf
 #endif
 #endif
 
@@ -81,29 +102,34 @@ extern void *pvPortReAlloc(void *pv, size_t xWantedSize);
 extern void setup( void );
 extern void loop( void );
 
-#define NOT_INITIAL     (1UL<<0)
-#define PIO_GPIO        (1UL<<1)
-#define PIO_PWM         (1UL<<2)
-#define PIO_I2C         (1UL<<3)
-#define PIO_ADC         (1UL<<4)
-#define PIO_DAC         (1UL<<5)
-#define PIO_GPIO_IRQ    (1UL<<6)
+#define NOT_INITIAL                     (1UL<<0)
+#define PIO_GPIO                        (1UL<<1)
+#define PIO_PWM                         (1UL<<2)
+#define PIO_I2C                         (1UL<<3)
+#define PIO_ADC                         (1UL<<4)
+#define PIO_DAC                         (1UL<<5)
+#define PIO_GPIO_IRQ                    (1UL<<6)
 
-#define PWM_MODE_ENABLED  1
-#define PWM_MODE_DISABLED 0
+#define TYPE_ANALOG                     (1UL<<7)
+#define TYPE_DIGITAL                    (1UL<<8)
+
+// Pin mode 
+// 0x0 to 0x4       "GPIO mode"
+// 0x5 to 0x9       "GPIO_IRQ mode"
+#define MODE_NOT_INITIAL                (1UL<<4)
+#define PWM_MODE_ENABLED                (1UL<<31)
+#define GPIO_MODE_ENABLED               (1UL<<30)
+#define GPIO_IRQ_MODE_ENABLED           (1UL<<29)
 
 /* Types used for the tables below */
 typedef struct _PinDescription
 {
     // HW PinNames
     uint32_t    pinname;
-
     // Current Pin Type
     uint32_t    ulPinType;
-
     // Supported Pin Function
     uint32_t    ulPinAttribute;
-
     // Current Pin Mode
     uint32_t    ulPinMode;
 } PinDescription;
@@ -114,23 +140,24 @@ extern PinDescription g_APinDescription[];
 #ifdef __cplusplus
 } // extern "C"
 
-#include "WCharacter.h"
+////    #include "WCharacter.h"
 #include "WString.h"
-#include "WMath.h"
+////    #include "WMath.h"
 #include "HardwareSerial.h"
-#include "wiring_pulse.h"
+////    #include "wiring_pulse.h"
 
 #endif // __cplusplus
 
 // Include board variant
-#include "variant.h"
+#include "pins_arduino.h"
+//#include "variant.h"
 #include "wiring.h"
-#include "wiring_digital.h"
-#include "wiring_analog.h"
-#include "WInterrupts.h"
-#include "wiring_os.h"
-#include "wiring_watchdog.h"
-#include "wiring_shift.h"
+////    #include "wiring_digital.h"
+////    #include "wiring_analog.h"
+////    #include "WInterrupts.h"
+////    #include "wiring_os.h"
+////    #include "wiring_watchdog.h"
+////    #include "wiring_shift.h"
 
 // C++ functions
 #ifdef __cplusplus

@@ -1,0 +1,58 @@
+/*-----------------------memtester.h-----------------------------*/
+#include <sys/types.h>
+
+/* extern declarations. */
+
+extern int use_phys;
+extern off_t physaddrbase;
+
+/*------------------------size.h---------------------------------*/
+
+#include <limits.h>
+
+#define rand32() ((unsigned int) rand() | ( (unsigned int) rand() << 16))
+
+#if (ULONG_MAX == 4294967295UL)
+#define rand_ul() rand32()
+#define UL_ONEBITS 0xffffffff
+#define UL_LEN 32
+#define CHECKERBOARD1 0x55555555
+#define CHECKERBOARD2 0xaaaaaaaa
+#define UL_BYTE(x) ((x | x << 8 | x << 16 | x << 24))
+#elif (ULONG_MAX == 18446744073709551615ULL)
+#define rand64() (((ul) rand32()) << 32 | ((ul) rand32()))
+#define rand_ul() rand64()
+#define UL_ONEBITS 0xffffffffffffffffUL
+#define UL_LEN 64
+#define CHECKERBOARD1 0x5555555555555555
+#define CHECKERBOARD2 0xaaaaaaaaaaaaaaaa
+#define UL_BYTE(x) (((ul)x | (ul)x<<8 | (ul)x<<16 | (ul)x<<24 | (ul)x<<32 | (ul)x<<40 | (ul)x<<48 | (ul)x<<56))
+#else
+#error long on this platform is not 32 or 64 bits
+#endif
+
+/*-------------------------types.h-------------------------------*/
+typedef unsigned long ul;
+typedef unsigned long long ull;
+typedef unsigned long volatile ulv;
+typedef unsigned char volatile u8v;
+typedef unsigned short volatile u16v;
+
+/*
+struct test {
+    char *name;
+    int (*fp)();
+};
+*/
+
+/*---------------------------------------------------------------*/
+
+#define EXIT_FAIL_NONSTARTER    0x01
+#define EXIT_FAIL_ADDRESSLINES  0x02
+#define EXIT_FAIL_OTHERTEST     0x04
+
+extern void psram_pressure_loop(u32 testmode);
+
+#define TEST_NARROW_WRITES
+
+

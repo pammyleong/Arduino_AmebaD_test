@@ -811,6 +811,9 @@ void String::remove(unsigned int index){
 }
 
 void String::remove(unsigned int index, unsigned int count){
+
+// zzw 
+#if 0
     if (index >= len) {
         return;
     }
@@ -824,6 +827,7 @@ void String::remove(unsigned int index, unsigned int count){
     len = len - count;
     strncpy(writeTo, (buffer + index + count), (len - index));
     buffer[len] = 0;
+#endif
 }
 
 void String::toLowerCase(void)

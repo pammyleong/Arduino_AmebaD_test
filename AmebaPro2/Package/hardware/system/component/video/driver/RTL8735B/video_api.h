@@ -160,8 +160,11 @@ void video_set_debug_level(int value);//Default level -> VIDEO_LOG_MSG
 
 void video_set_uvcd_iq(unsigned int addr);
 
+void video_set_framerate(int fps);
+
 //////////////////////
-#define VOE_NAND_FLASH_OFFSET 0x8001080
+#define VOE_NOR_REMAP_OFFSET 0xC000000 //enc_remap_addr in encrypt_fw.json
+#define VOE_NAND_FLASH_OFFSET 0x8000000
 #define FW_1 0x01
 #define FW_2 0x02
 #endif

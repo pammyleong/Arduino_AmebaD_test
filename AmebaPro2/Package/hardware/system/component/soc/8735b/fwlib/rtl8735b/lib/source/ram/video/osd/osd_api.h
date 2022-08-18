@@ -77,5 +77,6 @@ enum rts_osd_err_code rts_set_char_size(int chn_id, int char_resize_w, int char_
 void rts_osd_set_log_type(int log_type);
 enum rts_osd_err_code rts_osd_set_frame_size(int chn_id, int frame_w, int frame_h);
 void rts_osd_stroke(uint8_t *dst, uint8_t *src, int width, int height, int ch_color, int stroke_color, enum rts_osd2_blk_fmt blk_fmt);
+void rts_osd_sync_from_sntp(int sntp_en);
 
 #endif	// OSD_API_H

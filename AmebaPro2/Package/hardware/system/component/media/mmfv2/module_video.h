@@ -51,7 +51,7 @@
 
 
 #define CMD_VIDEO_MD_SET_ROI		MM_MODULE_CMD(0x31)
-#define CMD_VIDEO_MD_SET_SENSITIVITY	MM_MODULE_CMD(0x332)
+#define CMD_VIDEO_MD_SET_SENSITIVITY	MM_MODULE_CMD(0x32)
 #define CMD_VIDEO_MD_START			MM_MODULE_CMD(0x33)
 #define CMD_VIDEO_MD_STOP			MM_MODULE_CMD(0x34)
 
@@ -77,5 +77,6 @@ int video_voe_presetting(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_s
 						 int v4_enable, int v4_w, int v4_h);
 
 void video_voe_release(void);
+void video_set_sensor_id(int SensorName);
 
 #endif

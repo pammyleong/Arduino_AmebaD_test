@@ -558,6 +558,33 @@
 	LE_BITS_TO_4BYTE(h2c_pkt + 0X04, 24, 8)
 #define PS_TUNING_PARA_SET_RX_BCN_LIMIT(h2c_pkt, value) \
 	SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X04, 24, 8, value)	
+	
+#define GET_PWR_MODE_EXT_SET_CMD_ID(h2c_pkt)                  \
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X00, 0, 8)  
+#define GET_PWR_MODE_EXT_SET_SMTDTIM_EN(h2c_pkt)                  \
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X01, 1, 1)    
+#define GET_PWR_MODE_EXT_SET_SMTDTIM_RS_EN(h2c_pkt)                  \
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X01, 2, 1)    
+#define GET_PWR_MODE_EXT_SET_DTIMCHKPERIOD(h2c_pkt)                  \
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X02, 0, 8)    
+#define GET_PWR_MODE_EXT_SET_MISSCNT(h2c_pkt)                  \
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X03, 0, 8)    
+#define GET_PWR_MODE_EXT_SET_TARGETDTIM(h2c_pkt)                  \ 
+    LE_BITS_TO_4BYTE(h2c_pkt + 0X04, 0, 8)
+
+#define SET_PWR_MODE_EXT_SET_CMD_ID(h2c_pkt, value)                  \
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X00, 0, 8, value)       
+#define SET_PWR_MODE_EXT_SET_SMTDTIM_EN(h2c_pkt, value)                  \
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X01, 1, 1, value)    
+#define SET_PWR_MODE_EXT_SET_SMTDTIM_RS_EN(h2c_pkt, value)                  \
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X01, 2, 1, value)   
+#define SET_PWR_MODE_EXT_SET_DTIMCHKPERIOD(h2c_pkt, value)                  \
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X02, 0, 8, value)    
+#define SET_PWR_MODE_EXT_SET_MISSCNT(h2c_pkt, value)                  \
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X03, 0, 8, value)    
+#define SET_PWR_MODE_EXT_SET_TARGETDTIM(h2c_pkt, value)                  \  
+    SET_BITS_TO_LE_4BYTE(h2c_pkt + 0X04, 0, 8, value)
+	
 #else
 #define PS_TUNING_PARA_GET_BCN_TO_LIMIT(h2c_pkt)                               \
 	LE_BITS_TO_4BYTE(h2c_pkt + 0X00, 8, 7)

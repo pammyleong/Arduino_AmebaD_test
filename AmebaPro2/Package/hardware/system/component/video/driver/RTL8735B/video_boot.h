@@ -22,9 +22,9 @@
 #define ENC_CREATE_BUF 420*1024
 #define SNAPSHOT_BUF   300*1024
 
-#define V1_ENC_BUF_SIZE  8 //sec
-#define V2_ENC_BUF_SIZE  8 //sec
-#define V3_ENC_BUF_SIZE  8 //sec
+#define V1_ENC_BUF_SIZE  16 //sec
+#define V2_ENC_BUF_SIZE  16 //sec
+#define V3_ENC_BUF_SIZE  16 //sec
 
 #define STREAM_V1 0
 #define STREAM_V2 1
@@ -51,6 +51,14 @@ typedef struct video_boot_stream_cfg {
 	uint32_t fcs_isp_awb_init_rgain;
 	uint32_t fcs_isp_awb_init_bgain;
 	uint32_t fcs_isp_init_daynight_mode;//0 night mode ; 1 day mode
+	uint32_t fcs_lookup_count;
+	uint32_t fcs_als_thr[11];
+	uint32_t fcs_isp_ae_table_exposure[11];
+	uint32_t fcs_isp_ae_table_gain[11];
+	uint32_t fcs_isp_awb_table_rgain[11];
+	uint32_t fcs_isp_awb_table_bgain[11];
+	uint32_t fcs_isp_mode_table[11];
+	uint32_t fcs_isp_iq_id;//0
 } video_boot_stream_t;
 #endif
 

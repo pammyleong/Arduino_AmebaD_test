@@ -13,6 +13,40 @@
 		{
           "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
           "architecture": "AmebaPro2",
+          "version": "4.0.0-t04",
+          "category": "Contributed",
+          "help": {
+            "online": "https://forum.amebaiot.com/"
+          },
+          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t04.tar.gz",
+          "archiveFileName": "ameba_pro2-4.0.0-t04.tar.gz",
+          "checksum": "SHA-256:a535e44e6448b8784d8cddfceba4f8fc0997d858481bd6b2fb9524551378fee9",
+          "size": "65006907",
+          "boards": [
+            {"name": "AMB82"},
+            {"name": "AMB82-MINI"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_toolchain",
+              "version": "1.0.1-p1"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_toolchain",
+              "version": "1.0.1-p2"
+            },
+            {
+              "packager": "realtek",
+              "name": "ameba_pro2_tools",
+              "version": "1.0.1"
+            }
+          ]
+        },
+		{
+          "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
+          "architecture": "AmebaPro2",
           "version": "4.0.0-t03",
           "category": "Contributed",
           "help": {
@@ -43,112 +77,45 @@
               "version": "1.0.0"
             }
           ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
-          "architecture": "AmebaPro2",
-          "version": "4.0.0-t02",
-          "category": "Contributed",
-          "help": {
-            "online": "https://forum.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t02.tar.gz",
-          "archiveFileName": "ameba_pro2-4.0.0-t02.tar.gz",
-          "checksum": "SHA-256:b52dffb703e35926ba70f3fb2b55ad4750062d0acccf6cf1d9d732d2ba827947",
-          "size": "46331084",
-          "boards": [
-            {"name": "AMB82"},
-            {"name": "AMB82-MINI"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p2"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_tools",
-              "version": "1.0.0"
-            }
-          ]
-        },
-		{
-          "name": "Realtek Ameba Boards (32-bit Arm v8M @500MHz)",
-          "architecture": "AmebaPro2",
-          "version": "4.0.0-t01",
-          "category": "Contributed",
-          "help": {
-            "online": "https://forum.amebaiot.com/"
-          },
-          "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2-4.0.0-t01.tar.gz",
-          "archiveFileName": "ameba_pro2-4.0.0-t01.tar.gz",
-          "checksum": "SHA-256:ce6f16e116c0aa3de58c2941d48bbe7f1a8072a710e6bc48ff786970c87bb073",
-          "size": "46331028",
-          "boards": [
-            {"name": "AMB82-MINI"}
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p1"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_toolchain",
-              "version": "1.0.0-p2"
-            },
-            {
-              "packager": "realtek",
-              "name": "ameba_pro2_tools",
-              "version": "1.0.0"
-            }
-          ]
         }
       ],
       "tools": [
 		{
           "name": "ameba_pro2_toolchain",
-          "version":"1.0.0-p1",
+          "version":"1.0.1-p1",
           "systems": [
             {
               "host":"i686-mingw32",
-              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p1.tar.bz2",
-              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p1.tar.bz2",
-              "checksum":"SHA-256:129cd843149575932c58a9ff458826529f0310aea1116ca12ebc5bbbc56d2964",
-              "size":"96393135"
+              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.1-p1.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.1-p1.tar.bz2",
+              "checksum":"SHA-256:19ddee6f286fc5c30abcd5af238d5ac8a7f0331ba5753aa9476e7fef96f64b50",
+              "size":"90125343"
             }
           ]
         },
 		{
           "name": "ameba_pro2_toolchain",
-          "version":"1.0.0-p2",
+          "version":"1.0.1-p2",
           "systems": [
             {
               "host":"i686-mingw32",
-              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
-              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.0-p2.tar.bz2",
-              "checksum":"SHA-256:1f09e8abeb40911985e789af77de47126f5f4034a3ee00f1c3157272979c9770",
-              "size":"69958537"
+              "archiveFileName":"ameba_pro2_toolchain_windows-1.0.1-p2.tar.bz2",
+              "url":"https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_toolchain_windows-1.0.1-p2.tar.bz2",
+              "checksum":"SHA-256:2efdb80f1001c7cc3ef926c605e523bdfa6a05d1cef9bed7cfd5d0a214728223",
+              "size":"76361876"
             }
           ]
         },
 		{
           "name": "ameba_pro2_tools",
-          "version": "1.0.0",
+          "version": "1.0.1",
           "systems": [
             {
               "host": "i686-mingw32",
-              "archiveFileName": "ameba_pro2_tools_windows-1.0.0.tar.gz",
-              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_windows-1.0.0.tar.gz",
-              "checksum": "SHA-256:306a7f10fdf73a757bd13056aa8c5b6f47e57b5bd4a26dbfc50512f7349ed096",
-              "size": "2065304"
+              "archiveFileName": "ameba_pro2_tools_windows-1.0.1.tar.gz",
+              "url": "https://github.com/M-ichae-l/Arduino_AmebaD_test/raw/master/AmebaPro2/Package/release/ameba_pro2_tools_windows-1.0.1.tar.gz",
+              "checksum": "SHA-256:754a860d680c190e3e243c27a60f92aee3b1cb4f06f0c216e4ab73cc50989e8d",
+              "size": "2156236"
             }
           ]
         }

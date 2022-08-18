@@ -1,4 +1,88 @@
 --------------------------------------------------------------------------	
+<08/16/2022 15:00 Martin>
+Version : RTL8735B_VOE_1.3.2.1
+Modified Files:
+All
+Change Notes:
+
+	ISP/sensor related
+	1. Fixed TM/SNR/MD module buffer assignment issue
+	2. roll back PC2's upate(isp_iq: bounds: fix that get_bound API may return bounds_count as index)
+	
+	Video/ENC related
+	1. Enable VOE FreeRTOS v10.1.1 assert function 
+	2. 
+	
+Reviewer:
+	Martin 
+--------------------------------------------------------------------------	
+<08/11/2022 15:00 Martin>
+Version : RTL8735B_VOE_1.3.2.0
+Modified Files:
+All
+Change Notes:
+
+	ISP/sensor related
+	1. Merge PC2 update for sensor temperature control function
+	2. Add temperature control function with iq table parameter
+	3. Change daynight detector timer with statis done event
+	4. Merge PC2 update for iq: add other table in HDR mode and Linear mode group
+	5. add extra iq_ext.bin for 6 table included other_id table
+	6. 
+	
+	Video/ENC related
+	1. 
+	2. 
+	
+Reviewer:
+	Martin 
+--------------------------------------------------------------------------	
+<07/28/2022 15:00 Martin>
+Version : RTL8735B_VOE_1.3.1.0
+Modified Files:
+All
+Change Notes:
+
+	ISP/sensor related
+	1. Merge PC2 updated to 0713
+		isp_iq: fix that get_bound API may return bounds_count as index
+		mod_ae: use sensor_max_fps as ae_max_fps_ctrl default value
+		isp_hw_iq: don't apply max/min to texture reg by md_val when md disabled
+		mod_tm: add luma_thd iq table error checking, add error checking to prevent from error accessing memory
+	2. update 3Alib: remove ae alg set min/max fps log
+	3. add sensor init flag and data_start_flag to filter out error data_start/frame_end event
+	4. disable RTS_V4L2_CID_IQ_TABLE
+	5. I2c resource protection
+	6. Sync PC's HDR sensor driver, add IMX327
+	
+	Video/ENC related
+	1. fixed voe_tuning_iq_param return issue
+	2. 
+	
+Reviewer:
+	Martin 
+
+--------------------------------------------------------------------------	
+<07/14/2022 15:00 Raymond>
+Version : RTL8735B_VOE_1.3.0.0
+Modified Files:
+All
+Change Notes:
+
+	ISP/sensor related
+	1. Merge PC2 updated for auto flicker issue
+	2. fixed the alignment of osd buffer(cmd, color table) for cache sync
+	3. Add check for OSD TM2KM ping pong buffer rotate
+	3. Add i2c debug log & add timeout check when setting hclk
+    	
+	
+	Video/ENC related
+	1. modify HAL/VOE/Sensor version check flow & format
+	2. Add addr/fcs_id valid check during fw/iq/sensor load
+	
+Reviewer:
+	Raymond 
+--------------------------------------------------------------------------	
 <06/29/2022 15:00 Raymond>
 Version : RTL8735B_VOE_1.2.7.2
 Modified Files:

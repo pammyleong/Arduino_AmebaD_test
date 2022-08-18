@@ -338,6 +338,14 @@ struct pwrctrl_priv {
 #endif
 #endif
 
+#ifdef CONFIG_SMART_DTIM
+	u8  smartdtim_enable;
+	u8  smartdtim_resume_enable;
+	u8  smartdtim_check_period;
+	u8  smartdtim_threshold;
+	u8  smartdtim_change_dtim;
+#endif
+
 #ifdef CONFIG_WOWLAN_DHCP_RENEW
 	u8  dhcp_renew_rsvd_page_locate;
 	u8 *dhcp_renew_pkt;

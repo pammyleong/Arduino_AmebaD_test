@@ -93,6 +93,7 @@ s32 rtl8735b_fillh2ccmd(PADAPTER, u8 id, u32 buf_len, u8 *pbuf);
 void rtl8735b_set_FwMacIdConfig_cmd(PADAPTER, u64 bitmap, u8 *arg, u8 bw);
 void rtl8735b_set_FwRssiSetting_cmd(PADAPTER, u8 *param);
 void rtl8735b_set_FwPwrMode_cmd(PADAPTER, u8 psmode);
+void rtl8735b_set_FwPwrMode_Ext_cmd(PADAPTER adapter);
 void rtl8735b_set_FwPwrModeInIPS_cmd(PADAPTER adapter, u8 cmd_param);
 void c2h_handler_rtl8735b(_adapter *adapter, u8 *pbuf, u16 length);
 void c2h_pre_handler_rtl8735b(_adapter *adapter, u8 *pbuf, s32 length);

@@ -189,7 +189,8 @@ DLLExport int MQTTYield(MQTTClient *client, int time);
 
 #if defined(MQTT_TASK)
 void MQTTSetStatus(MQTTClient *c, int mqttstatus);
-int MQTTDataHandle(MQTTClient *c, fd_set *readfd, MQTTPacket_connectData *connectData, messageHandler messageHandler, char *address, char *topic);
+int MQTTDataHandle(MQTTClient *c, fd_set *readfd, MQTTPacket_connectData *connectData, messageHandler messageHandler, char *address, char *topic[],
+				   int topic_num);
 #endif
 
 #if defined(__cplusplus)

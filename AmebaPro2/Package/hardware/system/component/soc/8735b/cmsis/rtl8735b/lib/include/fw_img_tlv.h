@@ -4,7 +4,7 @@
  *           for secure boot.
  *
  * @version  V1.00
- * @date     2022-03-18
+ * @date     2022-07-08
  *
  * @note
  *
@@ -59,6 +59,7 @@ extern "C"
 #define _ERRNO_BOOT_SET_SJTAG_NFIXED_KSKN_CNTENT_NULL                   (0x1D)
 #define _ERRNO_BOOT_UNSUPPORT_VRF_ALG                                   (0x1E)
 #define _ERRNO_BOOT_UNSUPPORT_CTRL_OBJ                                  (0x1F)
+#define _ERRNO_BOOT_INVALID_VERSION_ANTI_ROLBK                          (0x20)
 
 /* Secure boot */
 #define _ERRNO_BOOT_SB_IMG_PBK_HASH_VRF_FAIL                            (0x30)
@@ -421,6 +422,7 @@ typedef enum {
 	FW_PT_NN_MDL_ID        = 0x81CF,
 	FW_PT_NAND_CTRL_ID     = 0x79D0,
 	FW_PT_NAND_BBT_ID      = 0x71D1,
+	FW_PT_FCS_PARA_ID      = 0x69D2,
 	FW_PT_RESV_ID          = 0x01DF,
 } PART_TYPE_ID_T;
 
@@ -702,11 +704,11 @@ typedef struct part_fst_info_s {
 	uint8_t iq_idx;
 	uint8_t nn_m_idx;
 	uint8_t mp_idx;
-	// For NAND Flash boot
-	uint8_t keycert1_idx;
-	uint8_t keycert2_idx;
+	uint8_t keycert1_idx;   // For NAND Flash boot
+	uint8_t keycert2_idx;   // For NAND Flash boot
+	uint8_t fcs_para_idx;
+	uint8_t resv1[5];
 
-	uint8_t resv1[6];
 	gpio_pwr_on_trap_pin_t ota_trap;
 	gpio_pwr_on_trap_pin_t mp_trap;
 	uint32_t udl;
@@ -943,7 +945,8 @@ typedef enum {
 	BL_INFO           = 0x3,
 	FW_IMG_INFO       = 0x4,
 	FW_ISP_INFO       = 0x5,
-	FW_VOE_INFO       = 0x6
+	FW_VOE_INFO       = 0x6,
+	FW_ISP_IQ_INFO    = 0x7,
 
 } IMG_INFO_T;
 

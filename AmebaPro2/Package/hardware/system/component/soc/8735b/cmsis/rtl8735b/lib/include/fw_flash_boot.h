@@ -3,7 +3,7 @@
  * @brief    Declare functions for boot from nor flash.
  *
  * @version  V1.00
- * @date     2022-01-27
+ * @date     2022-06-19
  *
  * @note
  *
@@ -79,6 +79,7 @@ int img_get_ld_sel_idx(const uint8_t img_obj, img_manifest_ld_sel_t *pld_sel_inf
 int img_get_update_sel_idx(const uint8_t img_obj, img_manifest_ld_sel_t *pld_sel_info1, img_manifest_ld_sel_t *pld_sel_info2, uint8_t img1_idx,
 						   uint8_t img2_idx);
 int img_sel_op_idx(void *p_tbl_info, const uint8_t img_obj, const uint8_t img_sel_op);
+int img_anti_rollback(const uint8_t img_obj, const int ld_img_idx);
 
 certi_tbl_t *fw_load_certi_tbl_direct_f(void);
 partition_tbl_t *fw_load_partition_tbl_direct_f(void);

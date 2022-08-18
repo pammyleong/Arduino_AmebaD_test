@@ -17,11 +17,13 @@
 */
 #include "variant.h"
 
+#if 1 //zzw 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-//#include "PinNames.h"
+__weak void _init(void) { }
 void __libc_init_array(void);
 
 /*
@@ -29,6 +31,7 @@ void __libc_init_array(void);
  */
 PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
 {
+#if 0
     {PA_18, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // AMB_D0
     {PA_16, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // AMB_D1
     {PA_17, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // AMB_D2
@@ -58,11 +61,13 @@ PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
     {PA_28, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM          , MODE_NOT_INITIAL}, // AMB_D26
     {PA_27, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // AMB_D27
     {PA_15, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // AMB_D28
-    {PA_14, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}  // AMB_D29
+#endif
+    {PF_9,  TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM          , MODE_NOT_INITIAL}  // AMB_D23
 };
 
 void *gpio_pin_struct[TOTAL_GPIO_PIN_NUM] = {NULL};
 void *gpio_irq_handler_list[TOTAL_GPIO_PIN_NUM] = {NULL};
+
 #ifdef __cplusplus
 } // extern C
 #endif
@@ -91,3 +96,5 @@ void wait_for_debug(void) {
     }
     delay(1000);
 }
+
+#endif

@@ -43,7 +43,7 @@ extern void wait_for_debug(void);
 #define MAIN_THREAD_STACK_SIZE                  (4096 * 4)
 
 #define TOTAL_GPIO_PIN_NUM                      (30)
-#define TOTAL_PWM_PIN_NUM                       (11)
+#define TOTAL_PWM_PIN_NUM                       (10)
 
 /* Digital pin mapping refer to g_APinDescription */
 #define AMB_D0                                  0  // PA_18
@@ -87,7 +87,9 @@ extern void wait_for_debug(void);
 #define A6                                      AMB_D9  // PB_3    3.3V    CH6
 
 /* LED pin mapping */
-#define LED_BUILTIN                             AMB_D13 // AMB_D13 Blue
+#define LED_B                                   0       //  Blue
+#define LED_BUILTIN                             LED_B //  Blue
+
 
 /* ADC/DAC pin mapping */
 #define FEATURE_ADC
@@ -130,5 +132,6 @@ extern void wait_for_debug(void);
 static const uint32_t LOG_TX        =  AMB_D24; // UART_LOG_TX AMB_D24
 static const uint32_t LOG_RX        =  AMB_D25; // UART_LOG_RX AMB_D25
 #endif
+
 
 #endif /* _VARIANT_ARDUINO_AMEBA_ */

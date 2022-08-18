@@ -89,7 +89,7 @@ typedef enum _RT_REGULATOR_MODE {
 #define CHANNEL_MAX_NUMBER_5G_80M				7
 
 // Tx Power Limit Table Size
-#define MAX_REGULATION_NUM						(TXPWR_LMT_MAX_REGULATION_NUM - 1)       /* ignore NCC */
+#define MAX_REGULATION_NUM						TXPWR_LMT_MAX_REGULATION_NUM
 #define MAX_2_4G_BANDWITH_NUM					2 // 20M, 40M
 #if defined(NOT_SUPPORT_RF_MULTIPATH) && (!defined(CONFIG_80211AC_VHT))
 #define MAX_RATE_SECTION_NUM					3 // CCk, OFDM, HT

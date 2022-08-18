@@ -111,6 +111,7 @@ typedef struct
     WebRtc_Word32       minLevel;           // Minimum possible volume level
     WebRtc_Word32       minOutput;          // Minimum output volume level
     WebRtc_Word32       zeroCtrlMax;        // Remember max gain => don't amp low input
+    WebRtc_Word32       lastInMicLevel;
 
     WebRtc_Word16       scale;              // Scale factor for internal volume levels
 #ifdef MIC_LEVEL_FEEDBACK

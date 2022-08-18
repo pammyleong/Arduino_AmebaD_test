@@ -358,7 +358,8 @@ enum rt_spinlock_type {
 		PW_LMT_REGU_CN = 10,
 		PW_LMT_REGU_QATAR = 11,
 		PW_LMT_REGU_UK = 12,
-		PW_LMT_REGU_MAX_NUM = 13
+		PW_LMT_REGU_NCC = 13,
+		PW_LMT_REGU_MAX_NUM = 14
 	};
 
 	enum odm_pw_lmt_band_type {

@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "mmf2_module.h"
+#include "hal_isp.h"
 
 #define CMD_MD_SET_PARAMS             	MM_MODULE_CMD(0x00)
 #define CMD_MD_SET_MD_THRESHOLD      	MM_MODULE_CMD(0x01)
@@ -15,15 +16,15 @@
 #define CMD_MD_SET_TRIG_BLK				MM_MODULE_CMD(0x08)
 
 //motion detect every n frames
-#define MOTION_DETECT_INTERVAL 2 //2
+#define MOTION_DETECT_INTERVAL 2
 #define col 16
 #define row 16
 
 typedef struct motion_detect_threshold_s {
 	//motion detect base threshold : smaller value, higher sensitive
-	double Tbase; // 0.3 ~ 1
+	double Tbase; // 0 ~ 20
 	//motion detect threshold : smaller value, higher sensitive to light change
-	double Tlum; // 2 ~ 3
+	double Tlum; // 0 ~ 5
 } motion_detect_threshold_t;
 
 typedef struct motion_detect_YRBG_data_s {
@@ -62,6 +63,8 @@ typedef struct md_context_s {
 
 //start MD after AE stable
 #define MD_AFTER_AE_STABLE 1
+
+#define MD_SW 0
 
 //dynamic increase sensitivity when too light or too dark
 #define  BRIGHT_THRESHOLD  180

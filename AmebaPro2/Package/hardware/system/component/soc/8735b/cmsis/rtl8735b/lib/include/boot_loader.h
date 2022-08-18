@@ -3,7 +3,7 @@
  * @brief    Declare functions for boot loader.
  *
  * @version  V1.00
- * @date     2022-03-02
+ * @date     2022-07-13
  *
  * @note
  *
@@ -49,6 +49,14 @@ enum voe_flash_load_sel {
 	SNAND_LOAD_SIM_DEC          = 0x11
 };
 
+typedef struct snand_decrypt_info {
+	BOOL valid;
+	const sec_boot_info_t *sb_info;
+} snand_decrypt_info_t;
+
+typedef struct snand_decryp_ivptn_s {
+	uint8_t data[EACH_IV_DATA_SIZE * 2];
+} snand_decryp_ivptn_t;
 
 // NOR Flash Boot
 typedef int (*img_hsh_init_f_t)(const uint8_t *key, const uint32_t key_len);
@@ -75,6 +83,8 @@ extern fw_ld_export_info_type_t fw_ld_export_info;
 extern int __voe_code_start__[];            // VOE DDR address
 extern voe_ld_export_info_type_t voe_ld_export_info;
 extern voe_fcs_peri_info_t voe_fcs_peri_info;
+extern uint8_t voe_fcs_para_raw[BOOT_LD_FCS_PARA_IMG_MAX_SIZE];
+extern snand_decrypt_info_t ispiq_img_dec_info;
 
 int fw_load_img_sect_f(const uint8_t *img_offset, fw_img_hdr_t *pfw_hdr, sec_boot_info_t *p_sb_info);
 int sb_ram_img_vrf_op(const uint8_t sbl_cfg, sec_boot_info_t *p_sb_info, const uint8_t info_type);
@@ -96,15 +106,18 @@ int boot_img_get_ld_select_idx(const uint8_t img_obj, img_manifest_ld_sel_t *pld
 							   uint8_t img2_idx);
 void boot_record_fw_ld_info(const uint8_t img_obj, fw_img_tlv_export_info_type_t *pfw_img_info, void *fw1_addr, void *fw2_addr,
 							img_manifest_ld_sel_t *pld_sel_info);
-void img_part_rd_export_info_load(const uint8_t export_obj, void *part_record, sec_boot_info_t *p_sb_info);
+void bl_load_ispiq_img_core(fw_img_hdr_t *pfw_hdr, uint8_t *pFw_data);
+void bl_get_ispiq_imgsz_manif_ie_f(const uint8_t *ptr, uint32_t *p_imgsz);
+void img_part_rd_export_info_load(const uint8_t export_obj, void *part_record, void *p_setinfo);
 void img_data_export_info_load(const uint8_t export_obj, const uint32_t img_manif_addr, flash_cpy_t load_op_f);
 void img_load_fail_set_rollback(void *pfw_load_info);
 
 // NAND Flash Boot
 int sb_snand_hash_update(img_hsh_update_f_t img_hsh_update_f, uint32_t msglen, uint8_t *p_msg, uint8_t is_flash_dat);
-hal_status_t snand_fw_memcpy(void *dst, const void *src, u32 size);
-hal_status_t snand_iq_memcpy(void *dst, const void *src, u32 size);
-s32 snand_fw_decrypt(void *const _dst, const void *_src, u32 size);
+hal_status_t snand_fw_img_memcpy(void *dst, const void *src, u32 size);
+hal_status_t snand_iq_img_memcpy(void *dst, const void *src, u32 size);
+s32 snand_voe_img_decrypt(void *const _dst, const void *_src, u32 size);
+s32 snand_ispiq_img_decrypt(void *const dest, const void *src, u32 size);
 
 __STATIC_FORCEINLINE
 void ie_safe_load(void *dst, const void *src, const uint32_t size, const uint32_t max_size)

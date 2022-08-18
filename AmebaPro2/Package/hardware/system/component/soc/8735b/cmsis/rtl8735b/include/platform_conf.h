@@ -2,7 +2,7 @@
  * @file     platform_conf.h
  * @brief    The configuration for AmebaPro2 (TM9) platform.
  * @version  V1.00
- * @date     2022-03-31
+ * @date     2022-06-09
  *
  * @note
  *
@@ -37,14 +37,18 @@
 #define CHIP_A_CUT                          1
 #define CHIP_B_CUT                          2
 #define CHIP_C_CUT                          3
+#define CHIP_D_CUT                          4
+
 
 #define IS_CUT_TEST(chip)                   (CHIP_TEST_CUT == chip)
 #define IS_CUT_A(chip)                      (CHIP_A_CUT == chip)
 #define IS_CUT_B(chip)                      (CHIP_B_CUT == chip)
 #define IS_CUT_C(chip)                      (CHIP_C_CUT == chip)
+#define IS_CUT_D(chip)                      (CHIP_D_CUT == chip)
 #define IS_AFTER_CUT_A(chip)                (CHIP_A_CUT <= chip)
 #define IS_AFTER_CUT_B(chip)                (CHIP_B_CUT <= chip)
 #define IS_AFTER_CUT_C(chip)                (CHIP_C_CUT <= chip)
+#define IS_AFTER_CUT_D(chip)                (CHIP_D_CUT <= chip)
 
 
 #define CONFIG_CHIP_VER							CHIP_B_CUT
@@ -112,6 +116,7 @@
 #define CONFIG_BOOT_DBG_PORT_AUTO_SEL_EN        (0)
 #define CONFIG_SJTAG_SIMU_EN                    (0)   // SIMU SJTAG USING, Default Disable
 #define CONFIG_HIGH_VAL_RANDOM_LOAD_EN          (0)   // SIMU HIGH_VAL_RNG_LOAD, Default Disable
+#define CONFIG_SIMU_ASIC_FLOW_EN                (0)   // SIMU ASIC_FLOW_EN, Default Disable
 #endif
 
 #if CONFIG_ASIC // ASIC (Default enable cache)

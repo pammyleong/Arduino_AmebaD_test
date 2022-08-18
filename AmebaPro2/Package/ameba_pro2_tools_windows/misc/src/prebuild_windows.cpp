@@ -3,7 +3,7 @@
 Compile:
 
 windows:
-mingw32-g++.exe -o postbuild_img2_arduino_windows.exe tools\windows\src\postbuild_img2_arduino_windows.cpp -static
+mingw32-g++.exe -o prebuild_windows.exe prebuild_windows.cpp -static
 
 */
 
@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
     system(cmd.c_str());
 
 #if 0
-
     cmd = "if exist 1.0.0-p2 xcopy /y /s \"1.0.0-p2\" \"1.0.0-p1\"";
     cout << cmd << endl;
     system(cmd.c_str());

@@ -3,7 +3,7 @@
 * @brief       The HAL API implementation for the System control
 *
 * @version     V1.00
-* @date        2022-01-25
+* @date        2022-06-21
 *
 * @note
 *
@@ -40,6 +40,9 @@ extern "C"
 {
 #endif
 
+#define FW_IMG_MANIFEST_VERSION_MAX_SIZE                (32)
+
+
 typedef enum {
 	BT_UART_MUX_EXTERNAL = 0,
 	BT_UART_MUX_INTERNAL = 1
@@ -61,6 +64,12 @@ enum dbg_port_pin_sel_e {
 	TMS_IO_DF_CLK_DF   = 4,         ///< debugger use pins same as rom code select
 };
 typedef uint8_t     dbg_port_pin_sel_t;
+
+enum {
+	FW_IMG_IDX_UNKNOWN     =   0x0,
+	FW_IMG_IDX1            =   0x1,
+	FW_IMG_IDX2            =   0x2
+};
 
 enum ADC_VREF_SEL_e {
 	VREF_SEL_0p75_V = 0x0,
@@ -100,6 +109,8 @@ uint32_t hal_sys_get_video_info(uint8_t idx);
 uint8_t hal_sys_get_rom_ver(void);
 uint8_t hal_sys_get_img_ld_idx_core(const uint8_t img_obj, void *pimf_ld_info);
 uint8_t hal_sys_get_ld_fw_idx(void);
+void hal_sys_get_fw_version_raw(const uint8_t ld_img_idx, uint8_t *pver_raw_buf);
+uint32_t hal_sys_get_fw_timest(const uint8_t ld_img_idx);
 uint32_t hal_sys_get_ld_fw_img_dev_nor_offset(void);
 uint8_t hal_sys_get_ld_img_idx(const uint8_t img_obj);
 
@@ -120,8 +131,10 @@ void hal_sys_high_val_protect_init(void);
 void hal_sys_high_val_protect_init_flow(void);
 void hal_sys_high_val_protect_deinit(void);
 void hal_sys_high_val_protect_ld(const uint32_t otp_addr, uint8_t *p_otp_v, const uint32_t ld_size);
+void hal_sys_high_val_mem_protect_ld(void *s1, const void *s2, size_t ld_size);
 void hal_sys_high_val_protect_ld_delay(uint8_t delay_unit_sel);
 uint8_t hal_sys_check_high_val_protect_init(void);
+int hal_sys_high_val_protect_cmp(const void *a, const void *b, size_t size);
 hal_status_t hal_sys_adc_vref_setting(uint8_t set_value);
 void hal_sys_set_sw_boot_rom_trap_op(uint8_t op_idx, uint8_t ctrl_status);
 void hal_sys_set_sw_boot_rom_pg_trap_op(void);
@@ -136,6 +149,7 @@ void hal_sys_spic_ddr_ctrl(u8 ctrl);
 void hal_sys_spic_phy_en(void);
 void hal_sys_spic_set_phy_delay(u8 delay_line);
 u8 hal_sys_spic_read_phy_delay(void);
+uint8_t hal_sys_get_atld_cfg(const uint8_t op);
 
 
 #define RAM_FOOTPH_INIT(idx)                hal_sys_boot_footpath_init(idx)
