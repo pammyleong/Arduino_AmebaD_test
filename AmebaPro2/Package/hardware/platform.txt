@@ -7,8 +7,11 @@
 
 name=AmebaPro2 ARM (32-bits) Boards
 version=4.0.X
-toolchian_version_p1=1.0.1-p1
-toolchian_version_p2=1.0.1-p2
+toolchian_version=1.0.1
+
+toolchian_version_p1={toolchian_version}-p1
+toolchian_version_p2={toolchian_version}-p2
+toolchian_name=ameba_pro2_toolchain-{toolchian_version_p1}
 
 # Ameba paths
 # ----------------------
@@ -21,8 +24,9 @@ ameba.proj_path={build.system.path}/project/realtek_amebapro2_v0_example
 ameba.proj_app_path={build.system.path}/project/realtek_amebapro2_v0_example/GCC-RELEASE/application
 ameba.ble_path={build.system.path}/component/bluetooth
 
-## toolchain path
-compiler.path={runtime.tools.ameba_pro2_toolchain.path}/bin/
+## compiler/toolchain path
+compiler.path={runtime.tools.{toolchian_name}.path}/bin/
+toolchain.path={runtime.tools.{toolchian_name}.path}
 
 ## tools path 
 ameba.tools_path={runtime.tools.ameba_pro2_tools.path}
@@ -98,7 +102,7 @@ build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} -DUSBCON '-DUSB_MANU
 
 
 #pre compile 
-recipe.hooks.sketch.prebuild.1.pattern.windows = {runtime.tools.ameba_pro2_tools.path}/prebuild_windows.exe {runtime.tools.ameba_pro2_toolchain.path} {toolchian_version_p1} {toolchian_version_p2}
+recipe.hooks.sketch.prebuild.1.pattern.windows = {runtime.tools.ameba_pro2_tools.path}/prebuild_windows.exe {toolchain.path} {toolchian_version_p1} {toolchian_version_p2}
 
 
 # Ameba compile patterns
@@ -114,7 +118,7 @@ recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -M
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Linking
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,-L{runtime.tools.ameba_pro2_toolchain.path}/lib/" "-Wl,-L{build.variant.path}/linker_scripts/gcc" "-Wl,-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.ntz.map" -o "{build.path}/application.ntz" -Wl,--start-group {object_files} -Wl,--start-group -Wl,--whole-archive "{build.path}/{archive_file}" -Wl,--end-group -Wl,--end-group -Wl,--start-group -Wl,--no-whole-archive {compiler.ameba.ar.list} -lstdc++ -lm -lc -lgcc -lnosys -Wl,--end-group 
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,-L{toolchain.path}/lib/" "-Wl,-L{build.variant.path}/linker_scripts/gcc" "-Wl,-T{build.variant.path}/{build.ldscript}" "-Wl,-Map={build.path}/application.ntz.map" -o "{build.path}/application.ntz" -Wl,--start-group {object_files} -Wl,--start-group -Wl,--whole-archive "{build.path}/{archive_file}" -Wl,--end-group -Wl,--end-group -Wl,--start-group -Wl,--no-whole-archive {compiler.ameba.ar.list} -lstdc++ -lm -lc -lgcc -lnosys -Wl,--end-group 
 
 ## Create image
 recipe.objcopy.hex.cmd=postbuild_windows.exe
