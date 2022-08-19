@@ -26,6 +26,7 @@
 extern "C"{
 #include "PinNames.h"
 
+// zzw ?
 #define portOutputRegister(P) ((volatile uint32_t *)(0x48014000 + (P) * 0x400))
 #define portInputRegister(P)  ((volatile uint32_t *)(0x48014050 + (P) * 0x400))
 #define portModeRegister(P)   ((volatile uint32_t *)(0x48014004 + (P) * 0x400))
@@ -46,92 +47,106 @@ extern void wait_for_debug(void);
 #define TOTAL_PWM_PIN_NUM                       (10)
 
 /* Digital pin mapping refer to g_APinDescription */
-#define AMB_D0                                  0  // PA_18
-#define AMB_D1                                  1  // PA_16
-#define AMB_D2                                  2  // PA_17
-#define AMB_D3                                  3  // PA_13
-#define AMB_D4                                  4  // PA_12
-#define AMB_D5                                  5  // PA_26
-#define AMB_D6                                  6  // PA_25
-#define AMB_D7                                  7  // PA_30
-#define AMB_D8                                  8  // PA_19
-#define AMB_D9                                  9  // PB_3
-#define AMB_D10                                 10 // PB_23
-#define AMB_D11                                 11 // PB_22
-#define AMB_D12                                 12 // PB_26
-#define AMB_D13                                 13 // PB_29
-#define AMB_D14                                 14 // PB_4
-#define AMB_D15                                 15 // PB_5
-#define AMB_D16                                 16 // PB_6
-#define AMB_D17                                 17 // PB_7
-#define AMB_D18                                 18 // PB_1
-#define AMB_D19                                 19 // PB_2
-#define AMB_D20                                 20 // PB_31
-#define AMB_D21                                 21 // PA_0
-#define AMB_D22                                 22 // PA_4
-#define AMB_D23                                 23 // PA_2
-#define AMB_D24                                 24 // PA_7
-#define AMB_D25                                 25 // PA_8
-#define AMB_D26                                 26 // PA_28
-#define AMB_D27                                 27 // PA_27
-#define AMB_D28                                 28 // PA_15
-#define AMB_D29                                 29 // PA_14
+#define AMB_D0                                  0  // PF_5
+#define AMB_D1                                  1  // PF_6
+#define AMB_D2                                  2  // PF_7
+#define AMB_D3                                  3  // PF_8
+#define AMB_D4                                  4  // PF_11
+#define AMB_D5                                  5  // PF_12
+#define AMB_D6                                  6  // PF_13
+#define AMB_D7                                  7  // PF_14
+#define AMB_D8                                  8  // PF_15
+#define AMB_D9                                  9  // PF_2
+#define AMB_D10                                 10 // PF_1
+#define AMB_D11                                 11 // PF_0
+#define AMB_D12                                 12 // PE_4
+#define AMB_D13                                 13 // PE_3
+#define AMB_D14                                 14 // PE_2
+#define AMB_D15                                 15 // PE_1
+#define AMB_D16                                 16 // PD_18
+#define AMB_D17                                 17 // PD_17
+#define AMB_D18                                 18 // PD_16
+#define AMB_D19                                 19 // PD_15
+#define AMB_D20                                 20 // PD_14
+#define AMB_D21                                 21 // PA_2
+#define AMB_D22                                 22 // PA_3
+
+#define AMB_D23                                 23 // PF_9
+#define AMB_D24                                 24 // PE_6
+#define AMB_D25                                 25 // PF_10
+#define AMB_D26                                 26 // PF_3
+#define AMB_D27                                 27 // PF_4
+#define AMB_D28                                 28 // PA_0
+#define AMB_D29                                 29 // PA_1
 
 /* Analog pin mapping */
-#define A0                                      AMB_D14 // PB_4    3.3V    CH0
-#define A1                                      AMB_D15 // PB_5    3.3V    CH1
-#define A2                                      AMB_D16 // PB_6    3.3V    CH2
-#define A3                                      AMB_D17 // PB_7    3.3V    CH3
-#define A4                                      AMB_D18 // PB_1    3.3V    CH4
-#define A5                                      AMB_D19 // PB_2    3.3V    CH5
-#define A6                                      AMB_D9  // PB_3    3.3V    CH6
+#define A0                                      AMB_D14 // PF_0    3.3V    CH0
+#define A1                                      AMB_D15 // PF_1    3.3V    CH1
+#define A2                                      AMB_D16 // PF_2    3.3V    CH2
+//#define A3                                      AMB_D17 // PF_3    3.3V    CH3    LOG_RX not recomanded to be used as ADC
+#define A4                                      AMB_D28 // PA_0    3.3V    CH4
+#define A5                                      AMB_D29 // PA_1    3.3V    CH5
+#define A6                                      AMB_D21 // PA_2    3.3V    CH6
+#define A7                                      AMB_D22 // PA_3    3.3V    CH7
 
 /* LED pin mapping */
-#define LED_B                                   0       //  Blue
-#define LED_BUILTIN                             LED_B //  Blue
+#define LED_B                                   AMB_D23 //  Blue
+#define LED_G                                   AMB_D24 //  Green
+#define LED_BUILTIN                             LED_B   //  Blue
 
+/* /* Push button mapping */
+#define PUSH_BTN                                AMB_D25 //
 
 /* ADC/DAC pin mapping */
 #define FEATURE_ADC
 //#define FEATURE_DAC
 
-/* SPI pin mapping */
-#define SPI_MOSI                                AMB_D1
-#define SPI_MISO                                AMB_D2
-#define SPI_SCLK                                AMB_D0
-#define SPI_SS                                  AMB_D8
-#define SPI1_MOSI                               AMB_D14 // AMB_D14 / AMB_D4
-#define SPI1_MISO                               AMB_D15 // AMB_D15 / AMB_D3
-#define SPI1_SCLK                               AMB_D16 // AMB_D16 / AMB_D29
-#define SPI1_SS                                 AMB_D17 // AMB_D17 / AMB_D28
+/* SPI pin mapping */ 
+// Master and Slave
+#define SPI_MOSI                                AMB_D13 // SPI_0_MOSI   AMB_D13
+#define SPI_MISO                                AMB_D14 // SPI_0_MISO   AMB_D14
+#define SPI_SCLK                                AMB_D15 // SPI_0_SCL    AMB_D15
+#define SPI_SS                                  AMB_D12 // SPI_0_CS0    AMB_D12
+#define SPI1_MOSI                               AMB_D2  // SPI_1_MOSI   AMB_D2
+#define SPI1_MISO                               AMB_D0  // SPI_1_MISO   AMB_D0
+#define SPI1_SCLK                               AMB_D1  // SPI_1_SCL    AMB_D1
+#define SPI1_SS                                 AMB_D3  // SPI_1_CS0v   AMB_D3
 
 /* TwoWire/I2C pin mapping */
-#define I2C_SDA                                 AMB_D5 // AMB_D5 qwiic / AMB_D16
-#define I2C_SCL                                 AMB_D6 // AMB_D6 qwiic / AMB_D15
+#define I2C_SDA                                 AMB_D12 // I2C2_SDA     AMB_D12
+#define I2C_SCL                                 AMB_D13 // I2C2_SCL     AMB_D13
+#define I2C1_SDA                                AMB_D9  // I2C1_SDA     AMB_D9
+#define I2C1_SCL                                AMB_D10 // I2C1_SCL     AMB_D10
+#define I2C2_SDA                                AMB_D29 // I2C0_SDA     AMB_D29
+#define I2C2_SCL                                AMB_D28 // I2C0_SCL     AMB_D28
 
 /* IR Device pin mapping */
-#define IR_TX                                   AMB_D6 // AMB_D6 / AMB_D10 / AMB_D20
-#define IR_RX                                   AMB_D5 // AMB_D5 / AMB_D11 / AMB_D13
+//#define IR_TX
+//#define IR_RX
 
 /* UART pin mapping */
 #define LOG_UART_MODIFIABLE_BAUD_RATE           1
 #define SERIAL_ONE_UART_MODIFIABLE_BAUD_RATE    1
 #define SERIAL_TWO_UART_MODIFIABLE_BAUD_RATE    1
-#define LOG_TX                                  AMB_D24 // UART_LOG_TX AMB_D24
-#define LOG_RX                                  AMB_D25 // UART_LOG_RX AMB_D25
-#define SERIAL2_TX                              AMB_D0  // HS_UART0_TX AMB_D0
-#define SERIAL2_RX                              AMB_D8  // HS_UART0_RX AMB_D8
-#define SERIAL1_TX                              AMB_D4  // LP_UART_TX  AMB_D4 / AMB_D5 / AMB_D18
-#define SERIAL1_RX                              AMB_D3  // LP_UART_RX  AMB_D3 / AMB_D6 / AMB_D19
+#define LOG_TX                                  AMB_D27 // UART1_OUT    AMB_D27 / AMB_D6
+#define LOG_RX                                  AMB_D26 // UART1_IN     AMB_D26 / AMB_D5
+//#define LOG_CTS                                 AMB_D9  // UART1_CTS AMB_D9
+//#define LOG_RTS                                 AMB_D10 // UART1_RTS AMB_D10
+#define SERIAL1_TX                              AMB_D21 // UART0_OUT    AMB_D21
+#define SERIAL1_RX                              AMB_D22 // UART0_IN     AMB_D22
+//#define SERIAL1_CTS
+//#define SERIAL1_RTS
+#define SERIAL2_TX                              AMB_D19 // UART2_OUT    AMB_D19
+#define SERIAL2_RX                              AMB_D18 // UART2_IN     AMB_D18
+//#define SERIAL2_CTS                             AMB_D17 // UART2_CTS    AMB_D17
+//#define SERIAL2_RTS                             AMB_D16 // UART2_RTS    AMB_D16
+#define SERIAL3_TX                              AMB_D15  // UART3_OUT   AMB_D15
+#define SERIAL3_RX                              AMB_D14  // UART3_IN    AMB_D14
+//#define SERIAL3_CTS                             AMB_D12 // UART3_CTS    AMB_D12
+//#define SERIAL3_RTS                             AMB_D13 // UART3_RTS    AMB_D13
 
 /* SWD pin mapping */
-#define SWD_DATA                                AMB_D27
-#define SWD_CLK                                 AMB_D9
-
-#if 0
-static const uint32_t LOG_TX        =  AMB_D24; // UART_LOG_TX AMB_D24
-static const uint32_t LOG_RX        =  AMB_D25; // UART_LOG_RX AMB_D25
-#endif
-
+#define SWD_DATA                                AMB_D28 // AMB_D28
+#define SWD_CLK                                 AMB_D29 // AMB_D29
 
 #endif /* _VARIANT_ARDUINO_AMEBA_ */
