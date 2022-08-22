@@ -32,7 +32,8 @@ int main(int argc, char *argv[]) {
     system(cmd.c_str());
 
     cmdss.clear();
-    cmdss << "if exist " << argv[3] << " rm -rf " << argv[3];
+    //cmdss << "if exist " << argv[3] << " rm -rf " << argv[3];
+    cmdss << "if exist " << argv[3] << " del " << argv[3];
     getline(cmdss, cmd);
     cout << cmd << endl;
     system(cmd.c_str());
@@ -42,7 +43,7 @@ int main(int argc, char *argv[]) {
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "if exist 1.0.0-p2 rm -rf 1.0.0-p2";
+    cmd = "if exist 1.0.0-p2 del 1.0.0-p2";
     cout << cmd << endl;
     system(cmd.c_str());
 #endif

@@ -94,7 +94,7 @@ extern void wait_for_debug(void);
 #define LED_G                                   AMB_D24 //  Green
 #define LED_BUILTIN                             LED_B   //  Blue
 
-/* /* Push button mapping */
+/* Push button mapping */
 #define PUSH_BTN                                AMB_D25 //
 
 /* ADC/DAC pin mapping */

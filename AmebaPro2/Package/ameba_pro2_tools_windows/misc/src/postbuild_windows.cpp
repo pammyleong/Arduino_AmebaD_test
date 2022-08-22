@@ -198,7 +198,8 @@ int main(int argc, char *argv[]) {
     // 7.1 power save mode bins
 #endif
 
-    cmd = "cp application.ntz application.ntz.axf";
+    //cmd = "cp application.ntz application.ntz.axf";
+    cmd = "copy application.ntz application.ntz.axf";
     cout << cmd << endl;
     system(cmd.c_str());
 
@@ -221,7 +222,8 @@ int main(int argc, char *argv[]) {
     cout << cmd << endl;
     system(cmd.c_str());
 
-    cmd = "cp firmware_ntz.bin firmware.bin";
+    //cmd = "cp firmware_ntz.bin firmware.bin";
+    cmd = "copy firmware_ntz.bin firmware.bin";
     cout << cmd << endl;
     system(cmd.c_str());
 

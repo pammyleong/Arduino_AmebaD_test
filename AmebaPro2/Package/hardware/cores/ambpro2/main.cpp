@@ -57,7 +57,7 @@ void main_task(void)
 
 int main(void) {
 
-    dbg_printf("Arduino Build !!!\r\n");
+    //dbg_printf("Arduino Build \r\n");
 
     init();
     initVariant();

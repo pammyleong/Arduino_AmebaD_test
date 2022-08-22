@@ -154,10 +154,10 @@ recipe.output.save_file=flash_ntz.bin
 
 # Ameba Upload tools
 # -------------------
-#tools.ameba_pro2_tools.upload.params.verbose=
-#tools.ameba_pro2_tools.upload.params.quiet=
+tools.ameba_pro2_tools.upload.params.verbose=
+tools.ameba_pro2_tools.upload.params.quiet=
 
-#tools.ameba_pro2_tools.upload.pattern.windows="{ameba.tools_path}/upload_image_tool_windows.exe" "{ameba.tools_path}" "{serial.port}" "{board}" "{build.auto_upload_mode}" "{build.erase_flash}" "1500000" {upload.verbose}
+tools.ameba_pro2_tools.upload.pattern.windows="{runtime.tools.ameba_pro2_tools.path}/image_windows.exe" "{runtime.tools.ameba_pro2_tools.path}" "{serial.port}" "{board}" "{build.auto_upload_mode}" "{build.erase_flash}" "2000000" "uartfwburn.exe" "Auto_Flash_Pro2_V3.3_win.exe" {upload.verbose}
 
 #tools.ameba_pro2_tools.upload.pattern.linux="{ameba.tools_path}/upload_image_tool_linux" "{ameba.tools_path}" "{serial.port}" "{board}" "{build.auto_upload_mode}" "{build.erase_flash}" "1500000" {upload.verbose}
 
