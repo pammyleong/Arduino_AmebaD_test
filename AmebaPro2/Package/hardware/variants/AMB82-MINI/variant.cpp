@@ -84,7 +84,7 @@ void serialEventRun(void)
     if (Serial_available && serialEvent && Serial_available()) serialEvent();
 }
 
-void init(void)
+void ameba_init(void)
 {
     // Initialize C library
     __libc_init_array();

@@ -36,6 +36,7 @@
 extern "C" {
 #endif // __cplusplus
 
+void ameba_init(void);
 
 #include "wiring_constants.h"
 //#include "diag.h"
@@ -120,6 +121,7 @@ extern void loop( void );
 #define PWM_MODE_ENABLED                (1UL<<31)
 #define GPIO_MODE_ENABLED               (1UL<<30)
 #define GPIO_IRQ_MODE_ENABLED           (1UL<<29)
+#define ADC_MODE_ENABLED                (1UL<<28)
 
 /* Types used for the tables below */
 typedef struct _PinDescription
@@ -152,10 +154,10 @@ extern PinDescription g_APinDescription[];
 #include "pins_arduino.h"
 //#include "variant.h"
 #include "wiring.h"
-////    #include "wiring_digital.h"
-////    #include "wiring_analog.h"
+#include "wiring_digital.h"
+#include "wiring_analog.h"
 ////    #include "WInterrupts.h"
-////    #include "wiring_os.h"
+#include "wiring_os.h"
 ////    #include "wiring_watchdog.h"
 ////    #include "wiring_shift.h"
 

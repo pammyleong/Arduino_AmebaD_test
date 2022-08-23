@@ -26,10 +26,10 @@
 extern "C"{
 #include "PinNames.h"
 
-// zzw ?
-#define portOutputRegister(P) ((volatile uint32_t *)(0x48014000 + (P) * 0x400))
-#define portInputRegister(P)  ((volatile uint32_t *)(0x48014050 + (P) * 0x400))
-#define portModeRegister(P)   ((volatile uint32_t *)(0x48014004 + (P) * 0x400))
+// zzw
+//#define portOutputRegister(P) ((volatile uint32_t *)(0x48014000 + (P) * 0x400))
+//#define portInputRegister(P)  ((volatile uint32_t *)(0x48014050 + (P) * 0x400))
+//#define portModeRegister(P)   ((volatile uint32_t *)(0x48014004 + (P) * 0x400))
 
 /*
  * Wait until enter debug mode
@@ -80,10 +80,10 @@ extern void wait_for_debug(void);
 #define AMB_D29                                 29 // PA_1
 
 /* Analog pin mapping */
-#define A0                                      AMB_D14 // PF_0    3.3V    CH0
-#define A1                                      AMB_D15 // PF_1    3.3V    CH1
-#define A2                                      AMB_D16 // PF_2    3.3V    CH2
-//#define A3                                      AMB_D17 // PF_3    3.3V    CH3    LOG_RX not recomanded to be used as ADC
+#define A0                                      AMB_D11 // PF_0    3.3V    CH0
+#define A1                                      AMB_D10 // PF_1    3.3V    CH1
+#define A2                                      AMB_D9  // PF_2    3.3V    CH2
+//#define A3                                      AMB_D26 // PF_3    3.3V    CH3    LOG_RX not recomanded to be used as ADC
 #define A4                                      AMB_D28 // PA_0    3.3V    CH4
 #define A5                                      AMB_D29 // PA_1    3.3V    CH5
 #define A6                                      AMB_D21 // PA_2    3.3V    CH6

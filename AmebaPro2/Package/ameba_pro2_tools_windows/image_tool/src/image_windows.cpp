@@ -109,7 +109,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    Sleep(2000);
 #if 0
     if (flash_erase_mode_user_selection == "Enable") {
         cout << "    Start Erase Flash" << endl;

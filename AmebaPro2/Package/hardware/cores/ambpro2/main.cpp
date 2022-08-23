@@ -59,7 +59,7 @@ int main(void) {
 
     //dbg_printf("Arduino Build \r\n");
 
-    init();
+    ameba_init();
     initVariant();
 
     osThreadDef(main_task, osPriorityRealtime, 1, MAIN_THREAD_STACK_SIZE);
