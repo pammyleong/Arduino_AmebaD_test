@@ -53,29 +53,8 @@ void yield(void);
 #define yield(x) {}
 #endif
 
-//extern int                          _rtl_printf(const char *fmt, ...);
-//extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
-//extern int                          _rtl_printf(const char *fmt, ...);
-//extern int                          _rtl_sprintf(char* str, const char* fmt, ...);
-
-///extern uint32_t stdio_printf_stubs;
-
-//extern const stdio_printf_func_stubs_t stdio_printf_stubs;
-
 extern int                          dbg_printf(const char *fmt, ...);
 extern int                          dbg_sprintf(char* str, const char* fmt, ...);
-
-
-#if 0
-extern int _rtl_printf(const char *fmt, ...);
-extern int _rtl_sprintf(char *buf, const char *fmt, ...);
-extern int _rtl_snprintf(char *buf, size_t size, const char *fmt, ...);
-
-extern int _xprintf(const char *fmt, ...);
-extern int _xsprintf(char *buf, const char *fmt, ...);
-extern int _xsnprintf(char *buf, size_t size, const char *fmt, ...);
-#endif
-
 
 #ifndef Arduino_STD_PRINTF
 #ifndef printf
@@ -117,11 +96,11 @@ extern void loop( void );
 // Pin mode 
 // 0x0 to 0x4       "GPIO mode"
 // 0x5 to 0x9       "GPIO_IRQ mode"
-#define MODE_NOT_INITIAL                (1UL<<4)
-#define PWM_MODE_ENABLED                (1UL<<31)
-#define GPIO_MODE_ENABLED               (1UL<<30)
-#define GPIO_IRQ_MODE_ENABLED           (1UL<<29)
-#define ADC_MODE_ENABLED                (1UL<<28)
+#define MODE_NOT_INITIAL                (1UL<<31)
+#define PWM_MODE_ENABLED                (1UL<<30)
+#define GPIO_MODE_ENABLED               (1UL<<29)
+#define GPIO_IRQ_MODE_ENABLED           (1UL<<28)
+#define ADC_MODE_ENABLED                (1UL<<27)
 
 /* Types used for the tables below */
 typedef struct _PinDescription
@@ -142,11 +121,15 @@ extern PinDescription g_APinDescription[];
 #ifdef __cplusplus
 } // extern "C"
 
-////    #include "WCharacter.h"
+#include "WCharacter.h"
 #include "WString.h"
 ////    #include "WMath.h"
-#include "HardwareSerial.h"
-////    #include "wiring_pulse.h"
+//#include "HardwareSerial.h"
+#include "LOGUARTClass.h"
+#include "UARTClassOne.h"
+#include "UARTClassTwo.h"
+#include "UARTClassTri.h"
+#include "wiring_pulse.h"
 
 #endif // __cplusplus
 

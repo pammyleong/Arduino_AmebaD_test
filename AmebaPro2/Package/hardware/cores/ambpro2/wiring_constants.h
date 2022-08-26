@@ -85,11 +85,11 @@ enum BitOrder {
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-extern uint32_t ulSetInterruptMaskFromISR(void);
-extern void vClearInterruptMaskFromISR(uint32_t ulNewMask);
+extern uint32_t ulSetInterruptMask(void);
+extern void vClearInterruptMask(uint32_t ulMask);
 
-#define interrupts() vClearInterruptMaskFromISR(0)
-#define noInterrupts() ulSetInterruptMaskFromISR()
+#define interrupts()            vClearInterruptMask(0)
+#define noInterrupts()          ulSetInterruptMask()
 
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))

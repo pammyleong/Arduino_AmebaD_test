@@ -50,38 +50,56 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
         return;
     }
 
-    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) != PWM_MODE_ENABLED) {
-        //  PWM and GPIO can not use as the same time.
-        if ((g_APinDescription[ulPin].ulPinMode & ulMode) == ulMode)
-        {
-            // the pin mode same as input mode. Nothing changes
-            printf("The pin mode same as input mode. \r\n");
-            return;
-        }
-    }
-
     if (ulPin == SWD_DATA || ulPin == SWD_CLK) {
         // If user needs to use SWD pins for GPIO, disable SWD debugging to free pins
         sys_jtag_off();
     }
 
-    pinRemoveMode(ulPin);
+    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) {
+        pinRemoveMode(ulPin);
+    } else {
+        //  PWM and GPIO can not use as the same time.
+        if ((g_APinDescription[ulPin].ulPinMode & 0x000000FF) == ulMode)
+        {
+            // the pin mode same as input mode. Nothing changes
+            // printf("The pin mode same as input mode. \r\n");
+            return;
+        }
+    }
+
+    if (((g_APinDescription[ulPin].ulPinMode & GPIO_MODE_ENABLED) == GPIO_MODE_ENABLED) && 
+            (ulMode == INPUT_IRQ_FALL || ulMode == INPUT_IRQ_RISE || ulMode == INPUT_IRQ_LOW || ulMode == INPUT_IRQ_HIGH || ulMode == INPUT_IRQ_CHANGE)) {
+        // Pin mode changes from gpio_t to gpio_irq_t
+        pinRemoveMode(ulPin);
+    }
+
+    if (((g_APinDescription[ulPin].ulPinMode & GPIO_IRQ_MODE_ENABLED) == GPIO_IRQ_MODE_ENABLED) && 
+            (ulMode == INPUT || ulMode == OUTPUT || ulMode == INPUT_PULLUP || ulMode == INPUT_PULLNONE || ulMode == OUTPUT_OPENDRAIN)) {
+        // Pin mode changes from gpio_irq_t to gpio_t
+        pinRemoveMode(ulPin);
+    }
+
+//    pinRemoveMode(ulPin);
 
     // GPIO and GPIO_IRQ Mode mask 0xFF. Remove all enable bits. 
     ulMode &= 0x000000FF;
 
-    if (ulMode == INPUT_IRQ_FALL || ulMode == INPUT_IRQ_RISE || ulMode == INPUT_IRQ_LOW || ulMode == INPUT_IRQ_HIGH || ulMode == INPUT_IRQ_CHANGE) {
-        gpio_pin_struct[ulPin] = malloc (sizeof(gpio_irq_t));
-        pGpio_t = gpio_pin_struct[ulPin];
-        gpio_irq_init(pGpio_t, g_APinDescription[ulPin].pinname, gpioIrqHandler, ulPin);
-        g_APinDescription[ulPin].ulPinMode |= GPIO_IRQ_MODE_ENABLED;
-    } else if (ulMode == INPUT || ulMode == OUTPUT || ulMode == INPUT_PULLUP || ulMode == INPUT_PULLNONE || ulMode == OUTPUT_OPENDRAIN) {
-        gpio_pin_struct[ulPin] = malloc (sizeof(gpio_t));
-        pGpio_t = gpio_pin_struct[ulPin];
-        gpio_init(pGpio_t, g_APinDescription[ulPin].pinname);
-        g_APinDescription[ulPin].ulPinMode |= GPIO_MODE_ENABLED;
+    if ((g_APinDescription[ulPin].ulPinMode & MODE_NOT_INITIAL) == MODE_NOT_INITIAL) {
+        if (ulMode == INPUT_IRQ_FALL || ulMode == INPUT_IRQ_RISE || ulMode == INPUT_IRQ_LOW || ulMode == INPUT_IRQ_HIGH || ulMode == INPUT_IRQ_CHANGE) {
+            gpio_pin_struct[ulPin] = malloc (sizeof(gpio_irq_t));
+            pGpio_t = gpio_pin_struct[ulPin];
+            gpio_irq_init(pGpio_t, g_APinDescription[ulPin].pinname, gpioIrqHandler, ulPin);
+            g_APinDescription[ulPin].ulPinMode |= GPIO_IRQ_MODE_ENABLED;
+        } else if (ulMode == INPUT || ulMode == OUTPUT || ulMode == INPUT_PULLUP || ulMode == INPUT_PULLNONE || ulMode == OUTPUT_OPENDRAIN) {
+            gpio_pin_struct[ulPin] = malloc (sizeof(gpio_t));
+            pGpio_t = gpio_pin_struct[ulPin];
+            gpio_init(pGpio_t, g_APinDescription[ulPin].pinname);
+            g_APinDescription[ulPin].ulPinMode |= GPIO_MODE_ENABLED;
+        } else {
+            printf("Error Mode not supported. \r\n");
+        }
     } else {
-        printf("Error Mode not supported. \r\n");
+        pGpio_t = gpio_pin_struct[ulPin];
     }
 
     switch (ulMode)
@@ -239,8 +257,7 @@ uint32_t digitalPinToPort(uint32_t ulPin)
     }
 
     pin_name = g_APinDescription[ulPin].pinname;
-    //return PORT_NUM(pin_name);
-    return PIN_NAME_2_PORT(pin_name);
+    return PORT_NUM(pin_name);
 }
 
 uint32_t digitalPinToBitMask(uint32_t ulPin)
@@ -258,8 +275,7 @@ uint32_t digitalPinToBitMask(uint32_t ulPin)
 
     pin_name = (g_APinDescription[ulPin].pinname);
 
-    //return (1 << PIN_NUM(pin_name));
-    return PIN_NAME_2_PIN(pin_name);
+    return (1 << PIN_NUM(pin_name));
 }
 
 uint32_t digitalSetIrqHandler(uint32_t ulPin, void (*handler)(uint32_t id, uint32_t event)) {

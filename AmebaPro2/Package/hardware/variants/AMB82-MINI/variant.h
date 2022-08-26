@@ -128,6 +128,7 @@ extern void wait_for_debug(void);
 #define LOG_UART_MODIFIABLE_BAUD_RATE           1
 #define SERIAL_ONE_UART_MODIFIABLE_BAUD_RATE    1
 #define SERIAL_TWO_UART_MODIFIABLE_BAUD_RATE    1
+#define SERIAL_TRI_UART_MODIFIABLE_BAUD_RATE    1
 #define LOG_TX                                  AMB_D27 // UART1_OUT    AMB_D27 / AMB_D6
 #define LOG_RX                                  AMB_D26 // UART1_IN     AMB_D26 / AMB_D5
 //#define LOG_CTS                                 AMB_D9  // UART1_CTS AMB_D9

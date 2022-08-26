@@ -17,12 +17,11 @@
 */
 #include "variant.h"
 
-#if 1 //zzw 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#include "us_ticker_api.h"
 __weak void _init(void) { }
 void __libc_init_array(void);
 
@@ -57,7 +56,7 @@ PinDescription g_APinDescription[TOTAL_GPIO_PIN_NUM]=
     {PF_9,  TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ | PIO_PWM          , MODE_NOT_INITIAL}, // *AMB_D23     onboard LED blue
     {PE_6,  TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // *AMB_D24     onboard LED green
     {PF_10, TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // *AMB_D25     onboard Button
-#if 0
+#ifdef A3
     {PF_3,  TYPE_DIGITAL | TYPE_ANALOG, PIO_GPIO | PIO_GPIO_IRQ           | PIO_ADC, MODE_NOT_INITIAL}, //
 #else
     {PF_3,  TYPE_DIGITAL,               PIO_GPIO | PIO_GPIO_IRQ                    , MODE_NOT_INITIAL}, // *AMB_D26     LOG_RX
@@ -88,8 +87,9 @@ void ameba_init(void)
 {
     // Initialize C library
     __libc_init_array();
-}
 
+    us_ticker_init();
+}
 // ----------------------------------------------------------------------------
 
 void wait_for_debug(void) {
@@ -98,5 +98,3 @@ void wait_for_debug(void) {
     }
     delay(1000);
 }
-
-#endif
