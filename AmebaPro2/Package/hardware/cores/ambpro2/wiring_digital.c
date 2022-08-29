@@ -50,25 +50,24 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
         return;
     }
 
+    if ((g_APinDescription[ulPin].ulPinMode & 0x000000FF) == ulMode)
+    {
+        // Nothing changes
+        // printf("The pin mode is unchanged. \r\n");
+        return;
+    }
+
     // SWD_DATA, SWD_CLK
     if ((g_APinDescription[ulPin].pinname) == PA_0 || (g_APinDescription[ulPin].pinname) == PA_1) {
         // If user needs to use SWD pins for GPIO, disable SWD debugging to free pins
         sys_jtag_off();
     }
 
-    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) {
+    if ((g_APinDescription[ulPin].ulPinMode & ADC_MODE_ENABLED ) == ADC_MODE_ENABLED) {
         pinRemoveMode(ulPin);
-    } else {
-        //  PWM and GPIO can not use as the same time.
-        if ((g_APinDescription[ulPin].ulPinMode & 0x000000FF) == ulMode)
-        {
-            // the pin mode same as input mode. Nothing changes
-            // printf("The pin mode same as input mode. \r\n");
-            return;
-        }
     }
 
-    if ((g_APinDescription[ulPin].ulPinMode & ADC_MODE_ENABLED ) == ADC_MODE_ENABLED) {
+    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) {
         pinRemoveMode(ulPin);
     }
 
@@ -84,22 +83,21 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
         pinRemoveMode(ulPin);
     }
 
-//    pinRemoveMode(ulPin);
-
-    // GPIO and GPIO_IRQ Mode mask 0xFF. Remove all enable bits. 
-    ulMode &= 0x000000FF;
-
     if ((g_APinDescription[ulPin].ulPinMode & MODE_NOT_INITIAL) == MODE_NOT_INITIAL) {
+        // GPIO and GPIO_IRQ Mode mask 0xFF. Remove all enable bits. 
+        ulMode &= 0x000000FF;
         if (ulMode == INPUT_IRQ_FALL || ulMode == INPUT_IRQ_RISE || ulMode == INPUT_IRQ_LOW || ulMode == INPUT_IRQ_HIGH || ulMode == INPUT_IRQ_CHANGE) {
             gpio_pin_struct[ulPin] = malloc (sizeof(gpio_irq_t));
             pGpio_t = gpio_pin_struct[ulPin];
             gpio_irq_init(pGpio_t, g_APinDescription[ulPin].pinname, gpioIrqHandler, ulPin);
             g_APinDescription[ulPin].ulPinMode |= GPIO_IRQ_MODE_ENABLED;
+            g_APinDescription[ulPin].ulPinMode &= (~MODE_NOT_INITIAL);
         } else if (ulMode == INPUT || ulMode == OUTPUT || ulMode == INPUT_PULLUP || ulMode == INPUT_PULLNONE || ulMode == OUTPUT_OPENDRAIN) {
             gpio_pin_struct[ulPin] = malloc (sizeof(gpio_t));
             pGpio_t = gpio_pin_struct[ulPin];
             gpio_init(pGpio_t, g_APinDescription[ulPin].pinname);
             g_APinDescription[ulPin].ulPinMode |= GPIO_MODE_ENABLED;
+            g_APinDescription[ulPin].ulPinMode &= (~MODE_NOT_INITIAL);
         } else {
             printf("Error Mode not supported. \r\n");
         }
@@ -165,7 +163,6 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
     }
     g_APinDescription[ulPin].ulPinMode &= 0xFFFFFF00;
     g_APinDescription[ulPin].ulPinMode |= ulMode;
-    g_APinDescription[ulPin].ulPinMode &= (~MODE_NOT_INITIAL);
 }
 
 void digitalWrite(uint32_t ulPin, uint32_t ulVal)
@@ -184,7 +181,7 @@ void digitalWrite(uint32_t ulPin, uint32_t ulVal)
         return;
     }
 
-    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) {
+    if (((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) || ((g_APinDescription[ulPin].ulPinMode & ADC_MODE_ENABLED ) == ADC_MODE_ENABLED)){
         pinMode(ulPin, (g_APinDescription[ulPin].ulPinMode));
     }
 
@@ -210,7 +207,7 @@ int digitalRead(uint32_t ulPin)
         return -1;
     }
 
-    if ((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) {
+    if (((g_APinDescription[ulPin].ulPinMode & PWM_MODE_ENABLED ) == PWM_MODE_ENABLED) || ((g_APinDescription[ulPin].ulPinMode & ADC_MODE_ENABLED ) == ADC_MODE_ENABLED)){
         pinMode(ulPin, (g_APinDescription[ulPin].ulPinMode));
     }
 

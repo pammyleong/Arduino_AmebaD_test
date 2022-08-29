@@ -45,11 +45,9 @@ extern uint32_t pulseIn(uint32_t ulPin, uint32_t state, uint32_t timeout)
 
     uint32_t start_ticks, cur_ticks;
 
-    //if (ulPin < 0 || ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC)) return 0;
     if (ulPin > TOTAL_GPIO_PIN_NUM || (g_APinDescription[ulPin].pinname == NC)) return 0;
 
     /* Handle */
-    //if (g_APinDescription[ulPin].ulPinType != PIO_GPIO) {
     if ((g_APinDescription[ulPin].ulPinAttribute & PIO_GPIO) != PIO_GPIO){
         return 0;
     }
@@ -75,6 +73,7 @@ extern uint32_t pulseIn(uint32_t ulPin, uint32_t state, uint32_t timeout)
         cur_ticks = us_ticker_read();
         if (cur_ticks - start_ticks > timeout) return 0;
     }
+
     cur_ticks = us_ticker_read();
 
     // convert the reading to microseconds. The loop has been determined

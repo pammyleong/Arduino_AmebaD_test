@@ -1,9 +1,0 @@
-#define LANG_ZH_TW	1
-#define LANG_ZH_CN	2
-#define LANG_EN_US	4
-#define LANG_ES_MX 	7
-#define LANG_FR_FR 	8
-#define LANG_KO_KR 	10
-#define LANG_PT_BR		12
-#define LANG_PT_PT		27
-#define LANG_ES_ES 	33
