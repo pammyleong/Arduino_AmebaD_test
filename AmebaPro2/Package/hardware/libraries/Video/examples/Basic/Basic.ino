@@ -14,7 +14,7 @@ Camera cam;
 
 void setup() {
     Serial.begin(115200);
-
+    cam.Init();
 }
 
 void loop() {
