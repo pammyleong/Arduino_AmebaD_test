@@ -10,8 +10,8 @@ RTSP::~RTSP(){};
   * @param  none
   * @retval  none
   */
-void RTSP::RTSP_Start(void) {
-
+void RTSP::RTSP_Init(void) {
+	
 	
 }
 
