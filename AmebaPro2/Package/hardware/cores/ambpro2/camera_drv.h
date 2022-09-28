@@ -43,21 +43,9 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 // Function 2: collect parameters
 data_content_t *cameraInit(void);
 
-// Functions externed from video_api
-extern int voe_boot_fsc_status(void);
-
-extern int voe_boot_fsc_id(void);
-
-extern int voe_get_sensor_info(int id, int *iq_data, int *sensor_data);
-
 // Functions externed from module_video
-extern int isp_get_id(void);
-
 extern void *video_create(void *parent);
 
 extern void *video_destroy(void *p);
-
-
-
 
 #endif

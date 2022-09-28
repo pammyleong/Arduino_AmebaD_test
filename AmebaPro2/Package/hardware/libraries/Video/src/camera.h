@@ -47,10 +47,10 @@ class Camera {
     public:
         Camera(void);
         ~Camera(void);
-        void Init(void);
+        void Init(int enable, int w, int h, int bps, int snapshot);
         void DeInit(void);
-        void Open(long long t);
-        void Close(int s);
+        void Open(void);
+        void Close(void);
 
 
     private:

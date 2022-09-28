@@ -7,29 +7,25 @@
 #include "sensor.h"
 #include "module_video.h"
 // include for testing rtsp, remember to remove before official release
-#include "module_rtsp2.h"
-#include "rtsp/rtsp_api.h"
-
-
+//#include "module_rtsp2.h"
+//#include "rtsp/rtsp_api.h"
 
 #define OSD_ENABLE 1
 #define MD_ENABLE  1
 #define HDR_ENABLE 1
 
-//int sensor_id_value = 0;
-
 data_content_t *cameraInit(void){
-    mm_context_t *ctx = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+    data_content_t *ctx = (data_content_t *)rtw_malloc(sizeof(data_content_t));
     if (!ctx) {
 		return NULL;
 	}
-	memset(ctx, 0, sizeof(mm_context_t));
-
+	memset(ctx, 0, sizeof(data_content_t));
 	ctx->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
+	
 	video_create(ctx);
 
 	if (!ctx->priv) {
-		printf("fail------\n\r");
+		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
 	    if (ctx->priv) {
 		    video_destroy(ctx->priv);
 	    }
@@ -38,8 +34,10 @@ data_content_t *cameraInit(void){
     	}
     	return NULL;
 	}
-	printf("module open - free heap %d\n\r", xPortGetFreeHeapSize());
-	return ctx;
+    
+	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
+
+    return ctx;
 }
 
 int cameraConfig(int enable, int w, int h, int bps, int snapshot){
