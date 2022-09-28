@@ -51,8 +51,6 @@ class Camera {
         void DeInit(void);
         void Open(void);
         void Close(void);
-
-
     private:
         
 };

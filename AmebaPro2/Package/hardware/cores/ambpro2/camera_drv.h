@@ -43,9 +43,21 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 // Function 2: collect parameters
 data_content_t *cameraInit(void);
 
+// Function 3: disable video streaming
+void cameraStopVideoStream(void *p);
+
+// Function 4: deinit parameters assigned to ISP and VOE
+data_content_t *cameraDeInit(data_content_t *ctx);
+
 // Functions externed from module_video
 extern void *video_create(void *parent);
 
 extern void *video_destroy(void *p);
+
+extern int video_close(int ch);
+
+extern void *video_del_item(void *p, void *d);
+
+extern void *video_deinit(void);
 
 #endif

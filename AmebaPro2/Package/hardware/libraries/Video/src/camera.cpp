@@ -18,16 +18,15 @@ Camera::Camera(){};
 Camera::~Camera(){};
 
 /**
-  * @brief  initialization for camera sensor
+  * @brief  initialization for the camera sensor
   * @param  none
   * @retval  none
   */
-//int enable, int w, int h, int bps, int snapshot
 void Camera::Init(int enable, int w, int h, int bps, int snapshot) {
     int heapSize = cameraConfig(enable, w, h, bps, snapshot);
     printf("VOE heap size is: %d", heapSize);
 
-    cameraData = cameraInit();
+    cameraData = cameraInit(); // pending to return pointer to structre or keep using cameraData
 }
 
 /**
@@ -36,7 +35,7 @@ void Camera::Init(int enable, int w, int h, int bps, int snapshot) {
   * @retval  none
   */
 void Camera::DeInit(void) {
-
+    // cameraDeInit();
 }
 
 /**
@@ -45,14 +44,16 @@ void Camera::DeInit(void) {
   * @retval  none
   */
 void Camera::Open(void) {
-
+    
 }
 
 
 /**
   * @brief  none
+  * @param  none
+  * @retval  none
   */
 void Camera::Close(void) {
-
+    // cameraStopVideoStream();
 }
 
