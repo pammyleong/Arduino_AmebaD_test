@@ -2,13 +2,12 @@
 #include "mmf2_link.h"
 #include "mmf2_siso.h"
 #include "mmf2_module.h"
-
 #include "sensor.h"
 #include "rtsp/rtsp_api.h"
 #include "module_rtsp2.h"
-#include "camera_drv.h"
+//#include "camera_drv.sh"
 
-#include "avcodec.h"
+//#include "avcodec.h"
 
 int channel_idx = 0;
 //static u32 stream_flow_id_bitmap = 0;
@@ -46,8 +45,7 @@ int RTSP_Select_Stream (int channel_idx) {
 }
 
 int RTSP_Set_Apply (void) {
-
-	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_APPLY, 0);
+    return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_APPLY, 0);
 }
 
 int RTSP_Set_Streaming (int arg) {

@@ -29,7 +29,7 @@ RTSP rtsp;
 
 void setup() {
     //Serial.begin(115200);
-	
+	rtsp.RTSP_Init();
 
 }
 

@@ -4,11 +4,12 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 #include <diag.h>
-#include "camera_drv.h"
-#include "freertos_service.h"
-//#include "rtsp/rtsp_api.h"
 
-#define ON 1
+#include "camera_drv.h"
+//#include "freertos_service.h"
+////#include "rtsp/rtsp_api.h"
+
+#define ON  1
 #define OFF 0
 
 #define CMD_RTSP2_GET_PARAMS			MM_MODULE_CMD(0x01)
