@@ -5,17 +5,28 @@
 #include "sensor.h"
 #include "rtsp/rtsp_api.h"
 #include "module_rtsp2.h"
-//#include "camera_drv.sh"
-
-//#include "avcodec.h"
-
-int channel_idx = 0;
-//static u32 stream_flow_id_bitmap = 0;
-//static _mutex stream_flow_id_bitmap_lock = NULL;
 
 extern void rtp_stream_statistics_sync(struct stream_context *stream_ctx);
 
-data_content_t *RTSP_Open (void) { //mm_module_open in sdk
+static rtsp2_params_t rtsp_params = {
+	.type = AVMEDIA_TYPE_VIDEO,
+	.u = {
+		.v = {
+			.codec_id = 0,
+			.fps      = 0,
+			.bps      = 0
+		}
+	}
+};
+
+void RTSPConfig (uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
+
+	rtsp_params.u.v.fps = rtsp_fps;
+	rtsp_params.u.v.bps = rtsp_bps;
+	rtsp_params.u.v.codec_id = video_codec;
+}
+
+data_content_t *RTSP_Init (void) { //mm_module_open in sdk
 	data_content_t *ctx = (data_content_t *)rtw_malloc(sizeof(data_content_t));
 	if (!ctx) {
 		return NULL;
@@ -41,21 +52,21 @@ data_content_t *RTSP_Open (void) { //mm_module_open in sdk
 
 int RTSP_Select_Stream (int channel_idx) {
 
-	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SELECT_STREAM, channel_idx);
+	return rtsp2_control(RTSP_Init(), CMD_RTSP2_SELECT_STREAM, channel_idx);
 }
 
 int RTSP_Set_Apply (void) {
-    return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_APPLY, 0);
+    return rtsp2_control(RTSP_Init(), CMD_RTSP2_SET_APPLY, 0);
 }
 
 int RTSP_Set_Streaming (int arg) {
 
-	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_STREAMMING, arg);
+	return rtsp2_control(RTSP_Init(), CMD_RTSP2_SET_STREAMMING, arg);
 }
 
-int RTSP_Set_Params (int arg) {
+int RTSP_Set_Params (void) {
 
-	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_PARAMS, arg);
+	return rtsp2_control(RTSP_Init(), CMD_RTSP2_SET_PARAMS, (int)&rtsp_params);
 }
 
 data_content_t *RTSP_DeInit (data_content_t *ctx){

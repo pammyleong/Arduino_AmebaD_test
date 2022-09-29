@@ -13,6 +13,9 @@ extern "C" {
 
 static data_content_t *rtspData = NULL;
 
+#define ON  1
+#define OFF 0
+
 
 RTSP::RTSP(){};
 RTSP::~RTSP(){};
@@ -22,12 +25,26 @@ RTSP::~RTSP(){};
   * @param  none
   * @retval  none
   */
-void RTSP::RTSP_Init(void) {
-	int a = RTSP_Set_Apply ();
-    
-    if (a > 0){
-        rtspData = RTSP_Open();
-    }
+void RTSP::Init(int channel_idx, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
+	RTSPConfig(rtsp_fps,rtsp_bps, video_codec);
+	RTSP_Set_Apply();
+	RTSP_Select_Stream (channel_idx);
+	RTSP_Set_Params();
+
+	rtspData = RTSP_Init(); 
 }
+
+void RTSP::RTSP_Open(void){
+	RTSP_Set_Streaming(ON);
+}
+
+void RTSP::RTSP_Close(void){
+	RTSP_Set_Streaming(OFF);
+}
+
+void RTSP::DeInit(void){
+	//RTSP_DeInit();
+}
+
 
 

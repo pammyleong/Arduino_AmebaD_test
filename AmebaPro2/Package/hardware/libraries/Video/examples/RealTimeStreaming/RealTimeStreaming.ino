@@ -3,6 +3,7 @@
 */
 
 #include "rtsp.h"
+#include "avcodec.h"
 
 
 // define video codec
@@ -19,18 +20,21 @@
 #endif
 
 // define video frame rate
-#define VIDEO_FPS 30
+#define RTSP_FPS 30
 
 // define video bit rate
-#define VIDEO_BPS 2*1024*1024
+#define RTSP_BPS 2*1024*1024
+
+#define CH_IDX 0
+
 
 /* Create a RTSP object */
 RTSP rtsp;
 
 void setup() {
     //Serial.begin(115200);
-	rtsp.RTSP_Init();
-
+	rtsp.Init(CH_IDX, RTSP_FPS, RTSP_BPS, VIDEO_CODEC);
+	rtsp.RTSP_Open();
 }
 
 void loop() {
