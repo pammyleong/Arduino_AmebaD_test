@@ -10,9 +10,9 @@
 
 #include "avcodec.h"
 
-static int channel_idx = 0;
-static u32 stream_flow_id_bitmap = 0;
-static _mutex stream_flow_id_bitmap_lock = NULL;
+int channel_idx = 0;
+//static u32 stream_flow_id_bitmap = 0;
+//static _mutex stream_flow_id_bitmap_lock = NULL;
 
 extern void rtp_stream_statistics_sync(struct stream_context *stream_ctx);
 
@@ -44,23 +44,23 @@ data_content_t *RTSP_Open (void) { //mm_module_open in sdk
 
 int RTSP_Select_Stream (int channel_idx) {
 
-	return rtsp2_control(data_content_t, CMD_RTSP2_SELECT_STREAM, channel_idx);
+	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SELECT_STREAM, channel_idx);
 }
 
 
 int RTSP_Set_Apply (int arg) {
 
-	return rtsp2_control(data_content_t, CMD_RTSP2_SET_APPLY, arg);
+	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_APPLY, arg);
 }
 
 
 int RTSP_Set_Streaming (int arg) {
 
-	return rtsp2_control(data_content_t, CMD_RTSP2_SET_STREAMMING, arg);
+	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_STREAMMING, arg);
 }
 
-data_content_t *RTSP_Set_Params (void *p, int arg) {
+int RTSP_Set_Params (int arg) {
 
-	return rtsp2_control(data_content_t, CMD_RTSP2_SET_PARAMS, arg);
+	return rtsp2_control(RTSP_Open(), CMD_RTSP2_SET_PARAMS, arg);
 }
 
