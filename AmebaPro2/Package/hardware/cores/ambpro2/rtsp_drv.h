@@ -20,12 +20,13 @@ data_content_t *RTSP_Open (void);
 
 int RTSP_Select_Stream (int arg);
 
-int RTSP_Set_Apply (int arg);
+int RTSP_Set_Apply (void);
 
 int RTSP_Set_Streaming      (int arg);
 
 int RTSP_Set_Params (int arg);
 
+data_content_t *RTSP_DeInit (data_content_t *ctx);
 
 
 // extern function 

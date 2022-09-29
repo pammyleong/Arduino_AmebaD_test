@@ -22,7 +22,7 @@ data_content_t *cameraInit(void){
 	memset(ctx, 0, sizeof(data_content_t));
 	ctx->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
 	
-	video_create(ctx);
+	ctx->priv = video_create(ctx);
 
 	if (!ctx->priv) {
 		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
