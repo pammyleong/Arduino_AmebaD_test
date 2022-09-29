@@ -50,5 +50,5 @@ void setup() {
 }
 
 void loop() {
-
+    cam.Open(V1_CHANNEL, VIDEO_TYPE, V1_RESOLUTION, V1_WIDTH, V1_HEIGHT, V1_BPS, V1_FPS, V1_GOP, V1_RCMODE);
 }

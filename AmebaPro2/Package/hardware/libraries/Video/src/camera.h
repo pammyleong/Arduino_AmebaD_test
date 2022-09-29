@@ -49,7 +49,7 @@ class Camera {
         ~Camera(void);
         void Init(int enable, int w, int h, int bps, int snapshot);
         void DeInit(void);
-        void Open(void);
+        void Open(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
         void Close(void);
     private:
         

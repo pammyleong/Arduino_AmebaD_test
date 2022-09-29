@@ -14,6 +14,55 @@
 extern int incb[5];
 extern int enc_queue_cnt[5];
 
+static video_params_t video_v1_params = {
+	.stream_id  = 0, // = V1_CHANNEL,
+	.type       = 0, // = VIDEO_TYPE,
+	.resolution = 0, // = V1_RESOLUTION,
+	.width      = 0, // = V1_WIDTH,
+	.height     = 0, // = V1_HEIGHT,
+	.bps        = 0, // = V1_BPS,
+	.fps        = 0, // = V1_FPS,
+	.gop        = 0, // = V1_GOP,
+	.rc_mode    = 0, // = V1_RCMODE,
+	.use_static_addr = 1
+};
+
+int cameraConfig(int enable, int w, int h, int bps, int snapshot){
+    int voe_heap_size = 0;
+	isp_info_t info;
+
+	if (USE_SENSOR == SENSOR_GC4653) {
+		info.sensor_width = 2560;
+		info.sensor_height = 1440;
+		info.sensor_fps = 15;
+	} else {
+		info.sensor_width = 1920;
+		info.sensor_height = 1080;
+		info.sensor_fps = 30;
+	}
+
+#if OSD_ENABLE
+	info.osd_enable = 1;
+#endif
+
+#if MD_ENABLE
+	info.md_enable = 1;
+#endif
+
+#if HDR_ENABLE
+	info.hdr_enable = 1;
+#endif
+
+	video_set_isp_info(&info);
+
+	voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
+        0,0,0,0,0,
+        0,0,0,0,0,
+        0,0,0);
+    
+	return voe_heap_size;
+}
+
 data_content_t *cameraInit(void){
     data_content_t *ctx = (data_content_t *)rtw_malloc(sizeof(data_content_t));
     if (!ctx) {
@@ -38,6 +87,30 @@ data_content_t *cameraInit(void){
 	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
 
     return ctx;
+}
+
+void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
+    data_content_t *video_ctx = cameraInit(); // video_module
+
+    // assign value parsing from user level
+    video_v1_params.stream_id = stream_id;
+    video_v1_params.type = type;
+    video_v1_params.resolution = res;
+    video_v1_params.width = w;
+    video_v1_params.height = h;
+    video_v1_params.bps = bps;
+    video_v1_params.fps = fps;
+    video_v1_params.gop = gop;
+    video_v1_params.rc_mode = rc_mode;
+    
+    if (video_ctx) {
+        mm_module_ctrl(video_ctx, CMD_VIDEO_SET_PARAMS, (int)&video_v1_params);
+        mm_module_ctrl(video_ctx, MM_CMD_SET_QUEUE_LEN, fps*3);
+        mm_module_ctrl(video_ctx, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+    } else {
+		rt_printf("video open fail\n\r");
+		return;
+	}
 }
 
 data_content_t *cameraDeInit(data_content_t *ctx){
@@ -86,41 +159,7 @@ data_content_t *cameraDeInit(data_content_t *ctx){
     return NULL;
 }
 
-int cameraConfig(int enable, int w, int h, int bps, int snapshot){
-    int voe_heap_size = 0;
-	isp_info_t info;
 
-	if (USE_SENSOR == SENSOR_GC4653) {
-		info.sensor_width = 2560;
-		info.sensor_height = 1440;
-		info.sensor_fps = 15;
-	} else {
-		info.sensor_width = 1920;
-		info.sensor_height = 1080;
-		info.sensor_fps = 30;
-	}
-
-#if OSD_ENABLE
-	info.osd_enable = 1;
-#endif
-
-#if MD_ENABLE
-	info.md_enable = 1;
-#endif
-
-#if HDR_ENABLE
-	info.hdr_enable = 1;
-#endif
-
-	video_set_isp_info(&info);
-
-	voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
-        0,0,0,0,0,
-        0,0,0,0,0,
-        0,0,0);
-    
-	return voe_heap_size;
-}
 
 void cameraStopVideoStream(void *p){
     video_ctx_t *ctx = (video_ctx_t *)p;
