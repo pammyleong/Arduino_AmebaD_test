@@ -5,6 +5,7 @@
 #include "sensor.h"
 #include "rtsp/rtsp_api.h"
 #include "module_rtsp2.h"
+#include "queue.h"
 
 extern void rtp_stream_statistics_sync(struct stream_context *stream_ctx);
 
@@ -19,7 +20,7 @@ static rtsp2_params_t rtsp_params = {
 	}
 };
 
-void RTSPConfig (uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
+void RTSP_Config (uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
 
 	rtsp_params.u.v.fps = rtsp_fps;
 	rtsp_params.u.v.bps = rtsp_bps;

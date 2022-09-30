@@ -26,7 +26,7 @@ RTSP::~RTSP(){};
   * @retval  none
   */
 void RTSP::Init(int channel_idx, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
-	RTSPConfig(rtsp_fps,rtsp_bps, video_codec);
+	RTSP_Config(rtsp_fps, rtsp_bps, video_codec);
 	RTSP_Set_Apply();
 	RTSP_Select_Stream (channel_idx);
 	RTSP_Set_Params();
