@@ -5,6 +5,7 @@
 #include "sensor.h"
 #include "rtsp/rtsp_api.h"
 #include "module_rtsp2.h"
+#include "queue.h"
 
 extern void rtp_stream_statistics_sync(struct stream_context *stream_ctx);
 
@@ -18,14 +19,7 @@ static rtsp2_params_t rtsp_params = {
 		}
 	}
 };
-
-void RTSPConfig (uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
-
-	rtsp_params.u.v.fps = rtsp_fps;
-	rtsp_params.u.v.bps = rtsp_bps;
-	rtsp_params.u.v.codec_id = video_codec;
-}
-
+	
 data_content_t *RTSP_Init (void) { //mm_module_open in sdk
 	data_content_t *ctx = (data_content_t *)rtw_malloc(sizeof(data_content_t));
 	if (!ctx) {
@@ -64,7 +58,11 @@ int RTSP_Set_Streaming (int arg) {
 	return rtsp2_control(RTSP_Init(), CMD_RTSP2_SET_STREAMMING, arg);
 }
 
-int RTSP_Set_Params (void) {
+int RTSP_Set_Params (uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
+
+	rtsp_params.u.v.fps = rtsp_fps;
+	rtsp_params.u.v.bps = rtsp_bps;
+	rtsp_params.u.v.codec_id = video_codec;
 
 	return rtsp2_control(RTSP_Init(), CMD_RTSP2_SET_PARAMS, (int)&rtsp_params);
 }

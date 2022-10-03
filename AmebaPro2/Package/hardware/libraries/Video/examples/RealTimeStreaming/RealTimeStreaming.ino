@@ -25,6 +25,7 @@
 // define video bit rate
 #define RTSP_BPS 2*1024*1024
 
+//define channel index
 #define CH_IDX 0
 
 

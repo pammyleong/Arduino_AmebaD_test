@@ -21,15 +21,18 @@ RTSP::RTSP(){};
 RTSP::~RTSP(){};
 
 /**
-  * @brief  none
-  * @param  none
+  * @brief  Initialization of RTSP setting
+  * @param  channel_idx: channel index
+  			rtsp_fps: frame per second
+  			rtsp_bps: bit per second
+  			video_codec: RTSP supported codec ID
   * @retval  none
   */
 void RTSP::Init(int channel_idx, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec) {
-	RTSPConfig(rtsp_fps,rtsp_bps, video_codec);
-	RTSP_Set_Apply();
+	
 	RTSP_Select_Stream (channel_idx);
-	RTSP_Set_Params();
+	RTSP_Set_Params(rtsp_fps, rtsp_bps, video_codec);
+	RTSP_Set_Apply();
 
 	rtspData = RTSP_Init(); 
 }
