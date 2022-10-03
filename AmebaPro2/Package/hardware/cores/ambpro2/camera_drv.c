@@ -14,16 +14,18 @@
 extern int incb[5];
 extern int enc_queue_cnt[5];
 
-static video_params_t video_v1_params = {
-	.stream_id  = 0, // = V1_CHANNEL,
-	.type       = 0, // = VIDEO_TYPE,
-	.resolution = 0, // = V1_RESOLUTION,
-	.width      = 0, // = V1_WIDTH,
-	.height     = 0, // = V1_HEIGHT,
-	.bps        = 0, // = V1_BPS,
-	.fps        = 0, // = V1_FPS,
-	.gop        = 0, // = V1_GOP,
-	.rc_mode    = 0, // = V1_RCMODE,
+static mm_context_t *video_data;
+
+static video_params_t video_params = {
+	.stream_id      = 0, // = V1_CHANNEL,
+	.type           = 0, // = VIDEO_TYPE,
+	.resolution     = 0, // = V1_RESOLUTION,
+	.width          = 0, // = V1_WIDTH,
+	.height         = 0, // = V1_HEIGHT,
+	.bps            = 0, // = V1_BPS,
+	.fps            = 0, // = V1_FPS,
+	.gop            = 0, // = V1_GOP,
+	.rc_mode        = 0, // = V1_RCMODE,
 	.use_static_addr = 1
 };
 
@@ -63,71 +65,77 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 	return voe_heap_size;
 }
 
-data_content_t *cameraInit(void){
-    data_content_t *ctx = (data_content_t *)rtw_malloc(sizeof(data_content_t));
-    if (!ctx) {
+void *cameraInit(void){
+    video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+    if (!video_data) {
 		return NULL;
 	}
-	memset(ctx, 0, sizeof(data_content_t));
-	ctx->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
-	
-	ctx->priv = video_create(ctx);
+	memset(video_data, 0, sizeof(mm_context_t));
+	video_data->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
+	video_data->priv = video_create(video_data);
 
-	if (!ctx->priv) {
+	if (!video_data->priv) {
 		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
-	    if (ctx->priv) {
-		    video_destroy(ctx->priv);
-	    }
-    	if (ctx) {
-    		free(ctx);
+//	    if (video_data->priv) {
+//		    video_destroy(video_data->priv);
+//	    }
+    	if (video_data) {
+    		free(video_data);
     	}
     	return NULL;
 	}
     
 	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
 
-    return ctx;
+    return video_data;
 }
 
 void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
-    data_content_t *video_ctx = cameraInit(); // video_module
-
+// ---------------- Troubleshoot whether needs to reinit again -------------------
+//    video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+//    mm_context_t *video_ctx = cameraInit(); // video_module
+// -------------------------------------------------------------------------------
     // assign value parsing from user level
-    video_v1_params.stream_id = stream_id;
-    video_v1_params.type = type;
-    video_v1_params.resolution = res;
-    video_v1_params.width = w;
-    video_v1_params.height = h;
-    video_v1_params.bps = bps;
-    video_v1_params.fps = fps;
-    video_v1_params.gop = gop;
-    video_v1_params.rc_mode = rc_mode;
+    video_params.stream_id = stream_id;
+    video_params.type = type;
+    video_params.resolution = res;
+    video_params.width = w;
+    video_params.height = h;
+    video_params.bps = bps;
+    video_params.fps = fps;
+    video_params.gop = gop;
+    video_params.rc_mode = rc_mode;
     
-    if (video_ctx) {
-        mm_module_ctrl(video_ctx, CMD_VIDEO_SET_PARAMS, (int)&video_v1_params);
-        mm_module_ctrl(video_ctx, MM_CMD_SET_QUEUE_LEN, fps*3);
-        mm_module_ctrl(video_ctx, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+    if (video_data) {
+        video_control(video_data, CMD_VIDEO_SET_PARAMS, (int)&video_params);
+        mm_module_ctrl(video_data, MM_CMD_SET_QUEUE_LEN, fps*3);
+        mm_module_ctrl(video_data, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
     } else {
 		rt_printf("video open fail\n\r");
 		return;
 	}
 }
 
-data_content_t *cameraDeInit(data_content_t *ctx){
+void *cameraDeInit(void){
+    // ---------------- Troubleshoot whether needs to reinit again -------------------
+    //    whether video data is parsed in via input parameter
+    // -------------------------------------------------------------------------------
+
     mm_queue_item_t *tmp_item;
-	for (int i = 0; i < ctx->queue_num; i++) {
-		if (ctx->port[i].output_recycle && ctx->port[i].output_ready) {
-			while (xQueueReceive(ctx->port[i].output_ready, (void *)&tmp_item, 0) == pdTRUE) {
-				xQueueSend(ctx->port[i].output_recycle, (void *)&tmp_item, 0);
+    
+	for (int i = 0; i < video_data->queue_num; i++) {
+		if (video_data->port[i].output_recycle && video_data->port[i].output_ready) {
+			while (xQueueReceive(video_data->port[i].output_ready, (void *)&tmp_item, 0) == pdTRUE) {
+				xQueueSend(video_data->port[i].output_recycle, (void *)&tmp_item, 0);
 			}
 			//mm_printf("module close - move item to recycle\n\r");
-			while (xQueueReceive(ctx->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
+			while (xQueueReceive(video_data->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
 				//mm_printf("module close - tmp_item %x\n\r", tmp_item);
 				if (tmp_item) {
 					//mm_printf("module close - data_addr %x\n\r", tmp_item->data_addr);
 					if (i == 0) {
 						if (tmp_item->data_addr) {
-							video_del_item(ctx->priv, (void *)tmp_item->data_addr);
+							video_del_item(video_data->priv, (void *)tmp_item->data_addr);
 						}
 					} else {
 						if (tmp_item->data_addr) {
@@ -138,20 +146,20 @@ data_content_t *cameraDeInit(data_content_t *ctx){
 					free(tmp_item);
 					tmp_item = NULL;
 				}
-				xQueueSend(ctx->port[i].output_ready, (void *)&tmp_item, 0);
+				xQueueSend(video_data->port[i].output_ready, (void *)&tmp_item, 0);
 			}
 			//mm_printf("module close - clean resource in recycle\n\r");
 			// create port
-			vQueueDelete(ctx->port[i].output_recycle);
-			vQueueDelete(ctx->port[i].output_ready);
+			vQueueDelete(video_data->port[i].output_recycle);
+			vQueueDelete(video_data->port[i].output_ready);
 
 			//mm_printf("module close - free port\n\r");
 		}
 	}
 	// cannot delete item after destory
-	video_destroy(ctx->priv);
+	video_destroy(video_data->priv);
 
-	free(ctx);
+	free(video_data);
 	//mm_printf("module close - free context\n\r");
 	//rt_printf("module close - free heap %d\n\r", xPortGetFreeHeapSize());
     video_deinit();
@@ -159,10 +167,12 @@ data_content_t *cameraDeInit(data_content_t *ctx){
     return NULL;
 }
 
-
-
-void cameraStopVideoStream(void *p){
-    video_ctx_t *ctx = (video_ctx_t *)p;
+void cameraStopVideoStream(void){
+    // ---------------- Troubleshoot whether needs to reinit again -------------------
+    //    video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+    //    whether video data is parsed in via input parameter
+    // -------------------------------------------------------------------------------
+    video_ctx_t *ctx = (video_ctx_t *)video_data;
     int ch = ctx->params.stream_id;
     
     while (incb[ch]) {

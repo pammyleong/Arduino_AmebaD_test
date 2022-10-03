@@ -1,6 +1,7 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
+
 /*****************************************************************************
 ISP CHANNEL
     0: HEVC
@@ -43,14 +44,52 @@ enum encode_type {
 #define	VIDEO_5M    8
 #define	VIDEO_2K    9
 
+#define V1_ENABLE   1
+#define V1_DISABLE   0
+
+#define V1_SNAPSHOT_ENABLE 1
+#define V1_SNAPSHOT_DISABLE 0
+// define video resolution
+#define V1_RESOLUTION VIDEO_FHD
+// define video frame rate
+#define V1_FPS 30
+// define video group of pictures
+#define V1_GOP 30
+// define video bit rate
+#define V1_BPS 2*1024*1024
+// define video rate control
+#define V1_RCMODE 2 // 1: CBR, 2: VBR
+// define video codec
+#define USE_H265 0
+#if USE_H265
+#include "sample_h265.h"
+#define VIDEO_TYPE VIDEO_HEVC
+#define VIDEO_CODEC AV_CODEC_ID_H265
+#else
+#include "sample_h264.h"
+#define VIDEO_TYPE VIDEO_H264
+#define VIDEO_CODEC AV_CODEC_ID_H264
+#endif
+// define video resolution
+#if V1_RESOLUTION == VIDEO_FHD
+#define V1_WIDTH	1920
+#define V1_HEIGHT	1080
+#endif
+
 class Camera {
     public:
         Camera(void);
         ~Camera(void);
-        void Init(int enable, int w, int h, int bps, int snapshot);
-        void DeInit(void);
+
+        void *Init();
+        void *Init(int w, int h, int bps);
+        void *Init(int enable, int w, int h, int bps, int snapshot);
+        void *DeInit(void);
+
+        void Open();
         void Open(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
         void Close(void);
+
     private:
         
 };
