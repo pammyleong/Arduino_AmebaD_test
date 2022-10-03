@@ -10,10 +10,10 @@ RTSP rtsp;
 void setup() {
     //Serial.begin(115200);
 	rtsp.Init();
-	rtsp.RTSP_Open();
-	rtsp.RTSP_Close();
 }
 
 void loop() {
-
+	rtsp.RTSP_Open();
+	rtsp.RTSP_Close();
+	rtsp.DeInit();
 }

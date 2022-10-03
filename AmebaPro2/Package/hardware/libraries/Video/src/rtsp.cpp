@@ -1,17 +1,6 @@
 #include <Arduino.h>
 #include "rtsp.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "rtsp_drv.h"
-
-#ifdef __cplusplus
-}
-#endif
-
-
 #define ON  1
 #define OFF 0
 
@@ -24,7 +13,7 @@ RTSP::~RTSP(){};
 //Initialization of RTSP setting
 void* RTSP::Init(void) {
 	
-	RTSP_Init();
+	rtsp_ptr = RTSP_Init(); // ret rtsp_data to mm_context_t 
 	RTSP_Select_Stream(rtsp_ptr, ch_idx);
 	RTSP_Set_Params(rtsp_ptr, fps, bps, VC);
 	RTSP_Set_Apply(rtsp_ptr);
@@ -35,7 +24,7 @@ void* RTSP::Init(void) {
 // start streaming
 void RTSP::RTSP_Open(void){
 		
-	if (RTSP_Init() == NULL) {
+	if (rtsp_ptr == NULL) {
 		printf("Streaming failed, RTSP not initialised yet.");
 	}
 	else {
@@ -50,9 +39,10 @@ void RTSP::RTSP_Close(void){
 
 // release all resource for RTSP
 void RTSP::DeInit(void){
-	//RTSP_DeInit();
+	if (RTSP_DeInit(rtsp_ptr) == NULL) {
+		printf("RTSP DeInit.");
+	}
+	else {
+		printf("RTSP need to be DeInit.");
+	}
 }
-
-
-//RTSP rtsp(0, 30, 8196, 1);
-

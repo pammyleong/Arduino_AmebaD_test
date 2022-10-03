@@ -16,7 +16,7 @@ int RTSP_Set_Streaming      (void *p, int arg);
 
 int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec);
 
-void* RTSP_DeInit (mm_context_t *ctx);
+void* RTSP_DeInit (void *p);
 
 
 // extern function 

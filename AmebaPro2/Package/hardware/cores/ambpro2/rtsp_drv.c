@@ -53,7 +53,6 @@ int RTSP_Select_Stream (void *p, int channel_idx) {
 	return rtsp2_control(p, CMD_RTSP2_SELECT_STREAM, channel_idx);
 }
 
-
 int RTSP_Set_Apply (void *p) {
 
     return rtsp2_control(p, CMD_RTSP2_SET_APPLY, 0);
@@ -79,9 +78,10 @@ int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_co
 
 
 // deinit and release all resources for RTSP
-void* RTSP_DeInit (mm_context_t *rtsp_data){
+void* RTSP_DeInit (void *p){
     mm_queue_item_t *tmp_item;
-    
+    mm_context_t *rtsp_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+	rtsp_data = p;
 	for (int i = 0; i < rtsp_data->queue_num; i++) {
 		if (rtsp_data->port[i].output_recycle && rtsp_data->port[i].output_ready) {
 			while (xQueueReceive(rtsp_data->port[i].output_ready, (void *)&tmp_item, 0) == pdTRUE) {

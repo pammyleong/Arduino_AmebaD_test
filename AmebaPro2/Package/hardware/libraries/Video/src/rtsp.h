@@ -8,7 +8,6 @@ extern "C" {
 #include "rtsp_drv.h"
 #include "avcodec.h"
 
-
 #ifdef __cplusplus
 }
 #endif
@@ -35,7 +34,7 @@ class RTSP {
         
 };
 
-extern RTSP rtsp;
+//extern RTSP rtsp;
 
 #endif
 
