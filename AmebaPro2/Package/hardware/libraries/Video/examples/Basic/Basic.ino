@@ -18,7 +18,7 @@ void loop() {
     cam.Open();
     cam.Close();
 
-    if (cam.DeInit()==0){   // put inside CAMIO.deinit
+    if (cam.DeInit()!=0){   // put inside CAMIO.deinit
         Serial.println("Video DeInit Failed");
     }; 
 }
