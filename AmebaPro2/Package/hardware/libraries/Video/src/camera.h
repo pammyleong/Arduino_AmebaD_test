@@ -1,6 +1,16 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "camera_drv.h"
+
+
+#ifdef __cplusplus
+}
+#endif
 
 /*****************************************************************************
 ISP CHANNEL
@@ -84,13 +94,14 @@ class Camera {
         void *Init();
         void *Init(int w, int h, int bps);
         void *Init(int enable, int w, int h, int bps, int snapshot);
-        void *DeInit(void);
+        void *DeInit();
 
         void Open();
-        void Open(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
-        void Close(void);
+        void Open(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+        void Close();
 
     private:
-        
+        mm_context_t video_data;
+        void *video_ptr;
 };
 #endif

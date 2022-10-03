@@ -1,6 +1,5 @@
-#include "camera.h"
 #include <Arduino.h>
-
+#include "camera.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,7 +12,9 @@ extern "C" {
 #endif
 
 
-Camera::Camera(){};
+Camera::Camera(){
+    video_ptr = (void *)&video_data;
+};
 Camera::~Camera(){};
 
 /**
@@ -55,8 +56,9 @@ void *Camera::Init(int w, int h, int bps){
 void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
     int heapSize = cameraConfig(enable, w, h, bps, snapshot);
     printf("VOE heap size is: %d", heapSize);
+    video_ptr = cameraInit();
     
-    return cameraInit();
+    return video_ptr;
 }
 
 /**
@@ -64,8 +66,8 @@ void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
   * @param  none
   * @retval  none
   */
-void *Camera::DeInit(void) {
-    return cameraDeInit();
+void *Camera::DeInit() {
+    return cameraDeInit(video_ptr);
 }
 
 /**
@@ -83,7 +85,7 @@ void Camera::Open() {
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    Open(stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    Open(video_ptr,stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 /**
@@ -99,8 +101,8 @@ void Camera::Open() {
             rc_mode  : enable or disable constant rate mode
   * @retval  none
   */
-void Camera::Open(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
-    cameraOpen(stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+void Camera::Open(void *p,int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
+    cameraOpen(p, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 
@@ -109,7 +111,7 @@ void Camera::Open(int stream_id, int type, int res, int w, int h, int bps, int f
   * @param  none
   * @retval  none
   */
-void Camera::Close(void) {
-    cameraStopVideoStream();
+void Camera::Close() {
+    cameraStopVideoStream(video_ptr);
 }
 

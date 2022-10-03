@@ -5,33 +5,7 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 #include <diag.h>
-
-typedef struct data_conveyor_s {
-	xQueueHandle    output_ready;
-	xQueueHandle    output_recycle;
-	int32_t item_num;
-} data_conveyor_t;
-
-typedef struct data_content_s {
-	union {
-		struct {
-			xQueueHandle    output_ready;
-			xQueueHandle    output_recycle;
-			int32_t item_num;
-		};
-		data_conveyor_t port[4];
-	};
-
-	//mm_module_t    *module;
-
-	// private data structure for created instance
-	void *priv;
-
-	// module state
-	uint32_t state;
-	int32_t queue_num;			// number of queue
-	int32_t curr_queue;
-} data_content_t;
+#include "mmf2_module.h"
 
 // Function 1: define parameters to initialize the ISP heap size for VOE
 int cameraConfig(int enable, int w, int h, int bps, int snapshot);
@@ -40,13 +14,13 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 void *cameraInit(void);
 
 // Function 3: set video parameter, init queue and open camera
-void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
 
 // Function 4: disable video streaming
-void cameraStopVideoStream(void);
+void cameraStopVideoStream(void *p);
 
 // Function 5: deinit parameters assigned to ISP and VOE
-void *cameraDeInit(void);
+void *cameraDeInit(void *p);
 
 // Functions externed from module_video
 extern void *video_create(void *parent);

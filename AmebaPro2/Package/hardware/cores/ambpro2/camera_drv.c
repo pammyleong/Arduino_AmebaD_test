@@ -90,7 +90,7 @@ void *cameraInit(void){
     return video_data;
 }
 
-void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
+void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
 // ---------------- Troubleshoot whether needs to reinit again -------------------
 //    video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
 //    mm_context_t *video_ctx = cameraInit(); // video_module
@@ -105,7 +105,8 @@ void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps
     video_params.fps = fps;
     video_params.gop = gop;
     video_params.rc_mode = rc_mode;
-    
+
+    video_data = p;
     if (video_data) {
         video_control(video_data, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(video_data, MM_CMD_SET_QUEUE_LEN, fps*3);
@@ -116,12 +117,9 @@ void cameraOpen(int stream_id, int type, int res, int w, int h, int bps, int fps
 	}
 }
 
-void *cameraDeInit(void){
-    // ---------------- Troubleshoot whether needs to reinit again -------------------
-    //    whether video data is parsed in via input parameter
-    // -------------------------------------------------------------------------------
-
+void *cameraDeInit(void *p){
     mm_queue_item_t *tmp_item;
+    video_data = p;
     
 	for (int i = 0; i < video_data->queue_num; i++) {
 		if (video_data->port[i].output_recycle && video_data->port[i].output_ready) {
@@ -167,12 +165,8 @@ void *cameraDeInit(void){
     return NULL;
 }
 
-void cameraStopVideoStream(void){
-    // ---------------- Troubleshoot whether needs to reinit again -------------------
-    //    video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
-    //    whether video data is parsed in via input parameter
-    // -------------------------------------------------------------------------------
-    video_ctx_t *ctx = (video_ctx_t *)video_data;
+void cameraStopVideoStream(void *p){
+    video_ctx_t *ctx = (video_ctx_t *)p;
     int ch = ctx->params.stream_id;
     
     while (incb[ch]) {
