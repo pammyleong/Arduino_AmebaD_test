@@ -6,7 +6,7 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-void* RTSP_Init (void);
+mm_context_t* RTSP_Init (void);
 
 int RTSP_Select_Stream (void *p, int arg);
 
@@ -14,9 +14,9 @@ int RTSP_Set_Apply (void *p);
 
 int RTSP_Set_Streaming      (void *p, int arg);
 
-int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, int video_codec);
+int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t video_codec);
 
-void* RTSP_DeInit (void *p);
+mm_context_t* RTSP_DeInit (void *p);
 
 
 // extern function 
