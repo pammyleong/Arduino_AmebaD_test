@@ -43,6 +43,17 @@ void RTSP::Open(void){
 	}
 }
 
+void RTSP::Open (mm_context_t *p){
+        
+    if (rtspData->priv == NULL) {
+        printf("Streaming failed, RTSP not initialised yet.");
+    }
+    else {
+        RTSP_Set_Streaming(p->priv, ON);
+    }
+}
+
+
 /**
   * @brief  Stop RTSP streaming
   * @param  none

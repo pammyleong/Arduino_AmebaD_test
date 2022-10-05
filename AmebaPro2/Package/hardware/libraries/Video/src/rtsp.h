@@ -19,6 +19,7 @@ class RTSP {
 	
 		void* Init(void);
 	    void Open(void);
+		void Open(mm_context_t *p);
 		void Close(void);
 		void DeInit(void);
 
