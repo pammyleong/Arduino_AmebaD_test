@@ -10,7 +10,7 @@
 extern void rtp_stream_statistics_sync(struct stream_context *stream_ctx);
 
 static rtsp2_params_t rtsp_params = {
-	.type = AVMEDIA_TYPE_VIDEO,
+	.type = 0,
 	.u = {
 		.v = {
 			.codec_id = 0,
@@ -20,9 +20,7 @@ static rtsp2_params_t rtsp_params = {
 	}
 };
 
-
-//Init RTSP module	
-mm_context_t* RTSP_Init (void) { //mm_module_open in sdk
+mm_context_t* RTSP_Init (void) { 
 	mm_context_t *rtsp_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
 	if (!rtsp_data) {
 		return NULL;
@@ -48,12 +46,12 @@ mm_context_t* RTSP_Init (void) { //mm_module_open in sdk
 }
 
 // Select channel index 0 or 1
-// --------------remove *p to match with lower level input parameter
 int RTSP_Select_Stream (void *p, int channel_idx) {
 
 	return rtsp2_control(p, CMD_RTSP2_SELECT_STREAM, channel_idx);
 }
 
+// Apply parameters set
 int RTSP_Set_Apply (void *p) {
 
     return rtsp2_control(p, CMD_RTSP2_SET_APPLY, 0);
@@ -66,25 +64,15 @@ int RTSP_Set_Streaming (void *p, int arg) {
 }
 
 // Set parameters for RTSP
-int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t video_codec) {
+int RTSP_Set_Params (void *p, uint32_t video_type, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t video_codec) {
 
-	printf("p: %d\r\n", p);
-
-	//rtsp_params *rtsp_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
-//	rtsp2params_t.u.v.fps = rtsp_fps;
-//	printf("111111111111: %d",rtsp2params_t.u.v.fps);
+	rtsp_params.type = video_type;
 	rtsp_params.u.v.fps = rtsp_fps;
 	rtsp_params.u.v.bps = rtsp_bps;
 	rtsp_params.u.v.codec_id = video_codec;
-	printf("111111111111: %d\r\n",rtsp_params.u.v.fps);
-	printf("111111111111: %d\r\n",rtsp_params.u.v.bps);
-	printf("111111111111: %d\r\n",rtsp_params.u.v.codec_id);
-	printf("111111111111: %d\r\n",(int)&rtsp_params);
-	printf("111111111111: %x\r\n",&rtsp_params);
 
 	return rtsp2_control(p, CMD_RTSP2_SET_PARAMS, (int)&rtsp_params);
 }
-
 
 // deinit and release all resources for RTSP
 mm_context_t* RTSP_DeInit (void *p){
