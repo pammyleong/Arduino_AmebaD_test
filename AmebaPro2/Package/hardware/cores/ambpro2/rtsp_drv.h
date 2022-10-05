@@ -14,7 +14,7 @@ int RTSP_Set_Apply (void *p);
 
 int RTSP_Set_Streaming      (void *p, int arg);
 
-int RTSP_Set_Params (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t video_codec);
+int RTSP_Set_Params (void *p, uint32_t video_type, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t video_codec);
 
 mm_context_t* RTSP_DeInit (void *p);
 

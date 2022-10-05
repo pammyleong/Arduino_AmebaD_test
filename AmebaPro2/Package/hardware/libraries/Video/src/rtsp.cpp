@@ -4,34 +4,36 @@
 #define ON  1
 #define OFF 0
 
-RTSP::RTSP(){
-	//rtsp_ptr = (void *)&rtspData;
-};
-
+RTSP::RTSP(){};
 RTSP::~RTSP(){};
 
-//Initialization of RTSP setting
-void* RTSP::Init(void) {
-	printf("[%s] RTSP start Init\r\n", __FUNCTION__);
-	rtspData = RTSP_Init(); // ret rtsp_data to mm_context_t 
-	printf("rstp_ptr= %d\n\r", rtspData);
-	
-	printf("[%s] RTSP Init done\r\n", __FUNCTION__);
-	
-	RTSP_Select_Stream(rtspData->priv, ch_idx);
-	printf("[%s] RTSP RTSP_Select_Stream\r\n", __FUNCTION__);
-	
-	RTSP_Set_Params(rtspData->priv, fps, bps, VC);
-	printf("[%s] RTSP RTSP_Set_Params\r\n", __FUNCTION__);
+/**
+  * @brief  Initialization for RTSP module by setting up RTSP paramters. 
+  Default value: channel_idx : 0
+  				 video type: AVMEDIA_TYPE_VIDEO
+  				 fps: 30
+  				 bps: 2*1024*1024
+  				 video_codec: AV_CODEC_ID_H264
+  * @param  none
+  * @retval none
+  */
 
+void* RTSP::Init(void) {
+
+	rtspData = RTSP_Init();
+	RTSP_Select_Stream(rtspData->priv, ch_idx);
+	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
 	RTSP_Set_Apply(rtspData->priv);
-	printf("[%s] RTSP RTSP_Set_Apply\r\n", __FUNCTION__);
 
 	return rtspData->priv;
 }
 
-// start streaming
-void RTSP::RTSP_Open(void){
+/**
+  * @brief  Start RTSP streaming
+  * @param  none
+  * @retval none
+  */
+void RTSP::Open(void){
 		
 	if (rtspData->priv == NULL) {
 		printf("Streaming failed, RTSP not initialised yet.");
@@ -41,12 +43,31 @@ void RTSP::RTSP_Open(void){
 	}
 }
 
-//stop streaming
-void RTSP::RTSP_Close(void){
+void RTSP::Open (mm_context_t *p){
+        
+    if (rtspData->priv == NULL) {
+        printf("Streaming failed, RTSP not initialised yet.");
+    }
+    else {
+        RTSP_Set_Streaming(p->priv, ON);
+    }
+}
+
+
+/**
+  * @brief  Stop RTSP streaming
+  * @param  none
+  * @retval none
+  */
+void RTSP::Close(void){
 	RTSP_Set_Streaming(rtspData->priv, OFF);
 }
 
-// release all resource for RTSP
+/**
+  * @brief  Deinit and release all the resources set for RTSP 
+  * @param  none
+  * @retval none
+  */
 void RTSP::DeInit(void){
 	if (RTSP_DeInit(rtspData->priv) == NULL) {
 		printf("RTSP DeInit.");
