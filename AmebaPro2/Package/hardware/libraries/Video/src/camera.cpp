@@ -11,10 +11,7 @@ extern "C" {
 }
 #endif
 
-
-Camera::Camera(){
-    video_ptr = (void *)&video_data;
-};
+Camera::Camera(){};
 Camera::~Camera(){};
 
 /**
@@ -55,19 +52,27 @@ void *Camera::Init(int w, int h, int bps){
   */
 void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
     int heapSize = cameraConfig(enable, w, h, bps, snapshot);
-    printf("VOE heap size is: %d", heapSize);
-    video_ptr = cameraInit();
     
-    return video_ptr;
+    printf("[%s] VOE heap size is: %d\r\n", __FUNCTION__, heapSize);
+
+    video_data = cameraInit();
+    
+    return video_data->priv;
 }
 
 /**
-  * @brief  none
+  * @brief  deinitialization for the camera sensor
   * @param  none
   * @retval  none
   */
-void *Camera::DeInit() {
-    return cameraDeInit(video_ptr);
+void Camera::DeInit() {
+    if (cameraDeInit(video_data->priv) == NULL) {
+        printf("RTSP DeInit.\r\n");
+    }
+    else {
+        printf("RTSP need to be DeInit.\r\n");
+    }
+
 }
 
 /**
@@ -85,7 +90,7 @@ void Camera::Open() {
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    Open(video_ptr,stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 /**
@@ -105,13 +110,21 @@ void Camera::Open(void *p,int stream_id, int type, int res, int w, int h, int bp
     cameraOpen(p, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
+/**
+  * @brief  start camera upon camera settings were defined
+  * @param  none
+  * @retval  none
+  */
+void Camera::Start(){
+    cameraStart(video_data->priv, V1_CHANNEL);
+}
 
 /**
-  * @brief  none
+  * @brief  close camera while transmision is finished
   * @param  none
   * @retval  none
   */
 void Camera::Close() {
-    cameraStopVideoStream(video_ptr);
+    cameraStopVideoStream(video_data->priv);
 }
 

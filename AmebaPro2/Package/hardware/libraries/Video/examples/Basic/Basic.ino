@@ -11,14 +11,14 @@ Camera cam;
 
 void setup() {
     Serial.begin(115200);
+    Serial.println("[MAIN] Start Camera Init");
+
     cam.Init();             // put inside CAMIO.register
+    cam.Open();
+    cam.Start();
+    cam.Close();
+    cam.DeInit();           // put inside CAMIO.register
 }
 
 void loop() {
-    cam.Open();
-    cam.Close();
-
-    if (cam.DeInit()!=0){   // put inside CAMIO.deinit
-        Serial.println("Video DeInit Failed");
-    }; 
 }

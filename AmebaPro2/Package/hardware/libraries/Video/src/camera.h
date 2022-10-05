@@ -94,14 +94,14 @@ class Camera {
         void *Init();
         void *Init(int w, int h, int bps);
         void *Init(int enable, int w, int h, int bps, int snapshot);
-        void *DeInit();
+        void DeInit();
 
         void Open();
         void Open(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+        void Start();
         void Close();
 
     private:
-        mm_context_t video_data;
-        void *video_ptr;
+        mm_context_t *video_data;
 };
 #endif
