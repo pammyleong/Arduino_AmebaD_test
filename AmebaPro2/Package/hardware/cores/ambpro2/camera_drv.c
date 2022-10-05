@@ -66,26 +66,26 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 
 mm_context_t *cameraInit(void){
     printf("[%s] cameraInit Starts\n\r", __FUNCTION__);
-    mm_context_t* video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
+    mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
     printf("[%s] cameraInit 1\n\r", __FUNCTION__);
-    if (!video_data) {
+    if (!videoData) {
 		return NULL;
 	}
     printf("[%s] cameraInit 2\n\r", __FUNCTION__);
-	memset(video_data, 0, sizeof(mm_context_t));
+	memset(videoData, 0, sizeof(mm_context_t));
     printf("[%s] cameraInit 3\n\r", __FUNCTION__);
-	video_data->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
-	video_data->priv = video_create(video_data);
+	videoData->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
+	videoData->priv = video_create(videoData);
     printf("[%s] cameraInit 4\n\r", __FUNCTION__);
 
-	if (!video_data->priv) {
+	if (!videoData->priv) {
 		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
-//	    if (video_data->priv) {
-//		    video_destroy(video_data->priv);
+//	    if (videoData->priv) {
+//		    video_destroy(videoData->priv);
 //	    }
-    	if (video_data) {
-            video_destroy(video_data->priv);
-    		free(video_data);
+    	if (videoData) {
+            video_destroy(videoData->priv);
+    		free(videoData);
     	}
     	return NULL;
 	}
@@ -93,10 +93,10 @@ mm_context_t *cameraInit(void){
 	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
 
     
-    return video_data;
+    return videoData;
 }
 
-void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
+void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
     // assign value parsing from user level
     video_params.stream_id = stream_id;
     video_params.type = type;
@@ -108,15 +108,16 @@ void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps
     video_params.gop = gop;
     video_params.rc_mode = rc_mode;
 
-//    video_data = p;
     if (p) {
-        video_control(p, CMD_VIDEO_SET_PARAMS, (int)&video_params);
+        video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+        printf("[%s] video opened\n\r", __FUNCTION__);
     } else {
 		printf("[%s] video open fail\n\r", __FUNCTION__);
-		return;
+		//return;
 	}
+//    video_control(p_priv, CMD_VIDEO_APPLY, 0);
 }
 
 void cameraStart(void *p, int channel){
@@ -166,26 +167,29 @@ mm_context_t *cameraDeInit(void *p){
 	free(video_data);
 	printf("[%s] module close - free context\n\r", __FUNCTION__);
 	printf("[%s] module close - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
+
     video_deinit();
     
     return NULL;
 }
 
-void cameraStopVideoStream(void *p){
-    video_ctx_t *ctx = (video_ctx_t *)p;
-    int ch = ctx->params.stream_id;
-    
-    while (incb[ch]) {
-		vTaskDelay(1);
-	}
-	if (enc_queue_cnt[ch] > 0) {
-		printf("CH %d MMF enc_queue_cnt = %d\r\n", ch, enc_queue_cnt[ch]);
-		video_encbuf_clean(ch, CODEC_H264 | CODEC_HEVC | CODEC_JPEG);
-	}
-	enc_queue_cnt[ch] = 0;
-	vTaskDelay(10);
+void cameraStopVideoStream(void *p, int channel){
+    video_control(p, CMD_VIDEO_STREAM_STOP, channel);
 
-	video_close(ch);
+//    video_ctx_t *ctx = (video_ctx_t *)p;
+//    int ch = ctx->params.stream_id;
+//    
+//    while (incb[ch]) {
+//		vTaskDelay(1);
+//	}
+//	if (enc_queue_cnt[ch] > 0) {
+//		printf("CH %d MMF enc_queue_cnt = %d\r\n", ch, enc_queue_cnt[ch]);
+//		video_encbuf_clean(ch, CODEC_H264 | CODEC_HEVC | CODEC_JPEG);
+//	}
+//	enc_queue_cnt[ch] = 0;
+//	vTaskDelay(10);
+//
+//	video_close(ch);
 }
 
 

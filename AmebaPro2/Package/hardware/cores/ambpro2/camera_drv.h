@@ -14,13 +14,15 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 mm_context_t *cameraInit(void);
 
 // Function 3: set video parameter, init queue and opens camera
-void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+//void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
 
 // Function 4: start camera
 void cameraStart(void *p, int channel);
 
 // Function 5: disable video streaming
-void cameraStopVideoStream(void *p);
+void cameraStopVideoStream(void *p, int channel);
+
 
 // Function 6: deinit parameters assigned to ISP and VOE
 mm_context_t *cameraDeInit(void *p);

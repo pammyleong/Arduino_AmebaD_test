@@ -11,7 +11,10 @@ extern "C" {
 }
 #endif
 
-Camera::Camera(){};
+Camera::Camera(){
+    video_data = NULL;
+};
+
 Camera::~Camera(){};
 
 /**
@@ -57,7 +60,8 @@ void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
 
     video_data = cameraInit();
     
-    return video_data->priv;
+    return (void *)video_data;
+
 }
 
 /**
@@ -66,7 +70,7 @@ void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
   * @retval  none
   */
 void Camera::DeInit() {
-    if (cameraDeInit(video_data->priv) == NULL) {
+    if (cameraDeInit(video_data) == NULL) {
         printf("RTSP DeInit.\r\n");
     }
     else {
@@ -90,7 +94,22 @@ void Camera::Open() {
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    //Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    Open(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+}
+
+void Camera::Open(mm_context_t *p){
+    int stream_id = V1_CHANNEL;
+    int type =VIDEO_TYPE; 
+    int res =V1_RESOLUTION; 
+    int w=V1_WIDTH;
+    int h=V1_HEIGHT;
+    int bps=V1_BPS;
+    int fps=V1_FPS;
+    int gop=V1_GOP;
+    int rc_mode=V1_RCMODE;
+    //Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    cameraOpen(p, p->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 /**
@@ -106,8 +125,8 @@ void Camera::Open() {
             rc_mode  : enable or disable constant rate mode
   * @retval  none
   */
-void Camera::Open(void *p,int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
-    cameraOpen(p, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+void Camera::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
+    cameraOpen(p, p_priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 /**
@@ -116,6 +135,7 @@ void Camera::Open(void *p,int stream_id, int type, int res, int w, int h, int bp
   * @retval  none
   */
 void Camera::Start(){
+//    cameraStart(video_data->priv, V1_CHANNEL);
     cameraStart(video_data->priv, V1_CHANNEL);
 }
 
@@ -125,6 +145,6 @@ void Camera::Start(){
   * @retval  none
   */
 void Camera::Close() {
-    cameraStopVideoStream(video_data->priv);
+    cameraStopVideoStream(video_data->priv, V1_CHANNEL);
 }
 

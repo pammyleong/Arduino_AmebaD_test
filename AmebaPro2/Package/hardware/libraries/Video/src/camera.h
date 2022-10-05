@@ -97,7 +97,8 @@ class Camera {
         void DeInit();
 
         void Open();
-        void Open(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+        void Open(mm_context_t *p);
+        void Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
         void Start();
         void Close();
 
