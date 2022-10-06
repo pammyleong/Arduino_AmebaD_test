@@ -61,9 +61,11 @@ int RTSP_Set_Apply (void *p) {
 }
 
 // Decide to on or off streaming
-int RTSP_Set_Streaming (void *p, int arg) {
-
-	return rtsp2_control(p, CMD_RTSP2_SET_STREAMMING, arg);
+int RTSP_Set_Streaming (void *p, int arg) { 
+	printf("Set Streaming\n\r");
+	mm_module_ctrl((mm_context_t *)p, CMD_RTSP2_SET_STREAMMING, ON);
+	//return rtsp2_control(p, CMD_RTSP2_SET_STREAMMING, arg);
+	return;
 }
 
 // Set parameters for RTSP
