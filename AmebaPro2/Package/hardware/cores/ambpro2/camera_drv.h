@@ -7,24 +7,16 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-// Function 1: define parameters to initialize the ISP heap size for VOE
 int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 
-// Function 2: collect parameters
 mm_context_t *cameraInit();
 
-// Function 3: set video parameter, init queue and opens camera
-//void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
 void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
 
-// Function 4: start camera
 void cameraStart(void *p, int channel);
 
-// Function 5: disable video streaming
 void cameraStopVideoStream(void *p, int channel);
 
-
-// Function 6: deinit parameters assigned to ISP and VOE
 mm_context_t *cameraDeInit(void *p);
 
 // Functions externed from module_video

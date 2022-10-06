@@ -14,7 +14,6 @@
 extern int incb[5];
 extern int enc_queue_cnt[5];
 
-
 static video_params_t video_params = {
 	.stream_id      = 0, // = V1_CHANNEL,
 	.type           = 0, // = VIDEO_TYPE,
@@ -68,19 +67,18 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 mm_context_t *cameraInit(){
     printf("[%s] cameraInit Starts\n\r", __FUNCTION__);
     mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
-    printf("[%s] cameraInit 1\n\r", __FUNCTION__);
+//    printf("[%s] cameraInit 1\n\r", __FUNCTION__);
     if (!videoData) {
 		return NULL;
 	}
-    printf("[%s] cameraInit 2\n\r", __FUNCTION__);
+//    printf("[%s] cameraInit 2\n\r", __FUNCTION__);
 	memset(videoData, 0, sizeof(mm_context_t));
-    printf("[%s] cameraInit 3\n\r", __FUNCTION__);
+//    printf("[%s] cameraInit 3\n\r", __FUNCTION__);
 	videoData->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
     videoData->module = &video_module; 
     videoData->priv = video_module.create(videoData);
-    //videoData->priv = video_create(videoData);
     
-    printf("[%s] cameraInit 4\n\r", __FUNCTION__);
+//    printf("[%s] cameraInit 4\n\r", __FUNCTION__);
 
 	if (!videoData->priv) {
 		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
@@ -118,7 +116,6 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
 		printf("[%s] video open fail\n\r", __FUNCTION__);
 		//return;
 	}
-//    video_control(p_priv, CMD_VIDEO_APPLY, 0);
 }
 
 void cameraStart(void *p, int channel){
@@ -176,21 +173,6 @@ mm_context_t *cameraDeInit(void *p){
 
 void cameraStopVideoStream(void *p, int channel){
     video_control(p, CMD_VIDEO_STREAM_STOP, channel);
-
-//    video_ctx_t *ctx = (video_ctx_t *)p;
-//    int ch = ctx->params.stream_id;
-//    
-//    while (incb[ch]) {
-//		vTaskDelay(1);
-//	}
-//	if (enc_queue_cnt[ch] > 0) {
-//		printf("CH %d MMF enc_queue_cnt = %d\r\n", ch, enc_queue_cnt[ch]);
-//		video_encbuf_clean(ch, CODEC_H264 | CODEC_HEVC | CODEC_JPEG);
-//	}
-//	enc_queue_cnt[ch] = 0;
-//	vTaskDelay(10);
-//
-//	video_close(ch);
 }
 
 

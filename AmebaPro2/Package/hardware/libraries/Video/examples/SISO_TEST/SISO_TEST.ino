@@ -49,15 +49,17 @@ void setup() {
 
     // add input
     CAMIO.registerInput(datalinker, (uint32_t)p1, 0);
-    //cam.Open();
+    Serial.println("CAMIO.registerInput done");
     
     // add output
     CAMIO.registerOutput(datalinker, (uint32_t)p2, 0);
-    //    rtsp.RTSP_Open();
+    Serial.println("CAMIO.registerOutput done");
     
     if(CAMIO.start(datalinker) != 0) {
         Serial.println("camera io link start failed");
     }
+    Serial.println("camera io link start done");
+    
     cam.Start();
 }
 

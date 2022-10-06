@@ -13,16 +13,11 @@ void setup() {
   Serial.begin(115200);
   Serial.println("[MAIN] Start Camera Init");
 
-  void *p = cam.Init();           // put inside CAMIO.register
+  void *p = cam.Init();
   cam.Open();
-  if (p == NULL) {
-    Serial.println("000000000000000000000000000");
-  } else {
-    Serial.println("11111111111111111111111111");
-  }
   cam.Start();
-  cam.Close();
-  cam.DeInit();           // put inside CAMIO.register
+//  cam.Close();
+//  cam.DeInit();
 }
 
 void loop() {

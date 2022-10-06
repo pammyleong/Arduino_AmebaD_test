@@ -71,10 +71,10 @@ void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
   */
 void Camera::DeInit() {
     if (cameraDeInit(video_data) == NULL) {
-        printf("RTSP DeInit.\r\n");
+        printf("RTSP DeInit Done.\r\n");
     }
     else {
-        printf("RTSP need to be DeInit.\r\n");
+        printf("RTSP DeInit Failed.\r\n");
     }
 
 }
@@ -133,7 +133,6 @@ void Camera::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int re
   * @retval  none
   */
 void Camera::Start(){
-//    cameraStart(video_data->priv, V1_CHANNEL);
     cameraStart(video_data->priv, V1_CHANNEL);
 }
 
