@@ -37,24 +37,26 @@ void* RTSP::Init(void) {
   * @param  none
   * @retval none
   */
-void RTSP::Open(void){
-		
-	if (rtspData->priv == NULL) {
-		printf("Streaming failed, RTSP not initialised yet.");
-	}
-	else {
-		RTSP_Set_Streaming(rtspData->priv, ON);
-	}
-}
+//void RTSP::Open(void){
+//		
+//	if (rtspData->priv == NULL) {
+//		printf("Streaming failed, RTSP not initialised yet.");
+//	}
+//	else {
+//		RTSP_Set_Streaming(rtspData->priv, ON);
+//	}
+//}
 
 void RTSP::Open (mm_context_t *p){
-        
+    printf("RTSP Open Starts \r\n");
     if (rtspData->priv == NULL) {
         printf("Streaming failed, RTSP not initialised yet.");
     }
     else {
-        RTSP_Set_Streaming(p->priv, ON);
+        printf("RTSP_Set_Streaming Starts \r\n");
+        RTSP_Set_Streaming(p, ON);
     }
+    printf("RTSP Open Done \r\n");
 }
 
 
