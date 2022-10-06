@@ -4,8 +4,8 @@
 #define ON  1
 #define OFF 0
 
-RTSP::RTSP(){};
-RTSP::~RTSP(){};
+RTSPClass::RTSPClass(){};
+RTSPClass::~RTSPClass(){};
 
 /**
   * @brief  Initialization for RTSP module by setting up RTSP paramters. 
@@ -17,8 +17,7 @@ RTSP::~RTSP(){};
   * @param  none
   * @retval none
   */
-
-void* RTSP::Init(void) {
+void* RTSPClass::Init(void) {
 
 	rtspData = RTSP_Init();
     printf("RTSP_Init done\r\n");
@@ -37,24 +36,14 @@ void* RTSP::Init(void) {
   * @param  none
   * @retval none
   */
-//void RTSP::Open(void){
-//	printf("RTSP Open");
-//	if (rtspData->priv == NULL) {
-//		printf("Streaming failed, RTSP not initialised yet.");
-//	}
-//	else {
-//		RTSP_Set_Streaming(rtspData->priv, ON);
-//	}
-//}
-
-void RTSP::Open (mm_context_t *p){
+void RTSPClass::Open (mm_context_t *p){
     printf("RTSP Open\r\n");
     if (rtspData->priv == NULL) {
         printf("Streaming failed, RTSP not initialised yet.\r\n");
     }
     else {
 		printf("Start Streaming\r\n");
-        RTSP_Set_Streaming (p, ON);
+        RTSP_Set_Streaming ((void *)p, ON);
 		printf("RTSP Continue");
 		 
     }
@@ -66,7 +55,7 @@ void RTSP::Open (mm_context_t *p){
   * @param  none
   * @retval none
   */
-void RTSP::Close(void){
+void RTSPClass::Close(void){
 	RTSP_Set_Streaming(rtspData->priv, OFF);
 }
 
@@ -75,7 +64,7 @@ void RTSP::Close(void){
   * @param  none
   * @retval none
   */
-void RTSP::DeInit(void){
+void RTSPClass::DeInit(void){
 	if (RTSP_DeInit(rtspData->priv) == NULL) {
 		printf("RTSP DeInit.");
 	}

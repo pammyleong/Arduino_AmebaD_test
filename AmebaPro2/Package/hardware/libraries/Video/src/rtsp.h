@@ -12,10 +12,10 @@ extern "C" {
 }
 #endif
 
-class RTSP {
+class RTSPClass {
     public:
-        RTSP(void);
-        ~RTSP(void);
+        RTSPClass(void);
+        ~RTSPClass(void);
 	
 		void* Init(void);
 	    void Open(void);
