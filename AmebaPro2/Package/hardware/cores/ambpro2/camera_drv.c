@@ -14,6 +14,7 @@
 extern int incb[5];
 extern int enc_queue_cnt[5];
 
+
 static video_params_t video_params = {
 	.stream_id      = 0, // = V1_CHANNEL,
 	.type           = 0, // = VIDEO_TYPE,
@@ -64,7 +65,7 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 	return voe_heap_size;
 }
 
-mm_context_t *cameraInit(void){
+mm_context_t *cameraInit(){
     printf("[%s] cameraInit Starts\n\r", __FUNCTION__);
     mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
     printf("[%s] cameraInit 1\n\r", __FUNCTION__);
@@ -75,24 +76,24 @@ mm_context_t *cameraInit(void){
 	memset(videoData, 0, sizeof(mm_context_t));
     printf("[%s] cameraInit 3\n\r", __FUNCTION__);
 	videoData->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
-	videoData->priv = video_create(videoData);
+    videoData->module = &video_module; 
+    videoData->priv = video_module.create(videoData);
+    //videoData->priv = video_create(videoData);
+    
     printf("[%s] cameraInit 4\n\r", __FUNCTION__);
 
 	if (!videoData->priv) {
 		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
-//	    if (videoData->priv) {
-//		    video_destroy(videoData->priv);
-//	    }
+	    if (videoData->priv) {
+		    video_module.destroy(videoData->priv);
+	    }
     	if (videoData) {
-            video_destroy(videoData->priv);
     		free(videoData);
     	}
     	return NULL;
 	}
     
 	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
-
-    
     return videoData;
 }
 

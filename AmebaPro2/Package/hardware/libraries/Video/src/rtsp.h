@@ -31,8 +31,8 @@ class RTSP {
 		uint32_t VC = AV_CODEC_ID_H264;
 		
     private:
-		mm_context_t *rtspData;
-		mm_module_t *mm;
+		mm_context_t *rtspData = NULL;
+		
 
 };
 

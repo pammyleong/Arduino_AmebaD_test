@@ -94,7 +94,6 @@ void Camera::Open() {
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    //Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
     Open(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
@@ -108,7 +107,6 @@ void Camera::Open(mm_context_t *p){
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    //Open(video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
     cameraOpen(p, p->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 

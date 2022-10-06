@@ -20,10 +20,14 @@ RTSP::~RTSP(){};
 
 void* RTSP::Init(void) {
 
-	rtspData = RTSP_Init(mm);
+	rtspData = RTSP_Init();
+    printf("RTSP_Init done\r\n");
 	RTSP_Select_Stream(rtspData->priv, ch_idx);
+    printf("RTSP_Select_Stream done\r\n");
 	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
+    printf("RTSP_Set_Params done\r\n");
 	RTSP_Set_Apply(rtspData->priv);
+    printf("RTSP_Set_Apply done\r\n");
 
 	return rtspData->priv;
 }

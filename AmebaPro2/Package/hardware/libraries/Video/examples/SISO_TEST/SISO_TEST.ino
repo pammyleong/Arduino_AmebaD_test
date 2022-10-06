@@ -31,27 +31,32 @@ void setup() {
         // Connect to WPA/WPA2 network:
         status = WiFi.begin(ssid, pass);
 
-        // wait 10 seconds for connection:
-        delay(10000);
+        // wait 2 seconds for connection:
+        delay(2000);
     }
+    
+    mm_context_t *p1=(mm_context_t *)cam.Init();
+    cam.Open(p1);
+    Serial.println("cam.Open() done");
+    
+    mm_context_t *p2=(mm_context_t *)rtsp.Init();
+    rtsp.Open(p2);
+    Serial.println("rtsp.Open() done");
 
     datalinker = CAMIO.create();
-    mm_context_t *p1=(mm_context_t *)cam.Init();
-    mm_context_t *p2=(mm_context_t *)rtsp.Init();
+    Serial.println("CAMIO.create() done");
 
-    cam.Open(p1);
-    rtsp.RTSP_Open(p2);
-    
-    // add input
-    CAMIO.registerInput(datalinker, (uint32_t)p1, 0);
-    //cam.Open();
-    // add output
-    CAMIO.registerOutput(datalinker, (uint32_t)p2, 0);
-//    rtsp.RTSP_Open();
-    if(CAMIO.start(datalinker) != 0) {
-        Serial.println("camera io link start failed");
-    }
-    cam.Start();
+
+//    // add input
+//    CAMIO.registerInput(datalinker, (uint32_t)p1, 0);
+//    //cam.Open();
+//    // add output
+//    CAMIO.registerOutput(datalinker, (uint32_t)p2, 0);
+////    rtsp.RTSP_Open();
+//    if(CAMIO.start(datalinker) != 0) {
+//        Serial.println("camera io link start failed");
+//    }
+//    cam.Start();
 }
 
 

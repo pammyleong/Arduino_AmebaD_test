@@ -7,7 +7,7 @@
 #include "mmf2_module.h"
 
 //mm_context_t* RTSP_Init (void);
-mm_context_t* RTSP_Init (mm_module_t *p);
+mm_context_t* RTSP_Init (void);
 
 int RTSP_Select_Stream (void *p, int arg);
 

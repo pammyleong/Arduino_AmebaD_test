@@ -11,7 +11,7 @@
 int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 
 // Function 2: collect parameters
-mm_context_t *cameraInit(void);
+mm_context_t *cameraInit();
 
 // Function 3: set video parameter, init queue and opens camera
 //void cameraOpen(void *p, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
