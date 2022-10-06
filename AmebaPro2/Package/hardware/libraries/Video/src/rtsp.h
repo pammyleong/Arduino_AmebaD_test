@@ -32,6 +32,7 @@ class RTSP {
 		
     private:
 		mm_context_t *rtspData;
+		mm_module_t *mm;
 
 };
 

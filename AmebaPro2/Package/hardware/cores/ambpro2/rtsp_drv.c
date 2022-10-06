@@ -20,7 +20,7 @@ static rtsp2_params_t rtsp_params = {
 	}
 };
 
-mm_context_t* RTSP_Init (void) { 
+mm_context_t* RTSP_Init (mm_module_t *p) { 
 	mm_context_t *rtsp_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
 	if (!rtsp_data) {
 		return NULL;
@@ -28,7 +28,10 @@ mm_context_t* RTSP_Init (void) {
 	memset(rtsp_data, 0, sizeof(mm_context_t));
 
 	rtsp_data->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
-	rtsp_data->priv = rtsp2_create(rtsp_data);
+	rtsp_data->module = p; 
+	rtsp_data->priv = rtsp2_create(rtsp_data); // rtsp_data->priv = p->create(rtsp_data);
+//	rtsp_data->priv = p->create(rtsp_data);
+
 
 	if (!rtsp_data->priv) {
 		printf("fail------\n\r");

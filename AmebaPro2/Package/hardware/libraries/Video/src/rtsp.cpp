@@ -20,7 +20,7 @@ RTSP::~RTSP(){};
 
 void* RTSP::Init(void) {
 
-	rtspData = RTSP_Init();
+	rtspData = RTSP_Init(mm);
 	RTSP_Select_Stream(rtspData->priv, ch_idx);
 	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
 	RTSP_Set_Apply(rtspData->priv);
