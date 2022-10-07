@@ -9,7 +9,7 @@
 
 int cameraConfig(int enable, int w, int h, int bps, int snapshot);
 
-mm_context_t *cameraInit();
+mm_context_t *cameraInit(void);
 
 void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
 

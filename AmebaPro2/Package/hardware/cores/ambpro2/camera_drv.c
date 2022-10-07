@@ -10,6 +10,14 @@
 #define OSD_ENABLE 1
 #define MD_ENABLE  1
 #define HDR_ENABLE 1
+#define DEBUG 0
+
+#if DEBUG
+#define CAMDBG(fmt, args...) \
+    do {printf("\r\nFunc-[%s]@Line-%d: \r\n"fmt"\r\n", __func__, __LINE__, ## args); } while (0);
+#else
+#define CAMDBG(fmt, args...)
+#endif
 
 extern int incb[5];
 extern int enc_queue_cnt[5];
@@ -28,7 +36,6 @@ static video_params_t video_params = {
 };
 
 int cameraConfig(int enable, int w, int h, int bps, int snapshot){
-    printf("[cameraConfig] Start \r\n");
     int voe_heap_size = 0;
 	isp_info_t info;
 
@@ -41,7 +48,6 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 		info.sensor_height = 1080;
 		info.sensor_fps = 30;
 	}
-
 #if OSD_ENABLE
 	info.osd_enable = 1;
 #endif
@@ -53,9 +59,7 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 #if HDR_ENABLE
 	info.hdr_enable = 1;
 #endif
-
 	video_set_isp_info(&info);
-
 	voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
         0,0,0,0,0,
         0,0,0,0,0,
@@ -64,24 +68,18 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot){
 	return voe_heap_size;
 }
 
-mm_context_t *cameraInit(){
-    printf("[%s] cameraInit Starts\n\r", __FUNCTION__);
+mm_context_t *cameraInit(void){
+    CAMDBG("cameraInit Starts");
     mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
-//    printf("[%s] cameraInit 1\n\r", __FUNCTION__);
     if (!videoData) {
 		return NULL;
 	}
-//    printf("[%s] cameraInit 2\n\r", __FUNCTION__);
 	memset(videoData, 0, sizeof(mm_context_t));
-//    printf("[%s] cameraInit 3\n\r", __FUNCTION__);
 	videoData->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
     videoData->module = &video_module; 
     videoData->priv = video_module.create(videoData);
-    
-//    printf("[%s] cameraInit 4\n\r", __FUNCTION__);
-
 	if (!videoData->priv) {
-		printf("[%s] [ERROR] fail------\n\r", __FUNCTION__);
+		CAMDBG("[ERROR] fail------");
 	    if (videoData->priv) {
 		    video_module.destroy(videoData->priv);
 	    }
@@ -90,8 +88,8 @@ mm_context_t *cameraInit(){
     	}
     	return NULL;
 	}
-    
-	printf("[%s] module open - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
+	CAMDBG("module open - free heap %d",xPortGetFreeHeapSize());
+
     return videoData;
 }
 
@@ -111,10 +109,9 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
         video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
-        printf("[%s] video opened\n\r", __FUNCTION__);
+        CAMDBG("video opened");
     } else {
-		printf("[%s] video open fail\n\r", __FUNCTION__);
-		//return;
+		CAMDBG("video open fail");
 	}
 }
 
@@ -131,11 +128,11 @@ mm_context_t *cameraDeInit(void *p){
 			while (xQueueReceive(video_data->port[i].output_ready, (void *)&tmp_item, 0) == pdTRUE) {
 				xQueueSend(video_data->port[i].output_recycle, (void *)&tmp_item, 0);
 			}
-			printf("[%s] module close - move item to recycle\n\r", __FUNCTION__);
+			CAMDBG("module close - move item to recycle");
 			while (xQueueReceive(video_data->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
-				printf("[%s] module close - tmp_item %x\n\r", __FUNCTION__, tmp_item);
+				CAMDBG("module close - tmp_item %x",tmp_item);
 				if (tmp_item) {
-					printf("[%s] module close - data_addr %x\n\r", __FUNCTION__, tmp_item->data_addr);
+					CAMDBG("module close - data_addr %x", tmp_item->data_addr);
 					if (i == 0) {
 						if (tmp_item->data_addr) {
 							video_del_item(video_data->priv, (void *)tmp_item->data_addr);
@@ -151,21 +148,19 @@ mm_context_t *cameraDeInit(void *p){
 				}
 				xQueueSend(video_data->port[i].output_ready, (void *)&tmp_item, 0);
 			}
-			printf("[%s] module close - clean resource in recycle\n\r", __FUNCTION__);
+			CAMDBG("module close - clean resource in recycle");
 			// create port
 			vQueueDelete(video_data->port[i].output_recycle);
 			vQueueDelete(video_data->port[i].output_ready);
 
-			printf("[%s] module close - free port\n\r", __FUNCTION__);
+			CAMDBG("module close - free port");
 		}
 	}
 	// cannot delete item after destory
 	video_destroy(video_data->priv);
-
 	free(video_data);
-	printf("[%s] module close - free context\n\r", __FUNCTION__);
-	printf("[%s] module close - free heap %d\n\r", __FUNCTION__, xPortGetFreeHeapSize());
-
+	CAMDBG("module close - free context");
+	CAMDBG("module close - free heap %d", xPortGetFreeHeapSize());
     video_deinit();
     
     return NULL;
@@ -174,5 +169,3 @@ mm_context_t *cameraDeInit(void *p){
 void cameraStopVideoStream(void *p, int channel){
     video_control(p, CMD_VIDEO_STREAM_STOP, channel);
 }
-
-

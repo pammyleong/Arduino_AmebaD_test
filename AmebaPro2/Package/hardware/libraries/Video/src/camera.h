@@ -86,21 +86,20 @@ enum encode_type {
 #define V1_HEIGHT	1080
 #endif
 
-class Camera {
+class CameraClass {
     public:
-        Camera(void);
-        ~Camera(void);
+        CameraClass(void);
+        ~CameraClass();
 
-        void *Init();
+        void *Init(void);
         void *Init(int w, int h, int bps);
         void *Init(int enable, int w, int h, int bps, int snapshot);
-        void DeInit();
+        void DeInit(void);
 
-        void Open();
         void Open(mm_context_t *p);
         void Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
-        void Start();
-        void Close();
+        void Start(void);
+        void Close(void);
 
     private:
         mm_context_t *video_data;

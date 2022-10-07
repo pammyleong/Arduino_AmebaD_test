@@ -1,6 +1,15 @@
 #include <Arduino.h>
 #include "camera.h"
 
+#define DEBUG 0
+
+#if DEBUG
+#define CAMDBG(fmt, args...) \
+    do {printf("\r\nFunc-[%s]@Line-%d: "fmt"", __func__, __LINE__, ## args); } while (0);
+#else
+#define CAMDBG(fmt, args...)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -11,18 +20,18 @@ extern "C" {
 }
 #endif
 
-Camera::Camera(){
+CameraClass::CameraClass(){
     video_data = NULL;
 };
 
-Camera::~Camera(){};
+CameraClass::~CameraClass(){};
 
 /**
   * @brief  initialization for the camera sensor
   * @param  none
   * @retval  none
   */
-void *Camera::Init(){
+void *CameraClass::Init(){
     int w = 1920;
     int h = 1080;
     int bps = 2*1024*1024;
@@ -37,7 +46,7 @@ void *Camera::Init(){
             bps     : bit rate in bits per second
   * @retval  none
   */
-void *Camera::Init(int w, int h, int bps){
+void *CameraClass::Init(int w, int h, int bps){
     int enable = 1;
     int snapshot = 0;
     
@@ -53,11 +62,9 @@ void *Camera::Init(int w, int h, int bps){
             snapshot: eanble or disable snapshot function
   * @retval  none
   */
-void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
+void *CameraClass::Init(int enable, int w, int h, int bps, int snapshot) {
     int heapSize = cameraConfig(enable, w, h, bps, snapshot);
-    
-    printf("[%s] VOE heap size is: %d\r\n", __FUNCTION__, heapSize);
-
+    printf("[%s] VOE heap size is: %d", __FUNCTION__, heapSize);
     video_data = cameraInit();
     
     return (void *)video_data;
@@ -69,14 +76,13 @@ void *Camera::Init(int enable, int w, int h, int bps, int snapshot) {
   * @param  none
   * @retval  none
   */
-void Camera::DeInit() {
+void CameraClass::DeInit() {
     if (cameraDeInit(video_data) == NULL) {
-        printf("RTSP DeInit Done.\r\n");
+        printf("RTSP DeInit Done.");
     }
     else {
-        printf("RTSP DeInit Failed.\r\n");
+        printf("RTSP DeInit Failed.");
     }
-
 }
 
 /**
@@ -84,20 +90,7 @@ void Camera::DeInit() {
   * @param  none
   * @retval  none
   */
-void Camera::Open() {
-    int stream_id = V1_CHANNEL;
-    int type =VIDEO_TYPE; 
-    int res =V1_RESOLUTION; 
-    int w=V1_WIDTH;
-    int h=V1_HEIGHT;
-    int bps=V1_BPS;
-    int fps=V1_FPS;
-    int gop=V1_GOP;
-    int rc_mode=V1_RCMODE;
-    Open(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
-}
-
-void Camera::Open(mm_context_t *p){
+void CameraClass::Open(mm_context_t *p){
     int stream_id = V1_CHANNEL;
     int type =VIDEO_TYPE; 
     int res =V1_RESOLUTION; 
@@ -123,7 +116,7 @@ void Camera::Open(mm_context_t *p){
             rc_mode  : enable or disable constant rate mode
   * @retval  none
   */
-void Camera::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
+void CameraClass::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
     cameraOpen(p, p_priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
@@ -132,7 +125,7 @@ void Camera::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int re
   * @param  none
   * @retval  none
   */
-void Camera::Start(){
+void CameraClass::Start(){
     cameraStart(video_data->priv, V1_CHANNEL);
 }
 
@@ -141,7 +134,6 @@ void Camera::Start(){
   * @param  none
   * @retval  none
   */
-void Camera::Close() {
+void CameraClass::Close() {
     cameraStopVideoStream(video_data->priv, V1_CHANNEL);
 }
-
