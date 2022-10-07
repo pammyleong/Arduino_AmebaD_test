@@ -31,12 +31,12 @@ CameraClass::~CameraClass(){};
   * @param  none
   * @retval  none
   */
-void *CameraClass::Init(){
+void *CameraClass::init(){
     int w = 1920;
     int h = 1080;
     int bps = 2*1024*1024;
     
-    return Init(w, h, bps);
+    return init(w, h, bps);
 }
 
 /**
@@ -46,11 +46,11 @@ void *CameraClass::Init(){
             bps     : bit rate in bits per second
   * @retval  none
   */
-void *CameraClass::Init(int w, int h, int bps){
+void *CameraClass::init(int w, int h, int bps){
     int enable = 1;
     int snapshot = 0;
     
-    return Init(enable, w, h, bps, snapshot);
+    return init(enable, w, h, bps, snapshot);
 }
 
 /**
@@ -62,7 +62,7 @@ void *CameraClass::Init(int w, int h, int bps){
             snapshot: eanble or disable snapshot function
   * @retval  none
   */
-void *CameraClass::Init(int enable, int w, int h, int bps, int snapshot) {
+void *CameraClass::init(int enable, int w, int h, int bps, int snapshot) {
     int heapSize = cameraConfig(enable, w, h, bps, snapshot);
     printf("[%s] VOE heap size is: %d", __FUNCTION__, heapSize);
     video_data = cameraInit();
@@ -76,7 +76,7 @@ void *CameraClass::Init(int enable, int w, int h, int bps, int snapshot) {
   * @param  none
   * @retval  none
   */
-void CameraClass::DeInit() {
+void CameraClass::deInit() {
     if (cameraDeInit(video_data) == NULL) {
         printf("RTSP DeInit Done.");
     }
@@ -90,7 +90,7 @@ void CameraClass::DeInit() {
   * @param  none
   * @retval  none
   */
-void CameraClass::Open(mm_context_t *p){
+void CameraClass::open(mm_context_t *p){
     int stream_id = V1_CHANNEL;
     int type =VIDEO_TYPE; 
     int res =V1_RESOLUTION; 
@@ -116,7 +116,7 @@ void CameraClass::Open(mm_context_t *p){
             rc_mode  : enable or disable constant rate mode
   * @retval  none
   */
-void CameraClass::Open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
+void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
     cameraOpen(p, p_priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
@@ -125,7 +125,7 @@ void CameraClass::Open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   * @param  none
   * @retval  none
   */
-void CameraClass::Start(){
+void CameraClass::start(){
     cameraStart(video_data->priv, V1_CHANNEL);
 }
 
@@ -134,6 +134,6 @@ void CameraClass::Start(){
   * @param  none
   * @retval  none
   */
-void CameraClass::Close() {
+void CameraClass::close() {
     cameraStopVideoStream(video_data->priv, V1_CHANNEL);
 }

@@ -17,11 +17,10 @@ class RTSPClass {
         RTSPClass(void);
         ~RTSPClass(void);
 
-        void* Init(void);
-        void Open(void);
-        void Open(mm_context_t *p);
-        void Close(void);
-        void DeInit(void);
+        void* init(void);
+        void open(mm_context_t *p);
+        void close(void);
+        void deInit(void);
 
         int ch_idx = 0;
 

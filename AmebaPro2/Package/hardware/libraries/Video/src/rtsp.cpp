@@ -25,7 +25,7 @@ RTSPClass::~RTSPClass(){};
   * @param  none
   * @retval none
   */
-void* RTSPClass::Init(void) {
+void* RTSPClass::init(void) {
     rtspData = RTSP_Init();
     CAMDBG("RTSP_Init done");
     RTSP_Select_Stream(rtspData->priv, ch_idx);
@@ -43,7 +43,7 @@ void* RTSPClass::Init(void) {
   * @param  none
   * @retval none
   */
-void RTSPClass::Open (mm_context_t *p){
+void RTSPClass::open (mm_context_t *p){
     if (rtspData->priv == NULL) {
         CAMDBG("Streaming failed, RTSP not initialised yet.");
     }
@@ -59,7 +59,7 @@ void RTSPClass::Open (mm_context_t *p){
   * @param  none
   * @retval none
   */
-void RTSPClass::Close(void){
+void RTSPClass::close(void){
     RTSP_Set_Streaming(rtspData->priv, OFF);
 }
 
@@ -68,7 +68,7 @@ void RTSPClass::Close(void){
   * @param  none
   * @retval none
   */
-void RTSPClass::DeInit(void){
+void RTSPClass::deInit(void){
     if (RTSP_DeInit(rtspData->priv) == NULL) {
         CAMDBG("RTSP DeInit.");
     }

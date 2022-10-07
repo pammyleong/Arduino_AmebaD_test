@@ -11,36 +11,21 @@ mm_siso_t *siso_arduino = NULL;
   * @retval  pointer to the siso object
   */
 void* sisoCreate(void) {
-    //create SISO queue and task
+    //create SISO object to be used across input and output module
     siso_arduino = siso_create();
     return (void*)siso_arduino;
 }
 
-void* sisoDestroy(void *obj) {
-    //TO-DO
-    return NULL;
-
-}
-
 
 /**
-  * @brief  command-based api to control input output source and parameters
-  * @param  obj: siso object
-  * @param  cmd: command to control siso behaviours, value can be anything starting with "MMIC_CMD" defined in "mmf2_link.h"
-  * @param  arg1: this argument can be input and output source, or other config values
-  * @param  arg2: second input source, only used when input queue larger than 1
-  * @retval  none
+  * @brief  free the memory from a siso object and stop siso task
+  * @param  pointer to the siso object
+  * @retval none
   */
-void sisoControl(void *obj, uint32_t cmd, uint32_t arg1, uint32_t arg2) {
-    switch (cmd) {
-        case MMIC_CMD_ADD_INPUT:
-            siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_INPUT, arg1, arg2);
-            break;
-        case MMIC_CMD_ADD_OUTPUT:
-            siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_OUTPUT, arg1, 0);
-            break;
-        default:
-            siso_ctrl((mm_siso_t *)obj, cmd, arg1, 0);
+void sisoDestroy(void *obj) {
+    //delete the SISO object created and stop the siso task
+    if(NULL != siso_delete((mm_siso_t *)obj)) {
+        printf("Camera IO linker destroy failed..");
     }
 }
 
@@ -49,7 +34,7 @@ void sisoControl(void *obj, uint32_t cmd, uint32_t arg1, uint32_t arg2) {
   * @brief  api to register input source to SISO
   * @param  obj: siso object
   * @param  arg1: this argument is an input source
-  * @param  arg2: secondary input source
+  * @param  arg2: secondary input source, default to 0
   * @retval  none
   */
 void sisoRegIn(void *obj, uint32_t arg1, uint32_t arg2) {
@@ -61,7 +46,7 @@ void sisoRegIn(void *obj, uint32_t arg1, uint32_t arg2) {
   * @brief  api to register output source to SISO
   * @param  obj: siso object
   * @param  arg1: this argument is output source
-  * @param  arg2: secondary output source
+  * @param  arg2: secondary output source, default to 0
   * @retval  none
   */
 void sisoRegOut(void *obj, uint32_t arg1, uint32_t arg2) {
@@ -79,19 +64,33 @@ int sisoStart(void *obj) {
 }
 
 
+/**
+  * @brief  stop the siso task and put it in suspended state
+  * @param  pointer to the siso object
+  * @retval none
+  */
 void sisoStop(void *obj) {
-    //TO-DO
-
+    siso_stop((mm_siso_t *)obj);
 }
 
+
+/**
+  * @brief  pause the siso task and put it in suspended state
+  * @param  pointer to the siso object
+  * @retval none
+  */
 void sisoPause(void *obj) {
-    //TO-DO
-
+    siso_pause((mm_siso_t *)obj);
 }
 
+
+/**
+  * @brief  start the siso task if it's not already started, or set the task to running state
+            if the task already created but not in running state, else put it in suspended state
+  * @param  pointer to the siso object
+  * @retval none
+  */
 void sisoResume(void *obj) {
-    //TO-DO
-
+    siso_resume((mm_siso_t *)obj);
 }
-
 

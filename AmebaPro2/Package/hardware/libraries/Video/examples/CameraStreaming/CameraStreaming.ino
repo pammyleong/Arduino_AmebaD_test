@@ -5,12 +5,12 @@
 
 void *datalinker = NULL;
 
-CameraIOClass CAMIO(1, 1);
+CameraIOClass camio(1, 1);
 CameraClass cam;
 RTSPClass rtsp;
 
-char ssid[] = "yourNetwork";     //  your network SSID (name)
-char pass[] = "Password";  // your network password
+char ssid[] = "yourNetwork";     // your network SSID (name)
+char pass[] = "Password";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 
@@ -35,21 +35,21 @@ void setup() {
         delay(2000);
     }
     
-    mm_context_t *p1=(mm_context_t *)cam.Init();
-    cam.Open(p1);
-    mm_context_t *p2=(mm_context_t *)rtsp.Init();
-    rtsp.Open(p2);
-    datalinker = CAMIO.create();
+    mm_context_t *p1=(mm_context_t *)cam.init();
+    cam.open(p1);
+    mm_context_t *p2=(mm_context_t *)rtsp.init();
+    rtsp.open(p2);
+    datalinker = camio.create();
 
     // add input
-    CAMIO.registerInput(datalinker, (uint32_t)p1, 0);
+    camio.registerInput(datalinker, (uint32_t)p1, 0);
     // add output
-    CAMIO.registerOutput(datalinker, (uint32_t)p2, 0);
+    camio.registerOutput(datalinker, (uint32_t)p2, 0);
     
-    if(CAMIO.start(datalinker) != 0) {
+    if(camio.start(datalinker) != 0) {
         Serial.println("camera io link start failed");
     }    
-    cam.Start();
+    cam.start();
 }
 
 

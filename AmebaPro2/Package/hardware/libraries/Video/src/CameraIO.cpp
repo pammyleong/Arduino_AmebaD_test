@@ -5,6 +5,9 @@ extern "C" {
 #endif
 
 #include "siso_drv.h"
+//#include "simo_drv.h"
+//#include "miso_drv.h"
+//#include "mimo_drv.h"
 
 #ifdef __cplusplus
 }
@@ -21,67 +24,55 @@ CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
     if (numInput > 1){
         
         if (numOutput > 1){
-            //MIMO
+            //MIMO (Multi Input Multi Output)
             #if MIMO
-            this->create = &(MIMO::create);
-            this->destroy = &(MIMO::destroy);
-            this->control = &(MIMO::control);
-            this->start = &(MIMO::start);
-            this->stop = &(MIMO::stop);
-            this->pause = &(MIMO::pause);
-            this->resume = &(MIMO::resume);
+            this->create = &mimoCreate;
+            this->destroy = &mimoDestroy;
+            this->registerInput = &mimoRegIn;
+            this->registerOutput = &mimoRegOut;
+            this->start = &mimoStart;
+            this->stop = &mimoStop;
+            this->pause = &mimoPause;
+            this->resume = &mimoResume;
             #endif
         }
         else {
-            // MISO
+            // MISO (Multi Input Single Output)
             #if MISO
-            this->create = &(MISO::create);
-            this->destroy = &(MISO::destroy);
-            this->control = &(MISO::control);
-            this->start = &(MISO::start);
-            this->stop = &(MISO::stop);
-            this->pause = &(MISO::pause);
-            this->resume = &(MISO::resume);
+            this->create = &misoCreate;
+            this->destroy = &misoDestroy;
+            this->registerInput = &misoRegIn;
+            this->registerOutput = &misoRegOut;
+            this->start = &misoStart;
+            this->stop = &misoStop;
+            this->pause = &misoPause;
+            this->resume = &misoResume;
             #endif
         }
     } else {
         if (numOutput > 1){
-            //SIMO
+            //SIMO (Single Input Multi Output)
             #if SIMO
-            this->create = &(SIMO::create);
-            this->destroy = &(SIMO::destroy);
-            this->control = &(SIMO::control);
-            this->start = &(SIMO::start);
-            this->stop = &(SIMO::stop);
-            this->pause = &(SIMO::pause);
-            this->resume = &(SIMO::resume);
+            this->create = &simoCreate;
+            this->destroy = &simoDestroy;
+            this->registerInput = &simoRegIn;
+            this->registerOutput = &simoRegOut;
+            this->start = &simoStart;
+            this->stop = &simoStop;
+            this->pause = &simoPause;
+            this->resume = &simoResume;
             #endif
         }
         else {
-            // SISO
-            #if 0
-            this->createIO = &(SISO::createIO);
-            this->destroyIO = &(SISO::destroyIO);
-            this->control = &(SISO::controlIO);
-            this->registerInput = &(SISO::regIn);
-            this->registerOutput = &(SISO::regOut);
-            this->start = &(SISO::startIO);
-            this->stop = &(SISO::stopIO);
-            this->pause = &(SISO::pauseIO);
-            this->resume = &(SISO::resumeIO);
-            #else
-            
+            // SISO (Single Input Single Output)
             this->create = &sisoCreate;
             this->destroy = &sisoDestroy;
-            this->control = &sisoControl;
             this->registerInput = &sisoRegIn;
             this->registerOutput = &sisoRegOut;
             this->start = &sisoStart;
             this->stop = &sisoStop;
             this->pause = &sisoPause;
             this->resume = &sisoResume;
-            
-            #endif
         }
     }
 }
