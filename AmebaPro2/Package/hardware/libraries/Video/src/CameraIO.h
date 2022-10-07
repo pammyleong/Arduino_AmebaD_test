@@ -11,8 +11,8 @@ public:
     // function pointers
     void *(*create)(void);
     void (*destroy)(void*);
-    void (*registerInput)(void*, uint32_t, uint32_t);
-    void (*registerOutput)(void*, uint32_t, uint32_t);
+    void (*registerInput)(void*, void*);
+    void (*registerOutput)(void*, void*);
     int  (*start)(void*);
     void (*stop)(void*);
     void (*pause)(void*);

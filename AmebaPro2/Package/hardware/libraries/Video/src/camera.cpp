@@ -73,11 +73,11 @@ void *CameraClass::init(int enable, int w, int h, int bps, int snapshot) {
 
 /**
   * @brief  deinitialization for the camera sensor
-  * @param  none
+  * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::deInit() {
-    if (cameraDeInit(video_data) == NULL) {
+void CameraClass::deInit(void *p){
+    if (cameraDeInit(p) == NULL) {
         printf("RTSP DeInit Done.");
     }
     else {
@@ -87,10 +87,11 @@ void CameraClass::deInit() {
 
 /**
   * @brief  open camera with default value setting
-  * @param  none
+  * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(mm_context_t *p){
+void CameraClass::open(void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
     int stream_id = V1_CHANNEL;
     int type =VIDEO_TYPE; 
     int res =V1_RESOLUTION; 
@@ -100,7 +101,7 @@ void CameraClass::open(mm_context_t *p){
     int fps=V1_FPS;
     int gop=V1_GOP;
     int rc_mode=V1_RCMODE;
-    cameraOpen(p, p->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    cameraOpen(ptr, ptr->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
 /**
@@ -122,18 +123,20 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
 
 /**
   * @brief  start camera upon camera settings were defined
-  * @param  none
+  * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::start(){
-    cameraStart(video_data->priv, V1_CHANNEL);
+void CameraClass::start(void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
+    cameraStart(ptr->priv, V1_CHANNEL);
 }
 
 /**
   * @brief  close camera while transmision is finished
-  * @param  none
+  * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::close() {
-    cameraStopVideoStream(video_data->priv, V1_CHANNEL);
+void CameraClass::close(void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
+    cameraStopVideoStream(ptr->priv, V1_CHANNEL);
 }

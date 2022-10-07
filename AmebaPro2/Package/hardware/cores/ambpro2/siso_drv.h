@@ -8,6 +8,6 @@ int  sisoStart(void*);
 void sisoStop(void*);
 void sisoPause(void*);
 void sisoResume(void*);
-void sisoRegIn(void*, uint32_t, uint32_t);
-void sisoRegOut(void*, uint32_t, uint32_t);
+void sisoRegIn(void*, void*);
+void sisoRegOut(void*, void*);
 

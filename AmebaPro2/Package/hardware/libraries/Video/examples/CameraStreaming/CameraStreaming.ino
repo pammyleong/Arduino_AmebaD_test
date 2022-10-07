@@ -4,6 +4,8 @@
 #include "WiFi.h"
 
 void *datalinker = NULL;
+void *pVideo     = NULL;
+void *pRTSP      = NULL;
 
 CameraIOClass camio(1, 1);
 CameraClass cam;
@@ -34,22 +36,28 @@ void setup() {
         // wait 2 seconds for connection:
         delay(2000);
     }
-    
-    mm_context_t *p1=(mm_context_t *)cam.init();
-    cam.open(p1);
-    mm_context_t *p2=(mm_context_t *)rtsp.init();
-    rtsp.open(p2);
+
+    // init camera
+    pVideo=cam.init();
+    cam.open(pVideo);
+
+    // init rtsp
+    pRTSP=rtsp.init();
+    rtsp.open(pRTSP);
+
+    // create camera io linker
     datalinker = camio.create();
 
     // add input
-    camio.registerInput(datalinker, (uint32_t)p1, 0);
+    camio.registerInput(datalinker, pVideo);
+    
     // add output
-    camio.registerOutput(datalinker, (uint32_t)p2, 0);
+    camio.registerOutput(datalinker, pRTSP);
     
     if(camio.start(datalinker) != 0) {
         Serial.println("camera io link start failed");
     }    
-    cam.start();
+    cam.start(pVideo);
 }
 
 

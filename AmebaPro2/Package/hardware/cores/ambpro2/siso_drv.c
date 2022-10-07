@@ -34,11 +34,10 @@ void sisoDestroy(void *obj) {
   * @brief  api to register input source to SISO
   * @param  obj: siso object
   * @param  arg1: this argument is an input source
-  * @param  arg2: secondary input source, default to 0
   * @retval  none
   */
-void sisoRegIn(void *obj, uint32_t arg1, uint32_t arg2) {
-    siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_INPUT, arg1, arg2);
+void sisoRegIn(void *obj, void *arg1) {
+    siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_INPUT, (uint32_t)arg1, 0);
 }
 
 
@@ -46,11 +45,10 @@ void sisoRegIn(void *obj, uint32_t arg1, uint32_t arg2) {
   * @brief  api to register output source to SISO
   * @param  obj: siso object
   * @param  arg1: this argument is output source
-  * @param  arg2: secondary output source, default to 0
   * @retval  none
   */
-void sisoRegOut(void *obj, uint32_t arg1, uint32_t arg2) {
-    siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_OUTPUT, arg1, arg2);
+void sisoRegOut(void *obj, void *arg1) {
+    siso_ctrl((mm_siso_t *)obj, MMIC_CMD_ADD_OUTPUT, (uint32_t)arg1, 0);
 }
 
 

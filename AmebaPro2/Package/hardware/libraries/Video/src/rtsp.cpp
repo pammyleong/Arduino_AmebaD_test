@@ -40,36 +40,39 @@ void* RTSPClass::init(void) {
 
 /**
   * @brief  Start RTSP streaming
-  * @param  none
+  * @param  void pointer to rtsp obj
   * @retval none
   */
-void RTSPClass::open (mm_context_t *p){
-    if (rtspData->priv == NULL) {
+void RTSPClass::open (void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
+    if (ptr->priv == NULL) {
         CAMDBG("Streaming failed, RTSP not initialised yet.");
     }
     else {
         CAMDBG("Start Streaming");
-        RTSP_Set_Streaming ((void *)p, ON);
+        RTSP_Set_Streaming ((void *)ptr, ON);
     }
 }
 
 
 /**
   * @brief  Stop RTSP streaming
-  * @param  none
+  * @param  void pointer to rtsp obj
   * @retval none
   */
-void RTSPClass::close(void){
-    RTSP_Set_Streaming(rtspData->priv, OFF);
+void RTSPClass::close(void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
+    RTSP_Set_Streaming(ptr->priv, OFF);
 }
 
 /**
   * @brief  Deinit and release all the resources set for RTSP 
-  * @param  none
+  * @param  void pointer to rtsp obj
   * @retval none
   */
-void RTSPClass::deInit(void){
-    if (RTSP_DeInit(rtspData->priv) == NULL) {
+void RTSPClass::deInit(void *p){
+    mm_context_t *ptr = (mm_context_t *)p;
+    if (RTSP_DeInit(ptr->priv) == NULL) {
         CAMDBG("RTSP DeInit.");
     }
     else {
