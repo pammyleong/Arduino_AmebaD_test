@@ -22,6 +22,7 @@ extern "C" {
 
 CameraClass::CameraClass(){
     video_data = NULL;
+	pVideo = NULL;
 };
 
 CameraClass::~CameraClass(){};

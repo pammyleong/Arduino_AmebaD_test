@@ -12,7 +12,9 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-RTSPClass::RTSPClass(){};
+RTSPClass::RTSPClass( ){
+	pRTSP = NULL;
+};
 RTSPClass::~RTSPClass(){};
 
 /**

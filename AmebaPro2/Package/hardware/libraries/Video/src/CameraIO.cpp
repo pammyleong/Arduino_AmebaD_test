@@ -21,6 +21,8 @@ extern "C" {
 
 CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
 
+	datalinker = NULL;
+	
     if (numInput > 1){
         
         if (numOutput > 1){

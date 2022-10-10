@@ -17,5 +17,7 @@ public:
     void (*stop)(void*);
     void (*pause)(void*);
     void (*resume)(void*);
+
+	void *datalinker;
 };
 

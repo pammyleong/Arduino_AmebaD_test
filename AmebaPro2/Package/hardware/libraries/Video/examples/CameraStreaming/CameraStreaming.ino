@@ -3,18 +3,13 @@
 #include "rtsp.h"
 #include "WiFi.h"
 
-void *datalinker = NULL;
-void *pVideo     = NULL;
-void *pRTSP      = NULL;
-
 CameraIOClass camio(1, 1);
 CameraClass cam;
 RTSPClass rtsp;
 
-char ssid[] = "yourNetwork";     // your network SSID (name)
-char pass[] = "Password";        // your network password
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-
+char ssid[] = "YourNetwork";     //  your network SSID (name)
+char pass[] = "password";  	// your network password
+int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
 void setup() {
 
@@ -38,26 +33,26 @@ void setup() {
     }
 
     // init camera
-    pVideo=cam.init();
-    cam.open(pVideo);
+    cam.pVideo = cam.init();
+    cam.open(cam.pVideo);
 
     // init rtsp
-    pRTSP=rtsp.init();
-    rtsp.open(pRTSP);
+    rtsp.pRTSP = rtsp.init();
+    rtsp.open(rtsp.pRTSP);
 
     // create camera io linker
-    datalinker = camio.create();
+    camio.datalinker = camio.create();
 
     // add input
-    camio.registerInput(datalinker, pVideo);
+    camio.registerInput(camio.datalinker, cam.pVideo);
     
     // add output
-    camio.registerOutput(datalinker, pRTSP);
+    camio.registerOutput(camio.datalinker, rtsp.pRTSP);
     
-    if(camio.start(datalinker) != 0) {
+    if(camio.start(camio.datalinker) != 0) {
         Serial.println("camera io link start failed");
     }    
-    cam.start(pVideo);
+    cam.start(cam.pVideo);
 }
 
 

@@ -28,9 +28,11 @@ class RTSPClass {
         uint32_t fps = 30;
         uint32_t bps = 2*1024*1024;
         uint32_t VC = AV_CODEC_ID_H264;
+		void *pRTSP;
         
     private:
         mm_context_t *rtspData = NULL;
+		
         
 
 };

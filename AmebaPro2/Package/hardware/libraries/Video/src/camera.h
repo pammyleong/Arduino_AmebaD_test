@@ -100,6 +100,7 @@ class CameraClass {
         void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
         void start(void *p);
         void close(void *p);
+		void *pVideo;
 
     private:
         mm_context_t *video_data;
