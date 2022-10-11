@@ -17,10 +17,11 @@ class RTSPClass {
         RTSPClass(void);
         ~RTSPClass(void);
 
-        void* init(void);
-        void open(void *p);
-        void close(void *p);
-        void deInit(void *p);
+        void init(void);
+        void open(void);
+        void close(void);
+        void deInit(void);
+        mm_context_t *getIO(void);
 
         int ch_idx = 0;
 
@@ -28,11 +29,10 @@ class RTSPClass {
         uint32_t fps = 30;
         uint32_t bps = 2*1024*1024;
         uint32_t VC = AV_CODEC_ID_H264;
-		void *pRTSP;
+        
         
     private:
-        mm_context_t *rtspData = NULL;
-		
+        mm_context_t *rtspData;
         
 
 };

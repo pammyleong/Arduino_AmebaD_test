@@ -37,7 +37,7 @@ mm_context_t* RTSP_Init (void) {
     memset(rtsp_data, 0, sizeof(mm_context_t));
     rtsp_data->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
     rtsp_data->module = &rtsp2_module; 
-    rtsp_data->priv = rtsp2_module.create(rtsp_data); // rtsp_data->priv = p->create(rtsp_data);
+    rtsp_data->priv = rtsp2_module.create(rtsp_data);
     if (!rtsp_data->priv) {
         CAMDBG("fail------");
         if (rtsp_data->priv) {

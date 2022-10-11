@@ -3,7 +3,7 @@
 #include "rtsp.h"
 #include "WiFi.h"
 
-CameraIOClass camio(1, 1);
+CameraIOClass camio(1, 1); // Single Input Single Output
 CameraClass cam;
 RTSPClass rtsp;
 
@@ -33,26 +33,27 @@ void setup() {
     }
 
     // init camera
-    cam.pVideo = cam.init();
-    cam.open(cam.pVideo);
+    cam.init();
+    cam.open();
 
     // init rtsp
-    rtsp.pRTSP = rtsp.init();
-    rtsp.open(rtsp.pRTSP);
+    rtsp.init();
+    rtsp.open();
 
     // create camera io linker
-    camio.datalinker = camio.create();
+    camio.create();
 
     // add input
-    camio.registerInput(camio.datalinker, cam.pVideo);
+    camio.registerInput(cam.getIO());
     
     // add output
-    camio.registerOutput(camio.datalinker, rtsp.pRTSP);
+    camio.registerOutput(rtsp.getIO());
     
-    if(camio.start(camio.datalinker) != 0) {
+    if(camio.start() != 0) {
         Serial.println("camera io link start failed");
     }    
-    cam.start(cam.pVideo);
+    
+    cam.start();
 }
 
 
