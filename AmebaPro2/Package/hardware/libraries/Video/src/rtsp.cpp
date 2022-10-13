@@ -29,13 +29,13 @@ RTSPClass::~RTSPClass(){};
   */
 void RTSPClass::init(void) {
     rtspData = RTSP_Init();
-    CAMDBG("RTSP_Init done");
+    CAMDBG("RTSP_Init done\r\n");
     RTSP_Select_Stream(rtspData->priv, ch_idx);
-    CAMDBG("RTSP_Select_Stream done");
+    CAMDBG("RTSP_Select_Stream done\r\n");
     RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
-    CAMDBG("RTSP_Set_Params done");
+    CAMDBG("RTSP_Set_Params done\r\n");
     RTSP_Set_Apply(rtspData->priv);
-    CAMDBG("RTSP_Set_Apply done");
+    CAMDBG("RTSP_Set_Apply done\r\n");
 }
 
 /**
@@ -46,10 +46,10 @@ void RTSPClass::init(void) {
 void RTSPClass::open (){
     
     if (rtspData->priv == NULL) {
-        CAMDBG("Streaming failed, RTSP not initialised yet.");
+        printf("Streaming failed, RTSP not initialised yet.\r\n");
     }
     else {
-        CAMDBG("Start Streaming");
+        CAMDBG("Start Streaming\r\n");
         RTSP_Set_Streaming ((void *)rtspData, ON);
     }
 }
@@ -61,8 +61,15 @@ void RTSPClass::open (){
   * @retval data pointer
   */
 mm_context_t *RTSPClass::getIO(void) {
-    // TODO : add a if check
-    return rtspData;
+    // To check if rtsp init is done
+	if (rtspData == NULL) {
+		printf("Streaming failed, please init RTSP first.\r\n");	
+		return NULL;
+	}
+	
+	else {
+		return rtspData;
+	}
 }
 
 
@@ -82,9 +89,9 @@ void RTSPClass::close(){
   */
 void RTSPClass::deInit(){
     if (RTSP_DeInit(rtspData->priv) == NULL) {
-        CAMDBG("RTSP DeInit.");
+        CAMDBG("RTSP DeInit.\r\n");
     }
     else {
-        CAMDBG("RTSP need to be DeInit.");
+        CAMDBG("RTSP need to be DeInit.\r\n");
     }
 }

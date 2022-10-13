@@ -75,10 +75,10 @@ void CameraClass::init(int enable, int w, int h, int bps, int snapshot) {
   */
 void CameraClass::deInit(void){
     if (cameraDeInit(video_data) == NULL) {
-        printf("RTSP DeInit Done.");
+        printf("Camera sensor DeInit Done.\r\n");
     }
     else {
-        printf("RTSP DeInit Failed.");
+        printf("Camera sensor DeInit Failed.\r\n");
     }
 }
 
@@ -133,8 +133,15 @@ void CameraClass::start(){
   * @retval data pointer
   */
 mm_context_t *CameraClass::getIO(void) {
-    //TODO : add a if check 
-    return video_data;
+    //To check if camera sensor init is done
+	if (video_data == NULL){
+		printf("\r\nPlease init camera sensor first.\r\n");
+		return NULL;
+	}
+	
+	else{
+		 return video_data;
+	}
 }
 
 
