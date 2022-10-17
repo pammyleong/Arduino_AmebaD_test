@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #include "siso_drv.h"
-//#include "simo_drv.h"
+#include "simo_drv.h"
 //#include "miso_drv.h"
 //#include "mimo_drv.h"
 
@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 
-#define SIMO 0
+//#define SIMO 0
 #define MISO 0
 #define MIMO 0
 
@@ -52,16 +52,15 @@ CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
     } else {
         if (numOutput > 1){
             //SIMO (Single Input Multi Output)
-            #if SIMO
             this->create = &simoCreate;
             this->destroy = &simoDestroy;
             this->registerInput = &simoRegIn;
-            this->registerOutput = &simoRegOut;
+			this->registerOutput0 = &simoRegOut0;
+			this->registerOutput1= &simoRegOut1;
             this->start = &simoStart;
             this->stop = &simoStop;
             this->pause = &simoPause;
             this->resume = &simoResume;
-            #endif
         }
         else {
             // SISO (Single Input Single Output)

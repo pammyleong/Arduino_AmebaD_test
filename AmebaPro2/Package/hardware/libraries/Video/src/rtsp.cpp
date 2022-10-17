@@ -17,6 +17,7 @@ RTSPClass::RTSPClass(){
 };
 RTSPClass::~RTSPClass(){};
 
+
 /**
   * @brief  Initialization for RTSP module by setting up RTSP paramters. 
   Default value: channel_idx : 0
@@ -30,13 +31,18 @@ RTSPClass::~RTSPClass(){};
 void RTSPClass::init(void) {
     rtspData = RTSP_Init();
     CAMDBG("RTSP_Init done\r\n");
-    RTSP_Select_Stream(rtspData->priv, ch_idx);
+
+	RTSP_Select_Stream(rtspData->priv, ch_idx);
     CAMDBG("RTSP_Select_Stream done\r\n");
-    RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
+
+	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
     CAMDBG("RTSP_Set_Params done\r\n");
-    RTSP_Set_Apply(rtspData->priv);
+
+	RTSP_Set_Apply(rtspData->priv);
     CAMDBG("RTSP_Set_Apply done\r\n");
+	
 }
+
 
 /**
   * @brief  Start RTSP streaming
@@ -48,6 +54,7 @@ void RTSPClass::open (){
     if (rtspData->priv == NULL) {
         printf("Streaming failed, RTSP not initialised yet.\r\n");
     }
+	
     else {
         CAMDBG("Start Streaming\r\n");
         RTSP_Set_Streaming ((void *)rtspData, ON);
@@ -81,6 +88,7 @@ mm_context_t *RTSPClass::getIO(void) {
 void RTSPClass::close(){
     RTSP_Set_Streaming(rtspData->priv, OFF);
 }
+
 
 /**
   * @brief  Deinit and release all the resources set for RTSP 

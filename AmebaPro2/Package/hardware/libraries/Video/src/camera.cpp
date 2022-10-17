@@ -75,10 +75,10 @@ void CameraClass::init(int enable, int w, int h, int bps, int snapshot) {
   */
 void CameraClass::deInit(void){
     if (cameraDeInit(video_data) == NULL) {
-        printf("Camera sensor DeInit Done.\r\n");
+        printf("Camera Sensor DeInit Done.\r\n");
     }
     else {
-        printf("Camera sensor DeInit Failed.\r\n");
+        printf("Camera Sensor DeInit Failed.\r\n");
     }
 }
 
@@ -124,6 +124,7 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   */
 void CameraClass::start(){
     cameraStart(video_data->priv, V1_CHANNEL);
+	
 }
 
 
