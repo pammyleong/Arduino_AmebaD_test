@@ -28,15 +28,16 @@ CameraClass::~CameraClass(){};
 
 /**
   * @brief  initialization for the camera sensor
-  * @param  none
+  * @param  resolution : 4K, FHD, HD, or VGA
+            fps        : frame rate (frame per second)
   * @retval  none
   */
-void CameraClass::init(){
-    int w = 1920;
-    int h = 1080;
+void CameraClass::init(int version){
+    int w   = 1920;
+    int h   = 1080;
     int bps = 2*1024*1024;
     
-    return init(w, h, bps);
+    return init(w, h, bps, version);
 }
 
 /**
@@ -46,11 +47,11 @@ void CameraClass::init(){
             bps     : bit rate in bits per second
   * @retval  none
   */
-void CameraClass::init(int w, int h, int bps){
-    int enable = 1;
-    int snapshot = 0;
-    
-    return init(enable, w, h, bps, snapshot);
+void CameraClass::init(int w, int h, int bps, int version){
+    int enable   = VIDEO_ENABLE;
+    int snapshot = VIDEO_SNAPSHOT_DISABLE;
+
+    return init(enable, w, h, bps, snapshot, version);
 }
 
 /**
@@ -62,9 +63,9 @@ void CameraClass::init(int w, int h, int bps){
             snapshot: eanble or disable snapshot function
   * @retval  none
   */
-void CameraClass::init(int enable, int w, int h, int bps, int snapshot) {
-    int heapSize = cameraConfig(enable, w, h, bps, snapshot);
-    printf("[%s] VOE heap size is: %d", __FUNCTION__, heapSize);
+void CameraClass::init(int enable, int w, int h, int bps, int snapshot, int version) {
+    int heapSize = cameraConfig(enable, w, h, bps, snapshot, version);
+    printf("[%s] VOE heap size is: %d\r\n", __FUNCTION__, heapSize);
     video_data = cameraInit();
 }
 
@@ -87,17 +88,62 @@ void CameraClass::deInit(void){
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(){
+void CameraClass::open(void){
     int stream_id = V1_CHANNEL;
     int type =VIDEO_TYPE; 
     int res =V1_RESOLUTION; 
     int w=V1_WIDTH;
     int h=V1_HEIGHT;
-    int bps=V1_BPS;
-    int fps=V1_FPS;
-    int gop=V1_GOP;
-    int rc_mode=V1_RCMODE;
+    int bps = CAM_BPS;
+    int fps = CAM_FPS;
+    int gop = CAM_GOP;
+    int rc_mode = CAM_RCMODE;
     cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+}
+
+/**
+  * @brief  open camera with default value setting
+  * @param  void pointer to video obj
+  * @retval  none
+  */
+void CameraClass::open(int version){
+    if (version == 1){
+        int stream_id = V1_CHANNEL;
+        int type = VIDEO_TYPE; 
+        int res = V1_RESOLUTION; 
+        int w = V1_WIDTH;
+        int h = V1_HEIGHT;
+        int bps = CAM_BPS;
+        int fps = CAM_FPS;
+        int gop = CAM_GOP;
+        int rc_mode = CAM_RCMODE;
+        cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    }
+    else if (version == 2){
+        int stream_id = V2_CHANNEL;
+        int type =VIDEO_TYPE; 
+        int res =V2_RESOLUTION; 
+        int w=V2_WIDTH;
+        int h=V2_HEIGHT;
+        int bps = CAM_BPS;
+        int fps = CAM_FPS;
+        int gop = CAM_GOP;
+        int rc_mode = CAM_RCMODE;
+        cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    }
+    else if (version == 3){
+        int stream_id = V3_CHANNEL;
+        int type =VIDEO_JPEG; 
+        int res =V3_RESOLUTION; 
+        int w=V3_WIDTH;
+        int h=V3_HEIGHT;
+        int fps = CAM_FPS;
+        cameraOpenv3(video_data, video_data->priv, stream_id, type, res, w, h, fps);
+    }
+    else{
+
+    }
+    
 }
 
 /**
@@ -122,8 +168,17 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::start(){
-    cameraStart(video_data->priv, V1_CHANNEL);
+void CameraClass::start(int version){
+    if (version == 1){
+        cameraStart(video_data->priv, V1_CHANNEL);
+    } 
+    else if (version == 2){
+        cameraStart(video_data->priv, V2_CHANNEL);
+    }
+    else if (version == 3){
+        cameraStart(video_data->priv, V3_CHANNEL);
+        cameraSnapshot(video_data->priv, V3_CHANNEL);
+    }
 	
 }
 

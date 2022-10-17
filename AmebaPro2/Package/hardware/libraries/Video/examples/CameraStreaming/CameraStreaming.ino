@@ -7,9 +7,11 @@ CameraIOClass camio(1, 1); // Single Input Single Output
 CameraClass cam;
 RTSPClass rtsp;
 
-char ssid[] = "YourNetwork";     //  your network SSID (name)
-char pass[] = "password";  	// your network password
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
+char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
+
+#define VERSION     3
 
 void setup() {
 
@@ -33,8 +35,8 @@ void setup() {
     }
 
     // init camera
-    cam.init();
-    cam.open();
+    cam.init(VERSION);
+    cam.open(VERSION);
 
     // init rtsp
     rtsp.init();
@@ -53,7 +55,7 @@ void setup() {
         Serial.println("camera io link start failed");
     }    
     
-    cam.start();
+    cam.start(VERSION);
 }
 
 

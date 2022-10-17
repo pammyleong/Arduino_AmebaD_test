@@ -20,7 +20,8 @@ ISP CHANNEL
     4: only RGB
 *****************************************************************************/
 #define V1_CHANNEL 0
-
+#define V2_CHANNEL 1
+#define V3_CHANNEL 2
 
 /****************************************************************************
 ENCODE TYPE
@@ -54,21 +55,32 @@ enum encode_type {
 #define	VIDEO_5M    8
 #define	VIDEO_2K    9
 
-#define V1_ENABLE   1
-#define V1_DISABLE   0
+#define VIDEO_ENABLE    1
+#define VIDEO_DISABLE   0
 
-#define V1_SNAPSHOT_ENABLE 1
-#define V1_SNAPSHOT_DISABLE 0
+#define VIDEO_SNAPSHOT_ENABLE  1
+#define VIDEO_SNAPSHOT_DISABLE 0
+
+
 // define video resolution
 #define V1_RESOLUTION VIDEO_FHD
+#define V2_RESOLUTION VIDEO_HD
+#define V3_RESOLUTION VIDEO_FHD
+
+
 // define video frame rate
-#define V1_FPS 30
+#define CAM_FPS 30
 // define video group of pictures
-#define V1_GOP 30
+#define CAM_GOP 30
 // define video bit rate
-#define V1_BPS 2*1024*1024
+#define CAM_BPS 2*1024*1024
 // define video rate control
-#define V1_RCMODE 2 // 1: CBR, 2: VBR
+#define CAM_RCMODE 2 // 1: CBR, 2: VBR
+
+//#define V2_RESOLUTION VIDEO_HD
+//#define V2_FPS 30
+//#define V2_GOP 30
+
 // define video codec
 #define USE_H265 0
 #if USE_H265
@@ -80,25 +92,38 @@ enum encode_type {
 #define VIDEO_TYPE VIDEO_H264
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
+
 // define video resolution
 #if V1_RESOLUTION == VIDEO_FHD
 #define V1_WIDTH	1920
 #define V1_HEIGHT	1080
 #endif
 
+#if V2_RESOLUTION == VIDEO_HD
+#define V2_WIDTH	1280
+#define V2_HEIGHT	720
+#endif
+
+#if V3_RESOLUTION == VIDEO_FHD
+#define V3_WIDTH	1920
+#define V3_HEIGHT	1080
+#endif
+
+
 class CameraClass {
     public:
         CameraClass(void);
         ~CameraClass();
 
-        void init(void);
-        void init(int w, int h, int bps);
-        void init(int enable, int w, int h, int bps, int snapshot);
+        void init(int version);
+        void init(int w, int h, int bps, int version);
+        void init(int enable, int w, int h, int bps, int snapshot, int version);
         void deInit(void);
 
         void open(void);
+        void open(int version);
         void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
-        void start(void);
+        void start(int version);
         void close(void);
         mm_context_t *getIO(void);
         

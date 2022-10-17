@@ -35,7 +35,7 @@ void RTSPClass::init(void) {
 	RTSP_Select_Stream(rtspData->priv, ch_idx);
     CAMDBG("RTSP_Select_Stream done\r\n");
 
-	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC);
+	RTSP_Set_Params(rtspData->priv, video_type, fps, bps, VC_v3);
     CAMDBG("RTSP_Set_Params done\r\n");
 
 	RTSP_Set_Apply(rtspData->priv);
