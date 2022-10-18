@@ -25,5 +25,6 @@ extern void *rtsp2_destroy(void *p);
 extern int rtsp2_control(void *p, int cmd, int arg);
 extern int rtsp2_handle(void *p, void *input, void *output);
 extern int mm_module_ctrl(mm_context_t *ctx, int cmd, int arg);
+extern mm_context_t *mm_module_open(mm_module_t *mm);
 
 #endif
