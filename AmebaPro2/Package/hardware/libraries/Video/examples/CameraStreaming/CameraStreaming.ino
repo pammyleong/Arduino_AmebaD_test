@@ -5,15 +5,21 @@
 
 CameraIOClass camio(1, 1); // Single Input Single Output
 CameraClass cam;
+CameraSetting camset(VIDEO_FHD, VIDEO_H264, CAM_FPS, 0);
+
+
 RTSPClass rtsp;
 
 char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
+#define VERSION     1
+
 void setup() {
 
     Serial.begin(115200);
+    Serial.println("Just setup");
     
     if (WiFi.status() == WL_NO_SHIELD) {
         Serial.println("WiFi shield not present");
@@ -33,8 +39,9 @@ void setup() {
     }
 
     // init camera
-    cam.init();
-    cam.open();
+//    cam.init(VERSION);
+    cam.init(&camset);
+    cam.open(VERSION);
 
     // init rtsp
     rtsp.init();
@@ -53,34 +60,11 @@ void setup() {
         Serial.println("camera io link start failed");
     }    
     
-    cam.start();
-
-//	//Method 1: Use delay to pause, close and deinit.
-//	delay(10000);
-//		
-//	// pause linker
-//	Serial.println("Pause!");
-//	camio.pause();
-//	delay(5000);
-//			
-//	// stop module
-//	Serial.println("Stop RTSP and camera module");
-//	rtsp.close();
-//	cam.close();
-//	
-//	// close module (deinit)
-//	Serial.println("DeInit RTSP and camera module.");
-//	rtsp.deInit();
-//	cam.deInit();
-
-	//Method 2: Use GPIO pins to pause, resume, close and deinit.
-	//TBC
-	
-
+    cam.start(VERSION);
 }
+
 
 void loop() {
 // do nothing
 }
-
 
