@@ -26,7 +26,8 @@ int AAC_Init_Mem_Pool (void *p);
 int AAC_Apply (void *p);
 mm_context_t* AAC_DeInit(void *p);
 
-
+mm_context_t* audio_Init (void);
+void audioOpen(mm_context_t *p);
 
 // extern function
 extern int aac_control(void *p, int cmd, int arg);

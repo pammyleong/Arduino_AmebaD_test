@@ -35,7 +35,7 @@ static video_params_t video_params = {
 	.use_static_addr = 1
 };
 
-int cameraConfig(int enable, int w, int h, int bps, int snapshot, int version){
+int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
     int voe_heap_size = 0;
 	isp_info_t info;
 
@@ -60,23 +60,29 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int version){
 	info.hdr_enable = 1;
 #endif
 	video_set_isp_info(&info);
-    if (version == 1){
+    if (preset == 1){ // preset % 4 == 1 
     	voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
-            0,0,0,0,0,
-            0,0,0,0,0,
-            0,0,0);
+                                        0,0,0,0,0,
+                                        0,0,0,0,0,
+                                        0,0,0);
     }
-    else if (version == 2){
+    else if (preset == 2){
     	voe_heap_size =  video_buf_calc(0,0,0,0,0,
-            enable, w, h, bps, snapshot,
-            0,0,0,0,0,
-            0,0,0);
+                                        enable, w, h, bps, snapshot,
+                                        0,0,0,0,0,
+                                        0,0,0);
     }
-    else if (version == 3){
+    else if (preset == 3){
         voe_heap_size =  video_buf_calc(0,0,0,0,0,
-            0,0,0,0,0,
-            enable, w, h, bps, snapshot,
-            0,0,0);
+                                        0,0,0,0,0,
+                                        enable, w, h, bps, snapshot,
+                                        0,0,0);
+    }
+    else{
+        voe_heap_size =  video_buf_calc(0,0,0,0,0,
+                                        0,0,0,0,0,
+                                        0,0,0,0,0,
+                                        enable, w, h);
     }
 	return voe_heap_size;
 }
@@ -127,27 +133,6 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
 		CAMDBG("video open fail");
 	}
 }
-
-void cameraOpenv3(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int fps){
-    // assign value parsing from user level
-    video_params.stream_id = stream_id;
-    video_params.type = type;
-    video_params.resolution = res;
-    video_params.width = w;
-    video_params.height = h;
-    video_params.fps = fps;
-
-
-    if (p) {
-        video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
-        mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
-        mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
-        CAMDBG("video opened");
-    } else {
-		CAMDBG("video open fail");
-	}
-}
-
 
 void cameraStart(void *p, int channel){
     video_control(p, CMD_VIDEO_APPLY, channel);

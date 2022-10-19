@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include "camera.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: "fmt"", __func__, __LINE__, ## args); } while (0);
+    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
 #else
 #define CAMDBG(fmt, args...)
 #endif
@@ -27,6 +27,7 @@ CameraSetting :: CameraSetting(void){
     _snapshot = 0;
     _w = FHD_WIDTH;
     _h = FHD_HEIGHT;
+    _preset = 1;
 }
 
 CameraSetting :: CameraSetting(uint8_t preset){
@@ -38,14 +39,12 @@ CameraSetting :: CameraSetting(uint8_t preset){
             _fps = CAM_FPS;
             _decoder = VIDEO_H264;
             _snapshot = 0;
-            printf("\r\n preset  1\r\n");
             break;
         case 2:
             _resolution = VIDEO_HD;
             _fps = CAM_FPS;
             _decoder = VIDEO_H264;
             _snapshot = 0;
-            printf("\r\n preset  2\r\n");
             break;
 
         case 3:
@@ -53,7 +52,6 @@ CameraSetting :: CameraSetting(uint8_t preset){
             _fps = CAM_FPS;
             _decoder = VIDEO_JPEG;
             _snapshot = 0;
-            printf("\r\n preset  3\r\n");
             break;
 
         default:
@@ -65,12 +63,10 @@ CameraSetting :: CameraSetting(uint8_t preset){
         case VIDEO_FHD:
             _w = FHD_WIDTH;
             _h = FHD_HEIGHT;
-            printf("\r\n preset  FHD\r\n");
             break;
         case VIDEO_HD:
             _w = HD_WIDTH;
             _h = HD_HEIGHT;
-            printf("\r\n preset  HD\r\n");
             break;
         default:
             printf("Error with video resolution\r\n");
@@ -84,20 +80,48 @@ CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder,
     _fps = fps;
     _decoder = decoder;
     _snapshot = snapshot;
-    
+    CAMDBG("res: %d. fps: %d. dec: %d. snap: %d.", _resolution, _fps, _decoder, _snapshot);
     switch(_resolution) {
         case VIDEO_FHD:
             _w = FHD_WIDTH;
             _h = FHD_HEIGHT;
+            switch(_decoder){
+                case VIDEO_H264:
+                    if(_snapshot == 0){
+                        _preset = 1;
+                    }
+                    else{
+                        _preset = 5; // _preset 5 means H264 with snapshot call back functions, goes to voe(1)
+                    }
+                    break;
+                case VIDEO_JPEG:
+                    if(_snapshot == 0){
+                        _preset = 3;
+                    }
+                    break;
+                default:
+                    printf("Error with video decoder type\r\n");
+                    break;
+            }
             break;
         case VIDEO_HD:
             _w = HD_WIDTH;
             _h = HD_HEIGHT;
+            switch(_decoder){
+                case VIDEO_H264:
+                    if(_snapshot == 0){
+                        _preset = 2;
+                    }
+                default:
+                    printf("Error with video decoder type\r\n");
+                    break;
+            }
             break;
         default:
             printf("Error with video resolution\r\n");
             break;
     }
+    CAMDBG("H: %d. W: %d. Preset: %d.", _w, _h, _preset);
 }
 
 CameraClass::CameraClass(){
@@ -108,31 +132,22 @@ CameraClass::~CameraClass(){};
 
 /**
   * @brief  initialization for the camera sensor
-  * @param  obj        :
-  * @retval  none
+  * @param  obj        : object pointer of CameraSetting Class
+  * @retval none
   */
 void CameraClass::init(CameraSetting *obj){
 
-    int bps = 2*1024*1024;
+    int bps = CAM_BPS;
 
-    printf("\r\n\r\n\r\nH: %d. W: %d \r\n\r\n\r\n", obj->_w, obj->_h);
-   
-    return init(obj->_w, obj->_h, bps, obj->_preset);
-}
+    CAMDBG("H: %d. W: %d. Preset: %d.", obj->_w, obj->_h, obj->_preset);
 
-
-/**
-  * @brief  initialization for the camera sensor
-  * @param  resolution : 4K, FHD, HD, or VGA
-            fps        : frame rate (frame per second)
-  * @retval  none
-  */
-void CameraClass::init(int version){
-    int w   = 1920;
-    int h   = 1080;
-    int bps = 2*1024*1024;
+    if(obj->_preset != -1){
+        return init(obj->_w, obj->_h, bps, obj->_preset);
+    }
+    else{
+        CAMDBG("[ERROR] Init failed, cannot allocate preset video settings");
+    }
     
-    return init(w, h, bps, version);
 }
 
 /**
@@ -140,13 +155,15 @@ void CameraClass::init(int version){
   * @param  w       : width
             h       : height
             bps     : bit rate in bits per second
+            preset  : configure voe heap size according to
+                      different camera presets
   * @retval  none
   */
-void CameraClass::init(int w, int h, int bps, int version){
+void CameraClass::init(int w, int h, int bps, int preset){
     int enable   = VIDEO_ENABLE;
     int snapshot = VIDEO_SNAPSHOT_DISABLE;
 
-    return init(enable, w, h, bps, snapshot, version);
+    return init(enable, w, h, bps, snapshot, preset);
 }
 
 /**
@@ -158,8 +175,8 @@ void CameraClass::init(int w, int h, int bps, int version){
             snapshot: eanble or disable snapshot function
   * @retval  none
   */
-void CameraClass::init(int enable, int w, int h, int bps, int snapshot, int version) {
-    int heapSize = cameraConfig(enable, w, h, bps, snapshot, version);
+void CameraClass::init(int enable, int w, int h, int bps, int snapshot, int preset) {
+    int heapSize = cameraConfig(enable, w, h, bps, snapshot, preset);
     printf("[%s] VOE heap size is: %d\r\n", __FUNCTION__, heapSize);
     video_data = cameraInit();
 }
@@ -201,50 +218,32 @@ void CameraClass::open(void){
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(int version){
-    if (version == 1){
-        int stream_id = V1_CHANNEL; // version -1
-        
-        int type = VIDEO_TYPE;  // decoder
-        int res = V1_RESOLUTION; 
-        int w = V1_WIDTH;
-        int h = V1_HEIGHT;
-        int bps = CAM_BPS;
-        int fps = CAM_FPS;
+void CameraClass::open(CameraSetting *obj){
+    CAMDBG("H: %d. W: %d. Preset: %d.", obj->_w, obj->_h, obj->_preset);
 
-        int gop = CAM_GOP;
-        int rc_mode = CAM_RCMODE;
-        cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
-    }
-    else if (version == 2){
-        int stream_id = V2_CHANNEL;
-        
-        int type =VIDEO_TYPE; 
-        int res =V2_RESOLUTION; 
-        int w=V2_WIDTH;
-        int h=V2_HEIGHT;
-        int bps = CAM_BPS;
-        int fps = CAM_FPS;
-
-        int gop = CAM_GOP;
-        int rc_mode = CAM_RCMODE;
-        cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
-    }
-    else if (version == 3){
-        int stream_id = V3_CHANNEL;
-        
-        int type =VIDEO_JPEG; 
-        int res =V3_RESOLUTION; 
-        int w=V3_WIDTH;
-        int h=V3_HEIGHT;
-        int fps = CAM_FPS;
-        
-        cameraOpenv3(video_data, video_data->priv, stream_id, type, res, w, h, fps);
-    }
-    else{
-
-    }
+    int stream_id = obj->_preset - 1;
+    int type = obj->_decoder;
+    int res = obj->_resolution;
+    int w = obj->_w;
+    int h = obj->_h;
+    int fps = obj->_fps;   
+    int bps = CAM_BPS;
+    int gop = -1;
+    int rc_mode = -1;
     
+    if (obj->_preset == 1){
+        gop = CAM_GOP;
+        rc_mode = CAM_RCMODE;
+    }
+    else if (obj->_preset == 2){
+        gop = CAM_GOP;
+        rc_mode = CAM_RCMODE;
+    }
+    else if (obj->_preset == 3){
+        gop = 0;
+        rc_mode = 0;
+    }
+    cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);    
 }
 
 /**
@@ -269,20 +268,18 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::start(int version){
-    if (version == 1){
-        cameraStart(video_data->priv, V1_CHANNEL);
+void CameraClass::start(CameraSetting *obj){
+    if (obj->_preset == 1){
+        cameraStart(video_data->priv, obj->_preset - 1);
     } 
-    else if (version == 2){
-        cameraStart(video_data->priv, V2_CHANNEL);
+    else if (obj->_preset == 2){
+        cameraStart(video_data->priv, obj->_preset - 1);
     }
-    else if (version == 3){
-        cameraStart(video_data->priv, V3_CHANNEL);
-        cameraSnapshot(video_data->priv, V3_CHANNEL);
+    if (obj->_preset == 3){ // v3 example, with snapshot feature
+        cameraStart(video_data->priv, obj->_preset - 1);
+        cameraSnapshot(video_data->priv, obj->_preset - 1);
     }
-	
 }
-
 
 /**
   * @brief  Get video data pointer

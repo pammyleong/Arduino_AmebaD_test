@@ -7,13 +7,11 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-int cameraConfig(int enable, int w, int h, int bps, int snapshot, int version);
+int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset);
 
 mm_context_t *cameraInit(void);
 
 void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
-
-void cameraOpenv3(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int fps);
 
 void cameraStart(void *p, int channel);
 

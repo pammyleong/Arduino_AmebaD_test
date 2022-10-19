@@ -67,10 +67,17 @@ enum encode_type {
 #define V2_RESOLUTION VIDEO_HD
 #define V3_RESOLUTION VIDEO_FHD
 
+//#define 2K_WIDTH	2560
+//#define 2K_HEIGHT	1440
+
 #define FHD_WIDTH	1920
 #define FHD_HEIGHT	1080
-#define HD_WIDTH	1080
+
+#define HD_WIDTH	1280
 #define HD_HEIGHT	720
+
+#define VGA_WIDTH	640
+#define VGA_HEIGHT	480
 
 #define DEFAULT_PRESET -1
 
@@ -141,18 +148,18 @@ class CameraClass{
         CameraClass(void);
         ~CameraClass();
 
-        void init(int version);
-        void init(int w, int h, int bps, int version);
-        void init(int enable, int w, int h, int bps, int snapshot, int version);
-
         void init(CameraSetting *obj);
+        void init(int w, int h, int bps, int preset);
+        void init(int enable, int w, int h, int bps, int snapshot, int preset);
+
+        
         
         void deInit(void);
 
         void open(void);
-        void open(int version);
+        void open(CameraSetting *obj);
         void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
-        void start(int version);
+        void start(CameraSetting *obj);
         void close(void);
         mm_context_t *getIO(void);
         

@@ -61,7 +61,7 @@ void RTSPClass::init(CameraSetting *obj) {
 
 	else if (av_codec_id == VIDEO_JPEG){
 		av_codec_id = AV_CODEC_ID_MJPEG;
-		rtsp_bps = NULL; 
+		rtsp_bps = 0; 
 	}
 	printf("\r\nbps: %d\r\n", rtsp_bps);
 	printf("\r\nfps: %d\r\n", rtsp_fps);
