@@ -67,6 +67,12 @@ enum encode_type {
 #define V2_RESOLUTION VIDEO_HD
 #define V3_RESOLUTION VIDEO_FHD
 
+#define FHD_WIDTH	1920
+#define FHD_HEIGHT	1080
+#define HD_WIDTH	1080
+#define HD_HEIGHT	720
+
+#define DEFAULT_PRESET -1
 
 // define video frame rate
 #define CAM_FPS 30
@@ -93,6 +99,9 @@ enum encode_type {
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
 
+
+
+
 // define video resolution
 #if V1_RESOLUTION == VIDEO_FHD
 #define V1_WIDTH	1920
@@ -109,8 +118,25 @@ enum encode_type {
 #define V3_HEIGHT	1080
 #endif
 
+class CameraSetting{
+    public:
+        CameraSetting(void);
+        CameraSetting(uint8_t preset);
+        CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder , uint8_t snapshot);
+    
+        int8_t _preset = -1;
+        uint8_t _resolution;
+        uint8_t _fps;
+        uint8_t _decoder;
+        uint8_t _snapshot;
+        int _w;
+        int _h;
 
-class CameraClass {
+        friend class CameraClass;
+
+};
+
+class CameraClass{
     public:
         CameraClass(void);
         ~CameraClass();
@@ -118,6 +144,9 @@ class CameraClass {
         void init(int version);
         void init(int w, int h, int bps, int version);
         void init(int enable, int w, int h, int bps, int snapshot, int version);
+
+        void init(CameraSetting *obj);
+        
         void deInit(void);
 
         void open(void);
