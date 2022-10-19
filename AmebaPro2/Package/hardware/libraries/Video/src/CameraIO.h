@@ -16,6 +16,8 @@ public:
     void (*create)(void);
     void (*destroy)(void);
     void (*registerInput)(mm_context_t*);
+	void (*registerInput0)(mm_context_t*);
+	void (*registerInput1)(mm_context_t*);
     void (*registerOutput)(mm_context_t*);
 	void (*registerOutput0)(mm_context_t*);
 	void (*registerOutput1)(mm_context_t*);
