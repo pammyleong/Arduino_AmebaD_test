@@ -5,6 +5,8 @@
 #include <semphr.h>
 #include <diag.h>
 #include "mmf2_module.h"
+#include "module_audio.h"
+#include "audio_api.h"
 
 // In faaccfg.h, cannot be found in Arduino env
 /* Input Formats */
@@ -27,7 +29,7 @@ int AAC_Apply (void *p);
 mm_context_t* AAC_DeInit(void *p);
 
 mm_context_t* audio_Init (void);
-void audioOpen(mm_context_t *p);
+void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, int dmic_l_gain, int dmic_r_gain, int use_mic_type, int channel, int enable_aec);
 
 // extern function
 extern int aac_control(void *p, int cmd, int arg);
