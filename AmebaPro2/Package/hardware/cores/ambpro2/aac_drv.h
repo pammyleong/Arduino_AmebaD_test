@@ -8,15 +8,15 @@
 
 // In faaccfg.h, cannot be found in Arduino env
 /* Input Formats */
-#define FAAC_INPUT_NULL    0
-#define FAAC_INPUT_16BIT   1
-#define FAAC_INPUT_24BIT   2
-#define FAAC_INPUT_32BIT   3
-#define FAAC_INPUT_FLOAT   4
-
-/* MPEG ID's */
-#define MPEG2 1
-#define MPEG4 0
+//#define FAAC_INPUT_NULL    0
+//#define FAAC_INPUT_16BIT   1
+//#define FAAC_INPUT_24BIT   2
+//#define FAAC_INPUT_32BIT   3
+//#define FAAC_INPUT_FLOAT   4
+//
+///* MPEG ID's */
+//#define MPEG2 1
+//#define MPEG4 0
 
 mm_context_t* AAC_Init (void);
 int AAC_Set_Params (void *p, uint32_t sample_rate, uint32_t channel, uint32_t bit_length, uint32_t output_format, uint32_t mpeg_version, uint32_t mem_total_size, uint32_t mem_block_size, uint32_t mem_frame_size);
