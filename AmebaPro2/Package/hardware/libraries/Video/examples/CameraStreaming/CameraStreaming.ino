@@ -11,8 +11,6 @@ char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
-#define VERSION     3
-
 void setup() {
 
     Serial.begin(115200);
@@ -35,8 +33,8 @@ void setup() {
     }
 
     // init camera
-    cam.init(VERSION);
-    cam.open(VERSION);
+    cam.init();
+    cam.open();
 
     // init rtsp
     rtsp.init();
@@ -55,11 +53,34 @@ void setup() {
         Serial.println("camera io link start failed");
     }    
     
-    cam.start(VERSION);
-}
+    cam.start();
 
+//	//Method 1: Use delay to pause, close and deinit.
+//	delay(10000);
+//		
+//	// pause linker
+//	Serial.println("Pause!");
+//	camio.pause();
+//	delay(5000);
+//			
+//	// stop module
+//	Serial.println("Stop RTSP and camera module");
+//	rtsp.close();
+//	cam.close();
+//	
+//	// close module (deinit)
+//	Serial.println("DeInit RTSP and camera module.");
+//	rtsp.deInit();
+//	cam.deInit();
+
+	//Method 2: Use GPIO pins to pause, resume, close and deinit.
+	//TBC
+	
+
+}
 
 void loop() {
 // do nothing
 }
+
 
