@@ -14,7 +14,7 @@
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: \r\n"fmt"\r\n", __func__, __LINE__, ## args); } while (0);
+    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
 #else
 #define CAMDBG(fmt, args...)
 #endif
@@ -23,15 +23,15 @@ extern int incb[5];
 extern int enc_queue_cnt[5];
 
 static video_params_t video_params = {
-	.stream_id      = 0, // = V1_CHANNEL,
-	.type           = 0, // = VIDEO_TYPE,
-	.resolution     = 0, // = V1_RESOLUTION,
-	.width          = 0, // = V1_WIDTH,
-	.height         = 0, // = V1_HEIGHT,
-	.bps            = 0, // = V1_BPS,
-	.fps            = 0, // = V1_FPS,
-	.gop            = 0, // = V1_GOP,
-	.rc_mode        = 0, // = V1_RCMODE,
+	.stream_id      = 0, 
+	.type           = 0, 
+	.resolution     = 0, 
+	.width          = 0, 
+	.height         = 0, 
+	.bps            = 0,
+	.fps            = 0, 
+	.gop            = 0, 
+	.rc_mode        = 0, 
 	.use_static_addr = 1
 };
 

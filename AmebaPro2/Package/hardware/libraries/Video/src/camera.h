@@ -106,9 +106,6 @@ enum encode_type {
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
 
-
-
-
 // define video resolution
 #if V1_RESOLUTION == VIDEO_FHD
 #define V1_WIDTH	1920
@@ -152,8 +149,6 @@ class CameraClass{
         void init(int w, int h, int bps, int preset);
         void init(int enable, int w, int h, int bps, int snapshot, int preset);
 
-        
-        
         void deInit(void);
 
         void open(void);

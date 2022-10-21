@@ -6,28 +6,24 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-mm_context_t* RTSP_Init (void);
+mm_context_t* RTSPInit (void);
 
-int RTSP_Select_Stream (void *p, int arg);
+int RTSPSelectStream (void *p, int arg);
 
-int RTSP_Set_Apply (void *p);
+int RTSPSetApply (void *p);
 
-void RTSP_Set_Streaming (void *p, int arg);
+void RTSPSetStreaming (void *p, int arg);
 
-int RTSP_Set_Params_Video (void *p, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t AV_codec);
+int RTSPSetParamsVideo (void *p, uint32_t RTSP_fps, uint32_t RTSP_bps, uint32_t AV_Codec);
 
-int RTSP_Set_Params_Audio (void *p, uint32_t channel, uint32_t sample_rate, uint32_t AV_codec);
+int RTSPSetParamsAudio (void *p, uint32_t channel, uint32_t sample_rate, uint32_t AV_Codec);
 
-mm_context_t* RTSP_DeInit (void *p);
+mm_context_t* RTSPDeInit (void *p);
 
 // extern function 
 extern void *rtsp2_create (void *parent);
 extern void *rtsp2_destroy(void *p);
 extern int rtsp2_control(void *p, int cmd, int arg);
 extern int rtsp2_handle(void *p, void *input, void *output);
-
-// For Testing and Debugging
-//-------------------------------------------------------------------------------//
-void RTSP_TEST(mm_context_t *p, uint32_t rtsp_fps, uint32_t rtsp_bps, uint32_t V_codec, uint32_t channel, uint32_t sample_rate, uint32_t A_codec);
 
 #endif
