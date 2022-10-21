@@ -1,59 +1,44 @@
 #include <Arduino.h>
 #include "rtsp.h"
 
-
 #define ON  1
 #define OFF 0
 #define DEBUG 0
 
-#define CH_IDX 0
+#define VID_CH_IDX 0
+#define RTSP_VIDEO_TYPE AVMEDIA_TYPE_VIDEO
+#define RTSP_BPS CAM_BPS
 
-#define RTSP_TYPE AVMEDIA_TYPE_VIDEO
-#define AUDIO_TYPE AVMEDIA_TYPE_AUDIO
-#define RTSP_BPS CAM_BPS //2*1024*1024
-
-//#define VID_FPS 30
-//#define AV_CODEC AV_CODEC_ID_H264
+#define AUDIO_CH_IDX 1
+#define RTSP_AUDIO_TYPE AVMEDIA_TYPE_AUDIO
+#define AUDIO_SAMPLE_RATE 8000
+#define AUDIO_CODEC_ID AV_CODEC_ID_MP4A_LATM
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: \r\n"fmt"\r\n", __func__, __LINE__, ## args); } while (0);
+    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
 #else
 #define CAMDBG(fmt, args...)
 #endif
 
 RTSPClass::RTSPClass(void){
     rtspData = NULL;
-	// ADD RTSPAudioData
 };
 RTSPClass::~RTSPClass(){};
 
 
-//-------------------------------------------------------------------------------//
-
 /**
   * @brief  Initialization for RTSP module by setting up RTSP paramters. 
-  Default value: channel_idx : 0
-                   video type: AVMEDIA_TYPE_VIDEO
-                   fps: 30
-                   bps: 2*1024*1024
-                   video_codec: AV_CODEC_ID_H264
   * @param  obj
   * @retval none
   */
 void RTSPClass::init(CameraSetting *obj) {
     rtspData = RTSP_Init();
-	
-	
     CAMDBG("RTSP_Init done\r\n");
-
-	// to be improved
-	uint32_t rtsp_ch_idx = CH_IDX;
-	uint32_t rtsp_type = RTSP_TYPE;
-	uint32_t rtsp_bps = RTSP_BPS;
 
 	uint32_t rtsp_fps = obj->_fps;
 	uint32_t av_codec_id = obj->_decoder;
+	uint32_t rtsp_bps = RTSP_BPS;
 
 	if (av_codec_id == VIDEO_H264){
 		av_codec_id = AV_CODEC_ID_H264;
@@ -63,41 +48,61 @@ void RTSPClass::init(CameraSetting *obj) {
 		av_codec_id = AV_CODEC_ID_MJPEG;
 		rtsp_bps = 0; 
 	}
-	printf("\r\nbps: %d\r\n", rtsp_bps);
-	printf("\r\nfps: %d\r\n", rtsp_fps);
-	printf("\r\nAV_codec_id: %d\r\n", av_codec_id);
 
-	RTSP_Select_Stream(rtspData->priv, rtsp_ch_idx);
-    CAMDBG("RTSP_Select_Stream done\r\n");
+	CAMDBG("\r\VID_CH_IDX: %d\r\n", VID_CH_IDX);
+	CAMDBG("\r\nfps: %d\r\n", rtsp_fps);
+	CAMDBG("\r\nbps: %d\r\n", rtsp_bps);
+	CAMDBG("\r\nAV_codec_id: %d\r\n", av_codec_id);
+
+	CAMDBG("\r\AUDIO_CH_IDX: %d\r\n", AUDIO_CH_IDX);
+	CAMDBG("\r\AUDIO_SAMPLE_RATE: %d\r\n", AUDIO_SAMPLE_RATE);
+	CAMDBG("\r\AUDIO_CODEC_ID: %d\r\n", AUDIO_CODEC_ID);
 	
-	RTSP_Set_Params(rtspData->priv, rtsp_type, rtsp_fps, rtsp_bps, av_codec_id);
-    CAMDBG("RTSP_Set_Params done\r\n");
-
+	RTSP_Select_Stream(rtspData->priv, VID_CH_IDX);
+	CAMDBG("RTSP_Select_Stream 0 done\r\n");
+	
+	RTSP_Set_Params_Video(rtspData->priv,rtsp_fps,rtsp_bps,av_codec_id);
+	CAMDBG("Video_RTSP_Set_Params done\r\n");
+	
 	RTSP_Set_Apply(rtspData->priv);
-    CAMDBG("RTSP_Set_Apply done\r\n");
+	CAMDBG("Video_RTSP_Set_Apply done\r\n");
+
+	RTSP_Select_Stream(rtspData->priv,AUDIO_CH_IDX);
+	CAMDBG("RTSP_Select_Stream 1 done\r\n");
+	
+	RTSP_Set_Params_Audio(rtspData->priv,AUDIO_CH_IDX,AUDIO_SAMPLE_RATE,AUDIO_CODEC_ID);
+	CAMDBG("Audio_RTSP_Set_Params done\r\n");
+	
+	RTSP_Set_Apply(rtspData->priv);
+	CAMDBG("Audio_RTSP_Set_Apply done\r\n");
+
 }
 
-
-//-------------------------------------------------------------------------------//
 
 /**
   * @brief  Start RTSP streaming
   * @param  void pointer to rtsp obj
   * @retval none
   */
-void RTSPClass::open (){
-    
-    if (rtspData->priv == NULL) {
+void RTSPClass::open (void){
+    if (rtspData == NULL) {
         printf("Streaming failed, RTSP not initialised yet.\r\n");
     }
-	
+
     else {
         CAMDBG("Start Streaming\r\n");
-        RTSP_Set_Streaming ((void *)rtspData, ON);
+		RTSP_Set_Streaming ((void *)rtspData, ON);
     }
 }
 
-//-------------------------------------------------------------------------------//
+/**
+  * @brief  Stop RTSP streaming
+  * @param  void pointer to rtsp obj
+  * @retval none
+  */
+void RTSPClass::close(void){
+    RTSP_Set_Streaming((void *)rtspData, OFF);
+}
 
 
 /**
@@ -117,19 +122,6 @@ mm_context_t *RTSPClass::getIO(void) {
 	}
 }
 
-//-------------------------------------------------------------------------------//
-
-
-/**
-  * @brief  Stop RTSP streaming
-  * @param  void pointer to rtsp obj
-  * @retval none
-  */
-void RTSPClass::close(){
-    RTSP_Set_Streaming(rtspData->priv, OFF);
-}
-
-//-------------------------------------------------------------------------------//
 
 /**
   * @brief  Deinit and release all the resources set for RTSP 
@@ -145,5 +137,26 @@ void RTSPClass::deInit(){
     }
 }
 
+// FOR TESTING/DEBUGGING
+
 //-------------------------------------------------------------------------------//
+
+void RTSPClass:: RTSP_Test(void) {
+	rtspData = RTSP_Init();
+	mm_context_t *p = rtspData;
+	
+//	RTSP_TEST(rtspData);
+	RTSP_TEST(rtspData, 30, 2*1024*1024, AV_CODEC_ID_H264, 1, 8000, AV_CODEC_ID_MP4A_LATM);
+
+//	RTSP_Select_Stream(p->priv,0);
+//	RTSP_Set_Params_Video(p->priv,30,RTSP_BPS,AV_CODEC_ID_H264);
+//	RTSP_Set_Apply(p->priv);
+//
+//	RTSP_Select_Stream(p->priv,1);
+//	RTSP_Set_Params_Audio(p->priv,AUDIO_CH_IDX,AUDIO_SAMPLE_RATE,AUDIO_CODEC_ID);
+//	RTSP_Set_Apply(p->priv);
+	
+//	RTSP_Set_Streaming(p->priv,ON);
+
+}
 

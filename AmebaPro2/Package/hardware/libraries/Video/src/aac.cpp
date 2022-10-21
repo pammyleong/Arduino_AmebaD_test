@@ -36,20 +36,22 @@ AACClass::~AACClass(){};
 void AACClass::AACinit(void) {
 	AACData = AAC_Init(); 
 
-	AAC_Set_Params(AACData->priv, SAMPLERATE, CH, BITLENGTH, OUTPUTFORMAT, MPEGVER, MEMTOTALSIZE, MEMBLOCKSIZE, MEMFRAMESIZE);
-	printf("AAC_Set_Params done\r\n");
-	
-	AAC_Set_Queue_Length(AACData->priv);
-	printf("AAC_Set_Queue_Length done\r\n");
-	
-	AAC_Init_Queue_Items(AACData->priv);
-	printf("AAC_Init_Queue_Items done\r\n");
-	
-	AAC_Init_Mem_Pool(AACData->priv);
-	printf("AAC_Init_Mem_Pool done\r\n");
-	
-	AAC_Apply(AACData->priv);
-	printf("AAC_Apply done\r\n");
+	AACOpen(AACData, SAMPLERATE, CH, BITLENGTH, OUTPUTFORMAT, MPEGVER, MEMTOTALSIZE, MEMBLOCKSIZE, MEMFRAMESIZE);
+
+//	AAC_Set_Params(AACData->priv, SAMPLERATE, CH, BITLENGTH, OUTPUTFORMAT, MPEGVER, MEMTOTALSIZE, MEMBLOCKSIZE, MEMFRAMESIZE);
+//	printf("AAC_Set_Params done\r\n");
+//	
+//	AAC_Set_Queue_Length(AACData->priv);
+//	printf("AAC_Set_Queue_Length done\r\n");
+//	
+//	AAC_Init_Queue_Items(AACData->priv);
+//	printf("AAC_Init_Queue_Items done\r\n");
+//	
+//	AAC_Init_Mem_Pool(AACData->priv);
+//	printf("AAC_Init_Mem_Pool done\r\n");
+//	
+//	AAC_Apply(AACData->priv);
+//	printf("AAC_Apply done\r\n");
 }
         
 //-------------------------------------------------------------------------------//
@@ -95,22 +97,36 @@ void AudioClass::init(void) {
 }
 
 void AudioClass::open(void) {
-    int sample_rate = ASR_8KHZ;
-	int word_length = WL_16BIT;
-	int mic_gain = MIC_0DB;
-	int dmic_l_gain = DMIC_BOOST_24DB;
-	int dmic_r_gain = DMIC_BOOST_24DB;
-	int use_mic_type = USE_AUDIO_AMIC;
+    uint32_t sample_rate = ASR_8KHZ;
+	uint32_t word_length = WL_16BIT;
+	audio_mic_gain mic_gain = MIC_0DB;
+	audio_dmic_gain dmic_l_gain = DMIC_BOOST_24DB;
+	audio_dmic_gain dmic_r_gain = DMIC_BOOST_24DB;
+	uint8_t use_mic_type = USE_AUDIO_AMIC;
 	int channel = 1;
-	int enable_aec = 0;
+	uint32_t enable_aec = 0;
     
     open(audioData, sample_rate, word_length, mic_gain, dmic_l_gain, dmic_r_gain, use_mic_type, channel, enable_aec);
 }
 
-void AudioClass::open(mm_context_t *p, int sample_rate, int word_length, int mic_gain, int dmic_l_gain, int dmic_r_gain, int use_mic_type, int channel, int enable_aec){
+void AudioClass::open(mm_context_t *p, uint32_t sample_rate, uint32_t word_length, audio_mic_gain mic_gain, audio_dmic_gain dmic_l_gain, audio_dmic_gain dmic_r_gain, uint8_t use_mic_type, int channel, uint32_t enable_aec){
   
     audioOpen(p, sample_rate, word_length, mic_gain, dmic_l_gain, dmic_r_gain, use_mic_type, channel, enable_aec);
 }
 
+/**
+  * @brief  
+  * @param  none
+  * @retval 
+  */
+mm_context_t *AudioClass::getIO(void) {
+	if (audioData == NULL) {
+		printf("Failed, please init audio first.\r\n");	
+		return NULL;
+	}
 
+	else {
+		return audioData;
+	}
+}
 

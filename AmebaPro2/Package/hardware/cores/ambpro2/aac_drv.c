@@ -13,6 +13,7 @@
 //#include "queue.h"
 
 #define DEBUG 0
+#define USE_DEFAULT_AUDIO_SET 0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -59,6 +60,22 @@ mm_context_t* AAC_Init (void) {
     return mm_module_open(&aac_module);
 }
 
+void AACOpen(mm_context_t *p, uint32_t sample_rate, uint32_t channel, uint32_t bit_length, uint32_t output_format, uint32_t mpeg_version, uint32_t mem_total_size, uint32_t mem_block_size, uint32_t mem_frame_size){
+	aac_params.sample_rate = sample_rate;
+	aac_params.channel = channel;
+	aac_params.bit_length = bit_length;
+	aac_params.output_format = output_format;
+	aac_params.mpeg_version = mpeg_version;
+	aac_params.mem_total_size = mem_total_size;
+	aac_params.mem_block_size = mem_block_size;
+	aac_params.mem_frame_size = mem_frame_size;
+
+	mm_module_ctrl(p, CMD_AAC_SET_PARAMS, (int)&aac_params);
+	mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, 6);
+	mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+	mm_module_ctrl(p, CMD_AAC_INIT_MEM_POOL, 0);
+	mm_module_ctrl(p, CMD_AAC_APPLY, 0);
+}
 //-------------------------------------------------------------------------------//
 
 
@@ -77,7 +94,7 @@ int AAC_Set_Params (void *p, uint32_t sample_rate, uint32_t channel, uint32_t bi
 	aac_params.mem_block_size = mem_block_size;
 	aac_params.mem_frame_size = mem_frame_size;
 	
-	return mm_module_ctrl(p, CMD_AAC_SET_PARAMS, (int)&aac_params);
+	return aac_control(p, CMD_AAC_SET_PARAMS, (int)&aac_params);
 }
 
 //-------------------------------------------------------------------------------//
@@ -100,7 +117,7 @@ int AAC_Init_Queue_Items (void *p){
 
 int AAC_Init_Mem_Pool (void *p){
 	// try change to aac_ctrl afterwards
-	return mm_module_ctrl(p, CMD_AAC_INIT_MEM_POOL, 0);
+	return aac_control(p, CMD_AAC_INIT_MEM_POOL, 0);
 }
 
 //-------------------------------------------------------------------------------//
@@ -108,7 +125,7 @@ int AAC_Init_Mem_Pool (void *p){
 
 int AAC_Apply (void *p){
 	// try change to aac_ctrl afterwards
-	return mm_module_ctrl(p, CMD_AAC_APPLY, 0);
+	return aac_control(p, CMD_AAC_APPLY, 0);
 }
 
 //-------------------------------------------------------------------------------//
@@ -135,7 +152,9 @@ void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, 
     
 
     if (p) {
+#if !USE_DEFAULT_AUDIO_SET
         mm_module_ctrl(p, CMD_AUDIO_SET_PARAMS, (int)&audio_params);
+#endif
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, 6);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_STATIC);
         mm_module_ctrl(p, CMD_AUDIO_APPLY, 0);

@@ -1,9 +1,8 @@
-#include "simo_drv.h"
+#include "miso_drv.h"
 #include "mmf2_link.h"
 #include "mmf2_simo.h"
 #include "mmf2_siso.h"
 #include "mmf2_miso.h"
-
 
 static mm_miso_t *miso_arduino = NULL;
 

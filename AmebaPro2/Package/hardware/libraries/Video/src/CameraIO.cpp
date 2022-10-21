@@ -38,8 +38,8 @@ CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
             // MISO (Multi Input Single Output)
             this->create = &misoCreate;
             this->destroy = &misoDestroy;
-			this->registerInput = &misoRegIn0;
-			this->registerInput = &misoRegIn1;
+			this->registerInput0 = &misoRegIn0;
+			this->registerInput1 = &misoRegIn1;
             this->registerOutput = &misoRegOut;
             this->start = &misoStart;
             this->stop = &misoStop;

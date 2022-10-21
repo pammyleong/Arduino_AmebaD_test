@@ -22,6 +22,7 @@ class RTSPClass : public CameraSetting
         ~RTSPClass(void);
 
         void init(CameraSetting *obj);
+		void RTSP_Test(void);
         void open(void);
         void close(void);
         void deInit(void);
@@ -29,6 +30,7 @@ class RTSPClass : public CameraSetting
 		
     private:
         mm_context_t *rtspData;
+		
 };
 
 

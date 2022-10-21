@@ -3,7 +3,6 @@
 #include "mmf2_module.h"
 
 
-
 void misoCreate(void);
 void misoDestroy(void);
 int  misoStart(void);
@@ -13,7 +12,6 @@ void misoResume(void);
 void misoRegIn0(mm_context_t*);
 void misoRegIn1(mm_context_t*);
 void misoRegOut(mm_context_t*);
-
 
 
 
