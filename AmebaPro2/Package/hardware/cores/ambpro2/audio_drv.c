@@ -38,6 +38,10 @@ mm_context_t* audioInit(void) {
     return mm_module_open(&audio_module);
 }
 
+void audioDeInit(mm_context_t *p) { 
+    mm_module_ctrl(p, CMD_AUDIO_SET_TRX, 0);
+}
+
 void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, int dmic_l_gain, int dmic_r_gain, int use_mic_type, int channel, int enable_aec){
     audio_params.sample_rate = sample_rate;
 	audio_params.word_length = word_length;
@@ -60,6 +64,10 @@ void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, 
     } else {
 		CAMDBG("audio open fail");
 	}
+}
+
+void audioClose(mm_context_t *p){
+    mm_module_close(p);
 }
 
 mm_context_t* AACInit(void) { 

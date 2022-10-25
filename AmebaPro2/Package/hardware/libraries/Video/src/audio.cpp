@@ -40,6 +40,16 @@ void AudioClass::init(void) {
 }
 
 /**
+  * @brief  DeInit audio module
+  * @param  none
+  * @retval none
+  */
+void AudioClass::deInit(void) {
+
+} 
+
+
+/**
   * @brief  Open audio module
   * @param  none
   * @retval none
@@ -58,7 +68,7 @@ void AudioClass::open(void) {
 }
 
 /**
-  * @brief  
+  * @brief  Open the audio module
   * @param  p           : pointer to audio content 
             sample_rate : audio data sampling rate
             word_length : word length
@@ -73,6 +83,15 @@ void AudioClass::open(void) {
 void AudioClass::open(mm_context_t *p, uint32_t sample_rate, uint32_t word_length, audio_mic_gain mic_gain, audio_dmic_gain dmic_l_gain, audio_dmic_gain dmic_r_gain, uint8_t use_mic_type, int channel, uint32_t enable_aec){
   
     audioOpen(p, sample_rate, word_length, mic_gain, dmic_l_gain, dmic_r_gain, use_mic_type, channel, enable_aec);
+}
+
+/**
+  * @brief  Close the audio module
+  * @param  
+  * @retval none
+  */
+void AudioClass::close(void) {
+    
 }
 
 /**
