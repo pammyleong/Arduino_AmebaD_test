@@ -7,7 +7,6 @@ extern "C" {
 
 #include "camera_drv.h"
 
-
 #ifdef __cplusplus
 }
 #endif
@@ -137,7 +136,6 @@ class CameraSetting{
         int _h;
 
         friend class CameraClass;
-
 };
 
 class CameraClass{
@@ -157,10 +155,8 @@ class CameraClass{
         void start(CameraSetting *obj);
         void close(void);
         mm_context_t *getIO(void);
-        
 
     private:
         mm_context_t *video_data;
-        
 };
 #endif

@@ -7,16 +7,14 @@ extern "C" {
 
 #include "rtsp_drv.h"
 #include "avcodec.h"
-#include "camera.h"
-
 
 #ifdef __cplusplus
 }
 #endif
 
+#include "camera.h"
 
-class RTSPClass : public CameraSetting 
-{
+class RTSPClass : public CameraSetting {
     public:
         RTSPClass(void);
         ~RTSPClass(void);
@@ -29,12 +27,6 @@ class RTSPClass : public CameraSetting
 		
     private:
         mm_context_t *rtspData;
-		
 };
 
-
-
 #endif
-
-
-

@@ -22,6 +22,7 @@ int AACSetQueueLength (void *p);
 int AACInitQueueItems (void *p);
 int AACInitMemPool (void *p);
 int AACApply (void *p);
+void AACStop(mm_context_t *p);
 mm_context_t* AACDeInit(void *p);
 
 // extern function

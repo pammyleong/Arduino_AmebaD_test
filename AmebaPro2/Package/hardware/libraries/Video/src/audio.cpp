@@ -20,15 +20,15 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-AACClass::AACClass(){
-    AACData = NULL;
-};
-AACClass::~AACClass(){};
-
 AudioClass::AudioClass(void){
     audioData = NULL;
 };
 AudioClass::~AudioClass(){};
+
+AACClass::AACClass(void){
+    AACData = NULL;
+};
+AACClass::~AACClass(){};
 
 /**
   * @brief  Init audio module
@@ -45,9 +45,8 @@ void AudioClass::init(void) {
   * @retval none
   */
 void AudioClass::deInit(void) {
-
+    audioDeInit(audioData);
 } 
-
 
 /**
   * @brief  Open audio module
@@ -90,8 +89,8 @@ void AudioClass::open(mm_context_t *p, uint32_t sample_rate, uint32_t word_lengt
   * @param  
   * @retval none
   */
-void AudioClass::close(void) {
-    
+void AudioClass::close(mm_context_t *p) {
+    audioClose(p);
 }
 
 /**
@@ -148,3 +147,12 @@ void AACClass::AACdeInit(void){
     }
 }
 
+/**
+  * @brief  Stop AAC module while transmision is finished
+  * @param  none
+  * @retval none
+  */
+
+void AACClass::AACclose(void){
+    AACStop(AACData);
+}

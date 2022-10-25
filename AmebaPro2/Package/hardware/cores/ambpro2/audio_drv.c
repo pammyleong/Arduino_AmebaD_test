@@ -111,6 +111,10 @@ int AACApply(void *p){
 	return aac_control(p, CMD_AAC_APPLY, 0);
 }
 
+void AACStop(mm_context_t *p){
+    mm_module_ctrl(p, CMD_AUDIO_SET_TRX, 0);
+}
+
 mm_context_t* AACDeInit(void *p) {
 	return mm_module_close (p);
 }

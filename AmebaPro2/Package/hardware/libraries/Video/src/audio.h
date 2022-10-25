@@ -15,7 +15,9 @@ extern "C" {
 }
 #endif
 
-class AudioClass {
+#include "camera.h"
+
+class AudioClass : public CameraSetting {
     public:
         AudioClass(void);
         ~AudioClass(void);
@@ -25,7 +27,7 @@ class AudioClass {
         
         void open(void);
         void open(mm_context_t *p, uint32_t sample_rate, uint32_t word_length, audio_mic_gain mic_gain, audio_dmic_gain dmic_l_gain, audio_dmic_gain dmic_r_gain, uint8_t use_mic_type, int channel, uint32_t enable_aec);
-        void close(void);
+        void close(mm_context_t *p);
 
 		mm_context_t *getIO(void);
         
@@ -33,13 +35,15 @@ class AudioClass {
         mm_context_t *audioData;
 };
 
-class AACClass {
+class AACClass : public CameraSetting {
     public:
         AACClass(void);
         ~AACClass(void);
 
         void AACinit(void);
         void AACdeInit(void);
+
+        void AACclose(void);
         
         mm_context_t *AACgetIO(void);
         

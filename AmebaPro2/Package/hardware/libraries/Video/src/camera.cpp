@@ -300,10 +300,10 @@ mm_context_t *CameraClass::getIO(void) {
 
 
 /**
-  * @brief  close camera while transmision is finished
-  * @param  void pointer to video obj
-  * @retval  none
+  * @brief  Stop camera streaming while transmision is finished
+  * @param  none
+  * @retval none
   */
-void CameraClass::close(){
+void CameraClass::close(void){
     cameraStopVideoStream(video_data->priv, V1_CHANNEL);
 }
