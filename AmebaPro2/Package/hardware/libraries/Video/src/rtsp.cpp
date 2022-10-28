@@ -26,7 +26,6 @@ RTSPClass::RTSPClass(void){
 };
 RTSPClass::~RTSPClass(){};
 
-
 /**
   * @brief  Initialization for RTSP module by setting up RTSP paramters. 
   * @param  obj  : object pointer to Camera Settings
@@ -36,29 +35,27 @@ void RTSPClass::init(CameraSetting *obj) {
     rtspData = RTSPInit();
     CAMDBG("RTSP_Init done\r\n");
 
-	uint32_t RTSP_fps = obj->_fps;
-	uint32_t AV_Codec_ID = obj->_decoder;
-	uint32_t RTSP_bps = RTSP_BPS;
+    uint32_t RTSP_fps = obj->_fps;
+    uint32_t AV_Codec_ID = obj->_decoder;
+    uint32_t RTSP_bps = RTSP_BPS;
 
-	if (AV_Codec_ID == VIDEO_H264){
-		AV_Codec_ID = AV_CODEC_ID_H264;
-	}
+    if (AV_Codec_ID == VIDEO_H264){
+        AV_Codec_ID = AV_CODEC_ID_H264;
+    }
 
-	else if (AV_Codec_ID == VIDEO_JPEG){
-		AV_Codec_ID = AV_CODEC_ID_MJPEG;
-		RTSP_bps = 0; 
-	}
+    else if (AV_Codec_ID == VIDEO_JPEG){
+        AV_Codec_ID = AV_CODEC_ID_MJPEG;
+        RTSP_bps = 0; 
+    }
 
-	RTSPSelectStream(rtspData->priv, VID_CH_IDX);
-	RTSPSetParamsVideo(rtspData->priv, RTSP_fps, RTSP_bps, AV_Codec_ID);
-	RTSPSetApply(rtspData->priv);
-	
+    RTSPSelectStream(rtspData->priv, VID_CH_IDX);
+    RTSPSetParamsVideo(rtspData->priv, RTSP_fps, RTSP_bps, AV_Codec_ID);
+    RTSPSetApply(rtspData->priv);
 
-	RTSPSelectStream(rtspData->priv,AUDIO_CH_IDX);
-	RTSPSetParamsAudio(rtspData->priv,AUDIO_CH_IDX, AUDIO_SAMPLE_RATE, AUDIO_CODEC_ID);
-	RTSPSetApply(rtspData->priv);
+    RTSPSelectStream(rtspData->priv,AUDIO_CH_IDX);
+    RTSPSetParamsAudio(rtspData->priv,AUDIO_CH_IDX, AUDIO_SAMPLE_RATE, AUDIO_CODEC_ID);
+    RTSPSetApply(rtspData->priv);
 }
-
 
 /**
   * @brief  Start RTSP streaming
@@ -69,13 +66,11 @@ void RTSPClass::open (void){
     if (rtspData == NULL) {
         printf("Streaming failed, RTSP not initialised yet.\r\n");
     }
-
     else {
         CAMDBG("Start Streaming\r\n");
-		RTSPSetStreaming ((void *)rtspData, ON);
+        RTSPSetStreaming ((void *)rtspData, ON);
     }
 }
-
 
 /**
   * @brief  Stop RTSP streaming
@@ -86,7 +81,6 @@ void RTSPClass::close(void){
     RTSPSetStreaming((void *)rtspData, OFF);
 }
 
-
 /**
   * @brief  Get RTSP data pointer
   * @param  none
@@ -94,16 +88,14 @@ void RTSPClass::close(void){
   */
 mm_context_t *RTSPClass::getIO(void) {
     // To check if rtsp init is done
-	if (rtspData == NULL) {
-		printf("Streaming failed, please init RTSP first.\r\n");	
-		return NULL;
-	}
-	
-	else {
-		return rtspData;
-	}
+    if (rtspData == NULL) {
+        printf("Streaming failed, please init RTSP first.\r\n");	
+        return NULL;
+    }
+    else {
+        return rtspData;
+    }
 }
-
 
 /**
   * @brief  Deinit and release all the resources set for RTSP 

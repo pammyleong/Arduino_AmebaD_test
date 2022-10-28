@@ -24,7 +24,7 @@ class RTSPClass : public CameraSetting {
         void close(void);
         void deInit(void);
         mm_context_t *getIO(void);
-		
+        
     private:
         mm_context_t *rtspData;
 };
