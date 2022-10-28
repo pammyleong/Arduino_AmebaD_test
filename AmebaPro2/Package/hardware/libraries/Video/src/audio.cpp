@@ -85,7 +85,7 @@ void AudioClass::close(mm_context_t *p) {
 /**
   * @brief  Get Audio module data pointer
   * @param  none
-  * @retval none
+  * @retval pointer to Audio module
   */
 mm_context_t *AudioClass::getIO(void) {
     if (audioData == NULL) {
