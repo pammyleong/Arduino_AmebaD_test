@@ -1,15 +1,6 @@
 #include <Arduino.h>
 #include "camera.h"
 
-#define DEBUG 1
-
-#if DEBUG
-#define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
-#else
-#define CAMDBG(fmt, args...)
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,14 +11,23 @@ extern "C" {
 }
 #endif
 
+#define DEBUG 0
+
+#if DEBUG
+#define CAMDBG(fmt, args...) \
+    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
+#else
+#define CAMDBG(fmt, args...)
+#endif
+
 CameraSetting :: CameraSetting(void){
-    _resolution = VIDEO_FHD;
-    _fps = CAM_FPS;
-    _decoder = VIDEO_H264;
-    _snapshot = 0;
-    _w = FHD_WIDTH;
-    _h = FHD_HEIGHT;
-    _preset = 1;
+    _preset         = 1;
+    _snapshot       = 0;
+    _decoder        = VIDEO_H264;
+    _resolution     = VIDEO_FHD;
+    _w              = VIDEO_FHD_WIDTH;
+    _h              = VIDEO_FHD_HEIGHT;
+    _fps            = CAM_FPS;
 }
 
 CameraSetting :: CameraSetting(uint8_t preset){
@@ -61,12 +61,12 @@ CameraSetting :: CameraSetting(uint8_t preset){
     
     switch(_resolution) {
         case VIDEO_FHD:
-            _w = FHD_WIDTH;
-            _h = FHD_HEIGHT;
+            _w = VIDEO_FHD_WIDTH;
+            _h = VIDEO_FHD_HEIGHT;
             break;
         case VIDEO_HD:
-            _w = HD_WIDTH;
-            _h = HD_HEIGHT;
+            _w = VIDEO_HD_WIDTH;
+            _h = VIDEO_HD_HEIGHT;
             break;
         default:
             printf("Error with video resolution\r\n");
@@ -75,7 +75,6 @@ CameraSetting :: CameraSetting(uint8_t preset){
 }
 
 CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder, uint8_t snapshot){
-
     _resolution = resolution;
     _fps = fps;
     _decoder = decoder;
@@ -83,8 +82,8 @@ CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder,
     CAMDBG("res: %d. fps: %d. dec: %d. snap: %d.", _resolution, _fps, _decoder, _snapshot);
     switch(_resolution) {
         case VIDEO_FHD:
-            _w = FHD_WIDTH;
-            _h = FHD_HEIGHT;
+            _w = VIDEO_FHD_WIDTH;
+            _h = VIDEO_FHD_HEIGHT;
             switch(_decoder){
                 case VIDEO_H264:
                     if(_snapshot == 0){
@@ -105,8 +104,8 @@ CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder,
             }
             break;
         case VIDEO_HD:
-            _w = HD_WIDTH;
-            _h = HD_HEIGHT;
+            _w = VIDEO_HD_WIDTH;
+            _h = VIDEO_HD_HEIGHT;
             switch(_decoder){
                 case VIDEO_H264:
                     if(_snapshot == 0){
@@ -201,15 +200,15 @@ void CameraClass::deInit(void){
   * @retval  none
   */
 void CameraClass::open(void){
-    int stream_id = V1_CHANNEL;
-    int type =VIDEO_TYPE; 
-    int res =V1_RESOLUTION; 
-    int w=V1_WIDTH;
-    int h=V1_HEIGHT;
-    int bps = CAM_BPS;
-    int fps = CAM_FPS;
-    int gop = CAM_GOP;
-    int rc_mode = CAM_RCMODE;
+    int stream_id   = V1_CHANNEL;
+    int type        = VIDEO_TYPE; 
+    int res         = VIDEO_FHD; 
+    int w           = VIDEO_FHD_WIDTH;
+    int h           = VIDEO_FHD_HEIGHT;
+    int bps         = CAM_BPS;
+    int fps         = CAM_FPS;
+    int gop         = CAM_GOP;
+    int rc_mode     = CAM_RCMODE;
     cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 }
 
@@ -288,16 +287,15 @@ void CameraClass::start(CameraSetting *obj){
   */
 mm_context_t *CameraClass::getIO(void) {
     //To check if camera sensor init is done
-	if (video_data == NULL){
-		printf("\r\nPlease init camera sensor first.\r\n");
-		return NULL;
-	}
-	
-	else{
-		 return video_data;
-	}
+    if (video_data == NULL){
+        printf("\r\nPlease init camera sensor first.\r\n");
+        return NULL;
+    }
+    
+    else{
+         return video_data;
+    }
 }
-
 
 /**
   * @brief  Stop camera streaming while transmision is finished

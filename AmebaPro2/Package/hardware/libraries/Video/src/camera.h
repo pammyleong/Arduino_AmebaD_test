@@ -11,6 +11,14 @@ extern "C" {
 }
 #endif
 
+#define DEFAULT_PRESET          -1
+
+#define VIDEO_ENABLE            1
+#define VIDEO_DISABLE           0
+
+#define VIDEO_SNAPSHOT_ENABLE   1
+#define VIDEO_SNAPSHOT_DISABLE  0
+
 /*****************************************************************************
 ISP CHANNEL
     0: HEVC
@@ -18,9 +26,9 @@ ISP CHANNEL
     2: NV12
     4: only RGB
 *****************************************************************************/
-#define V1_CHANNEL 0
-#define V2_CHANNEL 1
-#define V3_CHANNEL 2
+#define V1_CHANNEL              0
+#define V2_CHANNEL              1
+#define V3_CHANNEL              2
 
 /****************************************************************************
 ENCODE TYPE
@@ -33,14 +41,14 @@ ENCODE TYPE
    6:H264+JPEG
 *****************************************************************************/
 enum encode_type {
-	VIDEO_HEVC = 0,
-	VIDEO_H264,
-	VIDEO_JPEG,
-	VIDEO_NV12,
-	VIDEO_RGB,
-	VIDEO_NV16,
-	VIDEO_HEVC_JPEG,
-	VIDEO_H264_JPEG
+    VIDEO_HEVC = 0,
+    VIDEO_H264,
+    VIDEO_JPEG,
+    VIDEO_NV12,
+    VIDEO_RGB,
+    VIDEO_NV16,
+    VIDEO_HEVC_JPEG,
+    VIDEO_H264_JPEG
 };
 
 #define	VIDEO_QCIF  0
@@ -54,44 +62,24 @@ enum encode_type {
 #define	VIDEO_5M    8
 #define	VIDEO_2K    9
 
-#define VIDEO_ENABLE    1
-#define VIDEO_DISABLE   0
-
-#define VIDEO_SNAPSHOT_ENABLE  1
-#define VIDEO_SNAPSHOT_DISABLE 0
-
-
 // define video resolution
-#define V1_RESOLUTION VIDEO_FHD
-#define V2_RESOLUTION VIDEO_HD
-#define V3_RESOLUTION VIDEO_FHD
-
-//#define 2K_WIDTH	2560
-//#define 2K_HEIGHT	1440
-
-#define FHD_WIDTH	1920
-#define FHD_HEIGHT	1080
-
-#define HD_WIDTH	1280
-#define HD_HEIGHT	720
-
-#define VGA_WIDTH	640
-#define VGA_HEIGHT	480
-
-#define DEFAULT_PRESET -1
+//#define VIDEO_2K_WIDTH    2560
+//#define VIDEO_2K_HEIGHT   1440
+#define VIDEO_FHD_WIDTH     1920
+#define VIDEO_FHD_HEIGHT    1080
+#define VIDEO_HD_WIDTH      1280
+#define VIDEO_HD_HEIGHT     720
+#define VIDEO_VGA_WIDTH     640
+#define VIDEO_VGA_HEIGHT    480
 
 // define video frame rate
-#define CAM_FPS 30
+#define CAM_FPS             30
 // define video group of pictures
-#define CAM_GOP 30
+#define CAM_GOP             30
 // define video bit rate
-#define CAM_BPS 2*1024*1024
+#define CAM_BPS             2*1024*1024
 // define video rate control
-#define CAM_RCMODE 2 // 1: CBR, 2: VBR
-
-//#define V2_RESOLUTION VIDEO_HD
-//#define V2_FPS 30
-//#define V2_GOP 30
+#define CAM_RCMODE          2 // 1: CBR, 2: VBR
 
 // define video codec
 #define USE_H265 0
@@ -105,28 +93,12 @@ enum encode_type {
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
 
-// define video resolution
-#if V1_RESOLUTION == VIDEO_FHD
-#define V1_WIDTH	1920
-#define V1_HEIGHT	1080
-#endif
-
-#if V2_RESOLUTION == VIDEO_HD
-#define V2_WIDTH	1280
-#define V2_HEIGHT	720
-#endif
-
-#if V3_RESOLUTION == VIDEO_FHD
-#define V3_WIDTH	1920
-#define V3_HEIGHT	1080
-#endif
-
 class CameraSetting{
     public:
         CameraSetting(void);
         CameraSetting(uint8_t preset);
         CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder , uint8_t snapshot);
-    
+
         int8_t _preset = -1;
         uint8_t _resolution;
         uint8_t _fps;
@@ -134,7 +106,7 @@ class CameraSetting{
         uint8_t _snapshot;
         int _w;
         int _h;
-
+        
         friend class CameraClass;
 };
 
