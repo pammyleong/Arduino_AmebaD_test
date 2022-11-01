@@ -135,11 +135,11 @@ CameraClass::~CameraClass(){};
   * @retval none
   */
 void CameraClass::init(CameraSetting *obj){
-
     int bps = CAM_BPS;
-
-    CAMDBG("H: %d. W: %d. Preset: %d.", obj->_w, obj->_h, obj->_preset);
-
+    if (obj->_decoder == VIDEO_JPEG){
+        bps = 0;
+    }
+    CAMDBG("H: %d. W: %d. BPS: %d. Preset: %d.", obj->_w, obj->_h, bps, obj->_preset);
     if(obj->_preset != -1){
         return init(obj->_w, obj->_h, bps, obj->_preset);
     }

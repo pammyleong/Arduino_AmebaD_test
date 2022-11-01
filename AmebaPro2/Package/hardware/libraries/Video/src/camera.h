@@ -97,7 +97,7 @@ class CameraSetting{
     public:
         CameraSetting(void);
         CameraSetting(uint8_t preset);
-        CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder , uint8_t snapshot);
+        CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder, uint8_t snapshot);
 
         int8_t _preset = -1;
         uint8_t _resolution;

@@ -4,8 +4,6 @@
 #include "rtsp.h"
 #include "WiFi.h"
 
-#define AUDIO_ENABLE
-
 CameraSetting camset; 
 CameraClass cam;
 AudioClass audio;
@@ -15,12 +13,12 @@ CameraIOClass camio1_1In1Out(1, 1); // Single Input Single Output
 CameraIOClass camio2_2In1Out(2, 1); // Multi Input Single Output
 
 char ssid[] = "yourNetwork";     //  your network SSID (name)
-char pass[] = "password";      // your network password
-int status = WL_IDLE_STATUS;    // the Wifi radio's status
+char pass[] = "password";        // your network password
+int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);
-
+    
     if (WiFi.status() == WL_NO_SHIELD) {
         Serial.println("WiFi shield not present");
         // don't continue:
@@ -48,6 +46,7 @@ void setup() {
     aac.init();
 
     // init rtsp
+    rtsp.enableAudio();
     rtsp.init(&camset);
     rtsp.open();
 
