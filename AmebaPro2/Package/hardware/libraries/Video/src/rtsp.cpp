@@ -31,7 +31,7 @@ RTSPClass::~RTSPClass(){};
   * @param  obj  : object pointer to Camera Settings
   * @retval none
   */
-void RTSPClass::init (CameraSetting *obj) {
+void RTSPClass::init(CameraSetting *obj) {
     rtspData = RTSPInit();
     CAMDBG("RTSP_Init done\r\n");
 
@@ -52,11 +52,9 @@ void RTSPClass::init (CameraSetting *obj) {
     RTSPSetParamsVideo(rtspData->priv, RTSP_fps, RTSP_bps, AV_Codec_ID);
     RTSPSetApply(rtspData->priv);
 
-#if AUDIO_EN
     RTSPSelectStream(rtspData->priv,AUDIO_CH_IDX);
     RTSPSetParamsAudio(rtspData->priv,AUDIO_CH_IDX, AUDIO_SAMPLE_RATE, AUDIO_CODEC_ID);
     RTSPSetApply(rtspData->priv);
-#endif
 }
 
 /**
@@ -105,7 +103,7 @@ mm_context_t *RTSPClass::getIO(void) {
   * @retval none
   */
 void RTSPClass::deInit(void){
-    if (RTSPDeInit(rtspData->priv) == NULL) {
+    if (RTSPDeInit(rtspData) == NULL) {
         CAMDBG("RTSP DeInit.\r\n");
     }
     else {
