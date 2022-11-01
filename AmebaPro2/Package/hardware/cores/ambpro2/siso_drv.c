@@ -19,7 +19,8 @@ void sisoCreate(void) {
   * @param  pointer to the siso object
   * @retval none
   */
-void sisoDestroy() {
+
+void sisoDestroy(void) {
     //delete the SISO object created and stop the siso task
     if(NULL != siso_delete(siso_arduino)) {
         printf("Camera IO linker destroy failed..");
@@ -81,4 +82,22 @@ void sisoPause(void) {
   */
 void sisoResume(void) {
     siso_resume(siso_arduino);
+}
+
+/**
+  * @brief  
+  * @param  none
+  * @retval none
+  */
+void sisoSetStackSize(void) {
+    siso_ctrl(siso_arduino, MMIC_CMD_SET_STACKSIZE, (uint32_t)1024 * 64, 0);
+}
+
+/**
+  * @brief  
+  * @param  none
+  * @retval none
+  */
+void sisoSetTaskPriority(void) {
+    siso_ctrl(siso_arduino, MMIC_CMD_SET_TASKPRIORITY, 3, 0);
 }

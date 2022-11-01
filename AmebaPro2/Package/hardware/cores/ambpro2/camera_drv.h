@@ -15,11 +15,12 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
 
 void cameraStart(void *p, int channel);
 
-void cameraSnapshot(void *p, int channel);
-
 void cameraStopVideoStream(void *p, int channel);
 
 mm_context_t *cameraDeInit(mm_context_t *);
+
+void cameraSnapshot(void *p, int channel);
+
 
 // Functions externed from module_video
 extern void *video_create(void *parent);

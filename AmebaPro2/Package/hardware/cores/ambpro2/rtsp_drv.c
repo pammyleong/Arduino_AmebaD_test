@@ -82,6 +82,6 @@ int RTSPSetParamsAudio (void *p, uint32_t channel, uint32_t sample_rate, uint32_
 }
 
 // deinit and release all resources for RTSP
-mm_context_t* RTSPDeInit (void *p){
+mm_context_t* RTSPDeInit (mm_context_t *p){
     return mm_module_close(p);
 }

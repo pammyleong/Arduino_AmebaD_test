@@ -9,8 +9,8 @@ RTSPClass rtsp;
 CameraIOClass camio1_1In1Out(1, 1); // Single Input Single Output
 
 char ssid[] = "yourNetwork";     //  your network SSID (name)
-char pass[] = "password";        // your network password
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
+char pass[] = "password";      // your network password
+int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);

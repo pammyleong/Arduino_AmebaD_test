@@ -18,7 +18,7 @@ int RTSPSetParamsVideo (void *p, uint32_t RTSP_fps, uint32_t RTSP_bps, uint32_t 
 
 int RTSPSetParamsAudio (void *p, uint32_t channel, uint32_t sample_rate, uint32_t AV_Codec);
 
-mm_context_t* RTSPDeInit (void *p);
+mm_context_t* RTSPDeInit (mm_context_t *p);
 
 // extern function 
 extern void *rtsp2_create (void *parent);

@@ -10,3 +10,5 @@ void sisoPause(void);
 void sisoResume(void);
 void sisoRegIn(mm_context_t*);
 void sisoRegOut(mm_context_t*);
+void sisoSetStackSize(void);
+void sisoSetTaskPriority(void);
