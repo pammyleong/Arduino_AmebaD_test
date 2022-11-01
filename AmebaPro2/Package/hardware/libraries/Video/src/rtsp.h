@@ -14,11 +14,18 @@ extern "C" {
 
 #include "camera.h"
 
+#ifndef AUDIO_ENABLE
+#define AUDIO_EN 0
+#endif
+
+#ifdef AUDIO_ENABLE
+#define AUDIO_EN 1
+#endif
+
 class RTSPClass : public CameraSetting {
     public:
         RTSPClass(void);
         ~RTSPClass(void);
-
 
         void init(CameraSetting *obj);
         void open(void);
