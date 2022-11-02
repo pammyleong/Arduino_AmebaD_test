@@ -3,13 +3,15 @@
 #include "rtsp.h"
 #include "WiFi.h"
 
-CameraSetting camset(3);
+// user can choose the camera settings below
+//CameraSetting camset(2);
+CameraSetting camset(VIDEO_HD, CAM_FPS, VIDEO_H264, 0);
 CameraClass cam;
 RTSPClass rtsp;
 CameraIOClass camio1_1In1Out(1, 1); // Single Input Single Output
 
-char ssid[] = "yourNetwork";     //  your network SSID (name)
-char pass[] = "password";        // your network password
+char ssid[] = "Aurical_5G";     // your network SSID (name)
+char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 void setup() {

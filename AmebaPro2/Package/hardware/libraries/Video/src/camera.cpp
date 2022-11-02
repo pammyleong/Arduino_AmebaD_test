@@ -11,7 +11,7 @@ extern "C" {
 }
 #endif
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -20,6 +20,12 @@ extern "C" {
 #define CAMDBG(fmt, args...)
 #endif
 
+/**
+  * @brief  initialize camera settings for the camera sensor
+            same as CameraSetting(1)
+  * @param  none
+  * @retval none
+  */
 CameraSetting :: CameraSetting(void){
     _preset         = 1;
     _snapshot       = 0;
@@ -30,6 +36,11 @@ CameraSetting :: CameraSetting(void){
     _fps            = CAM_FPS;
 }
 
+/**
+  * @brief  initialize camera settings for the camera sensor
+  * @param  preset: preset number for 3 sets of preset settings
+  * @retval none
+  */
 CameraSetting :: CameraSetting(uint8_t preset){
     _preset = preset;
 
@@ -46,14 +57,12 @@ CameraSetting :: CameraSetting(uint8_t preset){
             _decoder = VIDEO_H264;
             _snapshot = 0;
             break;
-
         case 3:
             _resolution = VIDEO_FHD;
             _fps = CAM_FPS;
             _decoder = VIDEO_JPEG;
             _snapshot = 0;
             break;
-
         default:
             printf("Error with preset\r\n");
             break;
@@ -74,6 +83,11 @@ CameraSetting :: CameraSetting(uint8_t preset){
     }
 }
 
+/**
+  * @brief  initialize camera settings for the camera sensor
+  * @param  preset: preset number for 3 sets of preset settings
+  * @retval none
+  */
 CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder, uint8_t snapshot){
     _resolution = resolution;
     _fps = fps;
@@ -90,7 +104,7 @@ CameraSetting :: CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder,
                         _preset = 1;
                     }
                     else{
-                        _preset = 5; // _preset 5 means H264 with snapshot call back functions, goes to voe(1)
+                        _preset = 5;        // _preset 5 means H264 with snapshot call back functions, goes to voe(1)
                     }
                     break;
                 case VIDEO_JPEG:
@@ -146,7 +160,6 @@ void CameraClass::init(CameraSetting *obj){
     else{
         CAMDBG("[ERROR] Init failed, cannot allocate preset video settings");
     }
-    
 }
 
 /**
@@ -209,7 +222,8 @@ void CameraClass::open(void){
     int fps         = CAM_FPS;
     int gop         = CAM_GOP;
     int rc_mode     = CAM_RCMODE;
-    cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+	int snapshot    = 0;
+    cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode, snapshot);
 }
 
 /**
@@ -229,10 +243,15 @@ void CameraClass::open(CameraSetting *obj){
     int bps = CAM_BPS;
     int gop = -1;
     int rc_mode = -1;
+    int snapshot;
     
-    if (obj->_preset == 1){
+    if (obj->_preset % 4 == 1) {
         gop = CAM_GOP;
         rc_mode = CAM_RCMODE;
+        if (obj->_snapshot == 1) {
+            CAMDBG("snapshot flag set to 1");
+            snapshot = 1;
+        }
     }
     else if (obj->_preset == 2){
         gop = CAM_GOP;
@@ -242,7 +261,7 @@ void CameraClass::open(CameraSetting *obj){
         gop = 0;
         rc_mode = 0;
     }
-    cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);    
+    cameraOpen(video_data, video_data->priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode, snapshot);    
 }
 
 /**
@@ -258,8 +277,8 @@ void CameraClass::open(CameraSetting *obj){
             rc_mode  : enable or disable constant rate mode
   * @retval  none
   */
-void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode) {
-    cameraOpen(p, p_priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode, int snapshot) {
+    cameraOpen(p, p_priv, stream_id, type, res, w, h, bps, fps, gop, rc_mode, snapshot);
 }
 
 /**
@@ -274,9 +293,14 @@ void CameraClass::start(CameraSetting *obj){
     else if (obj->_preset == 2){
         cameraStart(video_data->priv, obj->_preset - 1);
     }
-    if (obj->_preset == 3){ // v3 example, with snapshot feature
+    else if (obj->_preset == 3){                             // v3: JPEG snapshot
         cameraStart(video_data->priv, obj->_preset - 1);
-        cameraSnapshot(video_data->priv, obj->_preset - 1);
+        //cameraSnapshot(video_data->priv, 2);
+        getP(obj, 0); // enable snapshot function
+    }
+    else if (obj->_preset == 5) {                            // v5: v1_snaphot callback
+        cameraStart(video_data->priv, obj->_preset - 5);
+        getP(obj, 1); // enable call back snapshot function
     }
 }
 
@@ -304,4 +328,21 @@ mm_context_t *CameraClass::getIO(void) {
   */
 void CameraClass::close(void){
     cameraStopVideoStream(video_data->priv, V1_CHANNEL);
+}
+
+/**
+  * @brief  Enable snapshot function
+  * @param  p       : void pointer to video object
+            cb_flag : whether enable snapshot call back function
+  * @retval none
+  */
+void CameraClass::getP(CameraSetting *obj, bool cb_flag) {
+    if (cb_flag == 0){
+        CAMDBG("snapshot cb disabled\r\n");
+        cameraSnapshot(video_data->priv, obj->_preset - 1);
+        
+    }else {
+        CAMDBG("snapshot cb enabled\r\n");
+        cameraSnapshotCB(video_data);
+    }
 }

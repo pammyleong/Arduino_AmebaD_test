@@ -71,13 +71,21 @@ enum encode_type {
 #define VIDEO_HD_HEIGHT     720
 #define VIDEO_VGA_WIDTH     640
 #define VIDEO_VGA_HEIGHT    480
+#define VIDEO_WVGA_WIDTH    640
+#define VIDEO_WVGA_HEIGHT   360
 
 // define video frame rate
 #define CAM_FPS             30
+#define CAM_NN_FPS          10
+
 // define video group of pictures
 #define CAM_GOP             30
+#define CAM_NN_GOP          10
+
 // define video bit rate
 #define CAM_BPS             2*1024*1024
+#define CAM_NN_BPS          1*1024*1024
+
 // define video rate control
 #define CAM_RCMODE          2 // 1: CBR, 2: VBR
 
@@ -123,10 +131,11 @@ class CameraClass{
 
         void open(void);
         void open(CameraSetting *obj);
-        void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+        void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode, int snapshot);
         void start(CameraSetting *obj);
         void close(void);
         mm_context_t *getIO(void);
+        void getP(CameraSetting *obj, bool cb_flag);
 
     private:
         mm_context_t *video_data;

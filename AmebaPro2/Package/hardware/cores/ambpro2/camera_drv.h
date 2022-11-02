@@ -11,11 +11,17 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset);
 
 mm_context_t *cameraInit(void);
 
-void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode);
+void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode, int snapshot);
 
 void cameraStart(void *p, int channel);
 
 void cameraSnapshot(void *p, int channel);
+
+void cameraSnapshotCB(mm_context_t *p);
+
+int snapshot_cb(uint32_t jpeg_addr, uint32_t jpeg_len);
+
+void snapshot_control_thread(void *param);
 
 void cameraStopVideoStream(void *p, int channel);
 

@@ -10,7 +10,7 @@
 #define OSD_ENABLE      1
 #define MD_ENABLE       1
 #define HDR_ENABLE      1
-#define DEBUG           0
+#define DEBUG           1
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -21,6 +21,7 @@
 
 extern int incb[5];
 extern int enc_queue_cnt[5];
+TaskHandle_t snapshot_thread = NULL;
 
 static video_params_t video_params = {
     .stream_id      = 0, 
@@ -60,7 +61,8 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
     info.hdr_enable = 1;
 #endif
     video_set_isp_info(&info);
-    if (preset == 1){ // preset % 4 == 1 
+    printf("                     preset value: %d \r\n", preset % 4);
+    if (preset % 4 == 1) {
         voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
                                         0,0,0,0,0,
                                         0,0,0,0,0,
@@ -112,7 +114,7 @@ mm_context_t *cameraInit(void){
     return videoData;
 }
 
-void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode){
+void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode, int snapshot) {
     // assign value parsing from user level
     video_params.stream_id = stream_id;
     video_params.type = type;
@@ -128,21 +130,53 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
         video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+        if (snapshot == 1) {
+            CAMDBG("parse 0 to snapshot");
+            mm_module_ctrl(p, CMD_VIDEO_SNAPSHOT, 0);
+        }
         CAMDBG("video opened");
     } else {
         CAMDBG("video open fail");
     }
 }
 
-void cameraStart(void *p, int channel){
+void cameraStart(void *p, int channel) {
     video_control(p, CMD_VIDEO_APPLY, channel);
 }
 
-void cameraSnapshot(void *p, int channel){
+void cameraSnapshot(void *p, int channel) {
     video_control(p, CMD_VIDEO_SNAPSHOT, channel);
 }
 
-mm_context_t *cameraDeInit(mm_context_t *p){
+int snapshot_cb(uint32_t jpeg_addr, uint32_t jpeg_len) {
+    printf("snapshot addr=%d\n\r, snapshot size=%d\n\r", (int)jpeg_addr, (int)jpeg_len);
+    return;
+}
+
+void snapshot_control_thread(void *param) {
+//    mm_context_t *packet = (mm_context_t*)param;
+//    printf("state: %d\r\n", packet->state);
+//    printf("curr_queue: %d\r\n", packet->curr_queue);
+//    printf("item_num: %d\r\n", packet->item_num);
+
+    while (1) {
+        vTaskDelay(10000);
+        mm_module_ctrl((mm_context_t*)param, CMD_VIDEO_SNAPSHOT, 1);
+    }
+}
+
+void cameraSnapshotCB(mm_context_t *p) {
+    mm_module_ctrl(p, CMD_VIDEO_SNAPSHOT_CB, (int)snapshot_cb);
+    
+    if (xTaskCreate(snapshot_control_thread, ((const char *)"snapshot_store"), 512, (void *)p, tskIDLE_PRIORITY + 1, &snapshot_thread) != pdPASS) {
+        printf("\n\r%s xTaskCreate failed", __FUNCTION__);
+    }
+    else{
+        printf("\n\r%s xTaskCreate success", __FUNCTION__);
+    }
+}
+
+mm_context_t *cameraDeInit(mm_context_t *p) {
     mm_queue_item_t *tmp_item;
     mm_context_t *video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
     video_data = p;
@@ -153,9 +187,9 @@ mm_context_t *cameraDeInit(mm_context_t *p){
             }
             CAMDBG("module close - move item to recycle");
             while (xQueueReceive(video_data->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
-                CAMDBG("module close - tmp_item %x",tmp_item);
+                printf("module close - tmp_item %x",tmp_item);
                 if (tmp_item) {
-                    CAMDBG("module close - data_addr %x", tmp_item->data_addr);
+                    printf("module close - data_addr %x", tmp_item->data_addr);
                     if (i == 0) {
                         if (tmp_item->data_addr) {
                             video_del_item(video_data->priv, (void *)tmp_item->data_addr);
