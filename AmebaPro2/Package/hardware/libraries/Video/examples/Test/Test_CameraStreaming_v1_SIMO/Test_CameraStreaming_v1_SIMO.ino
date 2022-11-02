@@ -3,31 +3,15 @@
 #include "rtsp.h"
 #include "WiFi.h"
 
-#define USE_SISO 1
-#define USE_MISO 0
-#define USE_SIMO 0
-
-#if USE_SISO
-CameraIOClass camio(1, 1); // Single Input Single Output
-#endif
-
-#if USE_SIMO
-CameraIOClass camio(1, 2);
-#endif
-
-#if USE_MISO
-CameraIOClass camio(2, 1);
-#endif
+// MAX output for now is 2
+CameraIOClass camio1(1, 2); // Single Input Multiple Output
 
 CameraClass cam;
-//CameraSetting camset;
-CameraSetting camset(3); 
-//CameraSetting camset(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0);
+CameraSetting camset; 
 
+// both rtsp using the same params setting
 RTSPClass rtsp;
-#if USE_SIMO
-RTSPClass rtsp1;
-#endif
+RTSPClass rtsp1; 
 
 char ssid[] = "Aurical_5G";     // your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
@@ -63,38 +47,22 @@ void setup() {
     rtsp.init(&camset);
     rtsp.open();
 
-#if USE_SIMO
     rtsp1.init(&camset);
     rtsp1.open();
-#endif
 
     // create camera io linker
-    camio.create();
+    camio1.create();
+    camio1.registerInput(cam.getIO());
+    camio1.registerOutput1(rtsp.getIO());
+    camio1.registerOutput2(rtsp1.getIO());
 
-    // add input
-    camio.registerInput(cam.getIO());
-    
-#if USE_MISO // currently no example for testing miso
-//    camio.registerInput0(rtsp.getIO());
-//    camio.registerInput1(xxxx.getIO());
-#endif 
-    // add output
-    camio.registerOutput(rtsp.getIO());
-
-#if USE_SIMO
-    camio.registerOutput0(rtsp.getIO());
-    camio.registerOutput1(rtsp1.getIO());
-#endif
-
-    if(camio.start() != 0) {
+    if(camio1.start() != 0) {
         Serial.println("camera io link start failed");
     }    
     
     cam.start(&camset);
+    Serial.println("Cam start!");
 }
-
 
 void loop() {
-// do nothing
 }
-
