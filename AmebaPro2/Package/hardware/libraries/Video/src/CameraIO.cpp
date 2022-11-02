@@ -24,7 +24,7 @@ CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
             this->registerInput1 = &mimoRegIn1;
             this->registerInput2 = &mimoRegIn2;
             this->registerOutput1 = &mimoRegOut1;
-             this->registerOutput2 = &mimoRegOut2;
+            this->registerOutput2 = &mimoRegOut2;
             this->start = &mimoStart;
             this->stop = &mimoStop;
             this->pause = &mimoPause;
@@ -65,6 +65,8 @@ CameraIOClass::CameraIOClass (uint8_t numInput, uint8_t numOutput ) {
             this->stop = &sisoStop;
             this->pause = &sisoPause;
             this->resume = &sisoResume;
+            this->setStackSize= &sisoSetStackSize;
+            this->setTaskPriority= &sisoSetTaskPriority;
         }
     }
 }

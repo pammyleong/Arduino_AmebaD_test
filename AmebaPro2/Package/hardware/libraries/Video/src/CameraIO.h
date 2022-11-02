@@ -6,7 +6,6 @@ class CameraIOClass
 {
     public:
         CameraIOClass(uint8_t numInput, uint8_t numOutput);
-
         uint8_t numInput;
         uint8_t numOutput;
 
@@ -23,4 +22,6 @@ class CameraIOClass
         void (*stop)(void);
         void (*pause)(void);
         void (*resume)(void);
+        void (*setStackSize)(void);
+        void (*setTaskPriority)(void);
 };
