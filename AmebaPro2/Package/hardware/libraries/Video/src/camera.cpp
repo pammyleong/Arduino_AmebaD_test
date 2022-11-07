@@ -134,7 +134,7 @@ CameraClass::~CameraClass(){};
   * @param  obj        : object pointer of CameraSetting Class
   * @retval none
   */
-void CameraClass::init(CameraSetting *obj){
+void CameraClass::init(CameraSetting *obj) {
     int bps = CAM_BPS;
     // update bps for v3
     if (obj->_v3_decoder == VIDEO_JPEG){
@@ -176,7 +176,7 @@ void CameraClass::init(CameraSetting *obj){
 void CameraClass::init(int v1_w, int v1_h, int v1_bps,
                          int v2_w, int v2_h, int v2_bps,
                          int v3_w, int v3_h, int v3_bps,
-                         int v4_w, int v4_h){
+                         int v4_w, int v4_h) {
     int enable   = VIDEO_ENABLE;
     int snapshot = VIDEO_SNAPSHOT_DISABLE;
     CAMDBG("1 %d    %d    %d    %d    %d",enable, v1_w, v1_h, v1_bps, snapshot);
@@ -202,7 +202,7 @@ void CameraClass::init(int v1_w, int v1_h, int v1_bps,
 void CameraClass::init_new(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
                                int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
                                int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
-                               int v4_enable, int v4_w, int v4_h){
+                               int v4_enable, int v4_w, int v4_h) {
 //    int enable   = VIDEO_ENABLE;
 //    int snapshot = VIDEO_SNAPSHOT_DISABLE;
     CAMDBG("1 %d    %d    %d    %d    %d    %d",v1_enable, v1_w, v1_h, v1_bps, v1_snapshot);
@@ -221,11 +221,10 @@ void CameraClass::init_new(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::deInit(void){
+void CameraClass::deInit(void) {
     if (cameraDeInit(video_data) == NULL) {
         printf("Camera Sensor DeInit Done.\r\n");
-    }
-    else {
+    } else {
         printf("Camera Sensor DeInit Failed.\r\n");
     }
 }
@@ -235,7 +234,7 @@ void CameraClass::deInit(void){
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(void){
+void CameraClass::open(void) {
     int stream_id   = V1_CHANNEL;
     int type        = VIDEO_TYPE; 
     int res         = VIDEO_FHD; 
@@ -254,7 +253,7 @@ void CameraClass::open(void){
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(CameraSetting *obj){
+void CameraClass::open(CameraSetting *obj) {
 
     CAMDBG("1 %d    %d    %d    %d    %d    %d",obj->_resolution,obj->_fps,obj->_decoder,obj->_snapshot,obj->_w, obj->_h);
     CAMDBG("2 %d    %d    %d    %d    %d    %d",obj->_v2_resolution,obj->_v2_fps,obj->_v2_decoder,obj->_v2_snapshot,obj->_v2_w, obj->_v2_h);
@@ -346,7 +345,7 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::start(CameraSetting *obj){
+void CameraClass::start(CameraSetting *obj) {
 
     if(obj->_resolution) {
         cameraStart(video_data->priv, obj->_streaming_id);
@@ -391,12 +390,10 @@ void CameraClass::start(CameraSetting *obj){
   */
 mm_context_t *CameraClass::getIO(void) {
     //To check if camera sensor init is done
-    if (video_data == NULL){
+    if (video_data == NULL) {
         printf("\r\nPlease init camera sensor first.\r\n");
         return NULL;
-    }
-    
-    else{
+    } else {
          return video_data;
     }
 }
@@ -406,7 +403,7 @@ mm_context_t *CameraClass::getIO(void) {
   * @param  none
   * @retval none
   */
-void CameraClass::close(void){
+void CameraClass::close(void) {
     cameraStopVideoStream(video_data->priv, V1_CHANNEL);
 }
 
@@ -421,7 +418,7 @@ void CameraClass::getP(CameraSetting *obj, bool cb_flag) {
         CAMDBG("snapshot cb disabled\r\n");
         cameraSnapshot(video_data->priv, obj->_v3_streaming_id);
         
-    }else {
+    } else {
         CAMDBG("snapshot cb enabled\r\n");
         cameraSnapshotCB(video_data);
     }
@@ -433,7 +430,7 @@ void CameraClass::getP(CameraSetting *obj, bool cb_flag) {
             cb_flag : whether enable snapshot call back function
   * @retval none
   */
-void CameraClass::setFPS(int fps){
+void CameraClass::setFPS(int fps) {
     video_set_framerate(fps);
 }
 

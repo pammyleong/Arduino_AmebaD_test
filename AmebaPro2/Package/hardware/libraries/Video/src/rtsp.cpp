@@ -23,10 +23,10 @@ static int AUDIO_EN = 0;
 #define CAMDBG(fmt, args...)
 #endif
 
-RTSPClass::RTSPClass(void){
+RTSPClass::RTSPClass(void) {
     rtspData = NULL;
 };
-RTSPClass::~RTSPClass(){};
+RTSPClass::~RTSPClass() {};
 
 /**
   * @brief  Initialization for RTSP module by setting up RTSP paramters. 
@@ -41,24 +41,22 @@ void RTSPClass::init(CameraSetting *obj) {
     uint32_t AV_Codec_ID;
     uint32_t RTSP_bps = RTSP_BPS;
     
-    if(obj->_resolution){
+    if(obj->_resolution) {
         RTSP_fps = obj->_fps;
         AV_Codec_ID = obj->_decoder;
     }
-    if(obj->_v2_resolution){
+    if(obj->_v2_resolution) {
         RTSP_fps = obj->_v2_fps;
         AV_Codec_ID = obj->_v2_decoder;
     }
-    if(obj->_v3_resolution){
+    if(obj->_v3_resolution) {
         RTSP_fps = obj->_v3_fps;
         AV_Codec_ID = obj->_v3_decoder;
     }
 
-    if (AV_Codec_ID == VIDEO_H264){
+    if (AV_Codec_ID == VIDEO_H264) {
         AV_Codec_ID = AV_CODEC_ID_H264;
-    }
-
-    else if (AV_Codec_ID == VIDEO_JPEG){
+    } else if (AV_Codec_ID == VIDEO_JPEG) {
         AV_Codec_ID = AV_CODEC_ID_MJPEG;
         RTSP_bps = 0; 
     }
@@ -67,7 +65,7 @@ void RTSPClass::init(CameraSetting *obj) {
     RTSPSelectStream(rtspData->priv, VID_CH_IDX);
     RTSPSetParamsVideo(rtspData->priv, RTSP_fps, RTSP_bps, AV_Codec_ID);
     RTSPSetApply(rtspData->priv);
-    if (AUDIO_EN == 1){ 
+    if (AUDIO_EN == 1) {
         RTSPSelectStream(rtspData->priv,AUDIO_CH_IDX);
         RTSPSetParamsAudio(rtspData->priv,AUDIO_CH_IDX, AUDIO_SAMPLE_RATE, AUDIO_CODEC_ID);
         RTSPSetApply(rtspData->priv);
@@ -79,11 +77,10 @@ void RTSPClass::init(CameraSetting *obj) {
   * @param  none
   * @retval none
   */
-void RTSPClass::deInit(void){
+void RTSPClass::deInit(void) {
     if (RTSPDeInit(rtspData) == NULL) {
         CAMDBG("RTSP DeInit.\r\n");
-    }
-    else {
+    } else {
         CAMDBG("RTSP need to be DeInit.\r\n");
     }
 }
@@ -93,12 +90,10 @@ void RTSPClass::deInit(void){
   * @param  none
   * @retval none
   */
-void RTSPClass::open (void){
+void RTSPClass::open (void) {
     if (rtspData == NULL) {
         printf("Streaming failed, RTSP not initialised yet.\r\n");
-    }
-    else {
-        
+    } else {
         RTSPSetStreaming ((void *)rtspData, ON);
         CAMDBG("Start Streaming\r\n");
     }
@@ -109,7 +104,7 @@ void RTSPClass::open (void){
   * @param  none
   * @retval none
   */
-void RTSPClass::close(void){
+void RTSPClass::close(void) {
     RTSPSetStreaming((void *)rtspData, OFF);
 }
 
@@ -123,8 +118,7 @@ mm_context_t *RTSPClass::getIO(void) {
     if (rtspData == NULL) {
         printf("Streaming failed, please init RTSP first.\r\n");	
         return NULL;
-    }
-    else {
+    } else {
         return rtspData;
     }
 }
@@ -134,8 +128,18 @@ mm_context_t *RTSPClass::getIO(void) {
   * @param  none
   * @retval AUDIO_EN status as a integer
   */
-int RTSPClass::enableAudio(void){
+int RTSPClass::enableAudio(void) {
     AUDIO_EN = 1;
     return AUDIO_EN;
 }
 
+/**
+  * @brief  Get RTSP port value for RTSP address
+  * @param  none
+  * @retval port value as a integer
+  */
+int RTSPClass::getPort(void) {
+    int port_val;
+    port_val = RTSPGetPort(rtspData->priv);
+    return port_val;
+}

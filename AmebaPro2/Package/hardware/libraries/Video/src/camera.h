@@ -101,7 +101,7 @@ enum encode_type {
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
 
-class CameraSetting{
+class CameraSetting {
     public:
         CameraSetting(void);
         CameraSetting(uint8_t preset);
@@ -147,7 +147,7 @@ class CameraSetting{
         friend class CameraClass;
 };
 
-class CameraClass{
+class CameraClass {
     public:
         CameraClass(void);
         ~CameraClass();

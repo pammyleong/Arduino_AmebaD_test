@@ -36,7 +36,7 @@ static video_params_t video_params = {
     .use_static_addr = 1
 };
 
-int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
+int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset) {
     int voe_heap_size = 0;
     isp_info_t info;
 
@@ -61,26 +61,22 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
     info.hdr_enable = 1;
 #endif
     video_set_isp_info(&info);
-    printf("                     preset value: %d \r\n", preset % 4);
-    if (preset % 4 == 1) {
+    if (preset % 4 == 1) { // preset % 4 == 1 
         voe_heap_size =  video_buf_calc(enable, w, h, bps, snapshot,
                                         0,0,0,0,0,
                                         0,0,0,0,0,
                                         0,0,0);
-    }
-    else if (preset == 2){
+    } else if (preset == 2) {
         voe_heap_size =  video_buf_calc(0,0,0,0,0,
                                         enable, w, h, bps, snapshot,
                                         0,0,0,0,0,
                                         0,0,0);
-    }
-    else if (preset == 3){
+    } else if (preset == 3) {
         voe_heap_size =  video_buf_calc(0,0,0,0,0,
                                         0,0,0,0,0,
                                         enable, w, h, bps, snapshot,
                                         0,0,0);
-    }
-    else{
+    } else {
         voe_heap_size =  video_buf_calc(0,0,0,0,0,
                                         0,0,0,0,0,
                                         0,0,0,0,0,
@@ -89,12 +85,10 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
     return voe_heap_size;
 }
 
-
-
 int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
                         int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
                         int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
-                        int v4_enable, int v4_w, int v4_h){
+                        int v4_enable, int v4_w, int v4_h) {
 
     int voe_heap_size = 0;
     isp_info_t info;
@@ -129,19 +123,15 @@ int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapsh
     return voe_heap_size;
 }
 
-
-
-
-
-mm_context_t *cameraInit(void){
+mm_context_t *cameraInit(void) {
     CAMDBG("cameraInit Starts");
     mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
     if (!videoData) {
         return NULL;
     }
     memset(videoData, 0, sizeof(mm_context_t));
-    videoData->queue_num = 1;		// default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
-    videoData->module = &video_module; 
+    videoData->queue_num = 1;       // default 1 queue, can set multiple queue by command MM_CMD_SET_QUEUE_NUM
+    videoData->module = &video_module;
     videoData->priv = video_module.create(videoData);
     if (!videoData->priv) {
         CAMDBG("[ERROR] fail------");
@@ -236,9 +226,9 @@ mm_context_t *cameraDeInit(mm_context_t *p) {
             }
             CAMDBG("module close - move item to recycle");
             while (xQueueReceive(video_data->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
-                printf("module close - tmp_item %x",tmp_item);
+                CAMDBG("module close - tmp_item %x",tmp_item);
                 if (tmp_item) {
-                    printf("module close - data_addr %x", tmp_item->data_addr);
+                    CAMDBG("module close - data_addr %x", tmp_item->data_addr);
                     if (i == 0) {
                         if (tmp_item->data_addr) {
                             video_del_item(video_data->priv, (void *)tmp_item->data_addr);
@@ -268,10 +258,9 @@ mm_context_t *cameraDeInit(mm_context_t *p) {
     CAMDBG("module close - free context");
     CAMDBG("module close - free heap %d", xPortGetFreeHeapSize());
     video_deinit();
-    
     return NULL;
 }
 
-void cameraStopVideoStream(void *p, int channel){
+void cameraStopVideoStream(void *p, int channel) {
     video_control(p, CMD_VIDEO_STREAM_STOP, channel);
 }

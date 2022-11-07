@@ -1,3 +1,6 @@
+#ifndef __CAMERAIO_H__
+#define __CAMERAIO_H__
+
 #include "Arduino.h"
 #include "rtsp.h"
 #include "camera.h"
@@ -26,3 +29,5 @@ class CameraIOClass
         void (*setStackSize)(void);
         void (*setTaskPriority)(void);
 };
+
+#endif
