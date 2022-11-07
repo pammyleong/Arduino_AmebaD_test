@@ -107,14 +107,43 @@ class CameraSetting{
         CameraSetting(uint8_t preset);
         CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder, uint8_t snapshot);
 
+        CameraSetting(uint8_t resolution, uint8_t fps, uint8_t decoder, uint8_t snapshot,
+                            uint8_t v2_resolution, uint8_t v2_fps, uint8_t v2_decoder, uint8_t v2_snapshot,
+                            uint8_t v3_resolution, uint8_t v3_fps, uint8_t v3_decoder, uint8_t v3_snapshot,
+                            uint8_t v4_resolution, uint8_t v4_fps);
+        
         int8_t _preset = -1;
+
+        uint8_t _streaming_id = 0;
         uint8_t _resolution;
         uint8_t _fps;
         uint8_t _decoder;
         uint8_t _snapshot;
         int _w;
         int _h;
-        
+
+        uint8_t _v2_streaming_id = 1;
+        uint8_t _v2_resolution;
+        uint8_t _v2_fps;
+        uint8_t _v2_decoder;
+        uint8_t _v2_snapshot;
+        int _v2_w;
+        int _v2_h;
+
+        uint8_t _v3_streaming_id = 2;
+        uint8_t _v3_resolution;
+        uint8_t _v3_fps;
+        uint8_t _v3_decoder;
+        uint8_t _v3_snapshot;
+        int _v3_w;
+        int _v3_h;
+
+        uint8_t _v4_streaming_id = 4;
+        uint8_t _v4_resolution;
+        uint8_t _v4_fps;
+        int _v4_w;
+        int _v4_h;
+
         friend class CameraClass;
 };
 
@@ -127,6 +156,14 @@ class CameraClass{
         void init(int w, int h, int bps, int preset);
         void init(int enable, int w, int h, int bps, int snapshot, int preset);
 
+        void init(int v1_w, int v1_h, int v1_bps,
+                         int v2_w, int v2_h, int v2_bps,
+                         int v3_w, int v3_h, int v3_bps,
+                         int v4_w, int v4_h);
+        void init_new(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
+                               int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
+                               int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
+                               int v4_enable, int v4_w, int v4_h);
         void deInit(void);
 
         void open(void);
@@ -136,6 +173,7 @@ class CameraClass{
         void close(void);
         mm_context_t *getIO(void);
         void getP(CameraSetting *obj, bool cb_flag);
+        void setFPS(int fps);
 
     private:
         mm_context_t *video_data;

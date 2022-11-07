@@ -1,35 +1,31 @@
 #include "CameraIO.h"
+#include "WiFi.h"
 #include "camera.h"
 #include "rtsp.h"
-#include "WiFi.h"
 
-//Connect to GPIO pin 8 if you want to do software reset
-
-CameraIOClass camio(1, 1); // Single Input Single Output
-
+// Connect to GPIO pin 8 if you want to do trigger video reset
 CameraClass cam;
-CameraSetting camset; 
-
+CameraSetting camset;
 RTSPClass rtsp;
+CameraIOClass camio(1, 1);  // Single Input Single Output
 
-//Button setting
+// Button setting
 int buttonPin = 8;
 int buttonState = 0;
 
-
-char ssid[] = "Aurical_5G";     // your network SSID (name)
-char pass[] = "wyy170592";  	// your network password
-int status = WL_IDLE_STATUS;    // the Wifi radio's status
+char ssid[] = "Aurical_5G";   // your network SSID (name)
+char pass[] = "wyy170592";    // your network password
+int status = WL_IDLE_STATUS;  // the Wifi radio's status
 
 void setup() {
-
     Serial.begin(115200);
     Serial.println("Just setup");
-    
+
     if (WiFi.status() == WL_NO_SHIELD) {
         Serial.println("WiFi shield not present");
         // don't continue:
-        while (true);
+        while (true)
+            ;
     }
 
     // attempt to connect to Wifi network:
@@ -56,10 +52,10 @@ void setup() {
     camio.registerInput(cam.getIO());
     camio.registerOutput(rtsp.getIO());
 
-    if(camio.start() != 0) {
+    if (camio.start() != 0) {
         Serial.println("camera io link start failed");
-    }    
-    
+    }
+
     cam.start(&camset);
     Serial.println("Cam start!");
     pinMode(buttonPin, INPUT);
@@ -68,12 +64,11 @@ void setup() {
 void loop() {
     buttonState = digitalRead(buttonPin);
     if (buttonState == HIGH) {
-    reset();
-    } 
+        reset();
+    }
 }
 
 void reset() {
-
     // deinit
     camio.pause();
     Serial.println("Streaming pause!");
@@ -90,7 +85,7 @@ void reset() {
     cam.deInit();
     Serial.println("cam deinit!");
 
-    //reinit
+    // reinit
     delay(4000);
     Serial.println("\n");
     Serial.println("Resetting......");
@@ -112,12 +107,10 @@ void reset() {
     camio.registerInput(cam.getIO());
     camio.registerOutput(rtsp.getIO());
 
-    if(camio.start() != 0) {
+    if (camio.start() != 0) {
         Serial.println("camera io link start failed");
     }
 
     cam.start(&camset);
     Serial.println("Cam start again!");
-
 };
-

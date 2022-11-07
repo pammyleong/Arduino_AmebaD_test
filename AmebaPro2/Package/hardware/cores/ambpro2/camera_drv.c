@@ -89,6 +89,50 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset){
     return voe_heap_size;
 }
 
+
+
+int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
+                        int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
+                        int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
+                        int v4_enable, int v4_w, int v4_h){
+
+    int voe_heap_size = 0;
+    isp_info_t info;
+
+    if (USE_SENSOR == SENSOR_GC4653) {
+        info.sensor_width = 2560;
+        info.sensor_height = 1440;
+        info.sensor_fps = 15;
+    } else {
+        info.sensor_width = 1920;
+        info.sensor_height = 1080;
+        info.sensor_fps = 30;
+    }
+#if OSD_ENABLE
+    info.osd_enable = 1;
+#endif
+
+#if MD_ENABLE
+    info.md_enable = 1;
+#endif
+
+#if HDR_ENABLE
+    info.hdr_enable = 1;
+#endif
+    video_set_isp_info(&info);
+
+    voe_heap_size = video_voe_presetting(v1_enable, v1_w, v1_h, v1_bps, v1_snapshot, 
+                                         v2_enable, v2_w, v2_h, v2_bps, v2_snapshot, 
+                                         v3_enable, v3_w, v3_h, v3_bps, v3_snapshot, 
+                                         v4_enable, v4_w, v4_h);
+    CAMDBG("voe_heap_size assigned.");
+    return voe_heap_size;
+}
+
+
+
+
+
 mm_context_t *cameraInit(void){
     CAMDBG("cameraInit Starts");
     mm_context_t* videoData = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
@@ -126,6 +170,11 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
     video_params.gop = gop;
     video_params.rc_mode = rc_mode;
 
+    CAMDBG("2 %d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    if(stream_id == 2) {
+        
+    }
+
     if (p) {
         video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
@@ -134,9 +183,9 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
             CAMDBG("parse 0 to snapshot");
             mm_module_ctrl(p, CMD_VIDEO_SNAPSHOT, 0);
         }
-        CAMDBG("video opened");
+        CAMDBG("cameraOpen done");
     } else {
-        CAMDBG("video open fail");
+        CAMDBG("cameraOpen fail");
     }
 }
 

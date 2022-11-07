@@ -3,23 +3,19 @@
 #include "camera.h"
 #include "rtsp.h"
 
-// user can choose the camera settings below
 CameraSetting camset;
-// CameraSetting camset(1);
-//  CameraSetting camset(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0,
-//                        0,0,0,0,
-//                        0,0,0,0,
-//                        0,0);
 CameraClass cam;
+CameraIOClass camio1_1In2Out(1, 2);  // Single Input Multiple Output
 RTSPClass rtsp;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
+RTSPClass rtsp1;
 
-char ssid[] = "Aurical_5G";   // your network SSID (name)
-char pass[] = "wyy170592";    // your network password
+char ssid[] = "yourNetwork";  //  your network SSID (name)
+char pass[] = "password";     // your network password
 int status = WL_IDLE_STATUS;  // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);
+    Serial.println("Just setup");
 
     if (WiFi.status() == WL_NO_SHIELD) {
         Serial.println("WiFi shield not present");
@@ -39,25 +35,23 @@ void setup() {
         delay(2000);
     }
 
-    // init camera
     cam.init(&camset);
     cam.open(&camset);
 
-    // init rtsp
     rtsp.init(&camset);
     rtsp.open();
+    rtsp1.init(&camset);
+    rtsp1.open();
 
-    // create camera io linker
-    camio1_1In1Out.create();
-    camio1_1In1Out.registerInput(cam.getIO());
-    camio1_1In1Out.registerOutput(rtsp.getIO());
-    if (camio1_1In1Out.start() != 0) {
+    camio1_1In2Out.create();
+    camio1_1In2Out.registerInput(cam.getIO());
+    camio1_1In2Out.registerOutput1(rtsp.getIO());
+    camio1_1In2Out.registerOutput2(rtsp1.getIO());
+    if (camio1_1In2Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 
     cam.start(&camset);
 }
 
-void loop() {
-    // do nothing
-}
+void loop() {}

@@ -7,7 +7,7 @@
 #include "module_rtsp2.h"
 #include "queue.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -59,8 +59,9 @@ int RTSPSetApply (void *p) {
 
 // Decide to on or off streaming
 void RTSPSetStreaming (void *p, int arg) { 
-    CAMDBG("Set Streaming");
+    CAMDBG("Set Streaming start");
     mm_module_ctrl((mm_context_t *)p, CMD_RTSP2_SET_STREAMMING, arg);	
+    CAMDBG("Set Streaming done");
 }
 
 // Set parameters for RTSP Video

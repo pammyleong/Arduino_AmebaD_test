@@ -3,6 +3,7 @@
 #include "mmf2_mimo.h"
 
 static mm_mimo_t *mimo_arduino = NULL;
+uint8_t numIn = 0;
 
 /**
   * @brief  allocate memory for a mimo object
@@ -40,6 +41,10 @@ void mimoRegIn2(mm_context_t *arg1) {
     mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_INPUT1, (uint32_t)arg1, 0);
 }
 
+void mimoRegIn3(mm_context_t *arg1) {
+    mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_INPUT2, (uint32_t)arg1, 0);
+}
+
 /**
   * @brief  api to register output sources to MIMO
   * @param  obj: mimo object
@@ -47,11 +52,27 @@ void mimoRegIn2(mm_context_t *arg1) {
   * @retval  none
   */
 void mimoRegOut1(mm_context_t *arg1) {
-    mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT0, (uint32_t)arg1, MMIC_DEP_INPUT0 | MMIC_DEP_INPUT1);
+    if (numIn == 2){
+        printf("2 Inputs /r/n");
+        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT0, (uint32_t)arg1, MMIC_DEP_INPUT0);
+//        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT0, (uint32_t)arg1, MMIC_DEP_INPUT0 | MMIC_DEP_INPUT1);
+    }
+    else if (numIn == 3){
+        printf("3 Inputs /r/n");
+        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT0, (uint32_t)arg1, MMIC_DEP_INPUT0 | MMIC_DEP_INPUT2);
+    }
 }
 
 void mimoRegOut2(mm_context_t *arg1) {
-    mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT1,(uint32_t)arg1, MMIC_DEP_INPUT0 | MMIC_DEP_INPUT1);
+    if (numIn == 2){
+        printf("2 Inputs /r/n");
+        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT1, (uint32_t)arg1, MMIC_DEP_INPUT1);
+//        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT1,(uint32_t)arg1,  MMIC_DEP_INPUT1 | MMIC_DEP_INPUT0);
+    }
+    else if (numIn == 3){
+        printf("3 Inputs /r/n");
+        mimo_ctrl(mimo_arduino, MMIC_CMD_ADD_OUTPUT1,(uint32_t)arg1, MMIC_DEP_INPUT1 | MMIC_DEP_INPUT2);
+    }
 }
 
 /**
@@ -89,4 +110,8 @@ void mimoPause(void) {
   */
 void mimoResume(void) {
     mimo_resume(mimo_arduino);
+}
+
+void getInput(uint8_t numInput){
+    numIn = numInput;
 }

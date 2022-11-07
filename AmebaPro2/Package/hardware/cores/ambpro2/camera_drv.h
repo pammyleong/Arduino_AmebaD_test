@@ -8,6 +8,10 @@
 #include "mmf2_module.h"
 
 int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset);
+int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
+                        int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
+                        int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
+                        int v4_enable, int v4_w, int v4_h);
 
 mm_context_t *cameraInit(void);
 
@@ -34,5 +38,6 @@ extern int video_control(void *p, int cmd, int arg);
 extern int video_close(int ch);
 extern void *video_del_item(void *p, void *d);
 extern void *video_deinit(void);
+extern void video_set_framerate(int fps);
 
 #endif
