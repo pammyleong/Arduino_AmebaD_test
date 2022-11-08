@@ -33,25 +33,25 @@ RTSPClass::~RTSPClass() {};
   * @param  obj  : object pointer to Camera Settings
   * @retval none
   */
-void RTSPClass::init(CameraSetting *obj) {
+void RTSPClass::init(CameraSetting& obj) {
     rtspData = RTSPInit();
     CAMDBG("RTSP_Init done\r\n");
-    
+
     uint32_t RTSP_fps;
     uint32_t AV_Codec_ID;
     uint32_t RTSP_bps = RTSP_BPS;
     
-    if(obj->_resolution) {
-        RTSP_fps = obj->_fps;
-        AV_Codec_ID = obj->_decoder;
+    if(obj._resolution) {
+        RTSP_fps = obj._fps;
+        AV_Codec_ID = obj._decoder;
     }
-    if(obj->_v2_resolution) {
-        RTSP_fps = obj->_v2_fps;
-        AV_Codec_ID = obj->_v2_decoder;
+    if(obj._v2_resolution) {
+        RTSP_fps = obj._v2_fps;
+        AV_Codec_ID = obj._v2_decoder;
     }
-    if(obj->_v3_resolution) {
-        RTSP_fps = obj->_v3_fps;
-        AV_Codec_ID = obj->_v3_decoder;
+    if(obj._v3_resolution) {
+        RTSP_fps = obj._v3_fps;
+        AV_Codec_ID = obj._v3_decoder;
     }
 
     if (AV_Codec_ID == VIDEO_H264) {

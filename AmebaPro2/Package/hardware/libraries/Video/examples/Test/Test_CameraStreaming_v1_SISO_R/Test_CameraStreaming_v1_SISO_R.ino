@@ -40,11 +40,11 @@ void setup() {
     }
 
     // init camera
-    cam.init(&camset);
-    cam.open(&camset);
+    cam.init(camset);
+    cam.open(camset);
 
     // init rtsp
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
 
     // create camera io linker
@@ -56,7 +56,7 @@ void setup() {
         Serial.println("camera io link start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
     Serial.println("Cam start!");
     pinMode(buttonPin, INPUT);
 }
@@ -92,13 +92,13 @@ void reset() {
     delay(10000);
 
     // init camera
-    cam.init(&camset);
+    cam.init(camset);
     Serial.println("init cam again!");
-    cam.open(&camset);
+    cam.open(camset);
     Serial.println("init rtsp again!");
 
     // init rtsp
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
 
     // create camera io linker
@@ -111,6 +111,6 @@ void reset() {
         Serial.println("camera io link start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
     Serial.println("Cam start again!");
 };

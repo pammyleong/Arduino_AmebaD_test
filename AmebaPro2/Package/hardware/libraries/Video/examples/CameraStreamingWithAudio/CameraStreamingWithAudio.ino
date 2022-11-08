@@ -9,11 +9,11 @@ CameraClass cam;
 AudioClass audio;
 AACClass aac;
 RTSPClass rtsp;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
-CameraIOClass camio2_2In1Out(2, 1);  // Multi Input Single Output
+CameraIOClass camio1_1In1Out(1, 1); // SISO for Audio -> AAC
+CameraIOClass camio2_2In1Out(2, 1); // MISO for Video + Audio -> RTSP
 
-char ssid[] = "yourNetwork";  //  your network SSID (name)
-char pass[] = "password";     // your network password
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
+char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;  // the Wifi radio's status
 
 void setup() {
@@ -37,15 +37,15 @@ void setup() {
         delay(2000);
     }
 
-    cam.init(&camset);
-    cam.open(&camset);
+    cam.init(camset);
+    cam.open(camset);
 
     audio.init();
     audio.open();
     aac.init();
 
     rtsp.enableAudio();
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
 
     camio1_1In1Out.create();
@@ -63,7 +63,7 @@ void setup() {
         Serial.println("camera io link 2 start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
 }
 
 void loop() {

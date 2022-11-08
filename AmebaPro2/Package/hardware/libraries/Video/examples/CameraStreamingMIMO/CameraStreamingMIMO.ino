@@ -4,7 +4,7 @@
 #include "camera.h"
 #include "rtsp.h"
 
-CameraSetting camset(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0, 
+CameraSetting camset1(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0, 
                      0, 0, 0, 0, 
                      0, 0, 0, 0,
                      0, 0);
@@ -13,17 +13,17 @@ CameraSetting camset2(0, 0, 0, 0,
                       VIDEO_HD, CAM_FPS, VIDEO_H264, 0, 
                       0, 0, 0, 0,
                       0, 0);
-CameraClass cam;
+CameraClass cam1;
 CameraClass cam2;
 AudioClass audio;
 AACClass aac;
-RTSPClass rtsp;
 RTSPClass rtsp1;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
-CameraIOClass camio2_3In2Out(3, 2);  // Multi Input Multi Output
+RTSPClass rtsp2;
+CameraIOClass camio1_1In1Out(1, 1);  // SISO for Audio -> AAC
+CameraIOClass camio2_3In2Out(3, 2);  // MIMO for Video1 (FHD), Video2 (HD) and Audio -> RTSP1 and RTSP2
 
-char ssid[] = "Aurical_5G";   //  your network SSID (name)
-char pass[] = "wyy170592";    // your network password
+char ssid[] = "yourNetwork";   //  your network SSID (name)
+char pass[] = "password";    // your network password
 int status = WL_IDLE_STATUS;  // the Wifi radio's status
 
 void setup() {
@@ -48,8 +48,8 @@ void setup() {
     }
 
     // init camera
-    cam.init(camset);
-    cam.open(camset);
+    cam1.init(camset1);
+    cam1.open(camset1);
 
     cam2.init(camset2);
     cam2.open(camset2);
@@ -60,13 +60,13 @@ void setup() {
     aac.init();
 
     // init rtsp
-    rtsp.enableAudio();
-    rtsp.init(camset);
-    rtsp.open();
-
     rtsp1.enableAudio();
-    rtsp1.init(camset2);
+    rtsp1.init(camset1);
     rtsp1.open();
+
+    rtsp2.enableAudio();
+    rtsp2.init(camset2);
+    rtsp2.open();
 
     // SISO for Audio [AAC-AUDIO]
     camio1_1In1Out.create();
@@ -77,27 +77,18 @@ void setup() {
     }
 
     camio2_3In2Out.create();
-    camio2_3In2Out.registerInput1(cam.getIO());
+    camio2_3In2Out.registerInput1(cam1.getIO());
     camio2_3In2Out.registerInput2(cam2.getIO());
     camio2_3In2Out.registerInput3(aac.getIO());
 
-    camio2_3In2Out.registerOutput1(rtsp.getIO());
-    camio2_3In2Out.registerOutput2(rtsp1.getIO());
+    camio2_3In2Out.registerOutput1(rtsp1.getIO());
+    camio2_3In2Out.registerOutput2(rtsp2.getIO());
 
     if (camio2_3In2Out.start() != 0) {
         Serial.println("camera io link 1 start failed");
     }
-
-    // camio1_2In2Out.create();
-    // camio1_2In2Out.registerInput1(cam.getIO());
-    // camio1_2In2Out.registerInput2(cam2.getIO());
-    // camio1_2In2Out.registerOutput1(rtsp.getIO());
-    // camio1_2In2Out.registerOutput2(rtsp1.getIO());
-    // if (camio1_2In2Out.start() != 0) {
-    //     Serial.println("camera io link 1 start failed");
-    // }
-
-    cam.start(camset);
+    
+    cam1.start(camset1);
     cam2.start(camset2);
 }
 

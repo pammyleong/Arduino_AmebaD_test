@@ -38,8 +38,8 @@ void setup() {
     }
 
     // init camera
-    cam.init(&camset);
-    cam.open(&camset);
+    cam.init(camset);
+    cam.open(camset);
 
     // init audio & aac
     audio.init();
@@ -48,7 +48,7 @@ void setup() {
 
     // init rtsp
     rtsp.enableAudio();
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
 
     // SISO for Audio [AUDIO-AAC]
@@ -68,7 +68,7 @@ void setup() {
         Serial.println("camera io link 2 start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
 }
 
 void loop() {

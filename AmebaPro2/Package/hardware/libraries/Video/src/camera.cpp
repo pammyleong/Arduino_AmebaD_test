@@ -11,7 +11,7 @@ extern "C" {
 }
 #endif
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -134,20 +134,20 @@ CameraClass::~CameraClass(){};
   * @param  obj        : object pointer of CameraSetting Class
   * @retval none
   */
-void CameraClass::init(CameraSetting *obj) {
+void CameraClass::init(CameraSetting& obj) {
     int bps = CAM_BPS;
     // update bps for v3
-    if (obj->_v3_decoder == VIDEO_JPEG){
+    if (obj._v3_decoder == VIDEO_JPEG){
         bps = 0;
     }
-    CAMDBG("1 %d    %d    %d    %d    %d    %d    %d",obj->_resolution,obj->_fps,obj->_decoder,obj->_snapshot,obj->_w, obj->_h, bps);
-    CAMDBG("2 %d    %d    %d    %d    %d    %d    %d",obj->_v2_resolution,obj->_v2_fps,obj->_v2_decoder,obj->_v2_snapshot,obj->_v2_w, obj->_v2_h, bps);
-    CAMDBG("3 %d    %d    %d    %d    %d    %d    %d",obj->_v3_resolution,obj->_v3_fps,obj->_v3_decoder,obj->_v3_snapshot,obj->_v3_w, obj->_v3_h, bps);
-    CAMDBG("Preset: %d",obj->_preset);
+    CAMDBG("1 %d    %d    %d    %d    %d    %d    %d",obj._resolution,obj._fps,obj._decoder,obj._snapshot,obj._w, obj._h, bps);
+    CAMDBG("2 %d    %d    %d    %d    %d    %d    %d",obj._v2_resolution,obj._v2_fps,obj._v2_decoder,obj._v2_snapshot,obj._v2_w, obj._v2_h, bps);
+    CAMDBG("3 %d    %d    %d    %d    %d    %d    %d",obj._v3_resolution,obj._v3_fps,obj._v3_decoder,obj._v3_snapshot,obj._v3_w, obj._v3_h, bps);
+    CAMDBG("Preset: %d",obj._preset);
 
-    return init(obj->_w, obj->_h, bps,
-                obj->_v2_w, obj->_v2_h, bps,
-                obj->_v3_w, obj->_v3_h, bps,
+    return init(obj._w, obj._h, bps,
+                obj._v2_w, obj._v2_h, bps,
+                obj._v3_w, obj._v3_h, bps,
                 0, 0);
 
 ////    if(obj->_preset != -1){
@@ -253,56 +253,56 @@ void CameraClass::open(void) {
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::open(CameraSetting *obj) {
+void CameraClass::open(CameraSetting& obj) {
 
-    CAMDBG("1 %d    %d    %d    %d    %d    %d",obj->_resolution,obj->_fps,obj->_decoder,obj->_snapshot,obj->_w, obj->_h);
-    CAMDBG("2 %d    %d    %d    %d    %d    %d",obj->_v2_resolution,obj->_v2_fps,obj->_v2_decoder,obj->_v2_snapshot,obj->_v2_w, obj->_v2_h);
-    CAMDBG("3 %d    %d    %d    %d    %d    %d",obj->_v3_resolution,obj->_v3_fps,obj->_v3_decoder,obj->_v3_snapshot,obj->_v3_w, obj->_v3_h);
-    CAMDBG("Preset: %d",obj->_preset);
+    CAMDBG("1 %d    %d    %d    %d    %d    %d    %d",obj._resolution,obj._fps,obj._decoder,obj._snapshot,obj._w, obj._h);
+    CAMDBG("2 %d    %d    %d    %d    %d    %d    %d",obj._v2_resolution,obj._v2_fps,obj._v2_decoder,obj._v2_snapshot,obj._v2_w, obj._v2_h);
+    CAMDBG("3 %d    %d    %d    %d    %d    %d    %d",obj._v3_resolution,obj._v3_fps,obj._v3_decoder,obj._v3_snapshot,obj._v3_w, obj._v3_h);
+    CAMDBG("Preset: %d",obj._preset);
 
-    if(obj->_resolution){
+    if(obj._resolution){
         CAMDBG("Run open(v1)");
         cameraOpen(video_data, video_data->priv, 
-                    obj->_streaming_id, 
-                    obj->_decoder, 
-                    obj->_resolution, 
-                    obj->_w, 
-                    obj->_h, 
+                    obj._streaming_id, 
+                    obj._decoder, 
+                    obj._resolution, 
+                    obj._w, 
+                    obj._h, 
                     CAM_BPS, 
-                    obj->_fps, 
+                    obj._fps, 
                     CAM_GOP, 
                     CAM_RCMODE, 
-                    obj->_snapshot);
+                    obj._snapshot);
     }
 
-    if(obj->_v2_resolution){
+    if(obj._v2_resolution){
         CAMDBG("Run open(v2)");
         cameraOpen(video_data, video_data->priv, 
-                    obj->_v2_streaming_id, 
-                    obj->_v2_decoder, 
-                    obj->_v2_resolution, 
-                    obj->_v2_w, 
-                    obj->_v2_h, 
+                    obj._v2_streaming_id, 
+                    obj._v2_decoder, 
+                    obj._v2_resolution, 
+                    obj._v2_w, 
+                    obj._v2_h, 
                     CAM_BPS, 
-                    obj->_v2_fps, 
+                    obj._v2_fps, 
                     CAM_GOP, 
                     CAM_RCMODE, 
-                    obj->_v2_snapshot);
+                    obj._v2_snapshot);
     }
 
-    if(obj->_v3_resolution){
+    if(obj._v3_resolution){
         CAMDBG("Run open(v3)");
         cameraOpen(video_data, video_data->priv, 
-                    obj->_v3_streaming_id, 
-                    obj->_v3_decoder, 
-                    obj->_v3_resolution, 
-                    obj->_v3_w, 
-                    obj->_v3_h, 
+                    obj._v3_streaming_id, 
+                    obj._v3_decoder, 
+                    obj._v3_resolution, 
+                    obj._v3_w, 
+                    obj._v3_h, 
                     0, 
-                    obj->_v3_fps, 
+                    obj._v3_fps, 
                     0, 
                     0, 
-                    obj->_v3_snapshot);
+                    obj._v3_snapshot);
     }
 //    if (obj->_preset % 4 == 1) {
 //        gop = CAM_GOP;
@@ -345,23 +345,23 @@ void CameraClass::open(mm_context_t *p, void *p_priv, int stream_id, int type, i
   * @param  void pointer to video obj
   * @retval  none
   */
-void CameraClass::start(CameraSetting *obj) {
+void CameraClass::start(CameraSetting& obj) {
 
-    if(obj->_resolution) {
-        cameraStart(video_data->priv, obj->_streaming_id);
+    if(obj._resolution) {
+        cameraStart(video_data->priv, obj._streaming_id);
     }
 
-    if(obj->_v2_resolution) {
-        cameraStart(video_data->priv, obj->_v2_streaming_id);
+    if(obj._v2_resolution) {
+        cameraStart(video_data->priv, obj._v2_streaming_id);
     }
 
-    if(obj->_v3_resolution) { // V3
-        cameraStart(video_data->priv, obj->_v3_streaming_id);
+    if(obj._v3_resolution) { // V3
+        cameraStart(video_data->priv, obj._v3_streaming_id);
         getP(obj, 0);   // enable snapshot function
     }
 
-    if(obj->_resolution && obj->_snapshot) { //V1_snapshot
-        cameraStart(video_data->priv, obj->_v3_streaming_id);
+    if(obj._resolution && obj._snapshot) { //V1_snapshot
+        cameraStart(video_data->priv, obj._v3_streaming_id);
         getP(obj, 1);   // enable call back snapshot function
     }
 //    if (obj->_preset == 1){
@@ -413,10 +413,10 @@ void CameraClass::close(void) {
             cb_flag : whether enable snapshot call back function
   * @retval none
   */
-void CameraClass::getP(CameraSetting *obj, bool cb_flag) {
+void CameraClass::getP(CameraSetting& obj, bool cb_flag) {
     if (cb_flag == 0){
         CAMDBG("snapshot cb disabled\r\n");
-        cameraSnapshot(video_data->priv, obj->_v3_streaming_id);
+        cameraSnapshot(video_data->priv, obj._v3_streaming_id);
         
     } else {
         CAMDBG("snapshot cb enabled\r\n");

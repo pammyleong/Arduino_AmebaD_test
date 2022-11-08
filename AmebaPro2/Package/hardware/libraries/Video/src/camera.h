@@ -152,7 +152,7 @@ class CameraClass {
         CameraClass(void);
         ~CameraClass();
 
-        void init(CameraSetting *obj);
+        void init(CameraSetting& obj);
         void init(int w, int h, int bps, int preset);
         void init(int enable, int w, int h, int bps, int snapshot, int preset);
 
@@ -167,12 +167,12 @@ class CameraClass {
         void deInit(void);
 
         void open(void);
-        void open(CameraSetting *obj);
+        void open(CameraSetting& obj);
         void open(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int rc_mode, int snapshot);
-        void start(CameraSetting *obj);
+        void start(CameraSetting& obj);
         void close(void);
         mm_context_t *getIO(void);
-        void getP(CameraSetting *obj, bool cb_flag);
+        void getP(CameraSetting& obj, bool cb_flag);
         void setFPS(int fps);
 
     private:

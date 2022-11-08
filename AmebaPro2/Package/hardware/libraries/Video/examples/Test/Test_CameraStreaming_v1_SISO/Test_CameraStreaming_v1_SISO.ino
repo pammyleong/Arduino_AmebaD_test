@@ -40,11 +40,11 @@ void setup() {
     }
 
     // init camera
-    cam.init(&camset);
-    cam.open(&camset);
+    cam.init(camset);
+    cam.open(camset);
 
     // init rtsp
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
 
     // create camera io linker
@@ -55,7 +55,7 @@ void setup() {
         Serial.println("camera io link start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
 }
 
 void loop() {

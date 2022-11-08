@@ -14,17 +14,17 @@ extern "C" {
 
 #include "camera.h"
 
-class RTSPClass : public CameraSetting {
+class RTSPClass   {
+//class RTSPClass : public CameraSetting {
     public:
         RTSPClass(void);
         ~RTSPClass(void);
 
-        void init(CameraSetting *obj);
+        void init(CameraSetting& obj);
         void open(void);
         void close(void);
         void deInit(void);
         mm_context_t *getIO(void);
-
         int enableAudio(void);
         int getPort(void);
 

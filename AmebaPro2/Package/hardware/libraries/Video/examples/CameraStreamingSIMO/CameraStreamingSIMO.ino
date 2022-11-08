@@ -35,12 +35,12 @@ void setup() {
         delay(2000);
     }
 
-    cam.init(&camset);
-    cam.open(&camset);
+    cam.init(camset);
+    cam.open(camset);
 
-    rtsp.init(&camset);
+    rtsp.init(camset);
     rtsp.open();
-    rtsp1.init(&camset);
+    rtsp1.init(camset);
     rtsp1.open();
 
     camio1_1In2Out.create();
@@ -51,7 +51,7 @@ void setup() {
         Serial.println("camera io link start failed");
     }
 
-    cam.start(&camset);
+    cam.start(camset);
 }
 
 void loop() {}
