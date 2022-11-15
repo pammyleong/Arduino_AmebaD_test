@@ -5,12 +5,10 @@
 #include "rtsp.h"
 #include "camera.h"
 
-class StreamIOClass
+class StreamIO
 {
     public:
-        StreamIOClass(uint8_t numInput, uint8_t numOutput);
-        uint8_t numInput;
-        uint8_t numOutput;
+        StreamIO(uint8_t numInput, uint8_t numOutput);
 
         // function pointers
         void (*create)(void);
@@ -28,6 +26,10 @@ class StreamIOClass
         void (*resume)(void);
         void (*setStackSize)(void);
         void (*setTaskPriority)(void);
+
+    private:
+        uint8_t numInput;
+        uint8_t numOutput;
 };
 
 #endif

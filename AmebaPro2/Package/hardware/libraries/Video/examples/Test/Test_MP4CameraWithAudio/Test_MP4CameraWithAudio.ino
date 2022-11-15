@@ -7,11 +7,11 @@ CameraClass cam;
 CameraSetting camset(1);
 // CameraSetting camset;
 // CameraSetting camset(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0);
-AudioClass audio;
-AACClass aac;
-MP4Class mp4;
-StreamIOClass streamIO_SISO(1, 1);   // Single Input Single Output
-StreamIOClass streamIO_MISO(2, 1);  // Multi Input Single Output
+Audio audio;
+AAC aac;
+MP4 mp4;
+StreamIO streamIO_SISO(1, 1);   // Single Input Single Output
+StreamIO streamIO_MISO(2, 1);  // Multi Input Single Output
 
 void setup() {
     Serial.begin(115200);

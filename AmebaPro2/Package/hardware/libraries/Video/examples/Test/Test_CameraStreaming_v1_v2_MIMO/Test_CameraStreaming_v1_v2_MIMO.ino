@@ -14,9 +14,9 @@ CameraSetting camset2(0, 0, 0, 0,
                       0, 0);
 CameraClass cam;
 CameraClass cam2;
-RTSPClass rtsp;
-RTSPClass rtsp1;
-StreamIOClass streamIO_2In2Out(2, 2);  // Multi Input Multi Output
+RTSP rtsp;
+RTSP rtsp1;
+StreamIO streamIO_2In2Out(2, 2);  // Multi Input Multi Output
 
 char ssid[] = "Aurical_5G";   //  your network SSID (name)
 char pass[] = "wyy170592";    // your network password

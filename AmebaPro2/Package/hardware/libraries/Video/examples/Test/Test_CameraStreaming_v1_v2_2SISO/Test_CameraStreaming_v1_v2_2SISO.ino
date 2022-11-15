@@ -16,10 +16,10 @@ CameraSetting camset2(0, 0, 0, 0,
                       0, 0);
 CameraClass cam;
 CameraClass cam2;
-RTSPClass rtsp;
-RTSPClass rtsp1;
-StreamIOClass streamIO1_1In1Out(1, 1);  // Single Input Single Output
-StreamIOClass streamIO2_1In1Out(1, 1);  // Single Input Single Output
+RTSP rtsp;
+RTSP rtsp1;
+StreamIO streamIO1_1In1Out(1, 1);  // Single Input Single Output
+StreamIO streamIO2_1In1Out(1, 1);  // Single Input Single Output
 
 char ssid[] = "Aurical_5G";   // your network SSID (name)
 char pass[] = "wyy170592";    // your network password
@@ -71,7 +71,7 @@ void setup() {
     streamIO2_1In1Out.create();
     streamIO2_1In1Out.registerInput(cam2.getIO());
     streamIO2_1In1Out.registerOutput(rtsp1.getIO());
-    if (streamIO1_1In1Out.start() != 0) {
+    if (streamIO2_1In1Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 

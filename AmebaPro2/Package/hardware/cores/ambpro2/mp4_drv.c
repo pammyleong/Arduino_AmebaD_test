@@ -9,7 +9,7 @@ mm_context_t* mp4Init(void) {
 }
 
 // M4 module deinit
-mm_context_t* mp4DeInit(mm_context_t *p) {
+mm_context_t* mp4Deinit(mm_context_t *p) {
     return mm_module_close(p);
 }
 

@@ -14,22 +14,19 @@ extern "C" {
 
 #include "camera.h"
 
-class RTSPClass   {
+class RTSP:public MMFModule {
 //class RTSPClass : public CameraSetting {
     public:
-        RTSPClass(void);
-        ~RTSPClass(void);
+        RTSP(void);
 
         void init(CameraSetting& obj);
+        void deinit(void);
         void open(void);
         void close(void);
-        void deInit(void);
-        mm_context_t *getIO(void);
         int enableAudio(void);
         int getPort(void);
 
     private:
-        mm_context_t *rtspData;
 };
 
 #endif

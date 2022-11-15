@@ -15,12 +15,12 @@ CameraSetting camset2(0, 0, 0, 0,
                       0, 0);
 CameraClass cam1;
 CameraClass cam2;
-AudioClass audio;
-AACClass aac;
-RTSPClass rtsp1;
-RTSPClass rtsp2;
-StreamIOClass streamIO1_1In1Out(1, 1);  // SISO for Audio -> AAC
-StreamIOClass streamIO2_3In2Out(3, 2);  // MIMO for Video1 (FHD), Video2 (HD) and Audio -> RTSP1 and RTSP2
+Audio audio;
+AAC aac;
+RTSP rtsp1;
+RTSP rtsp2;
+StreamIO streamIO1_1In1Out(1, 1);  // SISO for Audio -> AAC
+StreamIO streamIO2_3In2Out(3, 2);  // MIMO for Video1 (FHD), Video2 (HD) and Audio -> RTSP1 and RTSP2
 
 char ssid[] = "yourNetwork";   //  your network SSID (name)
 char pass[] = "password";    // your network password

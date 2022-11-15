@@ -6,12 +6,12 @@
 
 #include "camera.h"
 
-class MP4Class {
+class MP4:public MMFModule {
     public:
-        MP4Class(void);
+        MP4(void);
 
         void init(CameraSetting& obj);
-        void deInit(void);
+        void deinit(void);
 
         void startRecording(void);
         void stopRecording(void);
@@ -28,11 +28,8 @@ class MP4Class {
         uint32_t getRecordingFileCount();
         uint8_t getRecordingState(void);
 
-        mm_context_t *getIO(void);
-
     private:
         int loopEnable = 0;
-        mm_context_t *mp4Data = NULL;
         mp4_params_t mp4Params;
 };
 

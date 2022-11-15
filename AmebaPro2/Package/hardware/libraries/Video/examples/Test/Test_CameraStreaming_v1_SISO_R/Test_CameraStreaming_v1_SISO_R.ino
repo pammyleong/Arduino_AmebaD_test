@@ -6,8 +6,8 @@
 // Connect to GPIO pin 8 if you want to do trigger video reset
 CameraClass cam;
 CameraSetting camset;
-RTSPClass rtsp;
-StreamIOClass streamIO(1, 1);  // Single Input Single Output
+RTSP rtsp;
+StreamIO streamIO(1, 1);  // Single Input Single Output
 
 // Button setting
 int buttonPin = 8;
@@ -80,7 +80,7 @@ void reset() {
 
     streamIO.destroy();
 
-    rtsp.deInit();
+    rtsp.deinit();
     Serial.println("rtsp deinit!");
     cam.deInit();
     Serial.println("cam deinit!");

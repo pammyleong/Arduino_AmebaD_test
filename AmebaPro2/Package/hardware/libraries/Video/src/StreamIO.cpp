@@ -23,7 +23,15 @@ void outputErrorFunction(mm_context_t* ctx) {
     printf("ERROR: Wrong output function used for StreamIO object! \r\n");
 }
 
-StreamIOClass::StreamIOClass(uint8_t numInput, uint8_t numOutput) {
+StreamIO::StreamIO(uint8_t numInput, uint8_t numOutput) {
+    if (numInput > 3) {
+        printf("StreamIO too many inputs. Max 3 inputs.\r\n");
+        return;
+    }
+    if (numOutput > 2) {
+        printf("StreamIO too many outputs. Max 2 outputs.\r\n");
+        return;
+    }
     if (numInput > 1) {
         if (numOutput > 1) {
             // MIMO (Multi Input Multi Output)

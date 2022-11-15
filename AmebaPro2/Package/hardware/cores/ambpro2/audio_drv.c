@@ -65,7 +65,7 @@ void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, 
     }
 }
 
-mm_context_t* audioDeInit (mm_context_t *p) {
+mm_context_t* audioDeinit (mm_context_t *p) {
     return mm_module_close(p);
 }
 
@@ -82,7 +82,7 @@ void AACOpen(mm_context_t *p, uint32_t sample_rate, uint32_t channel, uint32_t b
 }
 
 void AACStop(mm_context_t *p) {
-    return mm_module_ctrl(p, CMD_AAC_STOP, 0);
+    mm_module_ctrl(p, CMD_AAC_STOP, 0);
 }
 
 int AACSetParams(void *p, uint32_t sample_rate, uint32_t channel, uint32_t bit_length, uint32_t output_format, uint32_t mpeg_version, uint32_t mem_total_size, uint32_t mem_block_size, uint32_t mem_frame_size) {
@@ -113,6 +113,6 @@ int AACApply(void *p) {
     return aac_control(p, CMD_AAC_APPLY, 0);
 }
 
-mm_context_t* AACDeInit(void *p) {
+mm_context_t* AACDeinit(void *p) {
     return mm_module_close ((mm_context_t *)p);
 }

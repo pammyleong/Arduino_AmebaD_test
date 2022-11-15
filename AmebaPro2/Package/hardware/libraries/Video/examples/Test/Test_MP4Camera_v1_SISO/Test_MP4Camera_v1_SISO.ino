@@ -10,8 +10,8 @@ CameraSetting camset;
 //                        0,0,0,0,
 //                        0,0);
 CameraClass cam;
-MP4Class mp4;
-StreamIOClass streamIO_1In1Out(1, 1);  // Single Input Single Output
+MP4 mp4;
+StreamIO streamIO_1In1Out(1, 1);  // Single Input Single Output
 
 void setup() {
     Serial.begin(115200);

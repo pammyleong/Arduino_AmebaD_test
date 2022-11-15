@@ -12,14 +12,14 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-MP4Class::MP4Class(void) {
-    // Video parameters
+MP4::MP4(void) {
+    // Default video parameters
     mp4Params.width = 1920;
     mp4Params.height = 1080;
     mp4Params.fps = 30;
     mp4Params.gop = 30;
 
-    // Audio parameters
+    // Default audio parameters
     mp4Params.sample_rate = 8000;
     mp4Params.channel = 1;
     mp4Params.mp4_audio_format = AUDIO_AAC;
@@ -38,9 +38,9 @@ MP4Class::MP4Class(void) {
   * @param  obj  : object pointer to Camera Settings
   * @retval none
   */
-void MP4Class::init(CameraSetting& obj) {
-    mp4Data = mp4Init();
-    if (mp4Data == NULL) {
+void MP4::init(CameraSetting& obj) {
+    _p_mmf_context = mp4Init();
+    if (_p_mmf_context == NULL) {
         CAMDBG("MP4_Init failed\r\n");
         return;
     }
@@ -71,15 +71,14 @@ void MP4Class::init(CameraSetting& obj) {
   * @param  none
   * @retval none
   */
-void MP4Class::deInit(void) {
-    if (mp4Data == NULL) {
+void MP4::deinit(void) {
+    if (_p_mmf_context == NULL) {
         return;
     }
-    if (mp4DeInit(mp4Data) == NULL) {
-        mp4Data = NULL;
-        CAMDBG("MP4 DeInit\r\n");
+    if (mp4Deinit(_p_mmf_context) == NULL) {
+        _p_mmf_context = NULL;
     } else {
-        CAMDBG("MP4 DeInit failed\r\n");
+        CAMDBG("MP4 deinit failed\r\n");
     }
 }
 
@@ -88,14 +87,14 @@ void MP4Class::deInit(void) {
   * @param  none
   * @retval none
   */
-void MP4Class::startRecording(void) {
-    if (mp4Data == NULL) {
+void MP4::startRecording(void) {
+    if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return;
     }
-    mp4SetParams(mp4Data->priv, &mp4Params);
-    mp4SetLoopMode(mp4Data->priv, loopEnable);
-    mp4RecordingStart(mp4Data->priv, &mp4Params);
+    mp4SetParams(_p_mmf_context->priv, &mp4Params);
+    mp4SetLoopMode(_p_mmf_context->priv, loopEnable);
+    mp4RecordingStart(_p_mmf_context->priv, &mp4Params);
 }
 
 /**
@@ -103,12 +102,12 @@ void MP4Class::startRecording(void) {
   * @param  none
   * @retval none
   */
-void MP4Class::stopRecording(void) {
-    if (mp4Data == NULL) {
+void MP4::stopRecording(void) {
+    if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return;
     }
-    mp4RecordingStop(mp4Data->priv);
+    mp4RecordingStop(_p_mmf_context->priv);
 }
 
 /**
@@ -116,7 +115,7 @@ void MP4Class::stopRecording(void) {
   * @param  filename : pointer to character array containing filename
   * @retval none
   */
-void MP4Class::setRecordingFileName(const char* filename) {
+void MP4::setRecordingFileName(const char* filename) {
     memset(mp4Params.record_file_name, 0, sizeof(mp4Params.record_file_name));
     strncpy(mp4Params.record_file_name, filename, sizeof(mp4Params.record_file_name));
 }
@@ -126,7 +125,7 @@ void MP4Class::setRecordingFileName(const char* filename) {
   * @param  filename : String class object containing filename
   * @retval none
   */
-void MP4Class::setRecordingFileName(String filename) {
+void MP4::setRecordingFileName(String filename) {
     setRecordingFileName(filename.c_str());
 }
 
@@ -135,7 +134,7 @@ void MP4Class::setRecordingFileName(String filename) {
   * @param  secs : maximum recording duration expressed in seconds
   * @retval none
   */
-void MP4Class::setRecordingDuration(uint32_t secs) {
+void MP4::setRecordingDuration(uint32_t secs) {
     mp4Params.record_length = secs;
 }
 
@@ -144,7 +143,7 @@ void MP4Class::setRecordingDuration(uint32_t secs) {
   * @param  count : total number of recording files
   * @retval none
   */
-void MP4Class::setRecordingFileCount(uint32_t count) {
+void MP4::setRecordingFileCount(uint32_t count) {
     mp4Params.record_file_num = count;
 }
 
@@ -153,7 +152,7 @@ void MP4Class::setRecordingFileCount(uint32_t count) {
   * @param  enable : integer, 1 to enable, 0 to disable
   * @retval none
   */
-void MP4Class::setLoopRecording(int enable) {
+void MP4::setLoopRecording(int enable) {
     loopEnable = enable;
 }
 
@@ -162,7 +161,7 @@ void MP4Class::setLoopRecording(int enable) {
   * @param  type : integer from 0 to 2 inclusive
   * @retval none
   */
-void MP4Class::setRecordingDataType(uint8_t type) {
+void MP4::setRecordingDataType(uint8_t type) {
     if (type <= STORAGE_AUDIO) {
         mp4Params.record_type = type;
     }
@@ -173,7 +172,7 @@ void MP4Class::setRecordingDataType(uint8_t type) {
   * @param  none
   * @retval String class object containing filename
   */
-String MP4Class::getRecordingFileName() {
+String MP4::getRecordingFileName() {
     return String(mp4Params.record_file_name);
 }
 
@@ -182,7 +181,7 @@ String MP4Class::getRecordingFileName() {
   * @param  none
   * @retval maximum recording duration expressed in seconds
   */
-uint32_t MP4Class::getRecordingDuration() {
+uint32_t MP4::getRecordingDuration() {
     return (mp4Params.record_length);
 }
 
@@ -191,7 +190,7 @@ uint32_t MP4Class::getRecordingDuration() {
   * @param  count : total number of recording files
   * @retval none
   */
-uint32_t MP4Class::getRecordingFileCount() {
+uint32_t MP4::getRecordingFileCount() {
     return (mp4Params.record_file_num);
 }
 
@@ -200,20 +199,11 @@ uint32_t MP4Class::getRecordingFileCount() {
   * @param  type : integer from 0 to 2 inclusive
   * @retval none
   */
-uint8_t MP4Class::getRecordingState(void) {
-    if (mp4Data == NULL) {
+uint8_t MP4::getRecordingState(void) {
+    if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return 0;
     }
-    return mp4RecordingState(mp4Data->priv);
-}
-
-/**
-  * @brief  Get MP4 module mm_context_t pointer
-  * @param  none
-  * @retval mm_context_t pointer
-  */
-mm_context_t *MP4Class::getIO(void) {
-    return mp4Data;
+    return mp4RecordingState(_p_mmf_context->priv);
 }
 

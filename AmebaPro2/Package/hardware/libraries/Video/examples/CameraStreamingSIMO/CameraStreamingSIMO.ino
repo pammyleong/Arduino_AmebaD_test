@@ -5,9 +5,9 @@
 
 CameraSetting camset;
 CameraClass cam;
-StreamIOClass streamIO_1In2Out(1, 2);  // Single Input Multiple Output
-RTSPClass rtsp;
-RTSPClass rtsp1;
+StreamIO streamIO_1In2Out(1, 2);  // Single Input Multiple Output
+RTSP rtsp;
+RTSP rtsp1;
 
 char ssid[] = "yourNetwork";  //  your network SSID (name)
 char pass[] = "password";     // your network password

@@ -101,6 +101,16 @@ enum encode_type {
 #define VIDEO_CODEC AV_CODEC_ID_H264
 #endif
 
+class MMFModule {
+    friend class StreamIO;
+
+    public:
+        mm_context_t* getIO(void) {return _p_mmf_context;};
+
+    protected:
+        mm_context_t* _p_mmf_context = NULL;
+};
+
 class CameraSetting {
     public:
         CameraSetting(void);

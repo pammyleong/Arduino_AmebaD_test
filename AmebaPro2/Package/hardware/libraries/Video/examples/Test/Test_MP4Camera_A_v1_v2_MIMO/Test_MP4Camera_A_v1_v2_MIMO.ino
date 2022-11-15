@@ -14,12 +14,12 @@ CameraSetting camset2(0, 0, 0, 0,
                       0, 0);
 CameraClass cam;
 CameraClass cam2;
-AudioClass audio;
-AACClass aac;
-MP4Class mp4;
-MP4Class mp41;
-StreamIOClass streamIO1_1In1Out(1, 1);  // Single Input Single Output
-StreamIOClass streamIO2_3In2Out(3, 2);  // Multi Input Multi Output
+Audio audio;
+AAC aac;
+MP4 mp4;
+MP4 mp41;
+StreamIO streamIO1_1In1Out(1, 1);  // Single Input Single Output
+StreamIO streamIO2_3In2Out(3, 2);  // Multi Input Multi Output
 
 void setup() {
     Serial.begin(115200);

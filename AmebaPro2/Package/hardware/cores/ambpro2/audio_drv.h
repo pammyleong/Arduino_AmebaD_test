@@ -16,7 +16,7 @@ void audioClose(mm_context_t *p);
 
 void audioOpen(mm_context_t *p, int sample_rate, int word_length, int mic_gain, int dmic_l_gain, int dmic_r_gain, int use_mic_type, int channel, int enable_aec);
 
-mm_context_t* audioDeInit (mm_context_t *p);
+mm_context_t* audioDeinit (mm_context_t *p);
 
 // AAC (Advanced Audio Codec)
 mm_context_t* AACInit (void);
@@ -35,7 +35,7 @@ int AACInitMemPool (void *p);
 
 int AACApply (void *p);
 
-mm_context_t* AACDeInit(void *p);
+mm_context_t* AACDeinit(void *p);
 
 // Functions externed from module_aac
 extern int aac_control(void *p, int cmd, int arg);

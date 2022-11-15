@@ -6,26 +6,26 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-CameraClass	KEYWORD1
+Camera	KEYWORD1
 CameraSetting	KEYWORD1
-StreamIOClass	KEYWORD1
-AudioClass	KEYWORD1
-AACClass	KEYWORD1
-RTSPClass	KEYWORD1
-MP4Class	KEYWORD1
+StreamIO	KEYWORD1
+Audio	KEYWORD1
+AAC	KEYWORD1
+RTSP	KEYWORD1
+MP4	KEYWORD1
 
 #######################################
 # audio.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
 init	KEYWORD2
-deInit	KEYWORD2
+deinit	KEYWORD2
 open	KEYWORD2
 close	KEYWORD2
 getIO	KEYWORD2
 
 init	KEYWORD2
-deInit	KEYWORD2
+deinit	KEYWORD2
 close	KEYWORD2
 getIO	KEYWORD2
 
@@ -61,7 +61,7 @@ USE_AUDIO_STEREO_DMIC	LITERAL1
 
 init	KEYWORD2
 init_new	KEYWORD2
-deInit	KEYWORD2
+deinit	KEYWORD2
 open	KEYWORD2
 start	KEYWORD2
 close	KEYWORD2
@@ -94,7 +94,7 @@ VIDEO_H264_JPEG	LITERAL1
 #######################################
 
 init	KEYWORD2
-deInit	KEYWORD2
+deinit	KEYWORD2
 startRecording	KEYWORD2
 stopRecording	KEYWORD2
 setRecordingFileName	KEYWORD2
@@ -123,7 +123,7 @@ AUDIO_ALAW	LITERAL1
 init	KEYWORD2
 open	KEYWORD2
 close	KEYWORD2
-deInit	KEYWORD2
+deinit	KEYWORD2
 getIO	KEYWORD2
 enableAudio	KEYWORD2
 getPort	KEYWORD2

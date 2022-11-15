@@ -9,11 +9,11 @@
 
 CameraSetting camset;
 CameraClass cam;
-AudioClass audio;
-AACClass aac;
-RTSPClass rtsp;
-StreamIOClass streamIO1_1In1Out(1, 1); // SISO for Audio -> AAC
-StreamIOClass streamIO2_2In1Out(2, 1); // MISO for Video + Audio -> RTSP
+Audio audio;
+AAC aac;
+RTSP rtsp;
+StreamIO streamIO1_1In1Out(1, 1); // SISO for Audio -> AAC
+StreamIO streamIO2_2In1Out(2, 1); // MISO for Video + Audio -> RTSP
 
 //Button setting
 int buttonPin = 8;
@@ -112,14 +112,14 @@ void reset() {
     streamIO1_1In1Out.destroy();
 
     // Close module
-    rtsp.deInit();
+    rtsp.deinit();
     Serial.println("rtsp deinit!");
     cam.deInit();
     Serial.println("cam deinit!");
 
-    audio.deInit();
+    audio.deinit();
     Serial.println("audio deinit!");
-    aac.deInit();
+    aac.deinit();
     Serial.println("AAC deinit!");
 
     delay(5000);

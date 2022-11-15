@@ -6,11 +6,11 @@
 
 CameraSetting camset;
 CameraClass cam;
-AudioClass audio;
-AACClass aac;
-RTSPClass rtsp;
-StreamIOClass streamIO1_1In1Out(1, 1); // SISO for Audio -> AAC
-StreamIOClass streamIO2_2In1Out(2, 1); // MISO for Video + Audio -> RTSP
+Audio audio;
+AAC aac;
+RTSP rtsp;
+StreamIO streamIO1_1In1Out(1, 1); // SISO for Audio -> AAC
+StreamIO streamIO2_2In1Out(2, 1); // MISO for Video + Audio -> RTSP
 
 char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password

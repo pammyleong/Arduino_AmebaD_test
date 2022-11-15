@@ -4,14 +4,14 @@
 #include "rtsp.h"
 
 // MAX output for now is 2
-StreamIOClass streamIO(1, 2);  // Single Input Multiple Output
+StreamIO streamIO(1, 2);  // Single Input Multiple Output
 
 CameraClass cam;
 CameraSetting camset;
 
 // both rtsp using the same params setting
-RTSPClass rtsp;
-RTSPClass rtsp1;
+RTSP rtsp;
+RTSP rtsp1;
 
 char ssid[] = "Aurical_5G";   // your network SSID (name)
 char pass[] = "wyy170592";    // your network password
