@@ -1,4 +1,4 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "WiFi.h"
 #include "audio.h"
 #include "camera.h"
@@ -19,8 +19,8 @@ AudioClass audio;
 AACClass aac;
 RTSPClass rtsp;
 RTSPClass rtsp1;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
-CameraIOClass camio2_3In2Out(3, 2);  // Multi Input Multi Output
+StreamIOClass streamIO1_1In1Out(1, 1);  // Single Input Single Output
+StreamIOClass streamIO2_3In2Out(3, 2);  // Multi Input Multi Output
 
 char ssid[] = "Aurical_5G";   //  your network SSID (name)
 char pass[] = "wyy170592";    // your network password
@@ -69,31 +69,31 @@ void setup() {
     rtsp1.open();
 
     // SISO for Audio [AAC-AUDIO]
-    camio1_1In1Out.create();
-    camio1_1In1Out.registerInput(audio.getIO());
-    camio1_1In1Out.registerOutput(aac.getIO());
-    if (camio1_1In1Out.start() != 0) {
+    streamIO1_1In1Out.create();
+    streamIO1_1In1Out.registerInput(audio.getIO());
+    streamIO1_1In1Out.registerOutput(aac.getIO());
+    if (streamIO1_1In1Out.start() != 0) {
         Serial.println("camera io link 1 start failed");
     }
 
-    camio2_3In2Out.create();
-    camio2_3In2Out.registerInput1(cam.getIO());
-    camio2_3In2Out.registerInput2(cam2.getIO());
-    camio2_3In2Out.registerInput3(aac.getIO());
+    streamIO2_3In2Out.create();
+    streamIO2_3In2Out.registerInput1(cam.getIO());
+    streamIO2_3In2Out.registerInput2(cam2.getIO());
+    streamIO2_3In2Out.registerInput3(aac.getIO());
 
-    camio2_3In2Out.registerOutput1(rtsp.getIO());
-    camio2_3In2Out.registerOutput2(rtsp1.getIO());
+    streamIO2_3In2Out.registerOutput1(rtsp.getIO());
+    streamIO2_3In2Out.registerOutput2(rtsp1.getIO());
 
-    if (camio2_3In2Out.start() != 0) {
+    if (streamIO2_3In2Out.start() != 0) {
         Serial.println("camera io link 1 start failed");
     }
 
-    // camio1_2In2Out.create();
-    // camio1_2In2Out.registerInput1(cam.getIO());
-    // camio1_2In2Out.registerInput2(cam2.getIO());
-    // camio1_2In2Out.registerOutput1(rtsp.getIO());
-    // camio1_2In2Out.registerOutput2(rtsp1.getIO());
-    // if (camio1_2In2Out.start() != 0) {
+    // streamIO1_2In2Out.create();
+    // streamIO1_2In2Out.registerInput1(cam.getIO());
+    // streamIO1_2In2Out.registerInput2(cam2.getIO());
+    // streamIO1_2In2Out.registerOutput1(rtsp.getIO());
+    // streamIO1_2In2Out.registerOutput2(rtsp1.getIO());
+    // if (streamIO1_2In2Out.start() != 0) {
     //     Serial.println("camera io link 1 start failed");
     // }
 

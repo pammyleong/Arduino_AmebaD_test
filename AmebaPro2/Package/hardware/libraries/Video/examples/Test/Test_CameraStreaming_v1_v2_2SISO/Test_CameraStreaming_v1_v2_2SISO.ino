@@ -1,4 +1,4 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "WiFi.h"
 #include "camera.h"
 #include "rtsp.h"
@@ -18,8 +18,8 @@ CameraClass cam;
 CameraClass cam2;
 RTSPClass rtsp;
 RTSPClass rtsp1;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
-CameraIOClass camio2_1In1Out(1, 1);  // Single Input Single Output
+StreamIOClass streamIO1_1In1Out(1, 1);  // Single Input Single Output
+StreamIOClass streamIO2_1In1Out(1, 1);  // Single Input Single Output
 
 char ssid[] = "Aurical_5G";   // your network SSID (name)
 char pass[] = "wyy170592";    // your network password
@@ -61,17 +61,17 @@ void setup() {
     rtsp1.open();
 
     // create camera io linker
-    camio1_1In1Out.create();
-    camio1_1In1Out.registerInput(cam.getIO());
-    camio1_1In1Out.registerOutput(rtsp.getIO());
-    if (camio1_1In1Out.start() != 0) {
+    streamIO1_1In1Out.create();
+    streamIO1_1In1Out.registerInput(cam.getIO());
+    streamIO1_1In1Out.registerOutput(rtsp.getIO());
+    if (streamIO1_1In1Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 
-    camio2_1In1Out.create();
-    camio2_1In1Out.registerInput(cam2.getIO());
-    camio2_1In1Out.registerOutput(rtsp1.getIO());
-    if (camio1_1In1Out.start() != 0) {
+    streamIO2_1In1Out.create();
+    streamIO2_1In1Out.registerInput(cam2.getIO());
+    streamIO2_1In1Out.registerOutput(rtsp1.getIO());
+    if (streamIO1_1In1Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 

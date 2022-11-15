@@ -1,4 +1,4 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "camera.h"
 #include "mp4.h"
 
@@ -11,7 +11,7 @@ CameraSetting camset;
 //                        0,0);
 CameraClass cam;
 MP4Class mp4;
-CameraIOClass camio1_1In1Out(1, 1);  // Single Input Single Output
+StreamIOClass streamIO_1In1Out(1, 1);  // Single Input Single Output
 
 void setup() {
     Serial.begin(115200);
@@ -28,10 +28,10 @@ void setup() {
     mp4.setRecordingDataType(STORAGE_VIDEO);
 
     // create camera io linker
-    camio1_1In1Out.create();
-    camio1_1In1Out.registerInput(cam.getIO());
-    camio1_1In1Out.registerOutput(mp4.getIO());
-    if (camio1_1In1Out.start() != 0) {
+    streamIO_1In1Out.create();
+    streamIO_1In1Out.registerInput(cam.getIO());
+    streamIO_1In1Out.registerOutput(mp4.getIO());
+    if (streamIO_1In1Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 

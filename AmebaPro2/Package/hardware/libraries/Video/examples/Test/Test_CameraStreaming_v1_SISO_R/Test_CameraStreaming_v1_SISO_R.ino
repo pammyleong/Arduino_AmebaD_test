@@ -1,4 +1,4 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "WiFi.h"
 #include "camera.h"
 #include "rtsp.h"
@@ -7,7 +7,7 @@
 CameraClass cam;
 CameraSetting camset;
 RTSPClass rtsp;
-CameraIOClass camio(1, 1);  // Single Input Single Output
+StreamIOClass streamIO(1, 1);  // Single Input Single Output
 
 // Button setting
 int buttonPin = 8;
@@ -48,11 +48,11 @@ void setup() {
     rtsp.open();
 
     // create camera io linker
-    camio.create();
-    camio.registerInput(cam.getIO());
-    camio.registerOutput(rtsp.getIO());
+    streamIO.create();
+    streamIO.registerInput(cam.getIO());
+    streamIO.registerOutput(rtsp.getIO());
 
-    if (camio.start() != 0) {
+    if (streamIO.start() != 0) {
         Serial.println("camera io link start failed");
     }
 
@@ -70,7 +70,7 @@ void loop() {
 
 void reset() {
     // deinit
-    camio.pause();
+    streamIO.pause();
     Serial.println("Streaming pause!");
 
     rtsp.close();
@@ -78,7 +78,7 @@ void reset() {
     cam.close();
     Serial.println("Cam close!");
 
-    camio.destroy();
+    streamIO.destroy();
 
     rtsp.deInit();
     Serial.println("rtsp deinit!");
@@ -102,12 +102,12 @@ void reset() {
     rtsp.open();
 
     // create camera io linker
-    camio.create();
+    streamIO.create();
 
-    camio.registerInput(cam.getIO());
-    camio.registerOutput(rtsp.getIO());
+    streamIO.registerInput(cam.getIO());
+    streamIO.registerOutput(rtsp.getIO());
 
-    if (camio.start() != 0) {
+    if (streamIO.start() != 0) {
         Serial.println("camera io link start failed");
     }
 

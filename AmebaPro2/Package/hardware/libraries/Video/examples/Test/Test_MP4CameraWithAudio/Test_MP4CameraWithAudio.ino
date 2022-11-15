@@ -1,4 +1,4 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "camera.h"
 #include "audio.h"
 #include "mp4.h"
@@ -10,8 +10,8 @@ CameraSetting camset(1);
 AudioClass audio;
 AACClass aac;
 MP4Class mp4;
-CameraIOClass camioSISO(1, 1);   // Single Input Single Output
-CameraIOClass camioMISO(2, 1);  // Multi Input Single Output
+StreamIOClass streamIO_SISO(1, 1);   // Single Input Single Output
+StreamIOClass streamIO_MISO(2, 1);  // Multi Input Single Output
 
 void setup() {
     Serial.begin(115200);
@@ -32,20 +32,20 @@ void setup() {
     mp4.setRecordingFileName("TestRecordingAudioVideo");
 
     // SISO for Audio [AUDIO -> AAC]
-    camioSISO.create();
-    camioSISO.registerInput(audio.getIO());
-    camioSISO.registerOutput(aac.getIO());
-    if (camioSISO.start() != 0) {
+    streamIO_SISO.create();
+    streamIO_SISO.registerInput(audio.getIO());
+    streamIO_SISO.registerOutput(aac.getIO());
+    if (streamIO_SISO.start() != 0) {
         Serial.println("camera io link 1 start failed");
     }
 
     // MISO [Video + AAC -> MP4]
-    camioMISO.create();
-    camioMISO.registerInput1(cam.getIO());
-    camioMISO.registerInput2(aac.getIO());
-    camioMISO.registerOutput(mp4.getIO());
+    streamIO_MISO.create();
+    streamIO_MISO.registerInput1(cam.getIO());
+    streamIO_MISO.registerInput2(aac.getIO());
+    streamIO_MISO.registerOutput(mp4.getIO());
 
-    if (camioMISO.start() != 0) {
+    if (streamIO_MISO.start() != 0) {
         Serial.println("camera io link 2 start failed");
     }
 

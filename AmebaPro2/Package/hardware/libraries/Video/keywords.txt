@@ -8,7 +8,7 @@
 
 CameraClass	KEYWORD1
 CameraSetting	KEYWORD1
-CameraIOClass	KEYWORD1
+StreamIOClass	KEYWORD1
 AudioClass	KEYWORD1
 AACClass	KEYWORD1
 RTSPClass	KEYWORD1
@@ -90,26 +90,6 @@ VIDEO_HEVC_JPEG	LITERAL1
 VIDEO_H264_JPEG	LITERAL1
 
 #######################################
-# CameraIO.h Methods (KEYWORD2) & Constants (LITERAL1)
-#######################################
-
-create	KEYWORD2
-destroy	KEYWORD2
-registerInput	KEYWORD2
-registerInput1	KEYWORD2
-registerInput2	KEYWORD2
-registerInput3	KEYWORD2
-registerOutput	KEYWORD2
-registerOutput1	KEYWORD2
-registerOutput2	KEYWORD2
-start	KEYWORD2
-stop	KEYWORD2
-pause	KEYWORD2
-resume	KEYWORD2
-setStackSize	KEYWORD2
-setTaskPriority	KEYWORD2
-
-#######################################
 # mp4.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
@@ -147,3 +127,23 @@ deInit	KEYWORD2
 getIO	KEYWORD2
 enableAudio	KEYWORD2
 getPort	KEYWORD2
+
+#######################################
+# StreamIO.h Methods (KEYWORD2) & Constants (LITERAL1)
+#######################################
+
+create	KEYWORD2
+destroy	KEYWORD2
+registerInput	KEYWORD2
+registerInput1	KEYWORD2
+registerInput2	KEYWORD2
+registerInput3	KEYWORD2
+registerOutput	KEYWORD2
+registerOutput1	KEYWORD2
+registerOutput2	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+pause	KEYWORD2
+resume	KEYWORD2
+setStackSize	KEYWORD2
+setTaskPriority	KEYWORD2

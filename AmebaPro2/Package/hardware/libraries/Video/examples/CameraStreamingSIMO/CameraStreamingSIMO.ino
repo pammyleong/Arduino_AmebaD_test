@@ -1,11 +1,11 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "WiFi.h"
 #include "camera.h"
 #include "rtsp.h"
 
 CameraSetting camset;
 CameraClass cam;
-CameraIOClass camio1_1In2Out(1, 2);  // Single Input Multiple Output
+StreamIOClass streamIO_1In2Out(1, 2);  // Single Input Multiple Output
 RTSPClass rtsp;
 RTSPClass rtsp1;
 
@@ -43,11 +43,11 @@ void setup() {
     rtsp1.init(camset);
     rtsp1.open();
 
-    camio1_1In2Out.create();
-    camio1_1In2Out.registerInput(cam.getIO());
-    camio1_1In2Out.registerOutput1(rtsp.getIO());
-    camio1_1In2Out.registerOutput2(rtsp1.getIO());
-    if (camio1_1In2Out.start() != 0) {
+    streamIO_1In2Out.create();
+    streamIO_1In2Out.registerInput(cam.getIO());
+    streamIO_1In2Out.registerOutput1(rtsp.getIO());
+    streamIO_1In2Out.registerOutput2(rtsp1.getIO());
+    if (streamIO_1In2Out.start() != 0) {
         Serial.println("camera io link start failed");
     }
 

@@ -1,10 +1,10 @@
-#include "CameraIO.h"
+#include "StreamIO.h"
 #include "WiFi.h"
 #include "camera.h"
 #include "rtsp.h"
 
 // MAX output for now is 2
-CameraIOClass camio1(1, 2);  // Single Input Multiple Output
+StreamIOClass streamIO(1, 2);  // Single Input Multiple Output
 
 CameraClass cam;
 CameraSetting camset;
@@ -51,12 +51,12 @@ void setup() {
     rtsp1.open();
 
     // create camera io linker
-    camio1.create();
-    camio1.registerInput(cam.getIO());
-    camio1.registerOutput1(rtsp.getIO());
-    camio1.registerOutput2(rtsp1.getIO());
+    streamIO.create();
+    streamIO.registerInput(cam.getIO());
+    streamIO.registerOutput1(rtsp.getIO());
+    streamIO.registerOutput2(rtsp1.getIO());
 
-    if (camio1.start() != 0) {
+    if (streamIO.start() != 0) {
         Serial.println("camera io link start failed");
     }
 
