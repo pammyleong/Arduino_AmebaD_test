@@ -132,8 +132,10 @@ getPort	KEYWORD2
 # StreamIO.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-create	KEYWORD2
-destroy	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+pause	KEYWORD2
+resume	KEYWORD2
 registerInput	KEYWORD2
 registerInput1	KEYWORD2
 registerInput2	KEYWORD2
@@ -141,9 +143,5 @@ registerInput3	KEYWORD2
 registerOutput	KEYWORD2
 registerOutput1	KEYWORD2
 registerOutput2	KEYWORD2
-start	KEYWORD2
-stop	KEYWORD2
-pause	KEYWORD2
-resume	KEYWORD2
 setStackSize	KEYWORD2
 setTaskPriority	KEYWORD2

@@ -13,93 +13,196 @@ extern "C" {
 }
 #endif
 
-void inputErrorFunction(mm_context_t* ctx) {
-    (void)ctx;
-    printf("ERROR: Wrong input function used for StreamIO object! \r\n");
-}
-
-void outputErrorFunction(mm_context_t* ctx) {
-    (void)ctx;
-    printf("ERROR: Wrong output function used for StreamIO object! \r\n");
-}
-
 StreamIO::StreamIO(uint8_t numInput, uint8_t numOutput) {
-    if (numInput > 3) {
-        printf("StreamIO too many inputs. Max 3 inputs.\r\n");
+    if (numInput > 4) {
+        printf("StreamIO too many inputs. Max 4 inputs.\r\n");
         return;
     }
-    if (numOutput > 2) {
-        printf("StreamIO too many outputs. Max 2 outputs.\r\n");
+    if (numOutput > 4) {
+        printf("StreamIO too many outputs. Max 4 outputs.\r\n");
         return;
     }
     if (numInput > 1) {
         if (numOutput > 1) {
             // MIMO (Multi Input Multi Output)
-            this->create = &mimoCreate;
-            this->destroy = &mimoDestroy;
-            this->registerInput = &inputErrorFunction;
-            this->registerInput1 = &mimoRegIn1;
-            this->registerInput2 = &mimoRegIn2;
-            this->registerInput3 = &mimoRegIn3;
-            this->registerOutput = &outputErrorFunction;
-            this->registerOutput1 = &mimoRegOut1;
-            this->registerOutput2 = &mimoRegOut2;
-            this->start = &mimoStart;
-            this->stop = &mimoStop;
-            this->pause = &mimoPause;
-            this->resume = &mimoResume;
+            _p_create = &mimoCreate;
+            _p_destroy = &mimoDestroy;
+            _p_start = &mimoStart;
+            _p_stop = &mimoStop;
+            _p_pause = &mimoPause;
+            _p_resume = &mimoResume;
+            _p_registerInput = NULL;
+            _p_registerInput1 = &mimoRegIn1;
+            _p_registerInput2 = &mimoRegIn2;
+            _p_registerInput3 = &mimoRegIn3;
+            _p_registerOutput = NULL;
+            _p_registerOutput1 = &mimoRegOut1;
+            _p_registerOutput2 = &mimoRegOut2;
+            _p_setStackSize = NULL;
+            _p_setTaskPriority = NULL;
 
             getInput(numInput);
             printf("NumIn = %d ", numInput);
         } else {
             // MISO (Multi Input Single Output)
-            this->create = &misoCreate;
-            this->destroy = &misoDestroy;
-            this->registerInput = &inputErrorFunction;
-            this->registerInput1 = &misoRegIn1;
-            this->registerInput2 = &misoRegIn2;
-            this->registerInput3 = &inputErrorFunction;
-            this->registerOutput = &misoRegOut;
-            this->registerOutput1 = &outputErrorFunction;
-            this->registerOutput2 = &outputErrorFunction;
-            this->start = &misoStart;
-            this->stop = &misoStop;
-            this->pause = &misoPause;
-            this->resume = &misoResume;
+            _p_create = &misoCreate;
+            _p_destroy = &misoDestroy;
+            _p_start = &misoStart;
+            _p_stop = &misoStop;
+            _p_pause = &misoPause;
+            _p_resume = &misoResume;
+            _p_registerInput = NULL;
+            _p_registerInput1 = &misoRegIn1;
+            _p_registerInput2 = &misoRegIn2;
+            _p_registerInput3 = NULL;
+            _p_registerOutput = &misoRegOut;
+            _p_registerOutput1 = NULL;
+            _p_registerOutput2 = NULL;
+            _p_setStackSize = NULL;
+            _p_setTaskPriority = NULL;
         }
     } else {
         if (numOutput > 1) {
             // SIMO (Single Input Multi Output)
-            this->create = &simoCreate;
-            this->destroy = &simoDestroy;
-            this->registerInput = &simoRegIn;
-            this->registerInput1 = &inputErrorFunction;
-            this->registerInput2 = &inputErrorFunction;
-            this->registerInput3 = &inputErrorFunction;
-            this->registerOutput = &outputErrorFunction;
-            this->registerOutput1 = &simoRegOut1;
-            this->registerOutput2 = &simoRegOut2;
-            this->start = &simoStart;
-            this->stop = &simoStop;
-            this->pause = &simoPause;
-            this->resume = &simoResume;
+            _p_create = &simoCreate;
+            _p_destroy = &simoDestroy;
+            _p_start = &simoStart;
+            _p_stop = &simoStop;
+            _p_pause = &simoPause;
+            _p_resume = &simoResume;
+            _p_registerInput = &simoRegIn;
+            _p_registerInput1 = NULL;
+            _p_registerInput2 = NULL;
+            _p_registerInput3 = NULL;
+            _p_registerOutput = NULL;
+            _p_registerOutput1 = &simoRegOut1;
+            _p_registerOutput2 = &simoRegOut2;
+            _p_setStackSize = NULL;
+            _p_setTaskPriority = NULL;
         } else {
             // SISO (Single Input Single Output)
-            this->create = &sisoCreate;
-            this->destroy = &sisoDestroy;
-            this->registerInput = &sisoRegIn;
-            this->registerInput1 = &inputErrorFunction;
-            this->registerInput2 = &inputErrorFunction;
-            this->registerInput3 = &inputErrorFunction;
-            this->registerOutput = &sisoRegOut;
-            this->registerOutput1 = &outputErrorFunction;
-            this->registerOutput2 = &outputErrorFunction;
-            this->start = &sisoStart;
-            this->stop = &sisoStop;
-            this->pause = &sisoPause;
-            this->resume = &sisoResume;
-            this->setStackSize = &sisoSetStackSize;
-            this->setTaskPriority = &sisoSetTaskPriority;
+            _p_create = &sisoCreate;
+            _p_destroy = &sisoDestroy;
+            _p_start = &sisoStart;
+            _p_stop = &sisoStop;
+            _p_pause = &sisoPause;
+            _p_resume = &sisoResume;
+            _p_registerInput = &sisoRegIn;
+            _p_registerInput1 = NULL;
+            _p_registerInput2 = NULL;
+            _p_registerInput3 = NULL;
+            _p_registerOutput = &sisoRegOut;
+            _p_registerOutput1 = NULL;
+            _p_registerOutput2 = NULL;
+            _p_setStackSize = &sisoSetStackSize;
+            _p_setTaskPriority = &sisoSetTaskPriority;
         }
+    }
+    _p_linker = (void *)_p_create();
+}
+
+StreamIO::~StreamIO(void) {
+    stop();
+    _p_destroy(_p_linker);
+}
+
+int  StreamIO::start(void) {
+    return _p_start(_p_linker);
+}
+
+void StreamIO::stop(void) {
+    _p_stop(_p_linker);
+}
+
+void StreamIO::pause(void) {
+    _p_pause(_p_linker);
+}
+
+void StreamIO::resume(void) {
+    _p_resume(_p_linker);
+}
+
+void StreamIO::registerInput(mm_context_t* module) {
+    if (_p_registerInput != NULL) {
+        _p_registerInput(_p_linker, module);
+    }
+}
+
+void StreamIO::registerInput1(mm_context_t* module) {
+    if (_p_registerInput1 != NULL) {
+        _p_registerInput1(_p_linker, module);
+    }
+}
+
+void StreamIO::registerInput2(mm_context_t* module) {
+    if (_p_registerInput2 != NULL) {
+        _p_registerInput2(_p_linker, module);
+    }
+}
+void StreamIO::registerInput(MMFModule& module) {
+    if (_p_registerInput != NULL) {
+        _p_registerInput(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerInput1(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerInput1(MMFModule& module) {
+    if (_p_registerInput1 != NULL) {
+        _p_registerInput1(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerInput(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerInput2(MMFModule& module) {
+    if (_p_registerInput2 != NULL) {
+        _p_registerInput2(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerInput(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerInput3(MMFModule& module) {
+    if (_p_registerInput3 != NULL) {
+        _p_registerInput3(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerInput(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerOutput(MMFModule& module) {
+    if (_p_registerOutput != NULL) {
+        _p_registerOutput(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerOutput1(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerOutput1(MMFModule& module) {
+    if (_p_registerOutput1 != NULL) {
+        _p_registerOutput1(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerOutput(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::registerOutput2(MMFModule& module) {
+    if (_p_registerOutput2 != NULL) {
+        _p_registerOutput2(_p_linker, module._p_mmf_context);
+    } else {
+        _p_registerOutput(_p_linker, module._p_mmf_context);
+    }
+}
+
+void StreamIO::setStackSize(void) {
+    if (_p_setStackSize != NULL) {
+        _p_setStackSize(_p_linker);
+    }
+}
+
+void StreamIO::setTaskPriority(void) {
+    if (_p_setTaskPriority != NULL) {
+        _p_setTaskPriority(_p_linker);
     }
 }
