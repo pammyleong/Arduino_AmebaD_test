@@ -7,7 +7,7 @@
 #######################################
 
 Camera	KEYWORD1
-CameraSetting	KEYWORD1
+VideoSetting	KEYWORD1
 StreamIO	KEYWORD1
 Audio	KEYWORD1
 AAC	KEYWORD1
@@ -59,13 +59,12 @@ USE_AUDIO_STEREO_DMIC	LITERAL1
 # camera.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-init	KEYWORD2
-init_new	KEYWORD2
-deinit	KEYWORD2
-open	KEYWORD2
-start	KEYWORD2
-close	KEYWORD2
-getIO	KEYWORD2
+channelConfig	KEYWORD2
+videoInit	KEYWORD2
+videoDeinit	KEYWORD2
+channelStart	KEYWORD2
+channelEnd	KEYWORD2
+getStream	KEYWORD2
 getP	KEYWORD2
 setFPS	KEYWORD2
 

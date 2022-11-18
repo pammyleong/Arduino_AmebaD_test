@@ -29,7 +29,7 @@ void snapshot_control_thread(void *param);
 
 void cameraStopVideoStream(void *p, int channel);
 
-mm_context_t *cameraDeInit(mm_context_t *);
+mm_context_t *cameraDeinit(mm_context_t *);
 
 void cameraSnapshot(void *p, int channel);
 

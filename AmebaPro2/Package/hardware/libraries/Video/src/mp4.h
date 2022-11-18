@@ -10,7 +10,8 @@ class MP4:public MMFModule {
     public:
         MP4(void);
 
-        void init(CameraSetting& obj);
+        void init();
+        void init(VideoSetting& obj);
         void deinit(void);
 
         void startRecording(void);

@@ -15,11 +15,10 @@ extern "C" {
 #include "camera.h"
 
 class RTSP:public MMFModule {
-//class RTSPClass : public CameraSetting {
     public:
         RTSP(void);
 
-        void init(CameraSetting& obj);
+        void init(VideoSetting& obj);
         void deinit(void);
         void open(void);
         void close(void);

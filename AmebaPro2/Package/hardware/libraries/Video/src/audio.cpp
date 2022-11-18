@@ -20,7 +20,9 @@ Audio::Audio(void) {
   * @retval none
   */
 void Audio::init(void) {
-    _p_mmf_context = audioInit();
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = audioInit();
+    }
     if (_p_mmf_context == NULL) {
         CAMDBG("Audio_Init failed\r\n");
         return;
@@ -28,7 +30,7 @@ void Audio::init(void) {
 }
 
 /**
-  * @brief  DeInit audio module
+  * @brief  Deinit audio module
   * @param  none
   * @retval none
   */
@@ -44,7 +46,7 @@ void Audio::deinit(void) {
 } 
 
 /**
-  * @brief  Open audio module, parameters can be adjust in audio.h
+  * @brief  Open audio module, parameters can be adjusted in audio.h
   * @param  none
   * @retval none
   */
@@ -104,7 +106,9 @@ AAC::AAC(void) {
   * @retval none
   */
 void AAC::init(void) {
-    _p_mmf_context = AACInit(); 
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = AACInit();
+    }
     AACOpen(_p_mmf_context, AAC_SAMPLERATE, AAC_CH, AAC_BIT_LENGTH, AAC_OUTPUT_FORMAT, AAC_MPEG_VER, AAC_MEM_TOTAL_SIZE, AAC_MEM_BLOCK_SIZE, AAC_MEM_FRAME_SIZE);
 }
 

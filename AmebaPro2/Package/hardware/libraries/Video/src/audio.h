@@ -48,7 +48,6 @@ class Audio:public MMFModule {
         void close(void);
 
     private:
-        mm_context_t *audioData;
 };
 
 class AAC:public MMFModule {
@@ -60,7 +59,6 @@ class AAC:public MMFModule {
         void close(void);
 
     private:
-        mm_context_t *AACData;
 };
 
 #endif

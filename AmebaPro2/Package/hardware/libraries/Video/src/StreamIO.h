@@ -15,16 +15,13 @@ class StreamIO
         void stop(void);
         void pause(void);
         void resume(void);
-        void registerInput(mm_context_t* module);
-        void registerInput1(mm_context_t* module);
-        void registerInput2(mm_context_t* module);
-        void registerInput(MMFModule& module);
-        void registerInput1(MMFModule& module);
-        void registerInput2(MMFModule& module);
-        void registerInput3(MMFModule& module);
-        void registerOutput(MMFModule& module);
-        void registerOutput1(MMFModule& module);
-        void registerOutput2(MMFModule& module);
+        void registerInput(const MMFModule& module);
+        void registerInput1(const MMFModule& module);
+        void registerInput2(const MMFModule& module);
+        void registerInput3(const MMFModule& module);
+        void registerOutput(const MMFModule& module);
+        void registerOutput1(const MMFModule& module);
+        void registerOutput2(const MMFModule& module);
         void setStackSize(void);
         void setTaskPriority(void);
 

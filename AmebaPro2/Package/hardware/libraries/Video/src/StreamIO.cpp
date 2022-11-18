@@ -122,24 +122,7 @@ void StreamIO::resume(void) {
     _p_resume(_p_linker);
 }
 
-void StreamIO::registerInput(mm_context_t* module) {
-    if (_p_registerInput != NULL) {
-        _p_registerInput(_p_linker, module);
-    }
-}
-
-void StreamIO::registerInput1(mm_context_t* module) {
-    if (_p_registerInput1 != NULL) {
-        _p_registerInput1(_p_linker, module);
-    }
-}
-
-void StreamIO::registerInput2(mm_context_t* module) {
-    if (_p_registerInput2 != NULL) {
-        _p_registerInput2(_p_linker, module);
-    }
-}
-void StreamIO::registerInput(MMFModule& module) {
+void StreamIO::registerInput(const MMFModule& module) {
     if (_p_registerInput != NULL) {
         _p_registerInput(_p_linker, module._p_mmf_context);
     } else {
@@ -147,7 +130,7 @@ void StreamIO::registerInput(MMFModule& module) {
     }
 }
 
-void StreamIO::registerInput1(MMFModule& module) {
+void StreamIO::registerInput1(const MMFModule& module) {
     if (_p_registerInput1 != NULL) {
         _p_registerInput1(_p_linker, module._p_mmf_context);
     } else {
@@ -155,7 +138,7 @@ void StreamIO::registerInput1(MMFModule& module) {
     }
 }
 
-void StreamIO::registerInput2(MMFModule& module) {
+void StreamIO::registerInput2(const MMFModule& module) {
     if (_p_registerInput2 != NULL) {
         _p_registerInput2(_p_linker, module._p_mmf_context);
     } else {
@@ -163,7 +146,7 @@ void StreamIO::registerInput2(MMFModule& module) {
     }
 }
 
-void StreamIO::registerInput3(MMFModule& module) {
+void StreamIO::registerInput3(const MMFModule& module) {
     if (_p_registerInput3 != NULL) {
         _p_registerInput3(_p_linker, module._p_mmf_context);
     } else {
@@ -171,7 +154,7 @@ void StreamIO::registerInput3(MMFModule& module) {
     }
 }
 
-void StreamIO::registerOutput(MMFModule& module) {
+void StreamIO::registerOutput(const MMFModule& module) {
     if (_p_registerOutput != NULL) {
         _p_registerOutput(_p_linker, module._p_mmf_context);
     } else {
@@ -179,7 +162,7 @@ void StreamIO::registerOutput(MMFModule& module) {
     }
 }
 
-void StreamIO::registerOutput1(MMFModule& module) {
+void StreamIO::registerOutput1(const MMFModule& module) {
     if (_p_registerOutput1 != NULL) {
         _p_registerOutput1(_p_linker, module._p_mmf_context);
     } else {
@@ -187,7 +170,7 @@ void StreamIO::registerOutput1(MMFModule& module) {
     }
 }
 
-void StreamIO::registerOutput2(MMFModule& module) {
+void StreamIO::registerOutput2(const MMFModule& module) {
     if (_p_registerOutput2 != NULL) {
         _p_registerOutput2(_p_linker, module._p_mmf_context);
     } else {

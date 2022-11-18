@@ -10,7 +10,7 @@
 #define OSD_ENABLE      1
 #define MD_ENABLE       1
 #define HDR_ENABLE      1
-#define DEBUG           1
+#define DEBUG           0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -85,9 +85,9 @@ int cameraConfig(int enable, int w, int h, int bps, int snapshot, int preset) {
     return voe_heap_size;
 }
 
-int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot, 
-                        int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot, 
-                        int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot, 
+int cameraConfigNew(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot,
+                        int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot,
+                        int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot,
                         int v4_enable, int v4_w, int v4_h) {
 
     int voe_heap_size = 0;
@@ -189,7 +189,7 @@ void cameraSnapshot(void *p, int channel) {
 
 int snapshot_cb(uint32_t jpeg_addr, uint32_t jpeg_len) {
     printf("snapshot addr=%d\n\r, snapshot size=%d\n\r", (int)jpeg_addr, (int)jpeg_len);
-    return;
+    return 0;
 }
 
 void snapshot_control_thread(void *param) {
@@ -215,7 +215,7 @@ void cameraSnapshotCB(mm_context_t *p) {
     }
 }
 
-mm_context_t *cameraDeInit(mm_context_t *p) {
+mm_context_t *cameraDeinit(mm_context_t *p) {
     mm_queue_item_t *tmp_item;
     mm_context_t *video_data = (mm_context_t *)rtw_malloc(sizeof(mm_context_t));
     video_data = p;
@@ -226,9 +226,9 @@ mm_context_t *cameraDeInit(mm_context_t *p) {
             }
             CAMDBG("module close - move item to recycle");
             while (xQueueReceive(video_data->port[i].output_recycle, (void *)&tmp_item, 0) == pdTRUE) {
-                CAMDBG("module close - tmp_item %x",tmp_item);
+                CAMDBG("module close - tmp_item %x",(unsigned int)tmp_item);
                 if (tmp_item) {
-                    CAMDBG("module close - data_addr %x", tmp_item->data_addr);
+                    CAMDBG("module close - data_addr %x", (unsigned int)tmp_item->data_addr);
                     if (i == 0) {
                         if (tmp_item->data_addr) {
                             video_del_item(video_data->priv, (void *)tmp_item->data_addr);

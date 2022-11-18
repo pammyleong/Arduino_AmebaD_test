@@ -35,35 +35,39 @@ MP4::MP4(void) {
 
 /**
   * @brief  Initialization for MP4 module by setting up MP4 paramters
+  * @param  none
+  * @retval none
+  */
+void MP4::init() {
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = mp4Init();
+    }
+    if (_p_mmf_context == NULL) {
+        CAMDBG("MP4_Init failed\r\n");
+        return;
+    }
+    CAMDBG("MP4_Init done\r\n");
+}
+
+/**
+  * @brief  Initialization for MP4 module by setting up MP4 paramters
   * @param  obj  : object pointer to Camera Settings
   * @retval none
   */
-void MP4::init(CameraSetting& obj) {
-    _p_mmf_context = mp4Init();
+void MP4::init(VideoSetting& obj) {
+    if (_p_mmf_context != NULL) {
+        _p_mmf_context = mp4Init();
+    }
     if (_p_mmf_context == NULL) {
         CAMDBG("MP4_Init failed\r\n");
         return;
     }
     CAMDBG("MP4_Init done\r\n");
 
-    if(obj._resolution) {
-        mp4Params.width = obj._w;
-        mp4Params.height = obj._h;
-        mp4Params.fps = obj._fps;
-        mp4Params.gop = obj._fps;
-    }
-    if(obj._v2_resolution) {
-        mp4Params.width = obj._v2_w;
-        mp4Params.height = obj._v2_h;
-        mp4Params.fps = obj._v2_fps;
-        mp4Params.gop = obj._v2_fps;
-    }
-    if(obj._v3_resolution) {
-        mp4Params.width = obj._v3_w;
-        mp4Params.height = obj._v3_h;
-        mp4Params.fps = obj._v3_fps;
-        mp4Params.gop = obj._v3_fps;
-    }
+    mp4Params.width = obj._w;
+    mp4Params.height = obj._h;
+    mp4Params.fps = obj._fps;
+    mp4Params.gop = obj._fps;
 }
 
 /**
