@@ -33,22 +33,22 @@ void setup() {
     }
 
     // Configure camera video channel with video format information
-    Camera.channelConfig(CHANNEL, config);
+    Camera.configVideoChannel(CHANNEL, config);
     Camera.videoInit();
 
     // Configure RTSP with identical video format information
-    rtsp.init(config);
-    rtsp.open();
+    rtsp.configVideo(config);
+    rtsp.begin();
 
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
     videoStreamer.registerOutput(rtsp);
-    if (videoStreamer.start() != 0) {
+    if (videoStreamer.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
     // Start data stream from video channel
-    Camera.channelStart(CHANNEL);
+    Camera.channelBegin(CHANNEL);
 }
 
 void loop() {

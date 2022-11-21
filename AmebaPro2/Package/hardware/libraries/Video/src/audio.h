@@ -37,15 +37,25 @@ extern "C" {
 #define AAC_MEM_BLOCK_SIZE  128
 #define AAC_MEM_FRAME_SIZE  1024
 
+class AudioSetting {
+    friend class Audio;
+
+    public:
+        AudioSetting(uint8_t preset = 0);
+        int8_t _preset = -1;
+
+    private:
+};
+
 class Audio:public MMFModule {
     public:
         Audio(void);
+        ~Audio(void);
 
-        void init(void);
-        void deinit(void);
-        void open(void);
-        void open(mm_context_t *p, uint32_t sample_rate, uint32_t word_length, audio_mic_gain mic_gain, audio_dmic_gain dmic_l_gain, audio_dmic_gain dmic_r_gain, uint8_t use_mic_type, int channel, uint32_t enable_aec);
-        void close(void);
+        void configAudio(AudioSetting& config);
+        void begin(void);
+        void begin(mm_context_t *p, uint32_t sample_rate, uint32_t word_length, audio_mic_gain mic_gain, audio_dmic_gain dmic_l_gain, audio_dmic_gain dmic_r_gain, uint8_t use_mic_type, int channel, uint32_t enable_aec);
+        void end(void);
 
     private:
 };
@@ -53,10 +63,11 @@ class Audio:public MMFModule {
 class AAC:public MMFModule {
     public:
         AAC(void);
+        ~AAC(void);
 
-        void init(void);
-        void deinit(void);
-        void close(void);
+        void configAudio(AudioSetting& config);
+        void begin(void);
+        void end(void);
 
     private:
 };

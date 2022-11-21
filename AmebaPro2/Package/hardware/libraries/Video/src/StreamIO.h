@@ -11,8 +11,8 @@ class StreamIO
         StreamIO(uint8_t numInput, uint8_t numOutput);
         ~StreamIO(void);
 
-        int  start(void);
-        void stop(void);
+        int  begin(void);
+        void end(void);
         void pause(void);
         void resume(void);
         void registerInput(const MMFModule& module);

@@ -8,26 +8,24 @@
 
 Camera	KEYWORD1
 VideoSetting	KEYWORD1
+AudioSetting	KEYWORD1
 StreamIO	KEYWORD1
 Audio	KEYWORD1
 AAC	KEYWORD1
 RTSP	KEYWORD1
-MP4	KEYWORD1
+MP4Recording	KEYWORD1
 
 #######################################
 # audio.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-init	KEYWORD2
-deinit	KEYWORD2
-open	KEYWORD2
-close	KEYWORD2
-getIO	KEYWORD2
+configAudio	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
 
-init	KEYWORD2
-deinit	KEYWORD2
-close	KEYWORD2
-getIO	KEYWORD2
+configAudio	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
 
 ASR_8KHZ	LITERAL1
 ASR_16KHZ	LITERAL1
@@ -59,10 +57,10 @@ USE_AUDIO_STEREO_DMIC	LITERAL1
 # camera.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-channelConfig	KEYWORD2
+configVideoChannel	KEYWORD2
 videoInit	KEYWORD2
 videoDeinit	KEYWORD2
-channelStart	KEYWORD2
+channelBegin	KEYWORD2
 channelEnd	KEYWORD2
 getStream	KEYWORD2
 getP	KEYWORD2
@@ -89,23 +87,22 @@ VIDEO_HEVC_JPEG	LITERAL1
 VIDEO_H264_JPEG	LITERAL1
 
 #######################################
-# mp4.h Methods (KEYWORD2) & Constants (LITERAL1)
+# mp4Recording.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-init	KEYWORD2
-deinit	KEYWORD2
-startRecording	KEYWORD2
-stopRecording	KEYWORD2
+configVideo	KEYWORD2
+configAudio	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
 setRecordingFileName	KEYWORD2
-getRecordingFileName	KEYWORD2
 setRecordingDuration	KEYWORD2
-getRecordingDuration	KEYWORD2
 setRecordingFileCount	KEYWORD2
-getRecordingFileCount	KEYWORD2
 setLoopRecording	KEYWORD2
 setRecordingDataType	KEYWORD2
+getRecordingFileName	KEYWORD2
+getRecordingDuration	KEYWORD2
+getRecordingFileCount	KEYWORD2
 getRecordingState	KEYWORD2
-getIO	KEYWORD2
 
 STORAGE_ALL	LITERAL1
 STORAGE_VIDEO	LITERAL1
@@ -119,11 +116,10 @@ AUDIO_ALAW	LITERAL1
 # rtsp.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-init	KEYWORD2
-open	KEYWORD2
-close	KEYWORD2
-deinit	KEYWORD2
-getIO	KEYWORD2
+configVideo	KEYWORD2
+configAudio	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
 enableAudio	KEYWORD2
 getPort	KEYWORD2
 
@@ -131,8 +127,8 @@ getPort	KEYWORD2
 # StreamIO.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
-start	KEYWORD2
-stop	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
 pause	KEYWORD2
 resume	KEYWORD2
 registerInput	KEYWORD2

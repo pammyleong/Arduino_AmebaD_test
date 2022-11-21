@@ -24,27 +24,42 @@ static int AUDIO_EN = 0;
 #endif
 
 RTSP::RTSP(void) {
+}
 
-};
+RTSP::~RTSP(void) {
+    if (_p_mmf_context == NULL) {
+        return;
+    }
+    end();
+    if (RTSPDeinit(_p_mmf_context) == NULL) {
+        _p_mmf_context = NULL;
+    } else {
+        CAMDBG("RTSP deinit failed\r\n");
+    }
+}
 
 /**
-  * @brief  Initialization for RTSP module by setting up RTSP paramters. 
-  * @param  obj  : object pointer to Camera Settings
+  * @brief  Configure RTSP module by setting up RTSP video paramters. 
+  * @param  config : VideoSetting object
   * @retval none
   */
-void RTSP::init(VideoSetting& obj) {
+void RTSP::configVideo(VideoSetting& config) {
+    // RTSPInit if not previously done so
     if (_p_mmf_context == NULL) {
         _p_mmf_context = RTSPInit();
     }
-    CAMDBG("RTSP_Init done\r\n");
+    if (_p_mmf_context == NULL) {
+        CAMDBG("RTSP init failed\r\n");
+        return;
+    }
 
     uint32_t RTSP_fps;
     uint32_t AV_Codec_ID;
     uint32_t RTSP_bps = CAM_BPS;
 
-    RTSP_fps = obj._fps;
-    AV_Codec_ID = obj._encoder;
-    RTSP_bps = obj._bps;
+    RTSP_fps = config._fps;
+    AV_Codec_ID = config._encoder;
+    RTSP_bps = config._bps;
 
     if (AV_Codec_ID == VIDEO_H264) {
         AV_Codec_ID = AV_CODEC_ID_H264;
@@ -65,18 +80,18 @@ void RTSP::init(VideoSetting& obj) {
 }
 
 /**
-  * @brief  deinit and release all the resources set for RTSP 
-  * @param  none
+  * @brief  Configure RTSP module by setting up RTSP audio paramters. 
+  * @param  config : AudioSetting object
   * @retval none
   */
-void RTSP::deinit(void) {
+void RTSP::configAudio(AudioSetting& config) {
+    // RTSPInit if not previously done so
     if (_p_mmf_context == NULL) {
-        return;
+        _p_mmf_context = RTSPInit();
     }
-    if (RTSPDeinit(_p_mmf_context) == NULL) {
-        _p_mmf_context = NULL;
-    } else {
-        CAMDBG("RTSP deinit failed\r\n");
+    if (_p_mmf_context == NULL) {
+        CAMDBG("RTSP init failed\r\n");
+        return;
     }
 }
 
@@ -85,7 +100,7 @@ void RTSP::deinit(void) {
   * @param  none
   * @retval none
   */
-void RTSP::open (void) {
+void RTSP::begin(void) {
     if (_p_mmf_context == NULL) {
         printf("Need RTSP init first\r\n");
     } else {
@@ -99,7 +114,7 @@ void RTSP::open (void) {
   * @param  none
   * @retval none
   */
-void RTSP::close(void) {
+void RTSP::end(void) {
     if (_p_mmf_context == NULL) {
         printf("Need RTSP init first\r\n");
     }

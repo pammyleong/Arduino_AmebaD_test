@@ -134,15 +134,14 @@ class VideoSetting {
         uint8_t _snapshot;
 
     private:
-
 };
 
 class Video {
     public:
-        void channelConfig(int ch, VideoSetting& obj);
+        void configVideoChannel(int ch, VideoSetting& config);
         void videoInit(void);
-        void videoDeinit(int ch = 0);
-        void channelStart(int ch = 0);
+        void videoDeinit(void);
+        void channelBegin(int ch = 0);
         void channelEnd(int ch = 0);
         MMFModule getStream(int ch = 0);
 

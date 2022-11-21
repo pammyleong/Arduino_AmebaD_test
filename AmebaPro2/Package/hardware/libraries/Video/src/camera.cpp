@@ -74,7 +74,7 @@ VideoSetting::VideoSetting(uint8_t preset) {
   * @brief  initialize video settings for the camera sensor
   * @param  resolution: video resolution
             fps: frame rate in frames per second
-            encoder:
+            encoder: video encoder format to use
             snapshot: enable or disable snapshot function
   * @retval none
   */
@@ -97,19 +97,19 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
 /**
   * @brief  configure video stream channel
   * @param  ch : channel to configure
-            obj : video configuration
+            config : VideoSetting object
   * @retval none
   */
-void Video::channelConfig(int ch, VideoSetting& obj) {
+void Video::configVideoChannel(int ch, VideoSetting& config) {
     // Copy in video stream settings for specified stream channel
     channelEnable[ch]   = 1;
-    resolution[ch]      = obj._resolution;
-    w[ch]               = obj._w;
-    h[ch]               = obj._h;
-    fps[ch]             = obj._fps;
-    bps[ch]             = obj._bps;
-    encoder[ch]         = obj._encoder;
-    snapshot[ch]        = obj._snapshot;
+    resolution[ch]      = config._resolution;
+    w[ch]               = config._w;
+    h[ch]               = config._h;
+    fps[ch]             = config._fps;
+    bps[ch]             = config._bps;
+    encoder[ch]         = config._encoder;
+    snapshot[ch]        = config._snapshot;
 
     // Video stream channel 2 requires setting bps = 0
     if (ch == 2) {
@@ -184,14 +184,16 @@ void Video::videoInit(void) {
 
 /**
   * @brief  deinitialization of video stream module for a specific channel
-  * @param  ch : channel to deinit
-  * @retval  none
+  * @param  none
+  * @retval none
   */
-void Video::videoDeinit(int ch) {
-    if (ch > 3) {
-        ch = 0;
+void Video::videoDeinit() {
+    uint8_t i;
+    for (i = 0; i < 4; i++) {
+        if (videoModule[i]._p_mmf_context != NULL) {
+            cameraDeinit(videoModule[i]._p_mmf_context);
+        }
     }
-    cameraDeinit(videoModule[ch]._p_mmf_context);
 }
 
 /**
@@ -199,7 +201,7 @@ void Video::videoDeinit(int ch) {
   * @param  ch : channel to start streaming
   * @retval none
   */
-void Video::channelStart(int ch) {
+void Video::channelBegin(int ch) {
     switch (ch) {
         case 0: {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
@@ -222,18 +224,6 @@ void Video::channelStart(int ch) {
 }
 
 /**
-  * @brief  Get video stream module
-  * @param  ch : channel
-  * @retval video stream module of channel
-  */
-MMFModule Video::getStream(int ch) {
-    if (ch > 3) {
-        ch = 0;
-    }
-    return (videoModule[ch]);
-}
-
-/**
   * @brief  Stop video streaming on a specific channel
   * @param  ch : channel to stop streaming
   * @retval none
@@ -243,6 +233,18 @@ void Video::channelEnd(int ch) {
         ch = 0;
     }
     cameraStopVideoStream(videoModule[ch]._p_mmf_context->priv, channel[ch]);
+}
+
+/**
+  * @brief  Get video stream module
+  * @param  ch : channel
+  * @retval video stream module of channel
+  */
+MMFModule Video::getStream(int ch) {
+    if (ch > 3) {
+        ch = 0;
+    }
+    return (videoModule[ch]);
 }
 
 /**

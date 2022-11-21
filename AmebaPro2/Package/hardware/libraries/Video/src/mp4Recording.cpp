@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "mp4.h"
+#include "mp4Recording.h"
 #include "mp4_drv.h"
 
 #define DEBUG 1
@@ -12,7 +12,7 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-MP4::MP4(void) {
+MP4Recording::MP4Recording(void) {
     // Default video parameters
     mp4Params.width = 1920;
     mp4Params.height = 1080;
@@ -33,52 +33,11 @@ MP4::MP4(void) {
     mp4Params.fatfs_buf_size = 256 * 1024; // 32kb multiple
 }
 
-/**
-  * @brief  Initialization for MP4 module by setting up MP4 paramters
-  * @param  none
-  * @retval none
-  */
-void MP4::init() {
-    if (_p_mmf_context == NULL) {
-        _p_mmf_context = mp4Init();
-    }
-    if (_p_mmf_context == NULL) {
-        CAMDBG("MP4_Init failed\r\n");
-        return;
-    }
-    CAMDBG("MP4_Init done\r\n");
-}
-
-/**
-  * @brief  Initialization for MP4 module by setting up MP4 paramters
-  * @param  obj  : object pointer to Camera Settings
-  * @retval none
-  */
-void MP4::init(VideoSetting& obj) {
-    if (_p_mmf_context != NULL) {
-        _p_mmf_context = mp4Init();
-    }
-    if (_p_mmf_context == NULL) {
-        CAMDBG("MP4_Init failed\r\n");
-        return;
-    }
-    CAMDBG("MP4_Init done\r\n");
-
-    mp4Params.width = obj._w;
-    mp4Params.height = obj._h;
-    mp4Params.fps = obj._fps;
-    mp4Params.gop = obj._fps;
-}
-
-/**
-  * @brief  Deinit and release all the resources set for MP4
-  * @param  none
-  * @retval none
-  */
-void MP4::deinit(void) {
+MP4Recording::~MP4Recording(void) {
     if (_p_mmf_context == NULL) {
         return;
     }
+    end();
     if (mp4Deinit(_p_mmf_context) == NULL) {
         _p_mmf_context = NULL;
     } else {
@@ -87,11 +46,47 @@ void MP4::deinit(void) {
 }
 
 /**
+  * @brief  Configure MP4 module by setting up MP4 video paramters
+  * @param  config : VideoSetting object
+  * @retval none
+  */
+void MP4Recording::configVideo(VideoSetting& config) {
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = mp4Init();
+    }
+    if (_p_mmf_context == NULL) {
+        CAMDBG("MP4 Init failed\r\n");
+        return;
+    }
+
+    mp4Params.width = config._w;
+    mp4Params.height = config._h;
+    mp4Params.fps = config._fps;
+    mp4Params.gop = config._fps;
+}
+
+/**
+  * @brief  Configure MP4 module by setting up MP4 audio paramters
+  * @param  config : AudioSetting object
+  * @retval none
+  */
+void MP4Recording::configAudio() {
+    // RTSPInit if not previously done so
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = mp4Init();
+    }
+    if (_p_mmf_context == NULL) {
+        CAMDBG("MP4 Init failed\r\n");
+        return;
+    }
+}
+
+/**
   * @brief  Start MP4 module recording data to SD card
   * @param  none
   * @retval none
   */
-void MP4::startRecording(void) {
+void MP4Recording::begin  (void) {
     if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return;
@@ -106,7 +101,7 @@ void MP4::startRecording(void) {
   * @param  none
   * @retval none
   */
-void MP4::stopRecording(void) {
+void MP4Recording::end(void) {
     if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return;
@@ -119,7 +114,7 @@ void MP4::stopRecording(void) {
   * @param  filename : pointer to character array containing filename
   * @retval none
   */
-void MP4::setRecordingFileName(const char* filename) {
+void MP4Recording::setRecordingFileName(const char* filename) {
     memset(mp4Params.record_file_name, 0, sizeof(mp4Params.record_file_name));
     strncpy(mp4Params.record_file_name, filename, sizeof(mp4Params.record_file_name));
 }
@@ -129,7 +124,7 @@ void MP4::setRecordingFileName(const char* filename) {
   * @param  filename : String class object containing filename
   * @retval none
   */
-void MP4::setRecordingFileName(String filename) {
+void MP4Recording::setRecordingFileName(String filename) {
     setRecordingFileName(filename.c_str());
 }
 
@@ -138,7 +133,7 @@ void MP4::setRecordingFileName(String filename) {
   * @param  secs : maximum recording duration expressed in seconds
   * @retval none
   */
-void MP4::setRecordingDuration(uint32_t secs) {
+void MP4Recording::setRecordingDuration(uint32_t secs) {
     mp4Params.record_length = secs;
 }
 
@@ -147,7 +142,7 @@ void MP4::setRecordingDuration(uint32_t secs) {
   * @param  count : total number of recording files
   * @retval none
   */
-void MP4::setRecordingFileCount(uint32_t count) {
+void MP4Recording::setRecordingFileCount(uint32_t count) {
     mp4Params.record_file_num = count;
 }
 
@@ -156,7 +151,7 @@ void MP4::setRecordingFileCount(uint32_t count) {
   * @param  enable : integer, 1 to enable, 0 to disable
   * @retval none
   */
-void MP4::setLoopRecording(int enable) {
+void MP4Recording::setLoopRecording(int enable) {
     loopEnable = enable;
 }
 
@@ -165,7 +160,7 @@ void MP4::setLoopRecording(int enable) {
   * @param  type : integer from 0 to 2 inclusive
   * @retval none
   */
-void MP4::setRecordingDataType(uint8_t type) {
+void MP4Recording::setRecordingDataType(uint8_t type) {
     if (type <= STORAGE_AUDIO) {
         mp4Params.record_type = type;
     }
@@ -176,7 +171,7 @@ void MP4::setRecordingDataType(uint8_t type) {
   * @param  none
   * @retval String class object containing filename
   */
-String MP4::getRecordingFileName() {
+String MP4Recording::getRecordingFileName() {
     return String(mp4Params.record_file_name);
 }
 
@@ -185,7 +180,7 @@ String MP4::getRecordingFileName() {
   * @param  none
   * @retval maximum recording duration expressed in seconds
   */
-uint32_t MP4::getRecordingDuration() {
+uint32_t MP4Recording::getRecordingDuration() {
     return (mp4Params.record_length);
 }
 
@@ -194,7 +189,7 @@ uint32_t MP4::getRecordingDuration() {
   * @param  count : total number of recording files
   * @retval none
   */
-uint32_t MP4::getRecordingFileCount() {
+uint32_t MP4Recording::getRecordingFileCount() {
     return (mp4Params.record_file_num);
 }
 
@@ -203,7 +198,7 @@ uint32_t MP4::getRecordingFileCount() {
   * @param  type : integer from 0 to 2 inclusive
   * @retval none
   */
-uint8_t MP4::getRecordingState(void) {
+uint8_t MP4Recording::getRecordingState(void) {
     if (_p_mmf_context == NULL) {
         CAMDBG("Need MP4 init first\r\n");
         return 0;

@@ -102,15 +102,15 @@ StreamIO::StreamIO(uint8_t numInput, uint8_t numOutput) {
 }
 
 StreamIO::~StreamIO(void) {
-    stop();
+    end();
     _p_destroy(_p_linker);
 }
 
-int  StreamIO::start(void) {
+int  StreamIO::begin(void) {
     return _p_start(_p_linker);
 }
 
-void StreamIO::stop(void) {
+void StreamIO::end(void) {
     _p_stop(_p_linker);
 }
 
@@ -123,6 +123,10 @@ void StreamIO::resume(void) {
 }
 
 void StreamIO::registerInput(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Input not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerInput != NULL) {
         _p_registerInput(_p_linker, module._p_mmf_context);
     } else {
@@ -131,6 +135,10 @@ void StreamIO::registerInput(const MMFModule& module) {
 }
 
 void StreamIO::registerInput1(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Input not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerInput1 != NULL) {
         _p_registerInput1(_p_linker, module._p_mmf_context);
     } else {
@@ -139,6 +147,10 @@ void StreamIO::registerInput1(const MMFModule& module) {
 }
 
 void StreamIO::registerInput2(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Input not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerInput2 != NULL) {
         _p_registerInput2(_p_linker, module._p_mmf_context);
     } else {
@@ -147,6 +159,10 @@ void StreamIO::registerInput2(const MMFModule& module) {
 }
 
 void StreamIO::registerInput3(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Input not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerInput3 != NULL) {
         _p_registerInput3(_p_linker, module._p_mmf_context);
     } else {
@@ -155,6 +171,10 @@ void StreamIO::registerInput3(const MMFModule& module) {
 }
 
 void StreamIO::registerOutput(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Output not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerOutput != NULL) {
         _p_registerOutput(_p_linker, module._p_mmf_context);
     } else {
@@ -163,6 +183,10 @@ void StreamIO::registerOutput(const MMFModule& module) {
 }
 
 void StreamIO::registerOutput1(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Output not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerOutput1 != NULL) {
         _p_registerOutput1(_p_linker, module._p_mmf_context);
     } else {
@@ -171,6 +195,10 @@ void StreamIO::registerOutput1(const MMFModule& module) {
 }
 
 void StreamIO::registerOutput2(const MMFModule& module) {
+    if (module._p_mmf_context == NULL) {
+        printf("Output not initialized correctly!\r\n");
+        return;
+    }
     if (_p_registerOutput2 != NULL) {
         _p_registerOutput2(_p_linker, module._p_mmf_context);
     } else {

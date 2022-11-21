@@ -11,7 +11,7 @@
 // Channel 1 : 1280 x 720  30FPS H264
 // Channel 2 : 1920 x 1080 30FPS MJPEG
 
-VideoSetting config(CHANNEL);
+VideoSetting configV(CHANNEL);
 Audio audio;
 AAC aac;
 RTSP rtsp;
@@ -37,24 +37,23 @@ void setup() {
     }
 
     // Configure camera video channel with video format information
-    Camera.channelConfig(CHANNEL, config);
+    Camera.configVideoChannel(CHANNEL, configV);
     Camera.videoInit();
 
     // Configure audio peripheral for audio data output
-    audio.init();
-    audio.open();
+    audio.begin();
     // Configure AAC audio encoder
-    aac.init();
+    aac.begin();
 
     // Configure RTSP with identical video format information and enable audio streaming
     rtsp.enableAudio();
-    rtsp.init(config);
-    rtsp.open();
+    rtsp.configVideo(configV);
+    rtsp.begin();
 
     // Configure StreamIO object to stream data from audio channel to AAC encoder
     audioStreamer.registerInput(audio);
     audioStreamer.registerOutput(aac);
-    if (audioStreamer.start() != 0) {
+    if (audioStreamer.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
@@ -62,12 +61,12 @@ void setup() {
     avMixStreamer.registerInput1(Camera.getStream(CHANNEL));
     avMixStreamer.registerInput2(aac);
     avMixStreamer.registerOutput(rtsp);
-    if (avMixStreamer.start() != 0) {
+    if (avMixStreamer.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
     // Start data stream from video channel
-    Camera.channelStart(CHANNEL);
+    Camera.channelBegin(CHANNEL);
 }
 
 void loop() {

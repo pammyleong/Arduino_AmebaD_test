@@ -1,21 +1,21 @@
-#ifndef __MP4_H__
-#define __MP4_H__
+#ifndef __MP4_RECORDING_H__
+#define __MP4_RECORDING_H__
 
 #include "mmf2_module.h"
 #include "mp4_muxer.h"
 
 #include "camera.h"
+#include "audio.h"
 
-class MP4:public MMFModule {
+class MP4Recording:public MMFModule {
     public:
-        MP4(void);
+        MP4Recording(void);
+        ~MP4Recording(void);
 
-        void init();
-        void init(VideoSetting& obj);
-        void deinit(void);
-
-        void startRecording(void);
-        void stopRecording(void);
+        void configVideo(VideoSetting& config);
+        void configAudio(void);
+        void begin(void);
+        void end(void);
 
         void setRecordingFileName(const char* filename);
         void setRecordingFileName(String filename);

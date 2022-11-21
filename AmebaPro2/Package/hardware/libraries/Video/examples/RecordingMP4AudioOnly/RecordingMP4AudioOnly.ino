@@ -1,12 +1,12 @@
 #include "StreamIO.h"
 #include "audio.h"
-#include "mp4.h"
+#include "mp4Recording.h"
 
 #define CHANNEL 0
 
 Audio audio;
 AAC aac;
-MP4 mp4;
+MP4Recording mp4;
 StreamIO audioStreamer1(1, 1);  // 1 Input Audio -> 1 Output AAC
 StreamIO audioStreamer2(1, 1);  // 1 Input AAC -> 1 Output MP4
 
@@ -14,13 +14,12 @@ void setup() {
     Serial.begin(115200);
 
     // Configure audio peripheral for audio data output
-    audio.init();
-    audio.open();
+    audio.begin();
     // Configure AAC audio encoder
-    aac.init();
+    aac.begin();
 
     // Configure MP4 recording settings
-    mp4.init();
+    mp4.configAudio();
     mp4.setRecordingDuration(30);
     mp4.setRecordingFileCount(1);
     mp4.setRecordingFileName("TestRecordingAudioOnly");
@@ -29,19 +28,19 @@ void setup() {
     // Configure StreamIO object to stream data from audio channel to AAC encoder
     audioStreamer1.registerInput(audio);
     audioStreamer1.registerOutput(aac);
-    if (audioStreamer1.start() != 0) {
+    if (audioStreamer1.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
     // Configure StreamIO object to stream data from AAC encoder to MP4
     audioStreamer2.registerInput(aac);
     audioStreamer2.registerOutput(mp4);
-    if (audioStreamer2.start() != 0) {
+    if (audioStreamer2.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
     // Start recording MP4 data to SD card
-    mp4.startRecording();
+    mp4.begin();
 }
 
 void loop() {

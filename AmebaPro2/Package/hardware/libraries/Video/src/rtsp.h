@@ -13,15 +13,18 @@ extern "C" {
 #endif
 
 #include "camera.h"
+#include "audio.h"
 
 class RTSP:public MMFModule {
     public:
         RTSP(void);
+        ~RTSP(void);
 
-        void init(VideoSetting& obj);
-        void deinit(void);
-        void open(void);
-        void close(void);
+        void configVideo(VideoSetting& config);
+        void configAudio(AudioSetting& config);
+        void begin(void);
+        void end(void);
+
         int enableAudio(void);
         int getPort(void);
 
