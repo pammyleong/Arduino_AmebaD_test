@@ -113,7 +113,6 @@ class WiFiDrv
          */
         static int8_t wifiSetKey(char* ssid, uint8_t ssid_len, uint8_t key_idx, const void *key, const uint8_t len);
 
-#if 0
         /* Set ip configuration disabling dhcp client
          *
          * param validParams: set the number of parameters that we want to change
@@ -140,8 +139,7 @@ class WiFiDrv
          *
          * return: WL_SUCCESS or WL_FAILURE
          */
-        static int8_t disconnect();
-#endif 
+        static int8_t disconnect(); 
 
         /*
          * Disconnect from the network
@@ -267,7 +265,6 @@ class WiFiDrv
          */
         static uint32_t getEncTypeNetworksEx(uint8_t networkItem);
 
-#if 0
         /*
          * Resolve the given hostname to an IP address.
          * param aHostname: Name to be resolved
@@ -276,8 +273,7 @@ class WiFiDrv
          *          else error code
          */
         static int getHostByName(const char* aHostname, IPAddress& aResult);
-        static int getHostByNamev6(const char* aHostname, IPv6Address& aResult);
-#endif
+//        static int getHostByNamev6(const char* aHostname, IPv6Address& aResult);
 
         /*
          * Get the firmware version
@@ -285,23 +281,21 @@ class WiFiDrv
          */
         static char* getFwVersion();
 
-#if 0
-//        static int8_t apSetNetwork(char* ssid, uint8_t ssid_len);
+        static int8_t apSetNetwork(char* ssid, uint8_t ssid_len);
 
-//        static int8_t apSetPassphrase(const char *passphrase, uint8_t len);
+        static int8_t apSetPassphrase(const char *passphrase, uint8_t len);
 
-//        static int8_t apSetChannel(const char *channel);
+        static int8_t apSetChannel(const char *channel);
 
-//        static int8_t apActivate(uint8_t hidden_ssid);
+        static int8_t apActivate(uint8_t hidden_ssid);
 
-//        static int disablePowerSave();
+        static int disablePowerSave();
 
 //        static int getIPv6Status();
 
-//        static void setHostname(const char* hostname);
-//
-//        static const char* getHostname();
-#endif
+        static void setHostname(const char* hostname);
+
+        static const char* getHostname();
 };
 
 extern WiFiDrv wiFiDrv;

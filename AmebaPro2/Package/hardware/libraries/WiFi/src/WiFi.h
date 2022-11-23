@@ -17,8 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef WiFi_h_asdafec
-#define WiFi_h_asdafec
+#ifndef WiFi_h
+#define WiFi_h
 
 #include <Arduino.h>
 #include <inttypes.h>
@@ -30,10 +30,10 @@ extern "C" {
 
 #include "IPAddress.h"
 //#include "IPv6Address.h"
-//#include "WiFiClient.h"
-//#include "WiFiServer.h"
-//#include "WiFiSSLClient.h"
-//#include "WiFiUdp.h"
+#include "WiFiClient.h"
+#include "WiFiServer.h"
+#include "WiFiSSLClient.h"
+#include "WiFiUdp.h"
 
 class WiFiClass
 {
@@ -72,7 +72,7 @@ class WiFiClass
          */
         int begin(char* ssid, const char *passphrase);
 
-#if 0
+
         /* Change Ip configuration settings disabling the dhcp client
          *
          * param local_ip:   Static ip configuration
@@ -123,7 +123,6 @@ class WiFiClass
          * return: one value of wl_status_t enum
          */
         int disconnect(void);
-#endif
 
         /*
          * Get the interface MAC address.
@@ -139,15 +138,12 @@ class WiFiClass
          */
         IPAddress localIP();
 
-
-
          /*
          * Get the interface IPv6 address.
          *
          * return: Ipv6 address value
          */
         void printLocalIPv6();
-
 
         /*
          * Get the interface subnet mask address.
@@ -190,7 +186,7 @@ class WiFiClass
          * Return the Encryption Type associated with the network
          *
          * return: one value of wl_enc_type enum
-//         */
+        */
         uint8_t	encryptionType();
 
         /*
@@ -243,7 +239,6 @@ class WiFiClass
          */
         uint8_t status();
 
-#if 0
         /*
          * Resolve the given hostname to an IP address.
          * param aHostname: Name to be resolved
@@ -253,6 +248,7 @@ class WiFiClass
          */
         int hostByName(const char* aHostname, IPAddress& aResult);
 
+#if 0
         /*
          * Resolve the given hostname to an IPv6 address.
          * param aHostname: Name to be resolved
@@ -261,6 +257,7 @@ class WiFiClass
          *          else return the error code
          */
         int hostByNamev6(const char* aHostname, IPv6Address& aResult);
+#endif
 
         int apbegin(char* ssid, char* channel, uint8_t hidden_ssid = 0);
 
@@ -271,12 +268,10 @@ class WiFiClass
         void setHostname(const char* hostname);
 
         const char* getHostname();
-		
 
-//        friend class WiFiClient;
-//        friend class WiFiServer;
-//        friend class WiFiSSLClient;
-#endif
+        friend class WiFiClient;
+        friend class WiFiServer;
+        friend class WiFiSSLClient;
 };
 
 extern WiFiClass WiFi;

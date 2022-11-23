@@ -387,6 +387,25 @@ struct pwrctrl_priv {
 	u8  pno_timeout;
 	u8  l2_keepalive_period;
 #endif
+
+#ifdef CONFIG_ARP_REQUEST_KEEP_ALIVE
+	u8  arpreq_enable;
+	u8  arpreq_powerbit;
+	u8  arpreq_dtim1to;
+	u8  arpreq_rsvd_page_locate;
+#endif
+
+#ifdef CONFIG_WOWLAN_IO_WDT
+	u8  wdt_enable;
+	u8  wdt_gpio;
+	u8  wdt_interval;
+#endif
+
+#ifdef CONFIG_WOWLAN_SSL_SERVER_KEEP_ALIVE
+	u8  serverkeepalive_enable;
+	u8  serverkeepalive_timeout_l;
+	u8  serverkeepalive_timeout_h;
+#endif
 };
 
 #define RTW_PWR_STATE_CHK_INTERVAL 2000

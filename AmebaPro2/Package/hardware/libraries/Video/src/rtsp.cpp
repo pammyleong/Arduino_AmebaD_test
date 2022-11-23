@@ -3,7 +3,7 @@
 
 #define ON  1
 #define OFF 0
-#define DEBUG 1
+#define DEBUG 0
 
 #define VID_CH_IDX 0
 #define RTSP_VIDEO_TYPE AVMEDIA_TYPE_VIDEO
@@ -143,4 +143,8 @@ int RTSP::getPort(void) {
     int port_val;
     port_val = RTSPGetPort(_p_mmf_context->priv);
     return port_val;
+}
+
+int RTSP::printInfo(void) {
+    return getPort();
 }

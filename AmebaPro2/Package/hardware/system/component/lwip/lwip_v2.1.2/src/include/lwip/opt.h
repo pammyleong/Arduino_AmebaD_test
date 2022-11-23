@@ -1585,7 +1585,8 @@
  * field.
  */
 #if !defined LWIP_NETIF_HOSTNAME || defined __DOXYGEN__
-#define LWIP_NETIF_HOSTNAME             0
+// zzw arduino 
+#define LWIP_NETIF_HOSTNAME             1
 #endif
 
 /**

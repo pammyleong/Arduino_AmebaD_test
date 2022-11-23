@@ -3,7 +3,7 @@
 #include "mp4Recording.h"
 #include "mp4_drv.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -206,3 +206,9 @@ uint8_t MP4Recording::getRecordingState(void) {
     return mp4RecordingState(_p_mmf_context->priv);
 }
 
+void MP4Recording::printInfo (void) {
+    printf("Recording file name: %s\r\n", getRecordingFileName().c_str());
+    printf("Recording duration: %d seconds\r\n", getRecordingDuration());
+    printf("File count: %d\r\n", getRecordingFileCount());
+    printf("\r\n");
+}

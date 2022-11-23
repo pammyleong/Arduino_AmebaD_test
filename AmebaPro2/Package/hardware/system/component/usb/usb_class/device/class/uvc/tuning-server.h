@@ -11,10 +11,10 @@
 #define TUNING_SRV_VERSION_MAJOR	0x0001
 #endif
 #ifndef TUNING_SRV_VERSION_MINOR
-#define TUNING_SRV_VERSION_MINOR	0x0001
+#define TUNING_SRV_VERSION_MINOR	0x0002
 #endif
 #ifndef TUNING_SRV_VERSION_BUILD
-#define TUNING_SRV_VERSION_BUILD	0x0000
+#define TUNING_SRV_VERSION_BUILD	0x0001
 #endif
 
 #define TCP_LISTEN_PORT			6666
@@ -56,6 +56,9 @@
 #define MAX(a, b) (((a) > (b))?(a):(b))
 #endif
 
+#define TUNING_IQ_MAX_SIZE (256 * 1024)
+#define TUNING_IQ_MIN_SIZE (10  * 1024)
+
 enum tuning_opcode {
 	MEM_READ = 0,
 	MEM_WRITE = 1,
@@ -94,6 +97,7 @@ enum tuning_opcode {
 	ISP_CTRL_READ = 30,
 	ISP_CTRL_WRITE = 31,
 	BAYER_MODE_CMD = 32,
+	ERRCODE_READ = 33,
 };
 
 #define UVC_MEM_READ 0xC2
@@ -120,6 +124,7 @@ enum tuning_opcode {
 #define UVC_ISP_ALGO_PARAM_SIZE 0xF1
 #define UVC_ISP_STATIS_SIZE 0xF2
 #define UVC_ISP_IQ_FW_SIZE 0xF3
+#define UVC_ERRCODE_READ 0xFB
 
 #define UVC_MCU_ISP_CMD 0xFF
 //1. MEM_READ                        (bySubCmd : 0xC2, addr : 0xD100)
@@ -172,6 +177,38 @@ struct tuning_isp_cmd {
 	uint16_t		param;
 	uint16_t		addr;
 } __attribute__((packed));
+
+enum RTS_USBDEXT_LOG_TYPE {
+	RTS_USBDEXT_LOG_IDX_STATUS = 0,
+	RTS_USBDEXT_LOG_IDX_DATADUMP
+};
+
+#define RTS_USBDEXT_LOG_MASK_IDX_STATUS		(0x1 << RTS_USBDEXT_LOG_IDX_STATUS)
+#define RTS_USBDEXT_LOG_MASK_IDX_DATADUMP	(0x1 << RTS_USBDEXT_LOG_IDX_DATADUMP)
+
+enum RTS_TUNING_LOG_TYPE {
+	RTS_TUNING_LOG_IDX_STATUS = 0,
+	RTS_TUNING_LOG_IDX_XMEM,
+	RTS_TUNING_LOG_IDX_TABLE_STA,
+	RTS_TUNING_LOG_IDX_TABLE_PARA,
+	RTS_TUNING_LOG_IDX_TABLE_IQ
+};
+
+#define RTS_TUNING_LOG_MASK_IDX_STATUS		(0x1 << RTS_TUNING_LOG_IDX_STATUS)
+#define RTS_TUNING_LOG_MASK_IDX_XMEM		(0x1 << RTS_TUNING_LOG_IDX_XMEM)
+#define RTS_TUNING_LOG_MASK_IDX_TABLE_STA	(0x1 << RTS_TUNING_LOG_IDX_TABLE_STA)
+#define RTS_TUNING_LOG_MASK_IDX_TABLE_PARA	(0x1 << RTS_TUNING_LOG_IDX_TABLE_PARA)
+#define RTS_TUNING_LOG_MASK_IDX_TABLE_IQ	(0x1 << RTS_TUNING_LOG_IDX_TABLE_IQ)
+
+
+void tuning_init();
+void tuning_deinit();
+void usbd_ext_init();
+void tuning_set_iq_heap(void *iq_heap);
+void tuning_set_max_resolution(int width, int height);
+void tuning_set_log_level(int level);
+void usbd_set_log_level(int level);
+
 
 static inline int resp_size(struct tuning_cmd *cmd)
 {

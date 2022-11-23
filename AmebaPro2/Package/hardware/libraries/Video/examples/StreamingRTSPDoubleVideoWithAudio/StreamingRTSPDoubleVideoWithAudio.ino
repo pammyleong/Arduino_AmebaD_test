@@ -1,6 +1,6 @@
 #include "WiFi.h"
 #include "StreamIO.h"
-#include "camera.h"
+#include "video.h"
 #include "audio.h"
 #include "rtsp.h"
 
@@ -18,8 +18,8 @@ RTSP rtsp2;
 StreamIO audioStreamer(1, 1);  // 1 Input Audio -> 1 Output AAC
 StreamIO avMixStreamer(3, 2); // 3 Input Video1 + Video2 + Audio -> 2 Output RTSP1 + RTSP2
 
-char ssid[] = "Aurical_5G";  //  your network SSID (name)
-char pass[] = "wyy170592";     // your network password
+char ssid[] = "yourNetwork";  //  your network SSID (name)
+char pass[] = "password";     // your network password
 int status = WL_IDLE_STATUS;   // the Wifi radio's status
 
 void setup() {
@@ -75,8 +75,38 @@ void setup() {
     // Start data stream from video channels
     Camera.channelBegin(0);
     Camera.channelBegin(1);
+
+    delay(1000);
+    printInfo();
 }
 
 void loop() {
     // do nothing
+}
+
+void printInfo(void) {
+    Serial.println("------------------------------");
+    Serial.println("- Summary of Streaming -");
+    Serial.println("------------------------------");
+
+    Camera.printInfo();
+    
+    IPAddress ip = WiFi.localIP();
+    
+    Serial.println("- RTSP Information -");
+    Serial.print("rtsp://");
+    Serial.print(ip);
+    Serial.print(":");
+    Serial.println(rtsp1.printInfo());
+    
+    Serial.print("rtsp://");
+    Serial.print(ip);
+    Serial.print(":");
+    Serial.println(rtsp2.printInfo());
+    Serial.println("");
+
+    Serial.println("- Audio Information -");
+    audio.printInfo();
+    Serial.println("- AAC Information -");
+    aac.printInfo();
 }

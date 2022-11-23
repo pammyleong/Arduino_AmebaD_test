@@ -4,7 +4,7 @@
 #include "mmf2_module.h"
 #include "mp4_muxer.h"
 
-#include "camera.h"
+#include "video.h"
 #include "audio.h"
 
 class MP4Recording:public MMFModule {
@@ -28,6 +28,8 @@ class MP4Recording:public MMFModule {
         uint32_t getRecordingDuration();
         uint32_t getRecordingFileCount();
         uint8_t getRecordingState(void);
+
+         void printInfo(void);
 
     private:
         int loopEnable = 0;

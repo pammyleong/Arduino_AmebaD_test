@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "rtsp.h"
-#include "camera.h"
+#include "video.h"
 
 class StreamIO
 {

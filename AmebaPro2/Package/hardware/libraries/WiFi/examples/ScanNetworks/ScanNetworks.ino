@@ -1,5 +1,4 @@
 /*
-
  This example  prints the Wifi shield's MAC address, and
  scans for available Wifi networks using the Wifi shield.
  Every ten seconds, it scans again. It doesn't actually
@@ -14,8 +13,9 @@
  by Tom Igoe and Jaymes Dec
  */
 
-
 #include <WiFi.h>
+
+int status = WL_IDLE_STATUS;
 
 void setup() {
     //Initialize serial and wait for port to open:
@@ -24,12 +24,8 @@ void setup() {
         ; // wait for serial port to connect. Needed for native USB port only
     }
 
-    // check for the presence of the shield:
-    if (WiFi.status() == WL_NO_SHIELD) {
-        Serial.println("WiFi shield not present");
-        // don't continue:
-        while (true);
-    }
+    // check for WiFi status:
+    status = WiFi.status();
 
     // Print WiFi MAC address:
     printMacAddress();
@@ -151,4 +147,3 @@ void printEncryptionType(int thisType) {
     }
     Serial.println();
 }
-

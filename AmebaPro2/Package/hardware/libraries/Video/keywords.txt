@@ -26,6 +26,7 @@ end	KEYWORD2
 configAudio	KEYWORD2
 begin	KEYWORD2
 end	KEYWORD2
+printInfo	KEYWORD2
 
 ASR_8KHZ	LITERAL1
 ASR_16KHZ	LITERAL1
@@ -54,7 +55,7 @@ USE_AUDIO_RIGHT_DMIC	LITERAL1
 USE_AUDIO_STEREO_DMIC	LITERAL1
 
 #######################################
-# camera.h Methods (KEYWORD2) & Constants (LITERAL1)
+# video.h Methods (KEYWORD2) & Constants (LITERAL1)
 #######################################
 
 configVideoChannel	KEYWORD2
@@ -65,6 +66,7 @@ channelEnd	KEYWORD2
 getStream	KEYWORD2
 getP	KEYWORD2
 setFPS	KEYWORD2
+printInfo	KEYWORD2
 
 VIDEO_QCIF	LITERAL1
 VIDEO_CIF	LITERAL1
@@ -94,6 +96,7 @@ configVideo	KEYWORD2
 configAudio	KEYWORD2
 begin	KEYWORD2
 end	KEYWORD2
+printInfo	KEYWORD2
 setRecordingFileName	KEYWORD2
 setRecordingDuration	KEYWORD2
 setRecordingFileCount	KEYWORD2
@@ -122,6 +125,7 @@ begin	KEYWORD2
 end	KEYWORD2
 enableAudio	KEYWORD2
 getPort	KEYWORD2
+printInfo	KEYWORD2
 
 #######################################
 # StreamIO.h Methods (KEYWORD2) & Constants (LITERAL1)

@@ -363,7 +363,9 @@ typedef struct phy_statistics {
 	unsigned int false_alarm_ofdm;
 	unsigned int cca_cck;
 	unsigned int cca_ofdm;
+	unsigned int tx_total;
 	unsigned int tx_retry;
+	unsigned short tx_ok;
 	unsigned short tx_drop;
 	unsigned int rx_drop;
 } rtw_phy_statistics_t;
@@ -382,6 +384,7 @@ typedef struct raw_data_desc {
 struct  wifi_user_conf {
 	unsigned char rtw_adaptivity_en;
 	unsigned char rtw_adaptivity_mode;
+	unsigned char rtw_adaptivity_th_l2h_ini;
 
 	unsigned char rtw_tx_pwr_lmt_enable;	// 0: disable, 1: enable, 2: Depend on efuse(flash)
 	unsigned char rtw_tx_pwr_by_rate;	// 0: disable, 1: enable, 2: Depend on efuse(flash)

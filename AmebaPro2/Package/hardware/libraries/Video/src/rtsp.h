@@ -12,7 +12,7 @@ extern "C" {
 }
 #endif
 
-#include "camera.h"
+#include "video.h"
 #include "audio.h"
 
 class RTSP:public MMFModule {
@@ -27,6 +27,7 @@ class RTSP:public MMFModule {
 
         int enableAudio(void);
         int getPort(void);
+        int printInfo (void);
 
     private:
 };
