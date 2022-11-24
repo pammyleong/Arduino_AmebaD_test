@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "mp4Recording.h"
+#include "MP4Recording.h"
 #include "mp4_drv.h"
 
 #define DEBUG 0

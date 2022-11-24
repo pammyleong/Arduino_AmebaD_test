@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "nn.h"
+#include "NN.h"
 
 #ifdef __cplusplus
 extern "C" {
