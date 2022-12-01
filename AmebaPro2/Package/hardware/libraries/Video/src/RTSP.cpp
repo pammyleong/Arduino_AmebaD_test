@@ -61,12 +61,19 @@ void RTSP::configVideo(VideoSetting& config) {
     AV_Codec_ID = config._encoder;
     RTSP_bps = config._bps;
 
-    if (AV_Codec_ID == VIDEO_H264) {
-        AV_Codec_ID = AV_CODEC_ID_H264;
-    } else if (AV_Codec_ID == VIDEO_JPEG) {
+    if  (AV_Codec_ID == VIDEO_JPEG) {
         AV_Codec_ID = AV_CODEC_ID_MJPEG;
         RTSP_bps = 0; 
+    } else {
+        AV_Codec_ID = AV_CODEC_ID_H264;
     }
+
+//    if (AV_Codec_ID == VIDEO_H264) {
+//        AV_Codec_ID = AV_CODEC_ID_H264;
+//    } else if (AV_Codec_ID == VIDEO_JPEG) {
+//        AV_Codec_ID = AV_CODEC_ID_MJPEG;
+//        RTSP_bps = 0; 
+//    }
     CAMDBG("%d   %d   %d", RTSP_fps, RTSP_bps, AV_Codec_ID);
     CAMDBG("AUDIO_EN Status: %d", AUDIO_EN);
     RTSPSelectStream(_p_mmf_context->priv, VID_CH_IDX);

@@ -3,19 +3,22 @@
 #include "Video.h"
 #include "RTSP.h"
 
-#define CHANNEL 0
+#define CHANNEL 2
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
 // Channel 1 : 1280 x 720  30FPS H264
 // Channel 2 : 1920 x 1080 30FPS MJPEG
 
-VideoSetting config(CHANNEL);
+//VideoSetting config(CHANNEL);
+VideoSetting config(VIDEO_HD, CAM_FPS, VIDEO_H264_JPEG, 1);
+
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 
-char ssid[] = "yourNetwork";  // your network SSID (name)
-char pass[] = "password";     // your network password
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
+char pass[] = "wyy170592";  	// your network password
+
 int status = WL_IDLE_STATUS;  // the Wifi radio's status
 
 void setup() {
@@ -49,7 +52,8 @@ void setup() {
 
     // Start data stream from video channel
     Camera.channelBegin(CHANNEL);
-
+    delay(3000);
+    Camera.getImage(CHANNEL);
     delay(1000);
     printInfo();
 }
@@ -59,6 +63,7 @@ void loop() {
 }
 
 void printInfo(void) {
+    Serial.println("");
     Serial.println("------------------------------");
     Serial.println("- Summary of Streaming -");
     Serial.println("------------------------------");
