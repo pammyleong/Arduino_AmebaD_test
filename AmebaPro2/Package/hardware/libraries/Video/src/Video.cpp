@@ -11,7 +11,7 @@ extern "C" {
 }
 #endif
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -99,11 +99,8 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
         _w = VIDEO_FHD_WIDTH;
         _h = VIDEO_FHD_HEIGHT;
     } else if (_resolution == VIDEO_HD) {
-        _w = VIDEO_HD_WIDTH;
-        _h = VIDEO_HD_HEIGHT;
-    } else if (_resolution == VIDEO_VGA) {
-        _w = VIDEO_VGA_WIDTH;
-        _h = VIDEO_VGA_HEIGHT;
+          _w = VIDEO_HD_WIDTH;
+          _h = VIDEO_HD_HEIGHT;
     }
 }
 
@@ -128,7 +125,7 @@ void Video::configVideoChannel(int ch, VideoSetting& config) {
     if (encoder[ch] == VIDEO_JPEG) {
         bps[ch] = 0;
     }
-
+   
     CAMDBG("1 %d    %d    %d    %d    %d    %d",channelEnable[0], w[0], h[0], bps[0], snapshot[0], fps[0]);
     CAMDBG("2 %d    %d    %d    %d    %d    %d",channelEnable[1], w[1], h[1], bps[1], snapshot[1], fps[1]);
     CAMDBG("3 %d    %d    %d    %d    %d    %d", channelEnable[2], w[2], h[2], bps[2], snapshot[2], fps[2]);
@@ -165,65 +162,31 @@ void Video::videoInit(void) {
 
     printf("\r\n[%s] VOE heap size is: %d\r\n", __FUNCTION__, heapSize);
 
-    if (channelEnable[0]) {
-        CAMDBG("0 %d    %d    %d    %d    %d    %d    %d", resolution[0], channelEnable[0], w[0], h[0], bps[0], encoder[0], fps[0]);
-        videoModule[0]._p_mmf_context = cameraInit();
+    for (int ch = 0; ch < 4; ch++) {
+        if (channelEnable[ch]) {
+            CAMDBG("%d  %d    %d    %d    %d    %d    %d    %d", ch, resolution[ch], channelEnable[ch], w[ch], h[ch], bps[ch], encoder[ch], fps[ch]);
+            videoModule[ch]._p_mmf_context = cameraInit();
 
-        if (encoder[0] == VIDEO_JPEG) {
-            camGOP[0] = 0;
-            camRCMode[0] = 0;
-        }
-        cameraOpen(videoModule[0]._p_mmf_context, videoModule[0]._p_mmf_context->priv, 
-                    channel[0],
-                    encoder[0],
-                    resolution[0],
-                    w[0],
-                    h[0],
-                    bps[0],
-                    fps[0],
-                    camGOP[0],
-                    camRCMode[0],
-                    snapshot[0]);
-    }
-    if (channelEnable[1]) {
-        CAMDBG("1 %d    %d    %d    %d    %d    %d    %d", resolution[1], channelEnable[1], w[1], h[1], bps[1], encoder[1], fps[1]);
-        videoModule[1]._p_mmf_context = cameraInit();
+             camGOP[ch] = CAM_GOP;
+             camRCMode[ch] = CAM_RCMODE; 
 
-        if (encoder[1] == VIDEO_JPEG) {
-            camGOP[1] = 0;
-            camRCMode[1] = 0;
+            if (encoder[ch] == VIDEO_JPEG) {
+                camGOP[ch] = 0;
+                camRCMode[ch] = 0;
+            }
+            CAMDBG("%d  %d    %d ", ch, camGOP[ch], camRCMode[ch]);
+            cameraOpen(videoModule[ch]._p_mmf_context, videoModule[ch]._p_mmf_context->priv, 
+                        channel[ch],
+                        encoder[ch],
+                        resolution[ch],
+                        w[ch],
+                        h[ch],
+                        bps[ch],
+                        fps[ch],
+                        camGOP[ch],
+                        camRCMode[ch],
+                        snapshot[ch]);
         }
-        cameraOpen(videoModule[1]._p_mmf_context, videoModule[1]._p_mmf_context->priv, 
-                    channel[1],
-                    encoder[1],
-                    resolution[1],
-                    w[1],
-                    h[1],
-                    bps[1],
-                    fps[1],
-                    camGOP[1],
-                    camRCMode[1],
-                    snapshot[1]);
-    }
-    if (channelEnable[2]) {
-        CAMDBG("2 %d    %d    %d    %d    %d    %d    %d", resolution[2], channelEnable[2], w[2], h[2], bps[2], encoder[2], fps[2]);
-        videoModule[2]._p_mmf_context = cameraInit();
-        
-        if (encoder[2] == VIDEO_JPEG) {
-            camGOP[2] = 0;
-            camRCMode[2] = 0;
-        }
-        cameraOpen(videoModule[2]._p_mmf_context, videoModule[2]._p_mmf_context->priv, 
-                    channel[2],
-                    encoder[2],
-                    resolution[2],
-                    w[2],
-                    h[2],
-                    bps[2],
-                    fps[2],
-                    camGOP[2],
-                    camRCMode[2],
-                    snapshot[2]);
     }
 }
 
@@ -250,7 +213,6 @@ void Video::channelBegin(int ch) {
     switch (ch) {
         case 0: {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            CAMDBG("Snapshot = %d\r\n", snapshot[ch]);
             if (encoder[ch] == VIDEO_JPEG) {
                 cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
             }
@@ -261,7 +223,6 @@ void Video::channelBegin(int ch) {
         }
         case 1: {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            
             if (encoder[ch] == VIDEO_JPEG) {
                 cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
             }
@@ -272,7 +233,6 @@ void Video::channelBegin(int ch) {
         }
         case 2: {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            
             if (encoder[ch] == VIDEO_JPEG) {
                 cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
             }
@@ -340,11 +300,12 @@ int Video::snapshotCB(uint32_t jpeg_addr, uint32_t jpeg_len) {
   * @retval none
   */
 void Video::getImage(int ch) {
-    CAMDBG("Snapshot disabled\r\n");
     if (snapshot[ch] == 1) {
         CAMDBG("Taking snapshot channel = %d\r\n", ch);
         cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 1); // 1 does not represent ch, it represents mode
         printSnapshotInfo();
+    } else {
+        printf("Snapshot disabled\r\n");
     }
 }
 
@@ -358,7 +319,7 @@ void Video::setFPS(int fps) {
 }
 
 /**
-  * @brief  Print out snapshot info in hexadecimal to convert it into an image.
+  * @brief  Print out snapshot info in hexadecimal to convert it into an image using online tool (temp method).
   * @param  none
   * @retval none
   */
@@ -396,7 +357,6 @@ void Video::printInfo(void) {
             printf("Video height: %d\r\n", h[ch]);
             printf("fps: %d\r\n", fps[ch]);
             printf("bps: %d\r\n", bps[ch]);
-            printf("Snapshot EN/DIS: %s\r\n", enablesnapshotArray[snapshot[ch]].c_str());
             printf("\r\n");
         }
     }
