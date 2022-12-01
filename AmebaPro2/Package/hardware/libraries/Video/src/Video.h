@@ -172,9 +172,7 @@ class Video {
         uint32_t bps[4] = {0};
         uint8_t encoder[4] = {0};
         uint8_t snapshot[4] = {0};
-		uint16_t camGOP[4] = {0};
-        uint16_t camRCMode[4] = {0};
-        
+
         String encoderArray [8] = {"HEVC", "H264", "JPEG","NV12", "RGB","NV16", "HEVC+JPEG", "H264+JPEG"};
         String resolutionArray [10] = {"VIDEO_QCIF", "VIDEO_CIF", "VIDEO_WVGA","VIDEO_VGA", "VIDEO_D1", "VIDEO_HD", "VIDEO_FHD", "VIDEO_3M", "VIDEO_5M", "VIDEO_2K"};
 

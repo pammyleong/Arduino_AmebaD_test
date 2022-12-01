@@ -166,15 +166,20 @@ void Video::videoInit(void) {
         if (channelEnable[ch]) {
             CAMDBG("%d  %d    %d    %d    %d    %d    %d    %d", ch, resolution[ch], channelEnable[ch], w[ch], h[ch], bps[ch], encoder[ch], fps[ch]);
             videoModule[ch]._p_mmf_context = cameraInit();
-
-             camGOP[ch] = CAM_GOP;
-             camRCMode[ch] = CAM_RCMODE; 
-
+        
             if (encoder[ch] == VIDEO_JPEG) {
-                camGOP[ch] = 0;
-                camRCMode[ch] = 0;
-            }
-            CAMDBG("%d  %d    %d ", ch, camGOP[ch], camRCMode[ch]);
+                cameraOpen(videoModule[ch]._p_mmf_context, videoModule[ch]._p_mmf_context->priv, 
+                            channel[ch],
+                            encoder[ch],
+                            resolution[ch],
+                            w[ch],
+                            h[ch],
+                            bps[ch],
+                            fps[ch],
+                            0,
+                            0,
+                            snapshot[ch]);
+            } else {
             cameraOpen(videoModule[ch]._p_mmf_context, videoModule[ch]._p_mmf_context->priv, 
                         channel[ch],
                         encoder[ch],
@@ -183,9 +188,10 @@ void Video::videoInit(void) {
                         h[ch],
                         bps[ch],
                         fps[ch],
-                        camGOP[ch],
-                        camRCMode[ch],
+                        CAM_GOP,
+                        CAM_RCMODE,
                         snapshot[ch]);
+            }
         }
     }
 }
