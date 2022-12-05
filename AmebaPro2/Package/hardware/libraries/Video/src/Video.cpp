@@ -101,6 +101,9 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
     } else if (_resolution == VIDEO_HD) {
           _w = VIDEO_HD_WIDTH;
           _h = VIDEO_HD_HEIGHT;
+    } else if (_resolution == VIDEO_VGA) {
+        _w = VIDEO_VGA_WIDTH;
+        _h = VIDEO_VGA_HEIGHT;
     }
 }
 
@@ -126,9 +129,10 @@ void Video::configVideoChannel(int ch, VideoSetting& config) {
         bps[ch] = 0;
     }
    
-    CAMDBG("1 %d    %d    %d    %d    %d    %d",channelEnable[0], w[0], h[0], bps[0], snapshot[0], fps[0]);
-    CAMDBG("2 %d    %d    %d    %d    %d    %d",channelEnable[1], w[1], h[1], bps[1], snapshot[1], fps[1]);
-    CAMDBG("3 %d    %d    %d    %d    %d    %d", channelEnable[2], w[2], h[2], bps[2], snapshot[2], fps[2]);
+   CAMDBG("V1 %d    %d    %d    %d    %d    %d", channelEnable[0], w[0], h[0], bps[0], snapshot[0], fps[0]);
+   CAMDBG("V2 %d    %d    %d    %d    %d    %d", channelEnable[1], w[1], h[1], bps[1], snapshot[1], fps[1]);
+   CAMDBG("V3 %d    %d    %d    %d    %d    %d", channelEnable[2], w[2], h[2], bps[2], snapshot[2], fps[2]);
+   CAMDBG("V4 %d    %d    %d    %d    %d    %d", channelEnable[3], w[3], h[3]);
 }
 
 /**
@@ -193,6 +197,67 @@ void Video::videoInit(void) {
                         snapshot[ch]);
             }
         }
+		// ----------------------------------
+		 if (channelEnable[0]) {
+        CAMDBG("V1 %d    %d    %d    %d    %d    %d    %d", resolution[0], channelEnable[0], w[0], h[0], bps[0], encoder[0], fps[0]);
+        videoModule[0]._p_mmf_context = cameraInit();
+        cameraOpen(videoModule[0]._p_mmf_context, videoModule[0]._p_mmf_context->priv, 
+                    channel[0],
+                    encoder[0],
+                    resolution[0],
+                    w[0],
+                    h[0],
+                    bps[0],
+                    fps[0],
+                    CAM_GOP,
+                    CAM_RCMODE,
+                    snapshot[0]);
+    }
+    if (channelEnable[1]) {
+        CAMDBG("V2 %d    %d    %d    %d    %d    %d    %d", resolution[1], channelEnable[1], w[1], h[1], bps[1], encoder[1], fps[1]);
+        videoModule[1]._p_mmf_context = cameraInit();
+        cameraOpen(videoModule[1]._p_mmf_context, videoModule[1]._p_mmf_context->priv, 
+                    channel[1],
+                    encoder[1],
+                    resolution[1],
+                    w[1],
+                    h[1],
+                    bps[1],
+                    fps[1],
+                    CAM_GOP,
+                    CAM_RCMODE,
+                    snapshot[1]);
+    }
+    if (channelEnable[2]) {
+        videoModule[2]._p_mmf_context = cameraInit();
+        CAMDBG("V3 %d    %d    %d    %d    %d    %d    %d", resolution[3], channelEnable[3], w[3], h[3], bps[3], encoder[3], fps[3]);
+        cameraOpen(videoModule[2]._p_mmf_context, videoModule[2]._p_mmf_context->priv, 
+                    channel[2],
+                    encoder[2],
+                    resolution[2],
+                    w[2],
+                    h[2],
+                    bps[2],
+                    fps[2],
+                    0,
+                    0,
+                    snapshot[2]);
+    }
+    if (channelEnable[3]) {
+        videoModule[3]._p_mmf_context = cameraInit();
+        CAMDBG("V4 %d    %d    %d    %d", resolution[3], channelEnable[3], w[3], h[3]);
+        cameraOpenNN(videoModule[3]._p_mmf_context, videoModule[3]._p_mmf_context->priv,
+                    channel[3],
+                    encoder[3],
+                    resolution[3],
+                    w[3],
+                    h[3],
+                    bps[3],
+                    CAM_NN_FPS,
+                    CAM_NN_GOP,
+                    0);     // direct output flag
+    }
+	// ---------------------------------------
     }
 }
 
@@ -245,6 +310,8 @@ void Video::channelBegin(int ch) {
             if (snapshot[ch] == 1) {
                 setSnapshotCallback(ch);
             }
+        case 3: {
+            cameraStartNN(videoModule[ch]._p_mmf_context->priv, channel[ch]);
             break;
         }
         default: {

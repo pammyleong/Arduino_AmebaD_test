@@ -5,36 +5,44 @@
 extern "C" {
 #endif
 
-// #include "nn_drv.h"  // includes nn, md, osd source code 
+#include "nn_drv.h"
 
 #ifdef __cplusplus
 }
 #endif
 
-class NNClass {
+#include "Video.h"
+
+class NNSetting {
+    friend class Video;
+
     public:
-        NNClass(void);
-        ~NNClass();
-
-        static int check_in_list(int class_indx);
-        static void nn_set_object(void *p, void *img_param);
-        static void md_process(void *md_result);
-
 
     private:
-
 };
 
-class MDClass {
+class NNModelSetting {
+    friend class NNSetting;
+
     public:
-        MDClass(void);
-        ~MDClass();
+
+    private:
 };
 
-class OSDClass {
+class VIPNN:public MMFModule {
     public:
-        OSDClass(void);
-        ~OSDClass();
+        VIPNN(void);
+        ~VIPNN(void);
+        
+        void configVideo(VideoSetting& config);
+    private:
+};
+
+class FaceRecg:public MMFModule {
+     public:
+        FaceRecg(void);
+        ~FaceRecg(void);
+    private:
 };
 
 #endif

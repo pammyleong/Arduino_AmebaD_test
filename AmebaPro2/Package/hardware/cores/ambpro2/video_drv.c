@@ -127,10 +127,45 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
     }
 }
 
+void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int direct_output) {
+    // assign value parsing from user level
+    video_params.stream_id = stream_id;
+    video_params.type = type;
+    video_params.resolution = res;
+    video_params.width = w;
+    video_params.height = h;
+    video_params.bps = bps;
+    video_params.fps = fps;
+    video_params.gop = gop;
+    video_params.direct_output = direct_output;
+    video_params.use_static_addr = 1;
+    // define NN region of interest
+    video_params.use_roi = 1;
+    video_params.roi.xmin = 0;
+    video_params.roi.ymin = 0;
+    video_params.roi.xmax = 1920;
+    video_params.roi.ymax = 1080;
+
+    CAMDBG("V4 %d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, direct_output);
+
+    if (p) {
+        video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
+        mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, 2);
+        mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+        CAMDBG("cameraOpen done");
+    } else {
+        CAMDBG("cameraOpen fail");
+    }
+}
+
 void cameraStart(void *p, int channel) {
     video_control(p, CMD_VIDEO_APPLY, channel);
 }
 
+void cameraStartNN(void *p, int channel) {
+    video_control(p, CMD_VIDEO_APPLY, channel);	// start channel 4
+    video_control(p, CMD_VIDEO_YUV, 2);
+}
 void cameraSnapshot(void *p, int arg) {
     video_control(p, CMD_VIDEO_SNAPSHOT, arg);
 }

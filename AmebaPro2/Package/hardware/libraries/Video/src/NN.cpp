@@ -1,16 +1,6 @@
 #include <Arduino.h>
 #include "NN.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// #include "camera_drv.h"
-
-#ifdef __cplusplus
-}
-#endif
-
 #define DEBUG 0
 
 #if DEBUG
@@ -20,20 +10,36 @@ extern "C" {
 #define CAMDBG(fmt, args...)
 #endif
 
-NNClass::NNClass(){
-    // nn_data = NULL;
-};
+VIPNN::VIPNN(){}
 
-NNClass::~NNClass(){};
+VIPNN::~VIPNN(){}
 
-MDClass::MDClass(){
-    // nn_data = NULL;
-};
+void VIPNN::configVideo(VideoSetting& config) {
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = NNInit();
+    }
+    if (_p_mmf_context == NULL) {
+        CAMDBG("NN init failed\r\n");
+        return;
+    }
 
-MDClass::~MDClass(){};
+    uint32_t NN_width;
+    uint32_t NN_height;
+    uint32_t NN_rgb = 0; // set to 1 if want RGB->BGR or BGR->RGB
 
-OSDClass::OSDClass(){
-    // nn_data = NULL;
-};
+    NN_width = config._w;
+    NN_height = config._h;
 
-OSDClass::~OSDClass(){};
+    
+
+
+}
+
+FaceRecg::FaceRecg(){
+
+}
+
+FaceRecg::~FaceRecg(){
+    
+}
+
