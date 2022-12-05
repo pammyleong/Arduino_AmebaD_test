@@ -1,0 +1,8 @@
+{
+    global:
+        gcvip_user_*;
+        gcvip_os_*;
+
+    local:
+        *;
+};
