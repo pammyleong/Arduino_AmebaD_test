@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-#include "nn_drv.h"
+#include "nn_facedet_drv.h"
+#include "nn_facerecog_drv.h"
+#include "nn_objdet_drv.h"
 
 #ifdef __cplusplus
 }

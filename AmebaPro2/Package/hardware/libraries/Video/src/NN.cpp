@@ -16,7 +16,7 @@ VIPNN::~VIPNN(){}
 
 void VIPNN::configVideo(VideoSetting& config) {
     if (_p_mmf_context == NULL) {
-        _p_mmf_context = NNInit();
+        _p_mmf_context = nnFacedetInit();
     }
     if (_p_mmf_context == NULL) {
         CAMDBG("NN init failed\r\n");
@@ -29,9 +29,6 @@ void VIPNN::configVideo(VideoSetting& config) {
 
     NN_width = config._w;
     NN_height = config._h;
-
-    
-
 
 }
 

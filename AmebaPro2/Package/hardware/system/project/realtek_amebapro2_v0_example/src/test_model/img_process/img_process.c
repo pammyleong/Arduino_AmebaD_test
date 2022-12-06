@@ -237,15 +237,126 @@ void *img_dma_copy(uint8_t *dst, uint8_t *src, uint32_t size)
 		}
 
 		dma_multiblk_memcpy(&gdma, (phal_gdma_block_t) &block_info, block_num);
-		if (xSemaphoreTake(dma_done_sem, 500) != pdTRUE) {
+		if (xSemaphoreTake(dma_done_sem, 5000) != pdTRUE) {
 			printf("[WARN] wait dma_done_sem timeout.\r\n");
+			goto img_dma_cleanup;
 		}
 	}
 
-	vSemaphoreDelete(dma_done_sem);
+img_dma_cleanup:
+
 	dma_memcpy_deinit(&gdma);
+	vSemaphoreDelete(dma_done_sem);
 
 	return (void *)dst;
 }
 
 /*-------------------------------------------------------------------*/
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include "stb_image_resize.h"
+
+void img_stb_resize_planar(img_t *img_in, img_t *img_out)
+{
+	uint8_t *in[3];
+	uint8_t *out[3];
+
+	in[0] = img_in->data;
+	in[1] = img_in->data + img_in->width * img_in->height;
+	in[2] = img_in->data + img_in->width * img_in->height * 2;
+
+	out[0] = img_out->data;
+	out[1] = img_out->data + img_out->width * img_out->height;
+	out[2] = img_out->data + img_out->width * img_out->height * 2;
+
+	for (int i = 0; i < 3; i++) {
+		stbir_resize_uint8(in[i], img_in->width, img_in->height, 0,
+						   out[i], img_out->width, img_out->height, 0, 1);
+	}
+}
+
+/*-------------------------------------------------------------------*/
+
+img_t img_create_image(int w, int h, uint8_t *pbuf)
+{
+	img_t new_img;
+	new_img.width = w;
+	new_img.height = h;
+	if (pbuf != NULL) {
+		new_img.data = pbuf;
+	} else {
+		new_img.data = malloc(w * h * 3);
+		if (new_img.data == NULL) {
+			printf("[%s] fail to allocate memory\r\n", __func__);
+			assert(0);
+		}
+	}
+	return new_img;
+}
+
+void img_free_image(img_t im)
+{
+	if (im.data) {
+		free(im.data);
+	}
+}
+
+/*-------------------------------------------------------------------*/
+
+void img_fill_image(img_t im, uint8_t val)
+{
+	for (int i = 0; i < im.width * im.height * 3; i++) {
+		im.data[i] = val;
+	}
+}
+
+static void set_pixel(img_t im, int x, int y, int c, uint8_t val)
+{
+	if (x < 0 || y < 0 || c < 0 || x >= im.width || y >= im.height || c >= 3) {
+		return;
+	}
+	assert(x < im.width && y < im.height && c < 3);
+	im.data[im.width * im.height * c + y * im.width + x] = val;
+}
+
+static uint8_t get_pixel(img_t im, int x, int y, int c)
+{
+	assert(x < im.width && y < im.height && c < 3);
+	return im.data[c * im.height * im.width + y * im.width + x];
+}
+
+static void img_embed_image(img_t im_src, img_t im_dst, int dx, int dy)
+{
+	for (int k = 0; k < 3; k++) {
+		for (int y = 0; y < im_src.height; y++) {
+			for (int x = 0; x < im_src.width; x++) {
+				float val = get_pixel(im_src, x, y, k);
+				set_pixel(im_dst, dx + x, dy + y, k, val);
+			}
+		}
+	}
+}
+
+void img_scaled_into_letterbox(img_t *p_im_in, img_t *p_im_out)
+{
+	img_t im_in = *p_im_in;
+	img_t im_out = *p_im_out;
+
+	int dst_w = im_out.width;
+	int dst_h = im_out.height;
+	int new_w, new_h;
+	if (((float)dst_w / im_in.width) < ((float)dst_h / im_in.height)) {
+		new_w = dst_w;
+		new_h = (im_in.height * dst_w) / im_in.width;
+	} else {
+		new_h = dst_h;
+		new_w = (im_in.width * dst_h) / im_in.height;
+	}
+
+	img_t resized_im = img_create_image(new_w, new_h, NULL);
+	img_stb_resize_planar(&im_in, &resized_im);
+
+	img_fill_image(im_out, 0);
+	img_embed_image(resized_im, im_out, (dst_w - new_w) / 2, (dst_h - new_h) / 2);
+
+	img_free_image(resized_im);
+}
