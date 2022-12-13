@@ -4,9 +4,8 @@
 
 #include "input_image_640x360x3.h"
 #include "model_yolov3t.h"
-#include "osd_render.h"
 #include "model_scrfd.h"
-
+#include "osd_render.h"
 
 #define DEBUG           0
 
@@ -17,26 +16,20 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-#define RTSP_HEIGHT 1920
-#define RTSP_WIDTH 1080
-#define RTSP_CHANNEL 0
+//#define RTSP_HEIGHT 1920
+//#define RTSP_WIDTH 1080
+//#define RTSP_CHANNEL 0
 
-// NN model config //
-#define NN_CHANNEL 4
-#define NN_RESOLUTION VIDEO_VGA //don't care for NN
-#define NN_FPS 10
-#define NN_GOP NN_FPS
-#define NN_BPS 1024*1024 //don't care for NN
-#define NN_TYPE VIDEO_RGB
+uint32_t RTSPWidth = 0;
+uint32_t RTSPHeight = 0;
+int RTSPChannel = 0;
 
 // SCRFD
-#define NN_MODEL_OBJ   scrfd_fwfs
+#define NN_MODEL_OBJ    scrfd_fwfs
 #define NN_WIDTH    576//640
-#define NN_HEIGHT   320//640
+#define NN_HEIGHT    320//640
 
 static const char *tag[1] = {"face"};
-
-#define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
 static nn_data_param_t roi_nn = {
 	.img = {
@@ -52,18 +45,26 @@ static nn_data_param_t roi_nn = {
 	}
 };
 
-static void nn_set_object(void *p, void *img_param)
-{
+#define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
+
+void getRTSP (int ch, uint32_t width, uint32_t height) { 
+    RTSPWidth = width;
+    RTSPHeight = height;
+    RTSPChannel = ch;
+}
+
+// callback function to to be called to draw rect
+static void nn_set_object(void *p, void *img_param) {
 	int i = 0;
 	facedetect_res_t *face_res = (facedetect_res_t *)p;
 	nn_data_param_t *im = (nn_data_param_t *)img_param;
 
-	if (!p || !img_param)	{
+	if (!p || !img_param) {
 		return;
 	}
 
-	int im_h = RTSP_HEIGHT;
-	int im_w = RTSP_WIDTH;
+	int im_h = RTSPHeight;
+	int im_w = RTSPWidth;
 
 	//crop
 	float ratio_w = (float)im_w / (float)im->img.width;
@@ -75,7 +76,7 @@ static void nn_set_object(void *p, void *img_param)
 	int roi_y = (int)(im->img.roi.ymin * ratio + (im_h - roi_h) / 2);
 
 	printf("object num = %d\r\n", face_res->obj_num);
-	canvas_clean_all(RTSP_CHANNEL, 0);
+	canvas_clean_all(RTSPChannel, 0);
 	if (face_res->obj_num > 0) {
 		for (i = 0; i < face_res->obj_num; i++) {
 			int obj_class = (int)face_res->result[6 * i ];
@@ -90,20 +91,21 @@ static void nn_set_object(void *p, void *img_param)
 				LIMIT(ymin, 0, im_h)
 				LIMIT(ymax, 0, im_h)
 				printf("%d,c%d:%d %d %d %d\n\r", i, class_id, xmin, ymin, xmax, ymax);
-				canvas_set_rect(RTSP_CHANNEL, 0, xmin, ymin, xmax, ymax, 3, COLOR_WHITE);
+				canvas_set_rect(RTSPChannel, 0, xmin, ymin, xmax, ymax, 3, COLOR_WHITE);
 				char text_str[20];
 				snprintf(text_str, sizeof(text_str), "%s %d", tag[class_id], (int)(face_res->result[6 * i + 1 ] * 100));
-				canvas_set_text(RTSP_CHANNEL, 0, xmin, ymin - 32, text_str, COLOR_CYAN);
+				canvas_set_text(RTSPChannel, 0, xmin, ymin - 32, text_str, COLOR_CYAN);
 
 				for (int j = 0; j < 5; j++) {
 					int x = (int)(face_res->landmark[i].pos[j].x * roi_w) + roi_x;
 					int y = (int)(face_res->landmark[i].pos[j].y * roi_h) + roi_y;
-					canvas_set_point(RTSP_CHANNEL, 0, x, y, 8, COLOR_RED);
+					canvas_set_point(RTSPChannel, 0, x, y, 8, COLOR_RED);
 				}
 			}
 		}
 	}
-	canvas_update(RTSP_CHANNEL, 0);
+	canvas_update(RTSPChannel, 0);
+
 }
 
 mm_context_t* nnFacedetInit(void) {
@@ -128,3 +130,21 @@ void nnSetFacedetDisppost(void *p) {
 void nnFacedetSetApply(void *p) {
     vipnn_control(p, CMD_VIPNN_APPLY, 0);
 }
+
+void NNStart(void *p, int ch) {
+     vipnn_control(p, CMD_VIDEO_APPLY, ch);
+}
+
+void nnYUV(void *p) {
+    vipnn_control(p, CMD_VIDEO_YUV, 2);
+}
+
+void OSDBegin(void) {
+    int ch_enable[3] = {1, 0, 0};
+    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
+    int ch_width[3] = {RTSPWidth, 0, 0}, ch_height[3] = {RTSPHeight, 0, 0};
+
+    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
+    osd_render_task_start(ch_enable, ch_width, ch_height);
+}
+

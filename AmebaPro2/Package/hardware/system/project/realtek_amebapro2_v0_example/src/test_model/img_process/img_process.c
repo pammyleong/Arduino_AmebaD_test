@@ -110,7 +110,7 @@ int img_rotation_fix(img_t *im_in, rect_t *roi, rotate_t *rotate_cfg, img_t *im_
 	int roi_w = roi->xmax - roi->xmin;
 	int roi_h = roi->ymax - roi->ymin;
 
-	int start_tick = (int)xTaskGetTickCount();
+	//int start_tick = (int)xTaskGetTickCount();
 	rotate_cnt++;
 
 	if (im_out->width == 0) {

@@ -1,32 +1,34 @@
-#include "StreamIO.h"
 #include "WiFi.h"
-#include "camera.h"
-#include "rtsp.h"
+#include "StreamIO.h"
+#include "Video.h"
+#include "RTSP.h"
 
-// user can choose the camera settings below
-CameraSetting camset;
-// CameraSetting camset(1);
-//  CameraSetting camset(VIDEO_FHD, CAM_FPS, VIDEO_H264, 0,
-//                        0,0,0,0,
-//                        0,0,0,0,
-//                        0,0);
-CameraClass cam;
-RTSP rtsp;
-StreamIO streamIO_1In1Out(1, 1);  // Single Input Single Output
+#define CHANNEL0 0
+#define CHANNEL1 1
+#define CHANNEL2 2
 
-char ssid[] = "Aurical_5G";   // your network SSID (name)
-char pass[] = "wyy170592";    // your network password
-int status = WL_IDLE_STATUS;  // the Wifi radio's status
+
+// Default preset configurations for each video channel:
+// Channel 0 : 1920 x 1080 30FPS H264
+// Channel 1 : 1280 x 720  30FPS H264
+// Channel 2 : 1920 x 1080 30FPS MJPEG
+
+VideoSetting config1(VIDEO_FHD, CAM_FPS, VIDEO_H264, 1);
+//VideoSetting config0(CHANNEL0);
+//VideoSetting config1(CHANNEL2);
+
+//RTSP rtsp0;
+RTSP rtsp1;
+
+StreamIO videoStreamer0(1, 1);  // 1 Input Video -> 1 Output RTSP
+//StreamIO videoStreamer1(1, 1);  // 1 Input Video -> 1 Output RTSP
+
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
+char pass[] = "wyy170592";  	// your network password
+int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);
-
-    if (WiFi.status() == WL_NO_SHIELD) {
-        Serial.println("WiFi shield not present");
-        // don't continue:
-        while (true)
-            ;
-    }
 
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
@@ -39,25 +41,72 @@ void setup() {
         delay(2000);
     }
 
-    // init camera
-    cam.init(camset);
-    cam.open(camset);
+    // Configure camera video channel with video format information
+//    Camera.configVideoChannel(CHANNEL0, config0);
+    Camera.configVideoChannel(CHANNEL2, config1);
+    Camera.videoInit();
 
-    // init rtsp
-    rtsp.init(camset);
-    rtsp.open();
+//    // Configure RTSP with identical video format information
+//    rtsp0.configVideo(config0);
+//    rtsp0.begin();
 
-    // create camera io linker
-    streamIO_1In1Out.create();
-    streamIO_1In1Out.registerInput(cam.getIO());
-    streamIO_1In1Out.registerOutput(rtsp.getIO());
-    if (streamIO_1In1Out.start() != 0) {
-        Serial.println("camera io link start failed");
+    rtsp1.configVideo(config1);
+    rtsp1.begin();
+
+    // Configure StreamIO object to stream data from video channel to RTSP
+    videoStreamer0.registerInput(Camera.getStream(CHANNEL2));
+    videoStreamer0.registerOutput(rtsp1);
+    if (videoStreamer0.begin() != 0) {
+        Serial.println("StreamIO0 link start failed");
     }
 
-    cam.start(camset);
+//    videoStreamer1.registerInput(Camera.getStream(CHANNEL1));
+//    videoStreamer1.registerOutput(rtsp1);
+//    if (videoStreamer1.begin() != 0) {
+//        Serial.println("StreamIO1 link start failed");
+//    }
+
+    // Start data stream from video channel
+    Camera.channelBegin(CHANNEL2);
+//    Camera.channelBegin(CHANNEL1);
+
+//    // Take a snapshot
+//    delay(3000);
+////    Camera.getImage(CHANNEL0);
+//    delay(1000);
+//    printInfo();
+//
+//    delay(10000);
+////    Camera.getImage(CHANNEL1);
+//    delay(1000);
+//    printInfo();
+//
+//    delay(10000);
+////    Camera.getImage(CHANNEL2);
+//    delay(1000);
+//    printInfo();
 }
 
 void loop() {
-    // do nothing
+    // Do nothing
+}
+
+void printInfo(void) {
+    Serial.println("------------------------------");
+    Serial.println("- Summary of Streaming -");
+    Serial.println("------------------------------");
+    Camera.printInfo();
+
+    IPAddress ip = WiFi.localIP();
+
+//    Serial.println("- RTSP -");
+//    Serial.print("rtsp://");
+//    Serial.print(ip);
+//    Serial.print(":");
+//    rtsp0.printInfo();
+
+    Serial.print("rtsp://");
+    Serial.print(ip);
+    Serial.print(":");
+    rtsp1.printInfo();
 }
