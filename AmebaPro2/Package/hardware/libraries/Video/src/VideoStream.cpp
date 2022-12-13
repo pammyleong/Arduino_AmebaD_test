@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Video.h"
+#include "VideoStream.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -328,12 +328,18 @@ int Video::snapshotCB(uint32_t jpeg_addr, uint32_t jpeg_len) {
   * @retval none
   */
 void Video::getImage(int ch) {
+    image_addr = 0;
+    image_len = 0;
     if (snapshot[ch] == 1) {
         CAMDBG("Taking snapshot channel = %d\r\n", ch);
         cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 1); // 1 does not represent ch, it represents mode
-        printSnapshotInfo();
     } else {
         printf("Snapshot disabled\r\n");
+    }
+    while ((image_addr == 0) || (image_len == 0)) {
+        //wait for jpeg data to arrive
+        printf("wait for jpeg data......\r\n");
+        delay(10);
     }
 }
 
@@ -352,9 +358,6 @@ void Video::setFPS(int fps) {
   * @retval none
   */
 void Video::printSnapshotInfo(void) {
-    image_addr = 0;
-    image_len = 0;
-    
     while ((image_addr == 0) || (image_len == 0)) {
         //wait for jpeg data to arrive
         printf("wait for jpeg data......\r\n");
@@ -362,7 +365,7 @@ void Video::printSnapshotInfo(void) {
     }
     
     uint8_t* addr = (uint8_t *)image_addr;
-    for (int i = 0; i < image_len; i++) {
+    for (uint32_t i = 0; i < image_len; i++) {
         if (i % 16 == 0) {
             printf("\r\n");
         }

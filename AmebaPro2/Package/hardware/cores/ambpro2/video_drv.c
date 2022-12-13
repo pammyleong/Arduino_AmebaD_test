@@ -25,7 +25,6 @@ extern int enc_queue_cnt[5];
 uint32_t image_addr = 0;
 uint32_t image_len = 0;
 
-
 static video_params_t video_params = {
     .stream_id      = 0, 
     .type           = 0, 

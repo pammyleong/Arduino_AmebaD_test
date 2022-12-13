@@ -1,5 +1,5 @@
-#ifndef __VIDEO_H__
-#define __VIDEO_H__
+#ifndef __VIDEOSTREAM_H__
+#define __VIDEOSTREAM_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -95,18 +95,6 @@ enum encode_type {
 #define v3_STREAMING_ID 2
 #define v4_STREAMING_ID 4
 
-// define video codec
-#define USE_H265 0
-#if USE_H265
-#include "sample_h265.h"
-#define VIDEO_TYPE VIDEO_HEVC
-#define VIDEO_CODEC AV_CODEC_ID_H265
-#else
-#include "sample_h264.h"
-#define VIDEO_TYPE VIDEO_H264
-#define VIDEO_CODEC AV_CODEC_ID_H264
-#endif
-
 class MMFModule {
     friend class StreamIO;
     friend class Video;
@@ -151,7 +139,7 @@ class Video {
         void channelBegin(int ch = 0);
         void channelEnd(int ch = 0);
         MMFModule getStream(int ch = 0);
-		
+        
         void setSnapshotCallback(int ch);
         static int snapshotCB(uint32_t jpeg_addr, uint32_t jpeg_len);
         void getImage(int ch);
@@ -182,7 +170,7 @@ class Video {
         String resolutionArray [10] = {"VIDEO_QCIF", "VIDEO_CIF", "VIDEO_WVGA","VIDEO_VGA", "VIDEO_D1", "VIDEO_HD", "VIDEO_FHD", "VIDEO_3M", "VIDEO_5M", "VIDEO_2K"};
 
         static uint32_t image_addr;
-        static uint32_t image_len;   
+        static uint32_t image_len;
 };
 
 extern Video Camera;

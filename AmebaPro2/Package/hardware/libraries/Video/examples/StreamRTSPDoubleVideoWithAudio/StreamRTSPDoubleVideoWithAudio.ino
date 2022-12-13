@@ -1,7 +1,7 @@
 #include "WiFi.h"
 #include "StreamIO.h"
-#include "Video.h"
-#include "Audio.h"
+#include "VideoStream.h"
+#include "AudioStream.h"
 #include "RTSP.h"
 
 // Default preset configurations for each video channel:
