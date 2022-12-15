@@ -16,10 +16,6 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-//#define RTSP_HEIGHT 1920
-//#define RTSP_WIDTH 1080
-//#define RTSP_CHANNEL 0
-
 uint32_t RTSPWidth = 0;
 uint32_t RTSPHeight = 0;
 int RTSPChannel = 0;

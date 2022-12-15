@@ -98,6 +98,8 @@ enum encode_type {
 class MMFModule {
     friend class StreamIO;
     friend class Video;
+    friend class NNFaceRecognition;
+    friend class NNFaceDetection;
 
     public:
 
@@ -154,8 +156,8 @@ class Video {
         int channelEnable[4] = {0};
         const int channel[4] = {v1_STREAMING_ID, v2_STREAMING_ID, v3_STREAMING_ID, v4_STREAMING_ID};
         int resolution[4] = {0};
-        uint16_t w[4] = {0};
-        uint16_t h[4] = {0};
+        uint32_t w[4] = {0};
+        uint32_t h[4] = {0};
         uint16_t fps[4] = {0};
         uint32_t bps[4] = {0};
         uint8_t encoder[4] = {0};

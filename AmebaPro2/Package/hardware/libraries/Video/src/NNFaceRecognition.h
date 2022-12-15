@@ -1,11 +1,11 @@
-#ifndef __NNFACEDETCTION_H__
-#define __NNFACEDETCTION_H__
+#ifndef __NNFACERECOGNITION_H__
+#define __NNFACERECOGNITION_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "nn_facedet_drv.h"
+#include "nn_facerecog_drv.h"
 
 #ifdef __cplusplus
 }
@@ -21,10 +21,10 @@ extern "C" {
 //    private:
 //};
 
-class NNFaceDetection:public MMFModule {
+class NNFaceRecognition:public MMFModule  {
     public:
-        NNFaceDetection(void);
-        ~NNFaceDetection(void);
+        NNFaceRecognition(void);
+        ~NNFaceRecognition(void);
         
         void getRTSPParams(int ch, VideoSetting& config);
         void configVideo(int ch, VideoSetting& config);

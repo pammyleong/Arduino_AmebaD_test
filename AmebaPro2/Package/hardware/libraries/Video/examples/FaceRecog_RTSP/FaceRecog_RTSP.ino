@@ -4,10 +4,10 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NNFaceDetection.h"
+#include "NNFaceRecognition.h"
 
 #define CHANNEL 0
-#define CHANNELNN 4
+#define CHANNELNN 3
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
@@ -16,13 +16,13 @@
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(VIDEO_VGA, 10, VIDEO_RGB, 0);
-NNFaceDetection facedet;
+NNFaceRecognition facerecog;
 
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 StreamIO videoStreamerNN(1, 1);  // 
 
-char ssid[] = "Aurical_2G";     //  your network SSID (name)
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
@@ -49,8 +49,8 @@ void setup() {
     rtsp.configVideo(config);
     rtsp.begin();
 
-    facedet.getRTSPParams(CHANNEL, config);
-    facedet.configVideo(CHANNELNN, configNN);
+    facerecog.getRTSPParams(CHANNEL, config);
+    facerecog.configVideo(CHANNELNN, configNN);
 
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
@@ -65,15 +65,14 @@ void setup() {
     videoStreamerNN.registerInput(Camera.getStream(CHANNELNN));
     videoStreamerNN.setStackSize();
     videoStreamerNN.setTaskPriority();
-    videoStreamerNN.registerOutput(facedet);
+    videoStreamerNN.registerOutput(facerecog);
     if (videoStreamerNN.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
 
-    facedet.begin();
-    facedet.YUV();
+    Camera.channelBegin(CHANNELNN);
 
-    facedet.OSDDisplay();
+    facerecog.OSDDisplay();
 
     delay(1000);
     printInfo();
