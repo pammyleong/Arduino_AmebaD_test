@@ -2,8 +2,8 @@
 #include "module_video.h"
 #include "module_vipnn.h"
 
-#include "input_image_640x360x3.h"
-#include "model_yolov3t.h"
+// #include "input_image_640x360x3.h"
+// #include "model_yolov3t.h"
 #include "model_scrfd.h"
 #include "osd_render.h"
 
@@ -47,6 +47,7 @@ static nn_data_param_t roi_nn = {
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
+// get settings from RTSP module
 void getRTSP (int ch, uint32_t width, uint32_t height) { 
     RTSPWidth = width;
     RTSPHeight = height;
@@ -127,16 +128,9 @@ void nnSetFacedetDisppost(void *p) {
     vipnn_control(p, CMD_VIPNN_SET_DISPPOST, (int)nn_set_object);
 }
 
+// apply NN face detection object
 void nnFacedetSetApply(void *p) {
     vipnn_control(p, CMD_VIPNN_APPLY, 0);
-}
-
-void NNStart(void *p, int ch) {
-     vipnn_control(p, CMD_VIDEO_APPLY, ch);
-}
-
-void nnYUV(void *p) {
-    vipnn_control(p, CMD_VIDEO_YUV, 2);
 }
 
 void OSDBegin(void) {
@@ -147,4 +141,3 @@ void OSDBegin(void) {
     osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
     osd_render_task_start(ch_enable, ch_width, ch_height);
 }
-

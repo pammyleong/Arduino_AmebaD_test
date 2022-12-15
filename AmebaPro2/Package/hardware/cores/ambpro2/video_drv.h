@@ -20,7 +20,7 @@ void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int re
 
 void cameraStart(void *p, int channel);
 
-void cameraStartNN(void *p, int channel);
+void cameraYUV(void *p);
 
 void cameraSnapshot(void *p, int channel);
 

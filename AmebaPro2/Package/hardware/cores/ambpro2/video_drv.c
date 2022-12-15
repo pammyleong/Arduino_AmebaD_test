@@ -161,10 +161,10 @@ void cameraStart(void *p, int channel) {
     video_control(p, CMD_VIDEO_APPLY, channel);
 }
 
-void cameraStartNN(void *p, int channel) {
-    video_control(p, CMD_VIDEO_APPLY, channel);	// start channel 4
+void cameraYUV(void *p) {
     video_control(p, CMD_VIDEO_YUV, 2);
 }
+
 void cameraSnapshot(void *p, int arg) {
     video_control(p, CMD_VIDEO_SNAPSHOT, arg);
 }
@@ -222,3 +222,5 @@ mm_context_t *cameraDeinit(mm_context_t *p) {
 void cameraStopVideoStream(void *p, int channel) {
     video_control(p, CMD_VIDEO_STREAM_STOP, channel);
 }
+
+

@@ -44,7 +44,7 @@ void NNFaceDetection::configVideo(int ch, VideoSetting& config) { // to config C
 }
 
 void NNFaceDetection::begin(void) {
-    NNStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
+    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
 }
 
 void NNFaceDetection::end(void) {
@@ -52,7 +52,7 @@ void NNFaceDetection::end(void) {
 }
 
 void NNFaceDetection::YUV(void) {
-    nnYUV(_p_mmf_context->priv);
+    cameraYUV(_p_mmf_context->priv);
 }
 
 void NNFaceDetection::OSDDisplay(void) {

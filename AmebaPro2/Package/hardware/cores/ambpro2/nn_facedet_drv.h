@@ -19,10 +19,6 @@ void nnSetFacedetDisppost(void *p);
 
 void nnFacedetSetApply(void *p);
 
-void NNStart(void *p, int ch);
-
-void nnYUV(void *p);
-
 void OSDBegin(void);
 
 //static void nn_set_object(void *p, void *img_param);

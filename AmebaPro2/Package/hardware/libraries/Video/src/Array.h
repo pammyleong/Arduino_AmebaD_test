@@ -12,7 +12,7 @@ extern "C" {
 }
 #endif
 
-#include "Video.h"
+#include "VideoStream.h"
 
 class Array:public MMFModule {
     public:
