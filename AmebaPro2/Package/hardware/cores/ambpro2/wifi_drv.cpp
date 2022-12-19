@@ -73,22 +73,23 @@ static void init_wifi_struct(void) {
 }
 
 void WiFiDrv::wifiDriverInit() {
-    struct netif * pnetif = &xnetif[0];
+//    struct netif * pnetif = &xnetif[0];
     if (init_wlan == false) {
         init_wlan = true;
         LwIP_Init();
         wifi_on(RTW_MODE_STA);
         wifi_mode = RTW_MODE_STA;
-    } else if (init_wlan == true) {
-        if (wifi_mode != RTW_MODE_STA) {
-            dhcps_deinit();
-            wifi_off();
-            vTaskDelay(20);
-            wifi_on(RTW_MODE_STA);
-            dhcps_init(pnetif);
-            wifi_mode = RTW_MODE_STA;
-        }
     }
+//    else if (init_wlan == true) {
+//        if (wifi_mode != RTW_MODE_STA) {
+//            dhcps_deinit();
+//            wifi_off();
+//            vTaskDelay(20);
+//            wifi_on(RTW_MODE_STA);
+//            dhcps_init(pnetif);
+//            wifi_mode = RTW_MODE_STA;
+//        }
+//    }
 }
 
 int8_t WiFiDrv::wifiSetNetwork(char* ssid, uint8_t ssid_len) {
@@ -423,13 +424,13 @@ int8_t WiFiDrv::disconnect() {
 }
 
 uint8_t WiFiDrv::getConnectionStatus() {
-    wifiDriverInit();
 
-    if (wifi_is_connected_to_ap() == 0) {
-        return WL_CONNECTED;
-    } else {
-        return WL_DISCONNECTED;
+    if (init_wlan) {
+        if (wifi_is_connected_to_ap() == RTW_SUCCESS) {
+            return WL_CONNECTED;
+        }
     }
+    return WL_DISCONNECTED;
 }
 
 uint8_t* WiFiDrv::getMacAddress() {

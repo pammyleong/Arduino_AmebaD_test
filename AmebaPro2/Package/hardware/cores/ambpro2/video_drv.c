@@ -222,5 +222,3 @@ mm_context_t *cameraDeinit(mm_context_t *p) {
 void cameraStopVideoStream(void *p, int channel) {
     video_control(p, CMD_VIDEO_STREAM_STOP, channel);
 }
-
-

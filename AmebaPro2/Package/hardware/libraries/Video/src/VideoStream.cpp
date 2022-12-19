@@ -22,8 +22,8 @@ extern "C" {
 
 Video Camera;
 
-uint32_t Video::image_addr = 0;
-uint32_t Video::image_len = 0;
+uint32_t Video::image_addr[4] = {0};
+uint32_t Video::image_len[4] = {0};
 
 /**
   * @brief  initialize video stream settings for the camera sensor
@@ -89,7 +89,7 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
     _snapshot = snapshot;
 
     if((_snapshot == 1)) {
-        if ((_encoder != VIDEO_H264_JPEG) && (_encoder != VIDEO_HEVC_JPEG)) {
+        if ((_encoder != VIDEO_H264_JPEG) && (_encoder != VIDEO_HEVC_JPEG) && (_encoder != VIDEO_JPEG)) {
             printf("snapshot function not supported on selected encoder!\n\r");
             _snapshot = 0;
         }
@@ -104,6 +104,72 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
     } else if (_resolution == VIDEO_VGA) {
         _w = VIDEO_VGA_WIDTH;
         _h = VIDEO_VGA_HEIGHT;
+    }
+}
+
+VideoSetting::VideoSetting(uint16_t w, uint16_t h, uint8_t fps, uint8_t encoder, uint8_t snapshot) {
+    _resolution = VIDEO_CUSTOM;
+    _fps = fps;
+    _bps = CAM_BPS;
+    _encoder = encoder;
+    _snapshot = snapshot;
+    _w = w;
+    _h = h;
+
+    // Check resolution maximums
+    if (_w > 1920) {
+        _w = 1920;
+        printf("Maximum resolution 1920 x 1080 \r\n");
+    }
+    if (_h > 1080) {
+        _h = 1080;
+        printf("Maximum resolution 1920 x 1080 \r\n");
+    }
+
+    // Check resolution minimums
+    if (encoder == VIDEO_JPEG) {
+        if (_w < 352) {
+            _w = 352;
+            printf("Minimum JPEG resolution 352 x 288 \r\n");
+        }
+        if (_h < 288) {
+            _h = 288;
+            printf("Minimum JPEG resolution 352 x 288 \r\n");
+        }
+    } else {
+        if (_w < 176) {
+            _w = 176;
+            printf("Minimum resolution 176 x 144 \r\n");
+        }
+        if (_h < 144) {
+            _h = 144;
+            printf("Minimum resolution 176 x 144 \r\n");
+        }
+    }
+
+    // Check custom resolution is a multiple of 16
+    if ((_w % 16) != 0) {
+        // Round down to nearest multiple of 16
+        _w -= (_w % 16);
+        // Round up if it does not exceed maximum resolution
+        if ((_w + 16) <= 1920) {
+            _w += 16;
+        }
+        printf("Custom resolution must be a multiple of 16, new resolution: %d X %d\r\n", _w, _h);
+    }
+    if ( ((_h % 16) != 0) && (_h != 360) && (_h != 1080) ) {
+        _h -= (_h % 16);
+        if ((_h + 16) <= 1080) {
+            _h += 16;
+        }
+        printf("Custom resolution must be a multiple of 16, new resolution: %d X %d\r\n", _w, _h);
+    }
+
+    if((_snapshot == 1)) {
+        if ((_encoder != VIDEO_H264_JPEG) && (_encoder != VIDEO_HEVC_JPEG) && (_encoder != VIDEO_JPEG)) {
+            printf("snapshot function not supported on selected encoder!\n\r");
+            _snapshot = 0;
+        }
     }
 }
 
@@ -170,7 +236,7 @@ void Video::videoInit(void) {
         if (channelEnable[ch]) {
             CAMDBG("%d  %d    %d    %d    %d    %d    %d    %d", ch, resolution[ch], channelEnable[ch], w[ch], h[ch], bps[ch], encoder[ch], fps[ch]);
             videoModule[ch]._p_mmf_context = cameraInit();
-        
+
             if (encoder[ch] == VIDEO_JPEG) {
                 bps[ch] = 0;
                 cameraOpen(videoModule[ch]._p_mmf_context, videoModule[ch]._p_mmf_context->priv, 
@@ -235,29 +301,13 @@ void Video::videoDeinit() {
   */
 void Video::channelBegin(int ch) {
     switch (ch) {
-        case 0: {
+        case 0:
+        case 1:
+        case 2:
+        {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            if (encoder[ch] == VIDEO_JPEG) {
-                cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
-            }
-            if (snapshot[ch] == 1) {
-                setSnapshotCallback(ch);
-            }
-            break;
-        }
-        case 1: {
-            cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            if (encoder[ch] == VIDEO_JPEG) {
-                cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
-            }
-            if (snapshot[ch] == 1) {
-                setSnapshotCallback(ch);
-            }
-            break;
-        }
-        case 2: {
-            cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            if (encoder[ch] == VIDEO_JPEG) {
+            if ((encoder[ch] == VIDEO_JPEG) && (snapshot[ch] == 0)) {
+                // Enable continuous JPEG capture for MJPEG video
                 cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 2);
             }
             if (snapshot[ch] == 1) {
@@ -306,7 +356,24 @@ MMFModule Video::getStream(int ch) {
   * @retval none
   */
 void Video::setSnapshotCallback(int ch) {
-    cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB);
+    switch (ch) {
+        case 0: {
+            cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB0);
+            break;
+        }
+        case 1: {
+            cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB1);
+            break;
+        }
+        case 2: {
+            cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB2);
+            break;
+        }
+        case 3: {
+            cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB3);
+            break;
+        }
+    }
 }
 
 /**
@@ -315,11 +382,28 @@ void Video::setSnapshotCallback(int ch) {
             jpeg_len : image length
   * @retval none
   */
-int Video::snapshotCB(uint32_t jpeg_addr, uint32_t jpeg_len) {
-    image_addr = jpeg_addr;
-    image_len = jpeg_len;
-    printf("snapshot addr=%d,\n\rsnapshot size=%d\n\r", (int)jpeg_addr, (int)jpeg_len);
-
+int Video::snapshotCB0(uint32_t jpeg_addr, uint32_t jpeg_len) {
+    image_addr[0] = jpeg_addr;
+    image_len[0] = jpeg_len;
+    CAMDBG("snapshot 0 addr=%X, size=%d", (int)jpeg_addr, (int)jpeg_len);
+    return 0;
+}
+int Video::snapshotCB1(uint32_t jpeg_addr, uint32_t jpeg_len) {
+    image_addr[1] = jpeg_addr;
+    image_len[1] = jpeg_len;
+    CAMDBG("snapshot 1 addr=%X, size=%d", (int)jpeg_addr, (int)jpeg_len);
+    return 0;
+}
+int Video::snapshotCB2(uint32_t jpeg_addr, uint32_t jpeg_len) {
+    image_addr[2] = jpeg_addr;
+    image_len[2] = jpeg_len;
+    CAMDBG("snapshot 2 addr=%X, size=%d", (int)jpeg_addr, (int)jpeg_len);
+    return 0;
+}
+int Video::snapshotCB3(uint32_t jpeg_addr, uint32_t jpeg_len) {
+    image_addr[3] = jpeg_addr;
+    image_len[3] = jpeg_len;
+    CAMDBG("snapshot 3 addr=%X, size=%d", (int)jpeg_addr, (int)jpeg_len);
     return 0;
 }
 
@@ -328,19 +412,24 @@ int Video::snapshotCB(uint32_t jpeg_addr, uint32_t jpeg_len) {
   * @param  ch: channel to take a snapshot from
   * @retval none
   */
-void Video::getImage(int ch) {
-    image_addr = 0;
-    image_len = 0;
+void Video::getImage(int ch, uint32_t* addr, uint32_t* len) {
     if (snapshot[ch] == 1) {
         CAMDBG("Taking snapshot channel = %d\r\n", ch);
+        image_addr[ch] = 0;
+        image_len[ch] = 0;
         cameraSnapshot(videoModule[ch]._p_mmf_context->priv, 1); // 1 does not represent ch, it represents mode
+        while ((image_addr[ch] == 0) || (image_len[ch] == 0)) {
+            //wait for jpeg data to arrive
+            //printf("wait for jpeg data......\r\n");
+            delay(10);
+        }
+        *addr = image_addr[ch];
+        *len = image_len[ch];
+//        printSnapshotInfo();
     } else {
         printf("Snapshot disabled\r\n");
-    }
-    while ((image_addr == 0) || (image_len == 0)) {
-        //wait for jpeg data to arrive
-        printf("wait for jpeg data......\r\n");
-        delay(10);
+        *addr = (uint32_t)NULL;
+        *len = (uint32_t)NULL;
     }
 }
 
@@ -358,15 +447,9 @@ void Video::setFPS(int fps) {
   * @param  none
   * @retval none
   */
-void Video::printSnapshotInfo(void) {
-    while ((image_addr == 0) || (image_len == 0)) {
-        //wait for jpeg data to arrive
-        printf("wait for jpeg data......\r\n");
-        delay(10);
-    }
-    
-    uint8_t* addr = (uint8_t *)image_addr;
-    for (uint32_t i = 0; i < image_len; i++) {
+void Video::printSnapshotInfo(int ch) {
+    uint8_t* addr = (uint8_t *)(image_addr[ch]);
+    for (uint32_t i = 0; i < (image_len[ch]); i++) {
         if (i % 16 == 0) {
             printf("\r\n");
         }
