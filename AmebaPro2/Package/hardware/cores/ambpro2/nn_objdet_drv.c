@@ -117,6 +117,9 @@ static void nn_set_object(void *p, void *img_param)
 	float ratio_w = (float)im_w / (float)im->img.width;
 	float ratio_h = (float)im_h / (float)im->img.height;
 	int roi_h, roi_w, roi_x, roi_y;
+	// ============================================
+	// check whether use_roi value will be always 1 
+	// ============================================
 //	if (video_params_v4.use_roi == 1) { //resize
 	roi_w = (int)((im->img.roi.xmax - im->img.roi.xmin) * ratio_w);
 	roi_h = (int)((im->img.roi.ymax - im->img.roi.ymin) * ratio_h);

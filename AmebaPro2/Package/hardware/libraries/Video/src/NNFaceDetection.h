@@ -28,7 +28,7 @@ class NNFaceDetection:public MMFModule {
         
         void getRTSPParams(int ch, VideoSetting& config);
         void configVideo(int ch, VideoSetting& config);
-        void configVideo(int ch, VideoSetting& config, boolean faceRecogFlag);
+        void configVideo(int ch, VideoSetting& config, int faceRecogFlag = 0);
         void begin(void);
         void end(void);
         void YUV(void);

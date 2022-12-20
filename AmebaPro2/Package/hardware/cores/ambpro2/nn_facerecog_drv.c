@@ -53,6 +53,10 @@ static nn_data_param_t roi_nn = {
 TimerHandle_t osd_cleanup_timer = NULL;
 
 // get settings from RTSP module
+// ======================================================
+// change name to setOSDparam
+// ch: given a fixed value as user input RTSP_CHANNEL
+// ======================================================
 void getRTSPFR (int ch, uint32_t width, uint32_t height) { 
     RTSPWidthFR = width;
     RTSPHeightFR = height;
@@ -118,10 +122,12 @@ void face_draw_object(void *p, void *img_param) {
     canvas_update(RTSPChannelFR, 0);
 }
 
+// set NN face recognition threshold value
 void nnFacerecogSetThreshold(void *p) {
-    vipnn_control(p, CMD_FRC_SET_THRES100, 99);
+    vipnn_control(p, CMD_FRC_SET_THRES100, 99); // 99/100 = 0.99 --> set a value to get lowest FP rate
 }
 
+// set NN face recognition OSD
 void nnFacerecogSetOSDDraw(void *p) {
     vipnn_control(p, CMD_FRC_SET_OSD_DRAW, (int)face_draw_object);
 }
@@ -164,14 +170,4 @@ void nnSetFaceRecgDatagroup(mm_context_t *ctx, int status) {
 // apply NN face recognition object
 void nnFaceRecgSetApply(void *p) {
     vipnn_control(p, CMD_VIPNN_APPLY, 0);
-}
-
-// set NN face recognition threshold value
-void nnSetFaceRecgThreshold(void *p) {
-    facerecog_control(p, CMD_FRC_SET_THRES100, 99);  // 99/100 = 0.99 --> set a value to get lowest FP rate
-}
-
-// set NN face recognition OSD
-void nnSetFaceRecgOSD(void *p) {
-    facerecog_control(p, CMD_FRC_SET_OSD_DRAW, (int)face_draw_object);
 }

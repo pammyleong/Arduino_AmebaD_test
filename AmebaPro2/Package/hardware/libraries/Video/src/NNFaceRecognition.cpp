@@ -20,6 +20,9 @@ void NNFaceRecognition::getRTSPParams(int ch, VideoSetting& config) {
     getRTSPFR(ch, RTSPwidthFR, RTSPheightFR);
 }
 
+// configuration for Face Recognition module
+// TODO: 
+// whether needs ch as input parameter
 void NNFaceRecognition::configVideo(int ch, VideoSetting& config) { // to config CH 4 for NN
     width = config._w;
     height = config._h;
@@ -34,13 +37,8 @@ void NNFaceRecognition::configVideo(int ch, VideoSetting& config) { // to config
         return;
     }
     
-    nnSetFaceRecgModel2(_p_mmf_context->priv);
-    nnSetFaceRecgCascade(_p_mmf_context->priv);
-    nnSetFaceRecgOutput(_p_mmf_context->priv);
-    nnSetFaceRecgDatagroup(_p_mmf_context, MM_GROUP_END);
-    cameraSetQLen(_p_mmf_context, 1);
-    cameraSetQItem(_p_mmf_context);
-    nnFaceRecgSetApply(_p_mmf_context->priv);
+    nnFacerecogSetThreshold(_p_mmf_context->priv);
+    nnFacerecogSetOSDDraw(_p_mmf_context->priv);
 }
 
 void NNFaceRecognition::begin(void) {

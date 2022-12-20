@@ -13,6 +13,10 @@ mm_context_t* nnFacedetInit(void);
 
 void nnSetFacedetModel(void *p);
 
+void nnSetFacedetModel2(void *p);
+
+void nnSetFacedetCascade(void *p);
+
 void nnSetFacedetInputParam(void *p);
 
 void nnSetFacedetDisppost(void *p);

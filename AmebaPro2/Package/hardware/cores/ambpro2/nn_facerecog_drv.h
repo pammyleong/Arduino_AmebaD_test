@@ -34,10 +34,6 @@ void nnSetFaceRecgDatagroup(mm_context_t *ctx, int status);
 
 void nnFaceRecgSetApply(void *p);
 
-void nnSetFaceRecgThreshold(void *p);
-
-void nnSetFaceRecgThreshold(void *p);
-
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);
 extern int facerecog_control(void *p, int cmd, int arg);

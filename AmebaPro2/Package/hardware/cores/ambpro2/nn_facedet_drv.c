@@ -4,7 +4,9 @@
 
 // #include "input_image_640x360x3.h"
 // #include "model_yolov3t.h"
+#include "model_mobilefacenet.h"
 #include "model_scrfd.h"
+
 #include "osd_render.h"
 
 #define DEBUG           0
@@ -26,6 +28,7 @@ int RTSPChannel = 0;
 
 // SCRFD
 #define NN_MODEL_OBJ    scrfd_fwfs
+#define NN_MODEL2_OBJ   mbfacenet_fwfs
 #define NN_WIDTH    576//640
 #define NN_HEIGHT    320//640
 
@@ -113,7 +116,7 @@ mm_context_t* nnFacedetInit(void) {
     return mm_module_open(&vipnn_module);
 }
 
-// setup NN model
+// setup NN model: Facedet
 void nnSetFacedetModel(void *p) {
     vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL_OBJ);
 }
@@ -128,16 +131,6 @@ void nnSetFacedetDisppost(void *p) {
     vipnn_control(p, CMD_VIPNN_SET_DISPPOST, (int)nn_set_object);
 }
 
-// set NN module as data group input or output
-void nnSetFacedetDatagroup(mm_context_t *ctx, int status) {
-    mm_module_ctrl(ctx, MM_CMD_SET_DATAGROUP, status);
-}
-
-// set NN module as output of a linker module
-void nnSetFacedetOutput(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_OUTPUT, 1);
-}
-
 // apply NN face detection object
 void nnFacedetSetApply(void *p) {
     vipnn_control(p, CMD_VIPNN_APPLY, 0);
@@ -150,4 +143,34 @@ void OSDBegin(void) {
 
     osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
     osd_render_task_start(ch_enable, ch_width, ch_height);
+}
+
+
+
+
+
+
+
+
+// set NN module as output of a linker module
+void nnSetFacedetOutput(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_OUTPUT, 1);
+}
+
+// set NN module as data group input or output
+void nnSetFacedetDatagroup(mm_context_t *ctx, int status) {
+    mm_module_ctrl(ctx, MM_CMD_SET_DATAGROUP, status);
+}
+
+
+
+
+// setup NN model: Facenet
+void nnSetFacedetModel2(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL2_OBJ);
+}
+
+// set NN model to cascade mode
+void nnSetFacedetCascade(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_CASCADE, 2);
 }

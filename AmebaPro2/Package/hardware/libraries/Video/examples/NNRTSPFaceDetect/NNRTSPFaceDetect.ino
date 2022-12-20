@@ -22,7 +22,7 @@ RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 StreamIO videoStreamerNN(1, 1);  // 
 
-char ssid[] = "Aurical_2G";     //  your network SSID (name)
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
