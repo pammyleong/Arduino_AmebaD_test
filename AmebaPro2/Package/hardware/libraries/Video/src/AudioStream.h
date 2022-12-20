@@ -1,5 +1,5 @@
-#ifndef __AUDIO_STREAM_H__
-#define __AUDIO_STREAM_H__
+#ifndef __AUDIOSTREAM_H__
+#define __AUDIOSTREAM_H__
 
 #ifdef __cplusplus
 extern "C" {

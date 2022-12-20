@@ -23,6 +23,12 @@ void NNFaceDetection::getRTSPParams(int ch, VideoSetting& config) {
     getRTSP(ch, RTSPwidth, RTSPheight);
 }
 
+/**
+  * @brief  Configuration of Face Detection module
+  * @param  ch     : video channel 4
+  *         config : video settings parameters
+  * @retval none
+  */
 void NNFaceDetection::configVideo(int ch, VideoSetting& config) { // to config CH 4 for NN
     width = config._w;
     height = config._h;
@@ -38,11 +44,57 @@ void NNFaceDetection::configVideo(int ch, VideoSetting& config) { // to config C
     }
     
     nnSetFacedetModel(_p_mmf_context->priv);
+    // if single SISO
     nnSetFacedetInputParam(_p_mmf_context->priv);
     nnSetFacedetDisppost(_p_mmf_context->priv);
+    // if cascaded with Face Recognition
+    // .....to add
     nnFacedetSetApply(_p_mmf_context->priv);
+}
+
+// configuration of Face Detection module when cascaded by Face Recognition module
+// -------------------------------------------------------------------------------
+// TODO:
+// pending to combined with previous configVideo function using if case seperation
+// -------------------------------------------------------------------------------
+void NNFaceDetection::configVideo(int ch, VideoSetting& config, boolean faceRecogFlag) { // to config CH 4 for NN
+    width = config._w;
+    height = config._h;
+
+    CAMDBG("Width [Ch%d]:%d  Height [Ch%d]:%d", ch, width, ch, height);
+
+    if (_p_mmf_context == NULL) {
+        _p_mmf_context = nnFacedetInit();
+    }
+    if (_p_mmf_context == NULL) {
+        CAMDBG("NN init failed\r\n");
+        return;
+    }
+    
+    nnSetFacedetModel(_p_mmf_context->priv);
+    nnSetFacedetInputParam(_p_mmf_context->priv);
+
+    nnSetFacedetOutput(_p_mmf_context->priv);
+    nnSetFacedetDatagroup(_p_mmf_context, MM_GROUP_START);
+    cameraSetQLen(_p_mmf_context, 1);
+    cameraSetQItem(_p_mmf_context);
+
+    nnFacedetSetApply(_p_mmf_context->priv);
+}
+
+void NNFaceDetection::begin(void) {
+    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
+}
+
+void NNFaceDetection::end(void) {
+    // to be done
+}
+
+void NNFaceDetection::YUV(void) {
+    cameraYUV(_p_mmf_context->priv);
 }
 
 void NNFaceDetection::OSDDisplay(void) {
     OSDBegin();
 }
+

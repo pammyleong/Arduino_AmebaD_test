@@ -16,6 +16,10 @@
 #define CAMDBG(fmt, args...)
 #endif
 
+//#define RTSP_HEIGHT 1920
+//#define RTSP_WIDTH 1080
+//#define RTSP_CHANNEL 0
+
 uint32_t RTSPWidth = 0;
 uint32_t RTSPHeight = 0;
 int RTSPChannel = 0;
@@ -122,6 +126,16 @@ void nnSetFacedetInputParam(void *p) {
 // setup NN object
 void nnSetFacedetDisppost(void *p) {
     vipnn_control(p, CMD_VIPNN_SET_DISPPOST, (int)nn_set_object);
+}
+
+// set NN module as data group input or output
+void nnSetFacedetDatagroup(mm_context_t *ctx, int status) {
+    mm_module_ctrl(ctx, MM_CMD_SET_DATAGROUP, status);
+}
+
+// set NN module as output of a linker module
+void nnSetFacedetOutput(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_OUTPUT, 1);
 }
 
 // apply NN face detection object

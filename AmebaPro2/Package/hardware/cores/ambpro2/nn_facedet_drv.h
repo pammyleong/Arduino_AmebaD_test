@@ -17,6 +17,10 @@ void nnSetFacedetInputParam(void *p);
 
 void nnSetFacedetDisppost(void *p);
 
+void nnSetFacedetDatagroup(mm_context_t *ctx, int status);
+
+void nnSetFacedetOutput(void *p);
+
 void nnFacedetSetApply(void *p);
 
 void OSDBegin(void);

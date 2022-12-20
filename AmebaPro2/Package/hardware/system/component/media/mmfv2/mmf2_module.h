@@ -39,7 +39,7 @@
 #define MM_CMD_SET_QUEUE_NUM		0x02  // set number of queue (multiple queue)
 #define MM_CMD_SELECT_QUEUE			0x03  // select queue from queue0 ~ queue3
 #define MM_CMD_CLEAR_QUEUE_ITEMS     0x04  // clear queue item 
-
+#define MM_CMD_SET_DATAGROUP		0x05  // set data group 
 
 #define MM_CMD_MODULE_BASE			0x80
 #define MM_MODULE_CMD(x)			(MM_CMD_MODULE_BASE+(x))
@@ -50,7 +50,8 @@
 #define MM_STAT_ERR_MALLOC			0x11
 #define MM_STAT_ERR_QUEUE			0x12
 #define MM_STAT_ERR_NEWITEM			0x13
-
+#define MM_GROUP_START				0x01
+#define MM_GROUP_END				0x02
 typedef struct mm_module_s {
 	void *(*create)(void *);
 	void *(*destroy)(void *);

@@ -28,6 +28,10 @@ class NNFaceDetection:public MMFModule {
         
         void getRTSPParams(int ch, VideoSetting& config);
         void configVideo(int ch, VideoSetting& config);
+        void configVideo(int ch, VideoSetting& config, boolean faceRecogFlag);
+        void begin(void);
+        void end(void);
+        void YUV(void);
         void OSDDisplay(void);
     private:
         uint32_t width;

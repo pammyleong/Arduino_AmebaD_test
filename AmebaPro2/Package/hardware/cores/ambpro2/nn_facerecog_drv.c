@@ -2,7 +2,6 @@
 #include "module_video.h"
 #include "module_vipnn.h"
 #include "module_facerecog.h"
-#include "avcodec.h"
 
 #include "model_mobilefacenet.h"
 #include "model_scrfd.h"
@@ -18,104 +17,161 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-uint32_t RTSPWidth4FR = 0;
-uint32_t RTSPHeight4FR = 0;
-int RTSPChannel4FR = 0;
+uint32_t RTSPWidthFR = 0;
+uint32_t RTSPHeightFR = 0;
+int RTSPChannelFR = 0;
 
-// SCRFD
-#define NN_MODEL_OBJ    scrfd_fwfs
-#define NN_MODEL_OBJ2   mbfacenet_fwfs
+// #define NN_CHANNEL 4
+// #define NN_RESOLUTION VIDEO_VGA //don't care for NN
+// #define NN_FPS 10
+// #define NN_GOP NN_FPS
+// #define NN_BPS 1024*1024 //don't care for NN
+// #define NN_TYPE VIDEO_RGB
 
-#define NN_WIDTH    576//640
-#define NN_HEIGHT   320//640
+// SCRFD + FACENET
+#define NN_MODEL_OBJ   	scrfd_fwfs
+#define NN_MODEL2_OBJ   mbfacenet_fwfs
+#define NN_WIDTH		576
+#define NN_HEIGHT		320
+
+static nn_data_param_t roi_nn = {
+    .img = {
+        .width = NN_WIDTH,
+        .height = NN_HEIGHT,
+        .rgb = 0, // set to 1 if want RGB->BGR or BGR->RGB
+        .roi = {
+            .xmin = 0,
+            .ymin = 0,
+            .xmax = NN_WIDTH,
+            .ymax = NN_HEIGHT,
+        }
+    }
+};
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
+TimerHandle_t osd_cleanup_timer = NULL;
+
+// get settings from RTSP module
 void getRTSPFR (int ch, uint32_t width, uint32_t height) { 
-    RTSPWidth4FR = width;
-    RTSPHeight4FR = height;
-    RTSPChannel4FR = ch;
+    RTSPWidthFR = width;
+    RTSPHeightFR = height;
+    RTSPChannelFR = ch;
 }
 
-TimerHandle_t osd_cleanup_timer = NULL;
-void osd_cleanup_callback(TimerHandle_t xTimer)
-{
-	(void)xTimer;
-	canvas_clean_all(RTSPChannel4FR, 0);
-	canvas_update(RTSPChannel4FR, 0);
+// callback function to to be called to clean up rect
+void osd_cleanup_callback(TimerHandle_t xTimer) {
+    (void)xTimer;
+    canvas_clean_all(RTSPChannelFR, 0);
+    canvas_update(RTSPChannelFR, 0);
 }
 
 // callback function to to be called to draw rect
-static void nn_set_object_FR(void *p, void *img_param) {
-	int i = 0;
-	frc_draw_t *fdraw = (frc_draw_t *)p;
+void face_draw_object(void *p, void *img_param) {
+    int i = 0;
+    frc_draw_t *fdraw = (frc_draw_t *)p;
 
-	if (!p)	{
-		return;
-	}
+    if (!p)	{
+        return;
+    }
 
-	int im_h = RTSPHeight4FR;
-	int im_w = RTSPWidth4FR;
+    int im_h = RTSPHeightFR;
+    int im_w = RTSPWidthFR;
 
-	printf("object num = %d\r\n", fdraw->obj_cnt);
-	canvas_clean_all(RTSPChannel4FR, 0);
-	if (fdraw->obj_cnt > 0) {
-		for (i = 0; i < fdraw->obj_cnt; i++) {
-			nn_data_param_t *param = fdraw->img_param[i];
-			int x_offset = 0, y_offset = 0;
-			float ratio;
-			if ((float)im_w / (float)im_h > (float)param->img.width / (float)param->img.height) {
-				ratio = (float)im_h / (float)param->img.height;
-				x_offset = (im_w - (float)param->img.width * ratio) / 2;
-			} else {
-				ratio = (float)im_w / (float)param->img.width;
-				y_offset = (im_h - (float)param->img.height * ratio) / 2;
-			}
+    printf("object num = %d\r\n", fdraw->obj_cnt);
+    canvas_clean_all(RTSPChannelFR, 0);
+    if (fdraw->obj_cnt > 0) {
+        for (i = 0; i < fdraw->obj_cnt; i++) {
+            nn_data_param_t *param = fdraw->img_param[i];
+            int x_offset = 0, y_offset = 0;
+            float ratio;
+            if ((float)im_w / (float)im_h > (float)param->img.width / (float)param->img.height) {
+                ratio = (float)im_h / (float)param->img.height;
+                x_offset = (im_w - (float)param->img.width * ratio) / 2;
+            } else {
+                ratio = (float)im_w / (float)param->img.width;
+                y_offset = (im_h - (float)param->img.height * ratio) / 2;
+            }
 
-			int xmin = (int)(param->img.roi.xmin * ratio) + x_offset;
-			int ymin = (int)(param->img.roi.ymin * ratio) + y_offset;
-			int xmax = (int)(param->img.roi.xmax * ratio) + x_offset;
-			int ymax = (int)(param->img.roi.ymax * ratio) + y_offset;
-			LIMIT(xmin, 0, im_w)
-			LIMIT(xmax, 0, im_w)
-			LIMIT(ymin, 0, im_h)
-			LIMIT(ymax, 0, im_h)
-			//printf("%d,c%s:%d %d %d %d\n\r", i, fdraw->obj_name[i], xmin, ymin, xmax, ymax);
+            int xmin = (int)(param->img.roi.xmin * ratio) + x_offset;
+            int ymin = (int)(param->img.roi.ymin * ratio) + y_offset;
+            int xmax = (int)(param->img.roi.xmax * ratio) + x_offset;
+            int ymax = (int)(param->img.roi.ymax * ratio) + y_offset;
+            LIMIT(xmin, 0, im_w)
+            LIMIT(xmax, 0, im_w)
+            LIMIT(ymin, 0, im_h)
+            LIMIT(ymax, 0, im_h)
+            //printf("%d,c%s:%d %d %d %d\n\r", i, fdraw->obj_name[i], xmin, ymin, xmax, ymax);
 
-			if (!strcmp(fdraw->obj_name[i], "unknown")) {
-				canvas_set_rect(RTSPChannel4FR, 0, xmin, ymin, xmax, ymax, 3, COLOR_RED);
-				canvas_set_text(RTSPChannel4FR, 0, xmin, ymin - 32, fdraw->obj_name[i], COLOR_RED);
-			} else {
-				canvas_set_rect(RTSPChannel4FR, 0, xmin, ymin, xmax, ymax, 3, COLOR_GREEN);
-				canvas_set_text(RTSPChannel4FR, 0, xmin, ymin - 32, fdraw->obj_name[i], COLOR_GREEN);
-			}
-		}
-		if (osd_cleanup_timer) {
-			xTimerReset(osd_cleanup_timer, 10);
-		}
-	}
-	canvas_update(RTSPChannel4FR, 0);
+            if (!strcmp(fdraw->obj_name[i], "unknown")) {
+                canvas_set_rect(RTSPChannelFR, 0, xmin, ymin, xmax, ymax, 3, COLOR_RED);
+                canvas_set_text(RTSPChannelFR, 0, xmin, ymin - 32, fdraw->obj_name[i], COLOR_RED);
+            } else {
+                canvas_set_rect(RTSPChannelFR, 0, xmin, ymin, xmax, ymax, 3, COLOR_GREEN);
+                canvas_set_text(RTSPChannelFR, 0, xmin, ymin - 32, fdraw->obj_name[i], COLOR_GREEN);
+            }
+        }
+        if (osd_cleanup_timer) {
+            xTimerReset(osd_cleanup_timer, 10);
+        }
+    }
+    canvas_update(RTSPChannelFR, 0);
 }
 
-mm_context_t* nnFaceRecogInit(void) {
-    return mm_module_open(&facerecog_module);
-}
-
-// set face recog threshold
-void nnFaceRecogSetThres(void *p) {
+void nnFacerecogSetThreshold(void *p) {
     vipnn_control(p, CMD_FRC_SET_THRES100, 99);
 }
 
-// OSD Draw
-void nnFaceRecogOSDDraw(void *p) {
-    vipnn_control(p,  CMD_FRC_SET_OSD_DRAW, (int)nn_set_object_FR);
+void nnFacerecogSetOSDDraw(void *p) {
+    vipnn_control(p, CMD_FRC_SET_OSD_DRAW, (int)face_draw_object);
 }
 
-void OSDBeginFR(void) {
-    int ch_enable[3] = {1, 0, 0};
-    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
-    int ch_width[3] = {RTSPWidth4FR, 0, 0}, ch_height[3] = {RTSPHeight4FR, 0, 0};
+// Initialize Face Recognition module 
+mm_context_t* nnFaceRecgInit(void) {
+    return mm_module_open(&vipnn_module);
+}
 
-    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
-    osd_render_task_start(ch_enable, ch_width, ch_height);
+// setup NN model: FD
+void nnSetFaceRecgModel1(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL_OBJ);
+}
+
+// setup NN model: FR
+void nnSetFaceRecgModel2(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL2_OBJ);
+}
+
+// set current NN model to cascade mode
+void nnSetFaceRecgCascade(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_CASCADE, 2);
+}
+
+// setup NN module input parameters
+void nnSetFaceRecgInputParam(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_IN_PARAMS, (int)&roi_nn);
+}
+
+// set NN module as output of a linker module
+void nnSetFaceRecgOutput(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_OUTPUT, 1);
+}
+
+// set NN module as data group input or output
+void nnSetFaceRecgDatagroup(mm_context_t *ctx, int status) {
+    mm_module_ctrl(ctx, MM_CMD_SET_DATAGROUP, status);
+}
+
+// apply NN face recognition object
+void nnFaceRecgSetApply(void *p) {
+    vipnn_control(p, CMD_VIPNN_APPLY, 0);
+}
+
+// set NN face recognition threshold value
+void nnSetFaceRecgThreshold(void *p) {
+    facerecog_control(p, CMD_FRC_SET_THRES100, 99);  // 99/100 = 0.99 --> set a value to get lowest FP rate
+}
+
+// set NN face recognition OSD
+void nnSetFaceRecgOSD(void *p) {
+    facerecog_control(p, CMD_FRC_SET_OSD_DRAW, (int)face_draw_object);
 }

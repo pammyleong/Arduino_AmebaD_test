@@ -13,27 +13,23 @@ extern "C" {
 
 #include "VideoStream.h"
 
-//class NNModelSetting {
-//    friend class NNSetting;
-//
-//    public:
-//
-//    private:
-//};
-
-class NNFaceRecognition:public MMFModule  {
+class NNFaceRecognition:public MMFModule {
     public:
         NNFaceRecognition(void);
         ~NNFaceRecognition(void);
         
         void getRTSPParams(int ch, VideoSetting& config);
         void configVideo(int ch, VideoSetting& config);
-        void OSDDisplay(void);
+
+        void begin(void);
+        // void end(void);
+        // void YUV(void);
+        // void OSDDisplay(void);
     private:
         uint32_t width;
         uint32_t height;
-        uint32_t RTSPwidth;
-        uint32_t RTSPheight;
+        uint32_t RTSPwidthFR;
+        uint32_t RTSPheightFR;
 };
 
 //class FaceRecg:public MMFModule {

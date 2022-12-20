@@ -18,6 +18,10 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
 
 void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int direct_output);
 
+void cameraSetQLen(mm_context_t *p, int length);
+
+void cameraSetQItem(mm_context_t *p);
+
 void cameraStart(void *p, int channel);
 
 void cameraYUV(void *p);

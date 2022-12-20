@@ -157,6 +157,16 @@ void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int re
     }
 }
 
+// set the queue length of video object 
+void cameraSetQLen(mm_context_t *p, int length) {
+    mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, length);
+}
+
+// set the queue item of video object 
+void cameraSetQItem(mm_context_t *p) {
+    mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
+}
+
 void cameraStart(void *p, int channel) {
     video_control(p, CMD_VIDEO_APPLY, channel);
 }
