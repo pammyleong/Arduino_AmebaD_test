@@ -99,11 +99,12 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
         _w = VIDEO_FHD_WIDTH;
         _h = VIDEO_FHD_HEIGHT;
     } else if (_resolution == VIDEO_HD) {
-          _w = VIDEO_HD_WIDTH;
-          _h = VIDEO_HD_HEIGHT;
+        _w = VIDEO_HD_WIDTH;
+        _h = VIDEO_HD_HEIGHT;
     } else if (_resolution == VIDEO_VGA) {
         _w = VIDEO_VGA_WIDTH;
         _h = VIDEO_VGA_HEIGHT;
+        _bps = 1024*1024;
     }
 }
 
@@ -317,7 +318,7 @@ void Video::channelBegin(int ch) {
         }
         case 3: { // for NN channel processing
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            cameraYUV(videoModule[ch]._p_mmf_context->priv);
+            //cameraYUV(videoModule[ch]._p_mmf_context->priv);
             break;
         }
         default: {
@@ -373,6 +374,16 @@ void Video::setSnapshotCallback(int ch) {
             cameraSnapshotRegCB(videoModule[ch]._p_mmf_context, &snapshotCB3);
             break;
         }
+    }
+}
+
+void Video::videoYUV(int ch) {
+    printf("Entered YUV\r\n");
+    if (videoModule[ch]._p_mmf_context != NULL) {
+        cameraYUV(videoModule[ch]._p_mmf_context->priv);
+        printf("VideoYUV Done\r\n");
+    } else {
+        printf("VideoYUV = 0\r\n");
     }
 }
 

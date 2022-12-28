@@ -99,9 +99,9 @@ enum encode_type {
 class MMFModule {
     friend class StreamIO;
     friend class Video;
-    friend class NNFaceRecognition;
-    friend class NNFaceDetection;
-
+	// friend class NNFaceRecognition;
+	// friend class NNFaceDetection;
+    // friend class MD;
     public:
 
     protected:
@@ -149,6 +149,7 @@ class Video {
         void setFPS(int fps);
         void printSnapshotInfo(int ch);
         void printInfo(void);
+        void videoYUV(int ch);
 
     private:
         void setSnapshotCallback(int ch);
@@ -159,7 +160,7 @@ class Video {
         MMFModule videoModule[4];
 
         int channelEnable[4] = {0};
-        const int channel[4] = {v1_STREAMING_ID, v2_STREAMING_ID, v3_STREAMING_ID, v4_STREAMING_ID};
+        int channel[4] = {v1_STREAMING_ID, v2_STREAMING_ID, v3_STREAMING_ID, v4_STREAMING_ID};
         int resolution[4] = {0};
         uint16_t w[4] = {0};
         uint16_t h[4] = {0};
@@ -178,6 +179,7 @@ class Video {
 
         static uint32_t image_addr[4];
         static uint32_t image_len[4];
+        int MD_En;
 };
 
 extern Video Camera;

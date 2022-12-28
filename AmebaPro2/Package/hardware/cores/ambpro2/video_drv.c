@@ -10,7 +10,7 @@
 #define OSD_ENABLE      1
 #define MD_ENABLE       1
 #define HDR_ENABLE      1
-#define DEBUG           0
+#define DEBUG           1
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -24,6 +24,7 @@ extern int enc_queue_cnt[5];
 
 uint32_t image_addr = 0;
 uint32_t image_len = 0;
+int voe_heap_size = 0;
 
 static video_params_t video_params = {
     .stream_id      = 0, 
@@ -38,12 +39,31 @@ static video_params_t video_params = {
     .use_static_addr = 1
 };
 
+static video_params_t video_v4_params = {
+	.stream_id 		= 0,
+	.type 			= 0,
+	.resolution	 	= 0,
+	.width 			= 0,
+	.height 		= 0,
+	.bps 			= 0,
+	.fps 			= 0,
+	.gop 			= 0,
+	.direct_output 	= 0,
+	.use_static_addr = 1,
+	.use_roi = 1,
+	.roi = {
+		.xmin = 0,
+		.ymin = 0,
+		.xmax = 0,
+		.ymax = 0,
+	}
+};
+
+
 int cameraConfig(int v1_enable, int v1_w, int v1_h, int v1_bps, int v1_snapshot,
                         int v2_enable, int v2_w, int v2_h, int v2_bps, int v2_snapshot,
                         int v3_enable, int v3_w, int v3_h, int v3_bps, int v3_snapshot,
                         int v4_enable, int v4_w, int v4_h) {
-
-    int voe_heap_size = 0;
     isp_info_t info;
 
     if (USE_SENSOR == SENSOR_GC4653) {
@@ -113,9 +133,10 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
     video_params.gop = gop;
     video_params.rc_mode = rc_mode;
 
-    CAMDBG("2 %d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, rc_mode);
+    CAMDBG("%d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 
     if (p) {
+        mm_module_ctrl(p, CMD_VIDEO_SET_VOE_HEAP, voe_heap_size);
         video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
@@ -128,33 +149,38 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
 
 void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int res, int w, int h, int bps, int fps, int gop, int direct_output) {
     // assign value parsing from user level
-    video_params.stream_id = stream_id;
-    video_params.type = type;
-    video_params.resolution = res;
-    video_params.width = w;
-    video_params.height = h;
-    video_params.bps = bps;
-    video_params.fps = fps;
-    video_params.gop = gop;
-    video_params.direct_output = direct_output;
-    video_params.use_static_addr = 1;
+    video_v4_params.stream_id = stream_id;
+    video_v4_params.type = type;
+    video_v4_params.resolution = res;
+    video_v4_params.width = w;
+    video_v4_params.height = h;
+    video_v4_params.bps = bps;
+    video_v4_params.fps = fps;
+    video_v4_params.gop = gop;
+    video_v4_params.direct_output = direct_output;
+    video_v4_params.use_static_addr = 1;
     // define NN region of interest
-    video_params.use_roi = 1;
-    video_params.roi.xmin = 0;
-    video_params.roi.ymin = 0;
-    video_params.roi.xmax = 1920;
-    video_params.roi.ymax = 1080;
+    video_v4_params.use_roi = 1;
+    video_v4_params.roi.xmin = 0;
+    video_v4_params.roi.ymin = 0;
+    video_v4_params.roi.xmax = 1920;
+    video_v4_params.roi.ymax = 1080;
 
     CAMDBG("V4 %d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, direct_output);
 
     if (p) {
-        video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
+        video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_v4_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, 2);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
         CAMDBG("cameraOpen done");
     } else {
         CAMDBG("cameraOpen fail");
     }
+}
+
+// set VOE heapsize
+void cameraSetHeapSize(void *p) {
+    mm_module_ctrl(p, CMD_VIDEO_SET_VOE_HEAP, voe_heap_size);
 }
 
 // set the queue length of video object 
@@ -168,11 +194,21 @@ void cameraSetQItem(mm_context_t *p) {
 }
 
 void cameraStart(void *p, int channel) {
+    printf("CameraStart\r\n");
     video_control(p, CMD_VIDEO_APPLY, channel);
+    video_ctx_t *ctx = (video_ctx_t *)p;
+	printf("CH = %d\r\n",ctx->params.stream_id);
 }
 
 void cameraYUV(void *p) {
-    video_control(p, CMD_VIDEO_YUV, 2);
+    // video_control(p, CMD_VIDEO_YUV, 2);
+    video_ctx_t *ctx = (video_ctx_t *)p;
+	printf("CH = %d\r\n",ctx->params.stream_id);
+    printf("Type = %d\r\n", ctx->params.type);
+    int ch = ctx->params.stream_id;
+    int type = ctx->params.type;
+    
+    video_ctrl(ch, VIDEO_RGB_OUTPUT, 2);
 }
 
 void cameraSnapshot(void *p, int arg) {

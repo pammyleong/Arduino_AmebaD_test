@@ -18,6 +18,7 @@ extern "C" {
 #include "lwip_netconf.h"
 #include "wifi_fast_connect.h"
 #include "lwip/err.h"
+#include "osdep_service.h"
 // modifed here
 #include "lwip/netif.h"
 #include "lwip/api.h"
@@ -37,11 +38,11 @@ uint32_t    WiFiDrv::_networkEncr[WL_NETWORKS_LIST_MAXNUM] = {0};
 
 static bool init_wlan = false;
 //static int wifi_mode = NULL;
-rtw_mode_t wifi_mode = 0;
+rtw_mode_t wifi_mode = RTW_MODE_STA;
 struct static_ip_config user_static_ip;
 
 static rtw_network_info_t wifi;
-static rtw_softap_info ap;
+static rtw_softap_info_t ap = {0};
 static unsigned char password[65] = {0};
 
 rtw_wifi_setting_t WiFiDrv::wifi_setting;
@@ -73,23 +74,22 @@ static void init_wifi_struct(void) {
 }
 
 void WiFiDrv::wifiDriverInit() {
-//    struct netif * pnetif = &xnetif[0];
+    struct netif * pnetif = &xnetif[0];
     if (init_wlan == false) {
         init_wlan = true;
         LwIP_Init();
         wifi_on(RTW_MODE_STA);
         wifi_mode = RTW_MODE_STA;
+    } else if (init_wlan == true) {
+        if (wifi_mode != RTW_MODE_STA) {
+            dhcps_deinit();
+            wifi_off();
+            vTaskDelay(20);
+            wifi_on(RTW_MODE_STA);
+            dhcps_init(pnetif);
+            wifi_mode = RTW_MODE_STA;
+        }
     }
-//    else if (init_wlan == true) {
-//        if (wifi_mode != RTW_MODE_STA) {
-//            dhcps_deinit();
-//            wifi_off();
-//            vTaskDelay(20);
-//            wifi_on(RTW_MODE_STA);
-//            dhcps_init(pnetif);
-//            wifi_mode = RTW_MODE_STA;
-//        }
-//    }
 }
 
 int8_t WiFiDrv::wifiSetNetwork(char* ssid, uint8_t ssid_len) {
@@ -424,13 +424,13 @@ int8_t WiFiDrv::disconnect() {
 }
 
 uint8_t WiFiDrv::getConnectionStatus() {
+    wifiDriverInit();
 
-    if (init_wlan) {
-        if (wifi_is_connected_to_ap() == RTW_SUCCESS) {
-            return WL_CONNECTED;
-        }
+    if (wifi_is_connected_to_ap() == 0) {
+        return WL_CONNECTED;
+    } else {
+        return WL_DISCONNECTED;
     }
-    return WL_DISCONNECTED;
 }
 
 uint8_t* WiFiDrv::getMacAddress() {
@@ -522,7 +522,9 @@ rtw_result_t WiFiDrv::wifidrv_scan_result_handler(unsigned int scanned_AP_num, v
 
 int8_t WiFiDrv::startScanNetworks() {
     _networkCount = 0;
-    rtw_scan_param_t  scan_param = {0};
+    //rtw_scan_param_t  scan_param = {0};
+    rtw_scan_param_t  scan_param;
+    rtw_memset(&scan_param, 0, sizeof(rtw_scan_param_t));
     scan_param.scan_user_callback = wifidrv_scan_result_handler;
     if (wifi_scan_networks(&scan_param, 0 ) != RTW_SUCCESS) {
         return WL_FAILURE;
