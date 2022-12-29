@@ -6,7 +6,6 @@
 #include <semphr.h>
 #include <diag.h>
 #include "mmf2_module.h"
-#include "video_drv.h"
 
 // void md_process(void *md_result);
 
