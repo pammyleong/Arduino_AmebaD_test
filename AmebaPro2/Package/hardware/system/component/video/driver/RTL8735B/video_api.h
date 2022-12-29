@@ -106,6 +106,7 @@ typedef struct video_param_s {
 		uint32_t ymax;
 	} roi;
 	uint32_t meta_size;
+	uint32_t dn_init_mode;
 } video_params_t;
 
 typedef struct voe_info_s {
@@ -200,6 +201,8 @@ int voe_boot_fsc_id(void);
 void video_set_fcs_queue_info(int start_time, int end_time);
 
 void video_get_fcs_queue_info(int *start_time, int *end_time);
+
+int video_get_maxqp(int ch);
 
 //////////////////////
 #define VOE_NAND_FLASH_OFFSET 0x8000000

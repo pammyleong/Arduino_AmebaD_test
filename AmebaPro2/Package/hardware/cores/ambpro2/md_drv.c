@@ -14,9 +14,9 @@
 #define md_col 16
 #define md_row 16
 
-uint32_t RTSPWidth;
-uint32_t RTSPHeight;
-int RTSPChannel;
+uint32_t RTSPWidthMD;
+uint32_t RTSPHeightMD;
+int RTSPChannelMD;
 int i;
 
 static md_param_t md_param = {
@@ -26,13 +26,13 @@ static md_param_t md_param = {
 
 // get settings from RTSP module
 void MDOSDConfig(int ch, uint32_t width, uint32_t height) { 
-    RTSPWidth = width;
-    RTSPHeight = height;
-    RTSPChannel = ch;
+    RTSPWidthMD = width;
+    RTSPHeightMD = height;
+    RTSPChannelMD = ch;
 
-	printf ("RTSP Width = %d\r\n", RTSPWidth);
-	printf ("RTSP Height = %d\r\n", RTSPHeight);
-	printf ("RTSP CH = %d\r\n", RTSPChannel);
+	printf ("RTSP Width = %d\r\n", RTSPWidthMD);
+	printf ("RTSP Height = %d\r\n", RTSPHeightMD);
+	printf ("RTSP CH = %d\r\n", RTSPChannelMD);
 }
 
 static void md_process(void *md_result) {
@@ -65,15 +65,15 @@ static void md_process(void *md_result) {
 	}
 	printf("\r\n\r\n");
 	//draw md region
-	canvas_clean_all(RTSPChannel, 0);
+	canvas_clean_all(RTSPChannelMD, 0);
 	if (motion) {
-		int xmin = (int)(kmin * RTSPWidth / md_col) + 1;
-		int ymin = (int)(jmin * RTSPHeight / md_row) + 1;
-		int xmax = (int)((kmax + 1) * RTSPWidth / md_col) - 1;
-		int ymax = (int)((jmax + 1) * RTSPHeight / md_row) - 1;
-		canvas_set_rect(RTSPChannel, 0, xmin, ymin, xmax, ymax, 3, COLOR_GREEN);
+		int xmin = (int)(kmin * RTSPWidthMD / md_col) + 1;
+		int ymin = (int)(jmin * RTSPHeightMD / md_row) + 1;
+		int xmax = (int)((kmax + 1) * RTSPWidthMD / md_col) - 1;
+		int ymax = (int)((jmax + 1) * RTSPHeightMD / md_row) - 1;
+		canvas_set_rect(RTSPChannelMD, 0, xmin, ymin, xmax, ymax, 3, COLOR_GREEN);
 	}
-	canvas_update(RTSPChannel, 0);
+	canvas_update(RTSPChannelMD, 0);
 }
 
 mm_context_t *MDInit(void) {
@@ -127,7 +127,7 @@ void setMDTrigBlock(void *p) {
 void MDDraw(void) {
     int ch_enable[3] = {1, 0, 0};
 	int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
-	int ch_width[3] = {RTSPWidth, 0, 0}, ch_height[3] = {RTSPHeight, 0, 0};
+	int ch_width[3] = {RTSPWidthMD, 0, 0}, ch_height[3] = {RTSPHeightMD, 0, 0};
 	osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
 	osd_render_task_start(ch_enable, ch_width, ch_height);
 }
