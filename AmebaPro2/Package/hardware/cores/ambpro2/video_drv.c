@@ -203,12 +203,11 @@ void cameraStart(void *p, int channel) {
 void cameraYUV(void *p) {
     // video_control(p, CMD_VIDEO_YUV, 2);
     video_ctx_t *ctx = (video_ctx_t *)p;
-	printf("CH = %d\r\n",ctx->params.stream_id);
-    printf("Type = %d\r\n", ctx->params.type);
     int ch = ctx->params.stream_id;
     int type = ctx->params.type;
-    
-    video_ctrl(ch, VIDEO_RGB_OUTPUT, 2);
+	printf("CH = %d\r\n",ch);
+    printf("Type = %d\r\n", type);
+    video_control(p, CMD_VIDEO_YUV, 2);
 }
 
 void cameraSnapshot(void *p, int arg) {

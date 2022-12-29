@@ -23,7 +23,7 @@ void setup() {
     while (!Serial) {
         ; // wait for serial port to connect. Needed for native USB port only
     }
-
+    status = WiFi.status();
     // Print WiFi MAC address:
     printMacAddress();
 }
