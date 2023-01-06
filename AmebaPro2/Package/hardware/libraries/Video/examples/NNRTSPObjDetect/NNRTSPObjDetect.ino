@@ -7,7 +7,7 @@
 #include "NNObjDetection.h"
 
 #define CHANNEL 0
-#define CHANNELNN 4
+#define CHANNELNN 3
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
@@ -22,7 +22,7 @@ RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 StreamIO videoStreamerNN(1, 1);  // SISO
 
-char ssid[] = "Aurical_2G";     //  your network SSID (name)
+char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
@@ -70,8 +70,7 @@ void setup() {
         Serial.println("StreamIO link start failed");
     }
 
-    ObjDet.begin();
-
+    Camera.channelBegin(CHANNELNN);
     ObjDet.OSDDisplay();
 
     delay(1000);

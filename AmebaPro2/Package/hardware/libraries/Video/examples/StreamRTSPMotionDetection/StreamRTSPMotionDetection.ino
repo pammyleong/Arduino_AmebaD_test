@@ -81,8 +81,8 @@ void setup() {
     Camera.videoYUV(CHANNELNN);
     Serial.println("MD Start");
 
-    // MotionDetect.OSDDraw();
-    // Serial.println("OSDStart");
+     MotionDetect.OSDDraw();
+     Serial.println("OSDStart");
     // delay(1000);
     // printInfo();
 }

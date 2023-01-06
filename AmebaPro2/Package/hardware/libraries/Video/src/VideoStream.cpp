@@ -318,7 +318,7 @@ void Video::channelBegin(int ch) {
         }
         case 3: { // for NN channel processing
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
-            //cameraYUV(videoModule[ch]._p_mmf_context->priv);
+            cameraYUV(videoModule[ch]._p_mmf_context->priv);
             break;
         }
         default: {
