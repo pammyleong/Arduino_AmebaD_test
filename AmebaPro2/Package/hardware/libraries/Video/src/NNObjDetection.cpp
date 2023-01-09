@@ -10,52 +10,50 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-NNObjDetection::NNObjDetection(void){}
+NNObjectDetection::NNObjectDetection(void){}
 
-NNObjDetection::~NNObjDetection(void){}
+NNObjectDetection::~NNObjectDetection(void){}
 
-void NNObjDetection::getRTSPParams(int ch, VideoSetting& config) { 
-    RTSPwidth = config._w;
-    RTSPheight = config._h;
-
-    getRTSPOD(ch, RTSPwidth, RTSPheight);
-}
-
-void NNObjDetection::configVideo(int ch, VideoSetting& config) {
+void NNObjectDetection::configVideo(VideoSetting& config) {
     width = config._w;
     height = config._h;
 
-    CAMDBG("Width [Ch%d]:%d  Height [Ch%d]:%d", ch, width, ch, height);
+    CAMDBG("Width:%d  Height:%d", width, height);
     if (_p_mmf_context == NULL) {
-        _p_mmf_context = nnObjDetInit();
+        _p_mmf_context = nnODInit();
     }
     if (_p_mmf_context == NULL) {
-        CAMDBG("NN init failed\r\n");
+        printf("NN init failed\r\n");
         return;
     }
     
-    nnSetObjDetModel(_p_mmf_context->priv);
-    nnSetInputObjDetParam(_p_mmf_context->priv);
-    nnSetObjDetDisppost(_p_mmf_context->priv);
-    nnSetObjDetConfThres(_p_mmf_context->priv);
-    nnObjDetNMSThres(_p_mmf_context->priv);
-    nnObjDetSetApply(_p_mmf_context->priv);
+    nnSetODModel(_p_mmf_context->priv);
+    nnSetInputODParams(_p_mmf_context->priv);
+    nnSetODDisppost(_p_mmf_context->priv);
+    nnSetODConfThres(_p_mmf_context->priv);
+    nnODNMSThres(_p_mmf_context->priv);
+    nnODSetApply(_p_mmf_context->priv);
 }
 
-void NNObjDetection::begin(void) {
-    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
-    cameraYUV(_p_mmf_context->priv);
+void NNObjectDetection::configObjDetModel(float confidence_threshold, float nms_threshold) {
+    configODModel(confidence_threshold, nms_threshold);
 }
 
-void NNObjDetection::end(void) {
-    // to be done
+void NNObjectDetection::configObjDetOSD(int ch, VideoSetting& config) {
+    RTSPwidth = config._w;
+    RTSPheight = config._h;
+    configODOSD(ch, RTSPwidth, RTSPheight);
 }
 
-// void NNObjDetection::YUV(void) {
-//     cameraYUV(_p_mmf_context->priv);
-// }
-
-void NNObjDetection::OSDDisplay(void) {
-    OSDBeginOD();
+void NNObjectDetection::beginObjDetOSD(void) {
+    ODOSD();
 }
 
+//void NNObjDetection::begin(void) {
+//    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
+//    cameraYUV(_p_mmf_context->priv);
+//}
+//
+//void NNObjDetection::end(void) {
+//    // to be done
+//}

@@ -1,4 +1,4 @@
-// Demo for face detection
+// Demo for object detection
 
 #include "WiFi.h"
 #include "StreamIO.h"
@@ -7,20 +7,28 @@
 #include "NNObjDetection.h"
 
 #define CHANNEL 0
-#define CHANNELNN 3
+#define CHANNELNN 3 
+
+// Current object detection class list : 0, 2, 5, 7.
+// You may refer to the object class list in objectclasslist.h
+
+// Set confidence threshold and NMS threshold here.
+#define CONF_THRES 0.5
+#define NMS_THRES 0.3
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
 // Channel 1 : 1280 x 720  30FPS H264
 // Channel 2 : 1920 x 1080 30FPS MJPEG
+// Channel 3 : 640x480 30FPS RGB
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(VIDEO_VGA, 10, VIDEO_RGB, 0);
-NNObjDetection ObjDet;
+NNObjectDetection ObjDet;
 
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
-StreamIO videoStreamerNN(1, 1);  // SISO
+StreamIO videoStreamerNN(1, 1);  // 1 Input Video RGB -> 1 Output NN
 
 char ssid[] = "Aurical_5G";     //  your network SSID (name)
 char pass[] = "wyy170592";  	// your network password
@@ -28,7 +36,7 @@ int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);
-
+    
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to WPA SSID: ");
@@ -40,7 +48,7 @@ void setup() {
         delay(2000);
     }
 
-    // Configure camera video channel with video format information
+    // Configure camera video channels with video format information
     Camera.configVideoChannel(CHANNEL, config);
     Camera.configVideoChannel(CHANNELNN, configNN);
     Camera.videoInit();
@@ -49,8 +57,9 @@ void setup() {
     rtsp.configVideo(config);
     rtsp.begin();
 
-    ObjDet.getRTSPParams(CHANNEL, config);
-    ObjDet.configVideo(CHANNELNN, configNN);
+    // Configure video channel for NN with video format information 
+    ObjDet.configObjDetModel(CONF_THRES, NMS_THRES);
+    ObjDet.configVideo(configNN);
 
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
@@ -60,8 +69,9 @@ void setup() {
     }
 
     // Start data stream from video channel
-    Camera.channelBegin(CHANNEL);
+    Camera.channelBegin(CHANNEL); // Start CH0/1/2 for Streaming
 
+    // Configure StreamIO object to stream data from RGB video channel to object detection
     videoStreamerNN.registerInput(Camera.getStream(CHANNELNN));
     videoStreamerNN.setStackSize();
     videoStreamerNN.setTaskPriority();
@@ -70,8 +80,13 @@ void setup() {
         Serial.println("StreamIO link start failed");
     }
 
-    Camera.channelBegin(CHANNELNN);
-    ObjDet.OSDDisplay();
+    // Start video channel for NN
+    Camera.channelBegin(CHANNELNN); 
+
+    // OSD
+    // OSD is not support on CH3.
+    ObjDet.configObjDetOSD(CHANNEL, config);
+    ObjDet.beginObjDetOSD();
 
     delay(1000);
     printInfo();

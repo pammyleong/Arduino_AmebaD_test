@@ -104,7 +104,6 @@ VideoSetting::VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uin
     } else if (_resolution == VIDEO_VGA) {
         _w = VIDEO_VGA_WIDTH;
         _h = VIDEO_VGA_HEIGHT;
-        _bps = 1024*1024;
     }
 }
 
@@ -253,6 +252,7 @@ void Video::videoInit(void) {
                             snapshot[ch]);
             } else if (ch == 3) {
                 CAMDBG("V4 %d    %d    %d    %d", resolution[3], channelEnable[3], w[3], h[3]);
+                bps[3] = 1*1024*1024;
                 cameraOpenNN(videoModule[3]._p_mmf_context, videoModule[3]._p_mmf_context->priv,
                     channel[3],
                     encoder[3],

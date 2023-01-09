@@ -30,9 +30,9 @@ void MDOSDConfig(int ch, uint32_t width, uint32_t height) {
     RTSPHeightMD = height;
     RTSPChannelMD = ch;
 
-	printf ("RTSP Width = %d\r\n", RTSPWidthMD);
-	printf ("RTSP Height = %d\r\n", RTSPHeightMD);
-	printf ("RTSP CH = %d\r\n", RTSPChannelMD);
+//	printf ("RTSP Width = %d\r\n", RTSPWidthMD);
+//	printf ("RTSP Height = %d\r\n", RTSPHeightMD);
+//	printf ("RTSP CH = %d\r\n", RTSPChannelMD);
 }
 
 static void md_process(void *md_result) {
@@ -97,23 +97,23 @@ void setMDThres(void *p) {
 }
 
 void setMDMask(mm_context_t *p) {
-	int ret = 0;
-	md_ctx_t *ctx = (md_ctx_t *)p;
+    // int ret = 0;
+	// md_ctx_t *ctx = (md_ctx_t *)p;
 	char md_mask [md_col * md_row] = {0};
 	for (i = 0; i < (md_col * md_row); i++) {
 		md_mask[i] = 1;
 	}
-	memcpy(ctx->motion_detect_ctx->md_mask, (char *)(int)&md_mask, sizeof(ctx->motion_detect_ctx->md_mask));
-	printf("Set MD Mask: \r\n");
-	for (int j = 0; j < md_row; j++) {
-		for (int k = 0; k < md_col; k++) {
-			printf("%d ", md_mask[j * md_col + k]);
-		}
-		printf("\r\n");
-	}
-	printf("\r\n");
-	printf("\r\n");
-	// mm_module_ctrl(p, CMD_MD_SET_MD_MASK, (int)&md_mask);
+    //	memcpy(ctx->motion_detect_ctx->md_mask, (char *)(int)&md_mask, sizeof(ctx->motion_detect_ctx->md_mask));
+    //	printf("Set MD Mask: \r\n");
+    //	for (int j = 0; j < md_row; j++) {
+    //		for (int k = 0; k < md_col; k++) {
+    //			printf("%d ", md_mask[j * md_col + k]);
+    //		}
+    //		printf("\r\n");
+    //	}
+    //	printf("\r\n");
+    //	printf("\r\n");
+	mm_module_ctrl(p, CMD_MD_SET_MD_MASK, (int)&md_mask);
 }
 
 void setMDDisppost(void *p) {

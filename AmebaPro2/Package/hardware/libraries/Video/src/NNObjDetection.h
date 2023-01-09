@@ -14,23 +14,22 @@ extern "C" {
 #include "VideoStream.h"
 
 
-class NNObjDetection:public MMFModule {
+class NNObjectDetection:public MMFModule {
     public:
-        NNObjDetection(void);
-        ~NNObjDetection(void);
-        
-        void getRTSPParams(int ch, VideoSetting& config);
-        void configVideo(int ch, VideoSetting& config);
-        void begin(void);
-        void end(void);
-        // void YUV(void);
-        void OSDDisplay(void);
+        NNObjectDetection(void);
+        ~NNObjectDetection(void);
+
+        void configVideo(VideoSetting& config);
+        void configObjDetOSD(int ch, VideoSetting& config);
+        void configObjDetModel(float confidence_threshold, float nms_threshold);
+        void beginObjDetOSD(void);
+        //    void begin(void);
+        //    void end(void);
     private:
         uint32_t width;
         uint32_t height;
         uint32_t RTSPwidth;
         uint32_t RTSPheight;
 };
-
 
 #endif

@@ -7,23 +7,25 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-void getRTSPOD (int ch, uint32_t width, uint32_t height);
+void configODOSD(int ch, uint32_t width, uint32_t height);
 
-mm_context_t* nnObjDetInit(void);
+void configODModel(float confidence_thres, float nms_thres) ;
 
-void nnSetObjDetModel(void *p);
+mm_context_t* nnODInit(void);
 
-void nnSetInputObjDetParam(void *p);
+void nnSetODModel(void *p);
 
-void nnSetObjDetDisppost(void *p);
+void nnSetInputODParams(void *p);
 
-void nnSetObjDetConfThres(void *p);
+void nnSetODDisppost(void *p);
 
-void nnObjDetNMSThres(void *p);
+void nnSetODConfThres(void *p);
 
-void nnObjDetSetApply(void *p);
+void nnODNMSThres(void *p);
 
-void OSDBeginOD(void); // OSD will be created in a seperate file
+void nnODSetApply(void *p);
+
+void ODOSD(void); // OSD will be created in a seperate file
 
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);

@@ -10,7 +10,7 @@
 #define OSD_ENABLE      1
 #define MD_ENABLE       1
 #define HDR_ENABLE      1
-#define DEBUG           1
+#define DEBUG           0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -136,7 +136,8 @@ void cameraOpen(mm_context_t *p, void *p_priv, int stream_id, int type, int res,
     CAMDBG("%d    %d    %d    %d    %d    %d    %d    %d    %d",stream_id, type, res, w, h, bps, fps, gop, rc_mode);
 
     if (p) {
-        mm_module_ctrl(p, CMD_VIDEO_SET_VOE_HEAP, voe_heap_size);
+        // include CMD_VIDEO_SET_VOE_HEAP?
+        //mm_module_ctrl(p, CMD_VIDEO_SET_VOE_HEAP, voe_heap_size);
         video_control(p_priv, CMD_VIDEO_SET_PARAMS, (int)&video_params);
         mm_module_ctrl(p, MM_CMD_SET_QUEUE_LEN, fps*3);
         mm_module_ctrl(p, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_DYNAMIC);
@@ -152,13 +153,14 @@ void cameraOpenNN(mm_context_t *p, void *p_priv, int stream_id, int type, int re
     video_v4_params.stream_id = stream_id;
     video_v4_params.type = type;
     video_v4_params.resolution = res;
-    video_v4_params.width = w;
-    video_v4_params.height = h;
+    video_v4_params.width = 576;
+    video_v4_params.height = 320;
     video_v4_params.bps = bps;
     video_v4_params.fps = fps;
     video_v4_params.gop = gop;
     video_v4_params.direct_output = direct_output;
     video_v4_params.use_static_addr = 1;
+    
     // define NN region of interest
     video_v4_params.use_roi = 1;
     video_v4_params.roi.xmin = 0;
@@ -194,19 +196,10 @@ void cameraSetQItem(mm_context_t *p) {
 }
 
 void cameraStart(void *p, int channel) {
-    printf("CameraStart\r\n");
     video_control(p, CMD_VIDEO_APPLY, channel);
-    video_ctx_t *ctx = (video_ctx_t *)p;
-	printf("CH = %d\r\n",ctx->params.stream_id);
 }
 
 void cameraYUV(void *p) {
-    // video_control(p, CMD_VIDEO_YUV, 2);
-    video_ctx_t *ctx = (video_ctx_t *)p;
-    int ch = ctx->params.stream_id;
-    int type = ctx->params.type;
-	printf("CH = %d\r\n",ch);
-    printf("Type = %d\r\n", type);
     video_control(p, CMD_VIDEO_YUV, 2);
 }
 
