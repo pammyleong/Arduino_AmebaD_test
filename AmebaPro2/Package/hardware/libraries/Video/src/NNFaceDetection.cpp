@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "NNFaceDetection.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -10,54 +10,14 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-//#define NN_WIDTH    576//640
-//#define NN_HEIGHT   320//640
-
 NNFaceDetection::NNFaceDetection(void){}
 NNFaceDetection::~NNFaceDetection(void){}
 
-void NNFaceDetection::getRTSPParams(int ch, VideoSetting& config) { 
-    RTSPwidth = config._w;
-    RTSPheight = config._h;
-
-    getRTSP(ch, RTSPwidth, RTSPheight);
-}
-
-/** ======================= to be merged with function below =======================
-  * @brief  Configuration of Face Detection module
-  * @param  ch     : video channel 4
-  *         config : video settings parameters
-  * @retval none
-  */
-void NNFaceDetection::configVideo(int ch, VideoSetting& config) { // to config CH 4 for NN
-    width = config._w;
-    height = config._h;
-
-    CAMDBG("Width [Ch%d]:%d  Height [Ch%d]:%d", ch, width, ch, height);
-
-    if (_p_mmf_context == NULL) {
-        _p_mmf_context = nnFacedetInit();
-    }
-    if (_p_mmf_context == NULL) {
-        CAMDBG("NN init failed\r\n");
-        return;
-    }
-
-    nnSetFacedetModel(_p_mmf_context->priv);
-    nnSetFacedetInputParam(_p_mmf_context->priv);
-    nnSetFacedetDisppost(_p_mmf_context->priv);
-    nnFacedetSetApply(_p_mmf_context->priv);
-}
-
 // configuration of Face Detection module when cascaded by Face Recognition module
-void NNFaceDetection::configVideo(int ch, VideoSetting& config, int faceRecogFlag) { // to config CH 4 for NN
-    width = config._w;
-    height = config._h;
-
-    CAMDBG("Width [Ch%d]:%d  Height [Ch%d]:%d", ch, width, ch, height);
+void NNFaceDetection::configVideo(VideoSetting& config, int faceRecogFlag) { // to config CH 4 for NN
 
     if (_p_mmf_context == NULL) {
-        _p_mmf_context = nnFacedetInit();
+        _p_mmf_context = nnFDInit();
     }
     if (_p_mmf_context == NULL) {
         CAMDBG("NN init failed\r\n");
@@ -65,46 +25,40 @@ void NNFaceDetection::configVideo(int ch, VideoSetting& config, int faceRecogFla
     }
     
     if (faceRecogFlag == 0){                        // Facedetect only
-        nnSetFacedetModel(_p_mmf_context->priv);
-        nnSetFacedetInputParam(_p_mmf_context->priv);
-        nnSetFacedetDisppost(_p_mmf_context->priv);
-        nnFacedetSetApply(_p_mmf_context->priv);
-    } 
-    else if (faceRecogFlag == 1) {
-        nnSetFacedetModel(_p_mmf_context->priv);    // Facedetect cascade with Facenet
-        nnSetFacedetInputParam(_p_mmf_context->priv);
-        nnSetFacedetOutput(_p_mmf_context->priv);
-        nnSetFacedetDatagroup(_p_mmf_context, MM_GROUP_START);
+        nnSetFDModel(_p_mmf_context->priv);
+        nnSetFDInputParam(_p_mmf_context->priv);
+        nnSetFDDisppost(_p_mmf_context->priv);
+        nnFDSetApply(_p_mmf_context->priv);
+    } else if (faceRecogFlag == 1) {
+        nnSetFDModel(_p_mmf_context->priv);    // Facedetect cascade with Facenet
+        nnSetFDInputParam(_p_mmf_context->priv);
+        nnSetFDOutput(_p_mmf_context->priv);
+        nnSetFDDatagroup(_p_mmf_context, MM_GROUP_START);
         cameraSetQLen(_p_mmf_context, 1);
         cameraSetQItem(_p_mmf_context);
-        nnFacedetSetApply(_p_mmf_context->priv);
-    } else if (faceRecogFlag == 2) { 
-        nnSetFacedetModel2(_p_mmf_context->priv);   // Facenet
-        nnSetFacedetCascade(_p_mmf_context->priv);
-        nnSetFacedetOutput(_p_mmf_context->priv);
-        nnSetFacedetDatagroup(_p_mmf_context, MM_GROUP_END);
+        nnFDSetApply(_p_mmf_context->priv);
+    } else if (faceRecogFlag == 2) {
+        nnSetFDModel2(_p_mmf_context->priv);   // Facenet
+        nnSetFDCascade(_p_mmf_context->priv);
+        nnSetFDOutput(_p_mmf_context->priv);
+        nnSetFDDatagroup(_p_mmf_context, MM_GROUP_END);
         cameraSetQLen(_p_mmf_context, 1);
         cameraSetQItem(_p_mmf_context);
-        nnFacedetSetApply(_p_mmf_context->priv);
+        nnFDSetApply(_p_mmf_context->priv);
     } else {
         printf("WARNING MESSEAGE \r\n");
     }
-
 }
 
-void NNFaceDetection::begin(void) {
-    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
+void NNFaceDetection::configModel(VideoSetting& config) {
+     configFD(config._w, config._h);
 }
 
-void NNFaceDetection::end(void) {
-    // to be done
+void NNFaceDetection::configOSD(int ch, VideoSetting& config) {
+    configFDOSD(ch, config._w, config._h);
 }
 
-void NNFaceDetection::YUV(void) {
-    cameraYUV(_p_mmf_context->priv);
-}
-
-void NNFaceDetection::OSDDisplay(void) {
-    OSDBegin();
+void NNFaceDetection::beginOSD(void) {
+    FDOSD();
 }
 

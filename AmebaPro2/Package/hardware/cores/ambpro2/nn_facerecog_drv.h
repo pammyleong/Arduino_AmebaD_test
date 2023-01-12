@@ -8,31 +8,17 @@
 #include "mmf2_module.h"
 #include "timers.h"
 
-void getRTSPFR (int ch, uint32_t width, uint32_t height);
+void configFROSD(int ch, uint32_t width, uint32_t height);
 
-void nnFacerecogSetThreshold(void *p);
+//void configFR(uint16_t NN_width, uint16_t NN_height);
 
-void nnFacerecogSetOSDDraw(void *p);
+mm_context_t* nnFRInit(void);
 
-void osd_cleanup_callback(TimerHandle_t xTimer);
+void nnFRSetThreshold(void *p);
 
-void face_draw_object(void *p, void *img_param);
+void nnFRSetOSDDraw(void *p);
 
-mm_context_t* nnFaceRecgInit(void);
-
-void nnSetFaceRecgModel1(void *p);
-
-void nnSetFaceRecgModel2(void *p);
-
-void nnSetFaceRecgCascade(void *p);
-
-void nnSetFaceRecgInputParam(void *p);
-
-void nnSetFaceRecgOutput(void *p);
-
-void nnSetFaceRecgDatagroup(mm_context_t *ctx, int status);
-
-void nnFaceRecgSetApply(void *p);
+void FROSD(void);
 
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);

@@ -7,9 +7,11 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-void configODOSD(int ch, uint32_t width, uint32_t height);
+void configODOSD(int ch, uint16_t width, uint16_t height);
 
-void configODModel(float confidence_thres, float nms_thres) ;
+//void configODModel(float confidence_thres, float nms_thres);
+
+void configODModel(float confidence_thres, float nms_thres, uint16_t nn_width, uint16_t nn_height);
 
 mm_context_t* nnODInit(void);
 

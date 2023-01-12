@@ -7,7 +7,11 @@
 #include "NNFaceDetection.h"
 
 #define CHANNEL 0
-#define CHANNELNN 4
+#define CHANNELNN 3
+
+// Customised resolution for NN
+#define NNWIDTH 576
+#define NNHEIGHT 320
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
@@ -15,7 +19,7 @@
 // Channel 2 : 1920 x 1080 30FPS MJPEG
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
-VideoSetting configNN(VIDEO_VGA, 10, VIDEO_RGB, 0);
+VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
 NNFaceDetection facedet;
 
 RTSP rtsp;
@@ -49,8 +53,8 @@ void setup() {
     rtsp.configVideo(config);
     rtsp.begin();
 
-    facedet.getRTSPParams(CHANNEL, config);
-    facedet.configVideo(CHANNELNN, configNN);
+    facedet.configModel(configNN);
+    facedet.configVideo(configNN);
 
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
@@ -70,10 +74,10 @@ void setup() {
         Serial.println("StreamIO link start failed");
     }
 
-    facedet.begin();
-    facedet.YUV();
+    Camera.channelBegin(CHANNELNN);
 
-    facedet.OSDDisplay();
+    facedet.configOSD(CHANNEL, config);
+    facedet.beginOSD();
 
     delay(1000);
     printInfo();

@@ -7,8 +7,12 @@
 #include "model_scrfd.h"
 
 #include "osd_render.h"
+//#include "log_service.h"
+
+//static void *g_frc_ctx = NULL;
 
 #define DEBUG           0
+#define MAX_ARGC        20
 
 #if DEBUG
 #define CAMDBG(fmt, args...) \
@@ -21,47 +25,42 @@ uint32_t RTSPWidthFR = 0;
 uint32_t RTSPHeightFR = 0;
 int RTSPChannelFR = 0;
 
-// #define NN_CHANNEL 4
-// #define NN_RESOLUTION VIDEO_VGA //don't care for NN
-// #define NN_FPS 10
-// #define NN_GOP NN_FPS
-// #define NN_BPS 1024*1024 //don't care for NN
-// #define NN_TYPE VIDEO_RGB
-
 // SCRFD + FACENET
-#define NN_MODEL_OBJ   	scrfd_fwfs
+#define NN_MODEL_OBJ    scrfd_fwfs
 #define NN_MODEL2_OBJ   mbfacenet_fwfs
-#define NN_WIDTH		576
-#define NN_HEIGHT		320
+//#define NN_WIDTH        576
+//#define NN_HEIGHT       320
 
-static nn_data_param_t roi_nn = {
-    .img = {
-        .width = NN_WIDTH,
-        .height = NN_HEIGHT,
-        .rgb = 0, // set to 1 if want RGB->BGR or BGR->RGB
-        .roi = {
-            .xmin = 0,
-            .ymin = 0,
-            .xmax = NN_WIDTH,
-            .ymax = NN_HEIGHT,
-        }
-    }
-};
+//static nn_data_param_t roi_nn = {
+//    .img = {
+//        .width = 0,
+//        .height = 0,
+//        .rgb = 0, // set to 1 if want RGB->BGR or BGR->RGB
+//        .roi = {
+//            .xmin = 0,
+//            .ymin = 0,
+//            .xmax = 0,
+//            .ymax = 0,
+//        }
+//    }
+//};
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
 TimerHandle_t osd_cleanup_timer = NULL;
 
-// get settings from RTSP module
-// ======================================================
-// change name to setOSDparam
-// ch: given a fixed value as user input RTSP_CHANNEL
-// ======================================================
-void getRTSPFR (int ch, uint32_t width, uint32_t height) { 
+void configFROSD(int ch, uint32_t width, uint32_t height) {
     RTSPWidthFR = width;
     RTSPHeightFR = height;
     RTSPChannelFR = ch;
 }
+
+//void configFR (uint16_t NN_width, uint16_t NN_height) {
+//    roi_nn.img.width = NN_width;
+//    roi_nn.img.height = NN_height;
+//    roi_nn.img.roi.xmax = NN_width;
+//    roi_nn.img.roi.ymax = NN_height;
+//}
 
 // callback function to to be called to clean up rect
 void osd_cleanup_callback(TimerHandle_t xTimer) {
@@ -70,15 +69,17 @@ void osd_cleanup_callback(TimerHandle_t xTimer) {
     canvas_update(RTSPChannelFR, 0);
 }
 
+// ===========
+// FACERECOG
+// ===========
 // callback function to to be called to draw rect
-void face_draw_object(void *p, void *img_param) {
+void faceDrawObj(void *p, void *img_param) {
     int i = 0;
     frc_draw_t *fdraw = (frc_draw_t *)p;
 
     if (!p)	{
         return;
     }
-
     int im_h = RTSPHeightFR;
     int im_w = RTSPWidthFR;
 
@@ -122,52 +123,90 @@ void face_draw_object(void *p, void *img_param) {
     canvas_update(RTSPChannelFR, 0);
 }
 
+// Initialize Face Recognition module
+mm_context_t* nnFRInit(void) {
+    return mm_module_open(&facerecog_module);
+}
+
 // set NN face recognition threshold value
-void nnFacerecogSetThreshold(void *p) {
-    vipnn_control(p, CMD_FRC_SET_THRES100, 99); // 99/100 = 0.99 --> set a value to get lowest FP rate
+void nnFRSetThreshold(void *p) {
+    facerecog_control(p, CMD_FRC_SET_THRES100, 99); // 99/100 = 0.99 --> set a value to get lowest FP rate
 }
 
 // set NN face recognition OSD
-void nnFacerecogSetOSDDraw(void *p) {
-    vipnn_control(p, CMD_FRC_SET_OSD_DRAW, (int)face_draw_object);
+void nnFRSetOSDDraw(void *p) {
+   facerecog_control(p, CMD_FRC_SET_OSD_DRAW, (int)faceDrawObj);
 }
 
-// Initialize Face Recognition module 
-mm_context_t* nnFaceRecgInit(void) {
-    return mm_module_open(&vipnn_module);
+void FROSD(void) {
+    int ch_enable[3] = {1, 0, 0};
+    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
+    int ch_width[3] = {RTSPWidthFR, 0, 0}, ch_height[3] = {RTSPHeightFR, 0, 0};
+
+    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
+    osd_render_task_start(ch_enable, ch_width, ch_height);
+    osd_cleanup_timer = xTimerCreate("OSD clean timer", 500 / portTICK_PERIOD_MS, pdTRUE, NULL, osd_cleanup_callback);
 }
 
-// setup NN model: FD
-void nnSetFaceRecgModel1(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL_OBJ);
-}
 
-// setup NN model: FR
-void nnSetFaceRecgModel2(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL2_OBJ);
-}
+// Register faces
+//-----------------------------------------------------------------------------------------------
+//void faceRegInit(void *p) {
+//    g_frc_ctx = p;
+//}
+//
+//void faceRegister(void *arg) {
+//    int argc = 0;
+//    char *argv[MAX_ARGC] = {0};
+//    argc = parse_param(arg, argv);
+//    printf("enter register mode\n\r");
+//    mm_module_ctrl(g_frc_ctx, CMD_FRC_REGISTER_MODE, (int)argv[1]);
+//}
+//
+//void faceRecgMode(void *arg) {
+//    if (!g_frc_ctx)	{
+//        return;
+//    }
+//    printf("enter recognition mode\n\r");
+//    mm_module_ctrl(g_frc_ctx, CMD_FRC_RECOGNITION_MODE, 0);
+//}
+//
+//void faceRecgLoadFeature(void *arg) {
+//    if (!g_frc_ctx) {
+//        return;
+//    }
+//    printf("load feature\n\r");
+//    mm_module_ctrl(g_frc_ctx, CMD_FRC_LOAD_FEATURES, 0);
+//}
+//
+//void faceRecgSaveFeature(void *arg) {
+//    if (!g_frc_ctx) {
+//        return;
+//    }
+//    printf("save feature\n\r");
+//    mm_module_ctrl(g_frc_ctx, CMD_FRC_SAVE_FEATURES, 0);
+//}
+//
+//void faceRecgResetFeature(void *arg) {
+//    if (!g_frc_ctx) {
+//        return;
+//    }
+//    printf("reset feature\n\r");
+//    mm_module_ctrl(g_frc_ctx, CMD_FRC_RESET_FEATURES, 0);
+//}
+//
+//void faceSetScoreThres(void *p, void *arg) {
+//    if (!g_frc_ctx) {
+//        return;
+//    }
+//    int argc = 0;
+//    char *argv[MAX_ARGC] = {0};
+//    argc = parse_param(arg, argv);
+//    (void)argc;
+//
+//    int score = strtol(argv[1], NULL, 0);
+//    printf("set face recognition score threshold to %.2f\n\r", (float)score / 100.0);
+//    mm_module_ctrl(p, CMD_FRC_SET_THRES100, score);
+//}
+//
 
-// set current NN model to cascade mode
-void nnSetFaceRecgCascade(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_CASCADE, 2);
-}
-
-// setup NN module input parameters
-void nnSetFaceRecgInputParam(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_IN_PARAMS, (int)&roi_nn);
-}
-
-// set NN module as output of a linker module
-void nnSetFaceRecgOutput(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_OUTPUT, 1);
-}
-
-// set NN module as data group input or output
-void nnSetFaceRecgDatagroup(mm_context_t *ctx, int status) {
-    mm_module_ctrl(ctx, MM_CMD_SET_DATAGROUP, status);
-}
-
-// apply NN face recognition object
-void nnFaceRecgSetApply(void *p) {
-    vipnn_control(p, CMD_VIPNN_APPLY, 0);
-}

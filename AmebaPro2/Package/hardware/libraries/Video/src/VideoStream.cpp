@@ -191,9 +191,9 @@ void Video::configVideoChannel(int ch, VideoSetting& config) {
     snapshot[ch]        = config._snapshot;
 
     // Video stream using VIDEO_JPEG requires setting bps = 0
-//    if (encoder[ch] == VIDEO_JPEG) {
-//        bps[ch] = 0;
-//    }
+    // if (encoder[ch] == VIDEO_JPEG) {
+    //     bps[ch] = 0;
+    // }
    
     CAMDBG("V1 %d    %d    %d    %d    %d    %d", channelEnable[0], w[0], h[0], bps[0], snapshot[0], fps[0]);
     CAMDBG("V2 %d    %d    %d    %d    %d    %d", channelEnable[1], w[1], h[1], bps[1], snapshot[1], fps[1]);
@@ -304,8 +304,7 @@ void Video::channelBegin(int ch) {
     switch (ch) {
         case 0:
         case 1:
-        case 2:
-        {
+        case 2: {
             cameraStart(videoModule[ch]._p_mmf_context->priv, channel[ch]);
             if ((encoder[ch] == VIDEO_JPEG) && (snapshot[ch] == 0)) {
                 // Enable continuous JPEG capture for MJPEG video

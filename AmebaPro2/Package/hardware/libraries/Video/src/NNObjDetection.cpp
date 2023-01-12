@@ -15,10 +15,6 @@ NNObjectDetection::NNObjectDetection(void){}
 NNObjectDetection::~NNObjectDetection(void){}
 
 void NNObjectDetection::configVideo(VideoSetting& config) {
-    width = config._w;
-    height = config._h;
-
-    CAMDBG("Width:%d  Height:%d", width, height);
     if (_p_mmf_context == NULL) {
         _p_mmf_context = nnODInit();
     }
@@ -35,25 +31,14 @@ void NNObjectDetection::configVideo(VideoSetting& config) {
     nnODSetApply(_p_mmf_context->priv);
 }
 
-void NNObjectDetection::configObjDetModel(float confidence_threshold, float nms_threshold) {
-    configODModel(confidence_threshold, nms_threshold);
+void NNObjectDetection::configModel(float confidence_threshold, float nms_threshold, VideoSetting& config) {
+    configODModel(confidence_threshold, nms_threshold, config._w, config._h);
 }
 
-void NNObjectDetection::configObjDetOSD(int ch, VideoSetting& config) {
-    RTSPwidth = config._w;
-    RTSPheight = config._h;
-    configODOSD(ch, RTSPwidth, RTSPheight);
+void NNObjectDetection::configOSD(int ch, VideoSetting& config) {
+    configODOSD(ch, config._w, config._h);
 }
 
-void NNObjectDetection::beginObjDetOSD(void) {
+void NNObjectDetection::beginOSD(void) {
     ODOSD();
 }
-
-//void NNObjDetection::begin(void) {
-//    cameraStart(_p_mmf_context->priv, 4); // 4 is the channel for NN
-//    cameraYUV(_p_mmf_context->priv);
-//}
-//
-//void NNObjDetection::end(void) {
-//    // to be done
-//}

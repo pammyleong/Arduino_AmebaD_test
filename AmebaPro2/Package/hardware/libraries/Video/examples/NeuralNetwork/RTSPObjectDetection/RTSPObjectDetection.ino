@@ -16,14 +16,17 @@
 #define CONF_THRES 0.5
 #define NMS_THRES 0.3
 
+// Customised resolution for NN
+#define NNWIDTH 576
+#define NNHEIGHT 320
+
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
 // Channel 1 : 1280 x 720  30FPS H264
 // Channel 2 : 1920 x 1080 30FPS MJPEG
-// Channel 3 : 640x480 30FPS RGB
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
-VideoSetting configNN(VIDEO_VGA, 10, VIDEO_RGB, 0);
+VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
 NNObjectDetection ObjDet;
 
 RTSP rtsp;
@@ -58,7 +61,7 @@ void setup() {
     rtsp.begin();
 
     // Configure video channel for NN with video format information 
-    ObjDet.configObjDetModel(CONF_THRES, NMS_THRES);
+    ObjDet.configModel(CONF_THRES, NMS_THRES, configNN);
     ObjDet.configVideo(configNN);
 
     // Configure StreamIO object to stream data from video channel to RTSP
@@ -81,12 +84,12 @@ void setup() {
     }
 
     // Start video channel for NN
-    Camera.channelBegin(CHANNELNN); 
+    Camera.channelBegin(CHANNELNN);
 
     // OSD
     // OSD is not support on CH3.
-    ObjDet.configObjDetOSD(CHANNEL, config);
-    ObjDet.beginObjDetOSD();
+    ObjDet.configOSD(CHANNEL, config);
+    ObjDet.beginOSD();
 
     delay(1000);
     printInfo();

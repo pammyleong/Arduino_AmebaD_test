@@ -22,8 +22,8 @@
 #define CAMDBG(fmt, args...)
 #endif
 
-uint32_t OSDWidthOD = 0;
-uint32_t OSDHeightOD = 0;
+uint16_t OSDWidthOD = 0;
+uint16_t OSDHeightOD = 0;
 int OSDChannel = 0;
 
 // YOLO
@@ -37,27 +37,37 @@ static int desired_class_list[] = {0, 2, 5, 7};
 
 static nn_data_param_t roi_nn = {
 	.img = {
-		.width = NN_WIDTH,
-		.height = NN_HEIGHT,
+		.width = 0,
+		.height = 0,
 		.rgb = 0, // set to 1 if want RGB->BGR or BGR->RGB
 		.roi = {
 			.xmin = 0,
 			.ymin = 0,
-			.xmax = NN_WIDTH,
-			.ymax = NN_HEIGHT,
+			.xmax = 0,
+			.ymax = 0,
 		}
 	}
 };
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
-void configODModel(float confidence_thres, float nms_thres) {
+//void configODModel(float confidence_thres, float nms_thres) {
+//    nn_confidence_thresh = confidence_thres;
+//    nn_nms_thresh = nms_thres;
+//}
+
+void configODModel(float confidence_thres, float nms_thres, uint16_t nn_width, uint16_t nn_height) {
     nn_confidence_thresh = confidence_thres;
     nn_nms_thresh = nms_thres;
+
+    roi_nn.img.width = nn_width;
+    roi_nn.img.height = nn_height;
+    roi_nn.img.roi.xmax = nn_width;
+    roi_nn.img.roi.ymax = nn_height;
 }
 
 // Get settings from streaming channel
-void configODOSD(int ch, uint32_t width, uint32_t height) {
+void configODOSD(int ch, uint16_t width, uint16_t height) {
     OSDChannel = ch;
     OSDWidthOD = width;
     OSDHeightOD = height;
@@ -65,13 +75,12 @@ void configODOSD(int ch, uint32_t width, uint32_t height) {
 
 // check whether the selected object item number is in the list
 static int checkList(int class_indx) {
-    //printf("sizeof(desired_class_list): %d\n\r", sizeof(desired_class_list));
-	for (int i = 0; i < (sizeof(desired_class_list) / sizeof(int)); i++) {
-		if (class_indx == desired_class_list[i]) {
-			return class_indx;
-		}
-	}
-	return -1;
+    for (int i = 0; i < (sizeof(desired_class_list) / sizeof(int)); i++) {
+        if (class_indx == desired_class_list[i]) {
+            return class_indx;
+        }
+    }
+    return -1;
 }
 
 // callback function to to be called to draw rect
@@ -91,7 +100,7 @@ static void ODDrawObj(void *p, void *img_param) {
     float ratio_h = (float)im_h / (float)im->img.height;
     int roi_h, roi_w, roi_x, roi_y;
 
-//	if (video_params_v4.use_roi == 1) { //resize
+// if (video_params_v4.use_roi == 1) { //resize
     roi_w = (int)((im->img.roi.xmax - im->img.roi.xmin) * ratio_w);
     roi_h = (int)((im->img.roi.ymax - im->img.roi.ymin) * ratio_h);
     roi_x = (int)(im->img.roi.xmin * ratio_w);

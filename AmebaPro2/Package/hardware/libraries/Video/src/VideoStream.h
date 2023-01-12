@@ -119,6 +119,7 @@ class VideoSetting {
         VideoSetting(uint8_t preset = 0);
         VideoSetting(uint8_t resolution, uint8_t fps, uint8_t encoder, uint8_t snapshot);
         VideoSetting(uint16_t w, uint16_t h, uint8_t fps, uint8_t encoder, uint8_t snapshot);
+        
         int8_t _preset = -1;
 
         uint8_t _resolution;

@@ -18,24 +18,16 @@ class NNFaceRecognition:public MMFModule {
         NNFaceRecognition(void);
         ~NNFaceRecognition(void);
         
-        void getRTSPParams(int ch, VideoSetting& config);
-        void configVideo(int ch, VideoSetting& config);
-
-        void begin(void);
-        // void end(void);
-        // void YUV(void);
-        // void OSDDisplay(void);
+        void configOSD(int ch, VideoSetting& config);
+        void configVideo();
+        void beginOSD(void);
     private:
-        uint32_t width;
-        uint32_t height;
-        uint32_t RTSPwidthFR;
-        uint32_t RTSPheightFR;
 };
 
-//class FaceRecg:public MMFModule {
+//class NNFaceNet:public MMFModule {
 //     public:
-//        FaceRecg(void);
-//        ~FaceRecg(void);
+//        NNFaceNet(void);
+//        ~NNFaceNet(void);
 //    private:
 //};
 

@@ -7,31 +7,29 @@
 #include <diag.h>
 #include "mmf2_module.h"
 
-void getRTSP (int ch, uint32_t width, uint32_t height);
+void configFDOSD(int ch, uint16_t width, uint16_t height);
 
-mm_context_t* nnFacedetInit(void);
+void configFD(uint16_t NN_width, uint16_t NN_height);
 
-void nnSetFacedetModel(void *p);
+mm_context_t* nnFDInit(void);
 
-void nnSetFacedetModel2(void *p);
+void nnSetFDModel(void *p);
 
-void nnSetFacedetCascade(void *p);
+void nnSetFDModel2(void *p);
 
-void nnSetFacedetInputParam(void *p);
+void nnSetFDInputParam(void *p);
 
-void nnSetFacedetDisppost(void *p);
+void nnSetFDDisppost(void *p);
 
-void nnSetFacedetDatagroup(mm_context_t *ctx, int status);
+void nnFDSetApply(void *p);
 
-void nnSetFacedetOutput(void *p);
+void nnSetFDOutput(void *p);
 
-void nnFacedetSetApply(void *p);
+void nnSetFDDatagroup(mm_context_t *ctx, int status);
 
-void OSDBegin(void);
+void nnSetFDCascade(void *p);
 
-//static void nn_set_object(void *p, void *img_param);
-
-//void OSDStart(int ch_enable, int ch_w, int ch_h);
+void FDOSD(void);
 
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);
