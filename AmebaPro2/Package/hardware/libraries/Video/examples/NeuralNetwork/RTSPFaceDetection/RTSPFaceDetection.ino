@@ -4,7 +4,7 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NNFaceDetection.h"
+#include "NN.h"
 
 #define CHANNEL 0
 #define CHANNELNN 3

@@ -11,8 +11,8 @@
 #define MD_DRAW 1
 
 //from "md_api.h"
-#define md_col 16
-#define md_row 16
+#define MD_COL 16
+#define MD_ROW 16
 
 uint32_t RTSPWidthMD;
 uint32_t RTSPHeightMD;
@@ -21,7 +21,9 @@ int i;
 
 static md_param_t md_param = {
     .image_width = 0,
-    .image_height = 0
+    .image_height = 0,
+    .md_row = MD_ROW,
+    .md_col = MD_COL,
 };
 
 // get settings from RTSP module
@@ -40,12 +42,12 @@ static void md_process(void *md_result) {
 
 	//draw md rect
 	int motion = 0, j, k;
-	int jmin = md_row - 1, jmax = 0;
-	int kmin = md_col - 1, kmax = 0;
-	for (int j = 0; j < md_row; j++) {
-		for (int k = 0; k < md_col; k++) {
-			printf("%d ", md_res[j * md_col + k]);
-			if (md_res[j * md_col + k]) {
+	int jmin = MD_ROW - 1, jmax = 0;
+	int kmin = MD_COL - 1, kmax = 0;
+	for (int j = 0; j < MD_ROW; j++) {
+		for (int k = 0; k < MD_COL; k++) {
+			printf("%d ", md_res[j * MD_COL + k]);
+			if (md_res[j * MD_COL + k]) {
 				motion = 1;
 				if (j < jmin) {
 					jmin = j;
@@ -67,10 +69,10 @@ static void md_process(void *md_result) {
 	//draw md region
 	canvas_clean_all(RTSPChannelMD, 0);
 	if (motion) {
-		int xmin = (int)(kmin * RTSPWidthMD / md_col) + 1;
-		int ymin = (int)(jmin * RTSPHeightMD / md_row) + 1;
-		int xmax = (int)((kmax + 1) * RTSPWidthMD / md_col) - 1;
-		int ymax = (int)((jmax + 1) * RTSPHeightMD / md_row) - 1;
+		int xmin = (int)(kmin * RTSPWidthMD / MD_COL) + 1;
+		int ymin = (int)(jmin * RTSPHeightMD / MD_ROW) + 1;
+		int xmax = (int)((kmax + 1) * RTSPWidthMD / MD_COL) - 1;
+		int ymax = (int)((jmax + 1) * RTSPHeightMD / MD_ROW) - 1;
 		canvas_set_rect(RTSPChannelMD, 0, xmin, ymin, xmax, ymax, 3, COLOR_GREEN);
 	}
 	canvas_update(RTSPChannelMD, 0);
@@ -97,22 +99,10 @@ void setMDThres(void *p) {
 }
 
 void setMDMask(mm_context_t *p) {
-    // int ret = 0;
-	// md_ctx_t *ctx = (md_ctx_t *)p;
-	char md_mask [md_col * md_row] = {0};
-	for (i = 0; i < (md_col * md_row); i++) {
+	char md_mask [MD_COL * MD_ROW] = {0};
+	for (i = 0; i < (MD_COL * MD_ROW); i++) {
 		md_mask[i] = 1;
 	}
-    //	memcpy(ctx->motion_detect_ctx->md_mask, (char *)(int)&md_mask, sizeof(ctx->motion_detect_ctx->md_mask));
-    //	printf("Set MD Mask: \r\n");
-    //	for (int j = 0; j < md_row; j++) {
-    //		for (int k = 0; k < md_col; k++) {
-    //			printf("%d ", md_mask[j * md_col + k]);
-    //		}
-    //		printf("\r\n");
-    //	}
-    //	printf("\r\n");
-    //	printf("\r\n");
 	mm_module_ctrl(p, CMD_MD_SET_MD_MASK, (int)&md_mask);
 }
 

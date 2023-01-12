@@ -4,8 +4,7 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NNFaceDetection.h"
-#include "NNFaceRecognition.h"
+#include "NN.h"
 
 #define CHANNEL   0
 #define CHANNELNN 3
@@ -20,7 +19,6 @@
 // Channel 2 : 1920 x 1080 30FPS MJPEG
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
-// VideoSetting configNN(VIDEO_VGA, 10, VIDEO_RGB, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
 NNFaceDetection FaceDet;
 NNFaceDetection FaceNet;
@@ -80,7 +78,7 @@ void setup() {
     // Start data stream from video channel
     Camera.channelBegin(CHANNEL);
 
-    // nn
+    // NN
     // SISO: Facenet -> FaceRecog
     videoStreamerFNFR.registerInput(FaceNet);
     videoStreamerFNFR.registerOutput(FaceRecog);
