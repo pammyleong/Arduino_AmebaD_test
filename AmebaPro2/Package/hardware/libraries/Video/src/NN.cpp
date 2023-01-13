@@ -100,7 +100,3 @@ void NNFaceRecognition::configVideo() { // to config CH 4 for NN
 void NNFaceRecognition::configOSD(int ch, VideoSetting& config) {
     configFROSD(ch, config._w, config._h);
 }
-
-void NNFaceRecognition::beginOSD(void) {
-    FROSD();
-}
