@@ -36,10 +36,6 @@ void NNObjectDetection::configOSD(int ch, VideoSetting& config) {
     configODOSD(ch, config._w, config._h);
 }
 
-void NNObjectDetection::beginOSD(void) {
-    ODOSD();
-}
-
 // Face Detection
 // configuration of Face Detection module when cascaded by Face Recognition module
 void NNFaceDetection::configVideo(VideoSetting& config, int faceRecogFlag) { // to config CH 4 for NN
@@ -66,7 +62,7 @@ void NNFaceDetection::configVideo(VideoSetting& config, int faceRecogFlag) { // 
         cameraSetQItem(_p_mmf_context);
         nnFDSetApply(_p_mmf_context->priv);
     } else if (faceRecogFlag == 2) {
-        nnSetFDModel2(_p_mmf_context->priv);   // Facenet
+        nnSetFNModel(_p_mmf_context->priv);   // Facenet
         nnSetFDCascade(_p_mmf_context->priv);
         nnSetFDOutput(_p_mmf_context->priv);
         nnSetFDDatagroup(_p_mmf_context, MM_GROUP_END);
@@ -84,10 +80,6 @@ void NNFaceDetection::configModel(VideoSetting& config) {
 
 void NNFaceDetection::configOSD(int ch, VideoSetting& config) {
     configFDOSD(ch, config._w, config._h);
-}
-
-void NNFaceDetection::beginOSD(void) {
-    FDOSD();
 }
 
 // Face Recog

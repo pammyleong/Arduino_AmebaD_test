@@ -21,12 +21,6 @@ uint32_t NNWidth = 0;
 uint32_t NNHeight = 0;
 int RTSPChannel = 0;
 
-// SCRFD
-#define NN_MODEL_OBJ    scrfd_fwfs
-#define NN_MODEL2_OBJ   mbfacenet_fwfs
-//#define NN_WIDTH        576//640
-//#define NN_HEIGHT       320//640
-
 static nn_data_param_t roi_nn = {
 	.img = {
 		.width = 0,
@@ -120,12 +114,12 @@ mm_context_t* nnFDInit(void) {
 
 // setup NN model: Facedet
 void nnSetFDModel(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL_OBJ);
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&scrfd_fwfs);
 }
 
 // setup NN model: Facenet
-void nnSetFDModel2(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL2_OBJ);
+void nnSetFNModel(void *p) {
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&mbfacenet_fwfs);
 }
 
 // setup NN input parameters
@@ -156,13 +150,4 @@ void nnSetFDDatagroup(mm_context_t *ctx, int status) {
 // set NN model to cascade mode
 void nnSetFDCascade(void *p) {
     vipnn_control(p, CMD_VIPNN_SET_CASCADE, 2);
-}
-
-void FDOSD(void) {
-    int ch_enable[3] = {1, 0, 0};
-    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
-    int ch_width[3] = {RTSPWidth, 0, 0}, ch_height[3] = {RTSPHeight, 0, 0};
-
-    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
-    osd_render_task_start(ch_enable, ch_width, ch_height);
 }

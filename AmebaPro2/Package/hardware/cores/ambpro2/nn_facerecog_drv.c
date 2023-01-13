@@ -2,12 +2,9 @@
 #include "module_video.h"
 #include "module_vipnn.h"
 #include "module_facerecog.h"
-
 #include "model_mobilefacenet.h"
 #include "model_scrfd.h"
-
 #include "osd_render.h"
-//#include "log_service.h"
 
 //static void *g_frc_ctx = NULL;
 
@@ -25,26 +22,6 @@ uint32_t RTSPWidthFR = 0;
 uint32_t RTSPHeightFR = 0;
 int RTSPChannelFR = 0;
 
-// SCRFD + FACENET
-#define NN_MODEL_OBJ    scrfd_fwfs
-#define NN_MODEL2_OBJ   mbfacenet_fwfs
-//#define NN_WIDTH        576
-//#define NN_HEIGHT       320
-
-//static nn_data_param_t roi_nn = {
-//    .img = {
-//        .width = 0,
-//        .height = 0,
-//        .rgb = 0, // set to 1 if want RGB->BGR or BGR->RGB
-//        .roi = {
-//            .xmin = 0,
-//            .ymin = 0,
-//            .xmax = 0,
-//            .ymax = 0,
-//        }
-//    }
-//};
-
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
 TimerHandle_t osd_cleanup_timer = NULL;
@@ -53,20 +30,6 @@ void configFROSD(int ch, uint32_t width, uint32_t height) {
     RTSPWidthFR = width;
     RTSPHeightFR = height;
     RTSPChannelFR = ch;
-}
-
-//void configFR (uint16_t NN_width, uint16_t NN_height) {
-//    roi_nn.img.width = NN_width;
-//    roi_nn.img.height = NN_height;
-//    roi_nn.img.roi.xmax = NN_width;
-//    roi_nn.img.roi.ymax = NN_height;
-//}
-
-// callback function to to be called to clean up rect
-void osd_cleanup_callback(TimerHandle_t xTimer) {
-    (void)xTimer;
-    canvas_clean_all(RTSPChannelFR, 0);
-    canvas_update(RTSPChannelFR, 0);
 }
 
 // ===========
@@ -136,16 +99,6 @@ void nnFRSetThreshold(void *p) {
 // set NN face recognition OSD
 void nnFRSetOSDDraw(void *p) {
    facerecog_control(p, CMD_FRC_SET_OSD_DRAW, (int)faceDrawObj);
-}
-
-void FROSD(void) {
-    int ch_enable[3] = {1, 0, 0};
-    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
-    int ch_width[3] = {RTSPWidthFR, 0, 0}, ch_height[3] = {RTSPHeightFR, 0, 0};
-
-    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
-    osd_render_task_start(ch_enable, ch_width, ch_height);
-    osd_cleanup_timer = xTimerCreate("OSD clean timer", 500 / portTICK_PERIOD_MS, pdTRUE, NULL, osd_cleanup_callback);
 }
 
 

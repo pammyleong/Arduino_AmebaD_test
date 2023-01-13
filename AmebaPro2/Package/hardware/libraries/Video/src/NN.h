@@ -20,7 +20,6 @@ class NNObjectDetection:public MMFModule {
         void configVideo(VideoSetting& config);
         void configOSD(int ch, VideoSetting& config);
         void configModel(float confidence_threshold, float nms_threshold, VideoSetting& config);
-        void beginOSD(void);
 
     private:
 };
@@ -30,7 +29,6 @@ class NNFaceDetection:public MMFModule {
         void configVideo(VideoSetting& config, int faceRecogFlag = 0);
         void configModel(VideoSetting& config);
         void configOSD(int ch, VideoSetting& config);
-        void beginOSD(void);
     private:
 };
 

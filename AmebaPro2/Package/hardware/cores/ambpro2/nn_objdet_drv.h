@@ -27,8 +27,6 @@ void nnODNMSThres(void *p);
 
 void nnODSetApply(void *p);
 
-void ODOSD(void); // OSD will be created in a seperate file
-
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);
 

@@ -1,17 +1,11 @@
 #include "nn_objdet_drv.h"
 #include "module_video.h"
 #include "module_vipnn.h"
-
 #include "img_sample/input_image_640x360x3.h"
-//#include "input_image_640x360x3.h"
 #include "nn_utils/class_name.h"
 #include "model_yolo.h"
-
-// others (see if needed)
 #include "osd_render.h"
 #include "avcodec.h"
-#include "hal_video.h"
-#include "hal_isp.h"
 
 #define DEBUG           0
 
@@ -25,11 +19,6 @@
 uint16_t OSDWidthOD = 0;
 uint16_t OSDHeightOD = 0;
 int OSDChannel = 0;
-
-// YOLO
-#define NN_MODEL_OBJ    yolov4_tiny
-#define NN_WIDTH        576
-#define NN_HEIGHT       320
 
 static float nn_confidence_thresh = 0;
 static float nn_nms_thresh = 0;
@@ -50,11 +39,6 @@ static nn_data_param_t roi_nn = {
 };
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
-
-//void configODModel(float confidence_thres, float nms_thres) {
-//    nn_confidence_thresh = confidence_thres;
-//    nn_nms_thresh = nms_thres;
-//}
 
 void configODModel(float confidence_thres, float nms_thres, uint16_t nn_width, uint16_t nn_height) {
     nn_confidence_thresh = confidence_thres;
@@ -146,7 +130,7 @@ mm_context_t* nnODInit(void) {
 
 // setup NN model
 void nnSetODModel(void *p) {
-    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&NN_MODEL_OBJ);
+    vipnn_control(p, CMD_VIPNN_SET_MODEL, (int)&yolov4_tiny);
 }
 
 // setup NN input parameters
@@ -172,13 +156,4 @@ void nnODNMSThres(void *p) {
 // apply NN object detection object
 void nnODSetApply(void *p) {
     vipnn_control(p, CMD_VIPNN_APPLY, 0);
-}
-
-void ODOSD(void) {
-    int ch_enable[3] = {1, 0, 0};
-    int char_resize_w[3] = {16, 0, 0}, char_resize_h[3] = {32, 0, 0};
-    int ch_width[3] = {OSDWidthOD, 0, 0}, ch_height[3] = {OSDHeightOD, 0, 0};
-
-    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
-    osd_render_task_start(ch_enable, ch_width, ch_height);
 }

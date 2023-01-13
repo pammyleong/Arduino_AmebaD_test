@@ -15,7 +15,7 @@ mm_context_t* nnFDInit(void);
 
 void nnSetFDModel(void *p);
 
-void nnSetFDModel2(void *p);
+void nnSetFNModel(void *p);
 
 void nnSetFDInputParam(void *p);
 
@@ -28,8 +28,6 @@ void nnSetFDOutput(void *p);
 void nnSetFDDatagroup(mm_context_t *ctx, int status);
 
 void nnSetFDCascade(void *p);
-
-void FDOSD(void);
 
 // Function externed from module_vipnn
 extern int vipnn_control(void *p, int cmd, int arg);

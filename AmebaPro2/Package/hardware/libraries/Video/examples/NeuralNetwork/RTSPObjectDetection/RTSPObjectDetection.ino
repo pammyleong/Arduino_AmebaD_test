@@ -5,6 +5,7 @@
 #include "VideoStream.h"
 #include "RTSP.h"
 #include "NN.h"
+#include "VideoStreamOverlay.h"
 
 #define CHANNEL 0
 #define CHANNELNN 3 
@@ -20,6 +21,9 @@
 #define NNWIDTH 576
 #define NNHEIGHT 320
 
+#define OSDTEXTWIDTH 16
+#define OSDTEXTHEIGHT 32
+
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
 // Channel 1 : 1280 x 720  30FPS H264
@@ -28,7 +32,6 @@
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
 NNObjectDetection ObjDet;
-
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 StreamIO videoStreamerNN(1, 1);  // 1 Input Video RGB -> 1 Output NN
@@ -88,8 +91,11 @@ void setup() {
 
     // OSD
     // OSD is not support on CH3.
+    // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp  
     ObjDet.configOSD(CHANNEL, config);
-    ObjDet.beginOSD();
+    
+    OSD.config(CHANNEL, config, OSDTEXTWIDTH, OSDTEXTHEIGHT);
+    OSD.begin();
 
     delay(1000);
     printInfo();
