@@ -1,31 +1,25 @@
 #ifndef md_drv_h
 #define md_drv_h
 
-#include <stdint.h>
-#include <FreeRTOS.h>
-#include <semphr.h>
-#include <diag.h>
 #include "mmf2_module.h"
-
-// void md_process(void *md_result);
-
-void MDOSDConfig(int ch, uint32_t width, uint32_t height);
+#include "md_api.h"
 
 mm_context_t* MDInit(void);
 
-void setMDParams(void *p, int img_width, int img_height);
+mm_context_t* MDDeinit(mm_context_t *p);
 
-void setMDThres(void *p);
+void setMDParams(void *p, md_param_t* md_param);
 
-void setMDMask(mm_context_t *p);
+void setMDThreshold(void *p, motion_detect_threshold_t* md_thr);
 
-void setMDDisppost(void *p);
+void setMDMask(void *p, char* md_mask);
 
-void setMDTrigBlock(void *p);
+void setMDDisppost(void *p, void (*md_postprocess)(char*));
 
-void MDDraw(void);
+void setMDTrigBlock(void *p, uint16_t count);
 
-// Function externed from module_md
+void getMDResult(void *p, char* md_result);
+
 extern int md_control(void *p, int cmd, int arg);
 
 #endif

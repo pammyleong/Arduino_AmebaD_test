@@ -1,6 +1,16 @@
 #include <Arduino.h>
 #include "VideoStreamOverlay.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "osd_render.h"
+
+#ifdef __cplusplus
+}
+#endif
+
 #define DEBUG 1
 
 #if DEBUG
@@ -12,15 +22,50 @@
 
 VideoStreamOverlay OSD;
 
-void VideoStreamOverlay::clearAll(int ch, int idx) {
-    canvas_clean_all(ch, idx);
+void VideoStreamOverlay::configVideo(int ch, VideoSetting& config) {
+    ch_enable[ch] = 1;
+    ch_width[ch] = config._w;
+    ch_height[ch] = config._h;
+
+    CAMDBG("ch_enable %d  %d  %d\r\n", ch_enable[0], ch_enable[1], ch_enable[2]);
+    CAMDBG("character_width %d  %d  %d\r\n", character_width[0], character_width[1], character_width[2]);
+    CAMDBG("character_height %d  %d  %d\r\n", character_height[0], character_height[1], character_height[2]);
+    CAMDBG("ch_width %d  %d  %d\r\n", ch_width[0], ch_width[1], ch_width[2]);
+    CAMDBG("ch_height %d  %d  %d\r\n", ch_height[0], ch_height[1], ch_height[2]);
 }
 
-void VideoStreamOverlay::update(int ch, int idx) {
-    canvas_update(ch, idx);
+void VideoStreamOverlay::configTextSize(int ch, int text_width, int text_height) {
+    character_width[ch] = text_width;
+    character_height[ch] = text_height;
 }
 
-void VideoStreamOverlay::setPoint(int ch, int idx, int xmin, int ymin, int point_width, uint32_t color) {
+void VideoStreamOverlay::begin(void) {
+    osd_render_dev_init(ch_enable, character_width, character_height);
+    osd_render_task_start(ch_enable, ch_width, ch_height);
+}
+
+void VideoStreamOverlay::end() {
+    osd_render_dev_deinit_all();
+    osd_render_task_stop();
+}
+
+void VideoStreamOverlay::endChannel(int ch) {
+    ch_enable[ch] = 0;
+    osd_render_dev_deinit(ch);
+
+    for(int i = 0; i < OSD_OBJ_MAX_CH; i++) {
+        if(ch_enable[ch]) {
+            break;
+        }
+        end();     // Check for active channels, if no channels active, stop task
+    }
+}
+
+uint32_t VideoStreamOverlay::color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
+    return (ARGB(alpha, red, green, blue));
+}
+
+void VideoStreamOverlay::drawPoint(int ch, int idx, int xmin, int ymin, int point_width, uint32_t color) {
     canvas_set_point(ch, idx, xmin, ymin, point_width, color);
 }
 
@@ -28,48 +73,14 @@ void VideoStreamOverlay::drawRect(int ch, int idx, int xmin, int ymin, int xmax,
     canvas_set_rect(ch, idx, xmin, ymin, xmax, ymax, line_width, color);
 }
 
-void VideoStreamOverlay::setText(int ch, int idx, int xmin, int ymin, char *text_string, uint32_t color) {
+void VideoStreamOverlay::drawText(int ch, int idx, int xmin, int ymin, char *text_string, uint32_t color) {
     canvas_set_text(ch, idx, xmin, ymin, text_string, color);
 }
 
-void VideoStreamOverlay::taskStop(void) {
-    osd_render_task_stop();    
+void VideoStreamOverlay::clearAll(int ch, int idx) {
+    canvas_clean_all(ch, idx);
 }
 
-void VideoStreamOverlay::taskStart(int *ch_visible, int *ch_width, int *ch_height) {
-    osd_render_task_start(ch_visible, ch_width, ch_height);
-}
-
-void VideoStreamOverlay::init(int *ch_enable, int *char_resize_w, int *char_resize_h) {
-    osd_render_dev_init(ch_enable, char_resize_w, char_resize_h);
-}
-
-void VideoStreamOverlay::deinit(int ch) {
-    osd_render_dev_deinit(ch);
-}
-
-void VideoStreamOverlay::deinitAll() {
-    osd_render_dev_deinit_all();
-}
-
-void VideoStreamOverlay::config(int ch, VideoSetting& config, int resize_text_width, int resize_text_height) {
-    for (int i = 0; i <= 2; i++) {
-        if (i == ch) {
-            ch_enable[i] = 1;
-            char_resize_w[i] = resize_text_width;
-            char_resize_h[i] = resize_text_height;
-            ch_width[i] = config._w;
-            ch_height[i] = config._h;
-        }
-        CAMDBG("ch_enable %d  %d  %d\r\n", ch_enable[0], ch_enable[1], ch_enable[2]);
-        CAMDBG("char_resize_w %d  %d  %d\r\n", char_resize_w[0], char_resize_w[1], char_resize_w[2]);
-        CAMDBG("char_resize_h %d  %d  %d\r\n", char_resize_h[0], char_resize_h[1], char_resize_h[2]);
-        CAMDBG("ch_width %d  %d  %d\r\n", ch_width[0], ch_width[1], ch_width[2]);
-        CAMDBG("ch_height %d  %d  %d\r\n", ch_height[0], ch_height[1], ch_height[2]);
-    }
-}
-
-void VideoStreamOverlay::begin(void) {
-    init(ch_enable, char_resize_w, char_resize_h);
-	taskStart(ch_enable, ch_width, ch_height);
+void VideoStreamOverlay::update(int ch, int idx) {
+    canvas_update(ch, idx);
 }

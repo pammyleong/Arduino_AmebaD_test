@@ -173,6 +173,18 @@ VideoSetting::VideoSetting(uint16_t w, uint16_t h, uint8_t fps, uint8_t encoder,
     }
 }
 
+uint16_t VideoSetting::width(void) {
+    return _w;
+}
+
+uint16_t VideoSetting::height(void) {
+    return _h;
+}
+
+uint16_t VideoSetting::fps(void) {
+    return _fps;
+}
+
 /**
   * @brief  configure video stream channel
   * @param  ch : channel to configure
