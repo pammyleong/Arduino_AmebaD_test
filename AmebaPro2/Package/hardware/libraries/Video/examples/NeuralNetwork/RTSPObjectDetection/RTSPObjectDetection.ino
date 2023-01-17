@@ -4,14 +4,15 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NN.h"
+#include "NNObjectDetection.h"
 #include "VideoStreamOverlay.h"
 
+// Default preset configurations for each video channel:
+// Channel 0 : 1920 x 1080 30FPS H264
+// Channel 1 : 1280 x 720  30FPS H264
+// Channel 2 : 1920 x 1080 30FPS MJPEG
 #define CHANNEL 0
 #define CHANNELNN 3 
-
-// Current object detection class list : 0, 2, 5, 7.
-// You may refer to the object class list in objectclasslist.h
 
 // Set confidence threshold and NMS threshold here.
 #define CONF_THRES 0.5
@@ -21,13 +22,15 @@
 #define NNWIDTH 576
 #define NNHEIGHT 320
 
+//OSD text size
 #define OSDTEXTWIDTH 16
 #define OSDTEXTHEIGHT 32
 
-// Default preset configurations for each video channel:
-// Channel 0 : 1920 x 1080 30FPS H264
-// Channel 1 : 1280 x 720  30FPS H264
-// Channel 2 : 1920 x 1080 30FPS MJPEG
+#define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
+
+// Choose the objects that you would like to detect.
+// You may refer to the object class list in objectclasslist.h
+int desired_class_list[] = {0, 2, 5, 7};
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
@@ -64,9 +67,11 @@ void setup() {
     rtsp.begin();
 
     // Configure video channel for NN with video format information 
-    ObjDet.configModel(CONF_THRES, NMS_THRES, configNN);
     ObjDet.configVideo(configNN);
-
+    ObjDet.configThreshold(CONF_THRES, NMS_THRES);
+    ObjDet.setCallback(ODPostProcess);
+    ObjDet.begin();
+    
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
     videoStreamer.registerOutput(rtsp);
@@ -90,32 +95,66 @@ void setup() {
     Camera.channelBegin(CHANNELNN);
 
     // OSD
-    // OSD is not support on CH3.
-    // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp  
-    ObjDet.configOSD(CHANNEL, config);
-    
-    OSD.config(CHANNEL, config, OSDTEXTWIDTH, OSDTEXTHEIGHT);
+    // OSD is not supported on CH3.
+    OSD.configVideo(CHANNEL, config);
+    OSD.configTextSize(CHANNEL, OSDTEXTWIDTH, OSDTEXTHEIGHT);
     OSD.begin();
-
-    delay(1000);
-    printInfo();
 }
 
 void loop() {
     // Do nothing
 }
 
-void printInfo(void) {
-    Serial.println("------------------------------");
-    Serial.println("- Summary of Streaming -");
-    Serial.println("------------------------------");
-    Camera.printInfo();
+int checkList(int class_indx) {
+     for (int i = 0; i < ((int)sizeof(desired_class_list) / (int)sizeof(int)); i++) {
+        if (class_indx == desired_class_list[i]) {
+            return class_indx;
+        }
+    }
+    return -1;
+}
 
-    IPAddress ip = WiFi.localIP();
+// UserCB Function
+void ODPostProcess(objdetect_res_t *od_res) {
+    uint16_t im_h = config.height();
+    uint16_t im_w = config.width();
+    uint16_t nn_h = configNN.height();
+    uint16_t nn_w = configNN.width();
 
-    Serial.println("- RTSP -");
-    Serial.print("rtsp://");
-    Serial.print(ip);
-    Serial.print(":");
-    rtsp.printInfo();
+    float ratio_w = (float)im_w / (float)nn_w;
+    float ratio_h = (float)im_h / (float)nn_h;
+
+    int roi_w = (int)((nn_w - 0) * ratio_w);
+    int roi_h = (int)((nn_h - 0) * ratio_h);
+    int roi_x = (int)(0 * ratio_w);
+    int roi_y = (int)(0 * ratio_h);
+
+    printf("Total number of obj detected = %d\r\n", od_res->obj_num);
+    OSD.clearAll(CHANNEL, 0);
+    if (od_res->obj_num > 0) {
+        for (int i = 0; i < od_res->obj_num; i++) {
+            int obj_class = (int)od_res->result[6 * i];
+            int class_id = checkList(obj_class); //show class in desired_class_list
+
+            if (class_id != -1) {
+                int xmin = (int)(od_res->result[6 * i + 2] * roi_w) + roi_x;
+                int ymin = (int)(od_res->result[6 * i + 3] * roi_h) + roi_y;
+                int xmax = (int)(od_res->result[6 * i + 4] * roi_w) + roi_x;
+                int ymax = (int)(od_res->result[6 * i + 5] * roi_h) + roi_y;
+
+                LIMIT(xmin, 0, im_w)
+                LIMIT(xmax, 0, im_w)
+                LIMIT(ymin, 0, im_h)
+                LIMIT(ymax, 0, im_h)
+
+                printf("%d,c%d:%d %d %d %d\n\r", i, class_id, xmin, ymin, xmax, ymax);
+                OSD.drawRect(CHANNEL, 0, xmin, ymin, xmax, ymax, 3, OSD_COLOR_WHITE);
+                
+                char text_str[20];
+                snprintf(text_str, sizeof(text_str), "%s %d", coco_name_get_by_id(class_id), (int)(od_res->result[6 * i + 1] * 100));
+                OSD.drawText(CHANNEL, 0, xmin, ymin - 32, text_str, OSD_COLOR_CYAN);
+            }
+        }
+    }
+    OSD.update(CHANNEL, 0);
 }
