@@ -24,7 +24,6 @@ class NNObjectDetection:public MMFModule {
         objdetect_res_t* getResult(void);
 
     private:
-        static int checkList(int class_indx);
         static void setDispCallback(void *p, void *img_param);
         static objdetect_res_t _p_objdet_result;
         static void (*OD_user_CB)(objdetect_res_t *);

@@ -1,5 +1,4 @@
 // Demo for object detection
-
 #include "WiFi.h"
 #include "StreamIO.h"
 #include "VideoStream.h"
@@ -28,10 +27,6 @@
 #define OSDTEXTHEIGHT 32
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
-
-// Choose the objects that you would like to detect.
-// You may refer to the object class list in objectclasslist.h
-int desired_class_list[] = {0, 2, 5, 7};
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
@@ -106,13 +101,6 @@ void loop() {
     // Do nothing
 }
 
-int checkList(int class_indx) {
-    if (itemList[class_indx].filter == 1) {
-        return class_indx;
-    }
-    return -1;
-}
-
 // UserCB Function
 void ODPostProcess(objdetect_res_t *od_res) {
     int class_id;
@@ -137,7 +125,11 @@ void ODPostProcess(objdetect_res_t *od_res) {
         for (int i = 0; i < od_res->obj_num; i++) {
             int obj_class = (int)od_res->result[6 * i];
             if (obj_class == itemList[obj_class].index) {
-                class_id = checkList(obj_class); 
+                if (itemList[obj_class].filter == 1) {
+                    class_id = itemList[obj_class].index;
+                } else {
+                    class_id = -1;
+                }
             }
             if (class_id != -1) {
                 int xmin = (int)(od_res->result[6 * i + 2] * roi_w) + roi_x;
