@@ -19,7 +19,7 @@ class NNObjectDetection:public MMFModule {
         void configVideo(VideoSetting& config);
         void configThreshold(float confidence_threshold, float nms_threshold);
         void begin(void);
-        void end(const MMFModule& module);
+        void end(void);
         void setCallback(void (*od_callback)(objdetect_res_t *));
         objdetect_res_t* getResult(void);
 
