@@ -18,17 +18,17 @@ class MotionDetection:public MMFModule {
         MotionDetection(uint8_t row = 16, uint8_t col = 16);
         ~MotionDetection(void);
 
+        void configResolution(uint8_t row = 16, uint8_t col = 16);
+        void configVideo(VideoSetting& config);
         void begin(void);
         void end(void);
-        void configResolution(uint8_t row = 16, uint8_t col = 16);
-        uint8_t rows(void);
-        uint8_t cols(void);
-        void configVideo(int ch, VideoSetting& config);
         void setTriggerBlockCount(uint16_t count);
         void setDetectionMask(char * mask);
 
         char* getResult(void);
         void setResultCallback(void (*md_callback)(char*));
+        uint8_t rows(void);
+        uint8_t cols(void);
 
     private:
 //        static void mdPostProcess(void *md_result);

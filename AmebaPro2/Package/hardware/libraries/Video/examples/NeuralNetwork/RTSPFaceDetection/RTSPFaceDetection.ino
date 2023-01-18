@@ -4,7 +4,7 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NN.h"
+#include "NNFaceDetection.h"
 #include "VideoStreamOverlay.h"
 
 #define CHANNEL 0
@@ -13,9 +13,6 @@
 // Customised resolution for NN
 #define NNWIDTH 576
 #define NNHEIGHT 320
-
-#define OSDTEXTWIDTH 16
-#define OSDTEXTHEIGHT 32
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
@@ -57,8 +54,8 @@ void setup() {
     rtsp.configVideo(config);
     rtsp.begin();
 
-    facedet.configModel(configNN);
     facedet.configVideo(configNN);
+    facedet.begin();
 
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
@@ -82,8 +79,7 @@ void setup() {
     // OSD
     // OSD is not support on CH3.
     // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp  
-    facedet.configOSD(CHANNEL, config);
-    OSD.config(CHANNEL, config, OSDTEXTWIDTH, OSDTEXTHEIGHT);
+    OSD.configVideo(CHANNEL, config);
     OSD.begin();
 
     delay(1000);

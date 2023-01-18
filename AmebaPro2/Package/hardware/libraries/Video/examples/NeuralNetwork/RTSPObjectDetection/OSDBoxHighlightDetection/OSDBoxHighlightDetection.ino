@@ -14,17 +14,9 @@
 #define CHANNEL 0
 #define CHANNELNN 3 
 
-// Set confidence threshold and NMS threshold here.
-#define CONF_THRES 0.5
-#define NMS_THRES 0.3
-
 // Customised resolution for NN
 #define NNWIDTH 576
 #define NNHEIGHT 320
-
-//OSD text size
-#define OSDTEXTWIDTH 16
-#define OSDTEXTHEIGHT 32
 
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
@@ -64,7 +56,6 @@ void setup() {
 
     // Configure video channel for NN with video format information 
     ObjDet.configVideo(configNN);
-    ObjDet.configThreshold(CONF_THRES, NMS_THRES);
     //ObjDet.setCallback(ODPostProcess);
     ObjDet.begin();
     
@@ -93,7 +84,6 @@ void setup() {
     // OSD
     // OSD is not supported on CH3.
     OSD.configVideo(CHANNEL, config);
-    OSD.configTextSize(CHANNEL, OSDTEXTWIDTH, OSDTEXTHEIGHT);
     OSD.begin();
 }
 

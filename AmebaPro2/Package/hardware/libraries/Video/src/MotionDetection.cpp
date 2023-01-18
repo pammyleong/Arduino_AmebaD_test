@@ -33,6 +33,21 @@ MotionDetection::~MotionDetection(void) {
     end();
 }
 
+void MotionDetection::configResolution(uint8_t row, uint8_t col) {
+    if (row > MD_MAX_ROW) row = MD_MAX_ROW;
+    if (col > MD_MAX_COL) col = MD_MAX_COL;
+    if (row == 0) row = 1;
+    if (col == 0) col = 1;
+
+    md_param.md_row = row;
+    md_param.md_col = col;
+}
+
+void MotionDetection::configVideo(VideoSetting& config) {
+    md_param.image_width = config._w;
+    md_param.image_height = config._h;
+}
+
 void MotionDetection::begin(void) {
     if (_p_mmf_context == NULL) {
         _p_mmf_context = MDInit();
@@ -57,29 +72,6 @@ void MotionDetection::end(void) {
     } else {
         CAMDBG("RTSP deinit failed\r\n");
     }
-}
-
-void MotionDetection::configResolution(uint8_t row, uint8_t col) {
-    if (row > MD_MAX_ROW) row = MD_MAX_ROW;
-    if (col > MD_MAX_COL) col = MD_MAX_COL;
-    if (row == 0) row = 1;
-    if (col == 0) col = 1;
-
-    md_param.md_row = row;
-    md_param.md_col = col;
-}
-
-uint8_t MotionDetection::rows(void) {
-    return md_param.md_row;
-}
-
-uint8_t MotionDetection::cols(void) {
-    return md_param.md_col;
-}
-
-void MotionDetection::configVideo(int ch, VideoSetting& config) {
-    md_param.image_width = config._w;
-    md_param.image_height = config._h;
 }
 
 void MotionDetection::setTriggerBlockCount(uint16_t count) {
@@ -107,4 +99,12 @@ void MotionDetection::setResultCallback(void (*md_callback)(char*)) {
         return;
     }
     setMDDisppost(_p_mmf_context->priv, md_ResultCB);
+}
+
+uint8_t MotionDetection::rows(void) {
+    return md_param.md_row;
+}
+
+uint8_t MotionDetection::cols(void) {
+    return md_param.md_col;
 }

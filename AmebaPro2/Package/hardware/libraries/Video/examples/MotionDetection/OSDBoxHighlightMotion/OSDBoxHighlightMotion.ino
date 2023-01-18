@@ -49,7 +49,7 @@ void setup() {
     OSD.begin();
 
     // Configure motion detection for low resolution RGB video stream
-    MD.configVideo(CHANNELMD, configMD);
+    MD.configVideo(configMD);
     MD.begin();
 
     // Configure StreamIO object to stream data from high res video channel to RTSP

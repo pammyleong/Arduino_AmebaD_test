@@ -4,7 +4,8 @@
 #include "StreamIO.h"
 #include "VideoStream.h"
 #include "RTSP.h"
-#include "NN.h"
+#include "NNFaceDetection.h"
+#include "NNFaceRecognition.h"
 #include "VideoStreamOverlay.h"
 
 #define CHANNEL   0
@@ -14,9 +15,6 @@
 #define NNWIDTH 576
 #define NNHEIGHT 320
 
-#define OSDTEXTWIDTH 16
-#define OSDTEXTHEIGHT 32
-
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
 // Channel 1 : 1280 x 720  30FPS H264
@@ -24,14 +22,12 @@
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
-NNFaceDetection FaceDet;
-NNFaceDetection FaceNet;
-NNFaceRecognition FaceRecog;
+NNFaceDetection facedet;
+NNFaceRecognition facerecog;
 
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
-StreamIO videoStreamerFNFR(1, 1);
-StreamIO videoStreamerFDFN(1, 1);  // 1 Input Video -> 1 Output Face Recog
+StreamIO videoStreamerFDFR(1, 1);  // 1 Input Video -> 1 Output Face Recog
 StreamIO videoStreamerRGBFD(1, 1);
 
 char ssid[] = "Aurical_5G";     //  your network SSID (name)
@@ -61,16 +57,13 @@ void setup() {
     rtsp.configVideo(config);
     rtsp.begin();
 
-    FaceDet.configModel(configNN);
-    
     // Congifure Model 1: Face Detection model
-    FaceDet.configVideo(configNN, 1);
-
-    // Configure Model 2: FaceNet model
-    FaceNet.configVideo(configNN, 2);
+    facedet.configVideo(configNN);
+    facedet.configFaceRecogCascadedMode(1);
+    facedet.begin();
 
     // Configure Face Recognition model
-    FaceRecog.configVideo();
+    facerecog.begin();
 
     // ------------- linker --------------
     // Configure StreamIO object to stream data from video channel to RTSP
@@ -84,31 +77,24 @@ void setup() {
 
     // NN
     // SISO: Facenet -> FaceRecog
-    videoStreamerFNFR.registerInput(FaceNet);
-    videoStreamerFNFR.registerOutput(FaceRecog);
-    if (videoStreamerFNFR.begin() != 0) {
-        Serial.println("StreamIO link start failed");
-    }
-    // SISO: Facedet -> Facenet
-    videoStreamerFDFN.registerInput(FaceDet);
-    videoStreamerFDFN.registerOutput(FaceNet);
-    if (videoStreamerFDFN.begin() != 0) {
+    videoStreamerFDFR.registerInput(facedet);
+    videoStreamerFDFR.registerOutput(facerecog);
+    if (videoStreamerFDFR.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
     // SISO: RGB -> Facedet
     videoStreamerRGBFD.registerInput(Camera.getStream(CHANNELNN));
     videoStreamerRGBFD.setStackSize();
     videoStreamerRGBFD.setTaskPriority();
-    videoStreamerRGBFD.registerOutput(FaceDet);
+    videoStreamerRGBFD.registerOutput(facedet);
     if (videoStreamerRGBFD.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
     
     Camera.channelBegin(CHANNELNN);
 
-    // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp  
-    FaceRecog.configOSD(CHANNEL, config);
-    OSD.config(CHANNEL, config, OSDTEXTWIDTH, OSDTEXTHEIGHT);
+    // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp
+    OSD.configVideo(CHANNEL, config);
     OSD.begin();
     
     // Using UART to reg faces

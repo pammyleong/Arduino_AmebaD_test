@@ -99,7 +99,7 @@ enum encode_type {
 class MMFModule {
     friend class StreamIO;
     friend class Video;
-        
+
     public:
 
     protected:

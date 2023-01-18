@@ -92,7 +92,7 @@ void setup() {
     OSD.begin();
 
     // Configure motion detection for low resolution RGB video stream
-    MD.configVideo(CHANNELMD, configMD);
+    MD.configVideo(configMD);
     MD.setResultCallback(mdPostProcess);
     MD.begin();
 
