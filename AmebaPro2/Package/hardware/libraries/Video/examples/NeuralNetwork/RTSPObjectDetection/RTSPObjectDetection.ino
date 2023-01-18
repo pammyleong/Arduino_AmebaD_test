@@ -6,6 +6,7 @@
 #include "RTSP.h"
 #include "NNObjectDetection.h"
 #include "VideoStreamOverlay.h"
+#include "ObjectClassList.h"
 
 // Default preset configurations for each video channel:
 // Channel 0 : 1920 x 1080 30FPS H264
@@ -106,16 +107,16 @@ void loop() {
 }
 
 int checkList(int class_indx) {
-     for (int i = 0; i < ((int)sizeof(desired_class_list) / (int)sizeof(int)); i++) {
-        if (class_indx == desired_class_list[i]) {
-            return class_indx;
-        }
+    if (itemList[class_indx].filter == 1) {
+        return class_indx;
     }
     return -1;
 }
 
 // UserCB Function
 void ODPostProcess(objdetect_res_t *od_res) {
+    int class_id;
+
     uint16_t im_h = config.height();
     uint16_t im_w = config.width();
     uint16_t nn_h = configNN.height();
@@ -131,11 +132,13 @@ void ODPostProcess(objdetect_res_t *od_res) {
 
     printf("Total number of obj detected = %d\r\n", od_res->obj_num);
     OSD.clearAll(CHANNEL, 0);
+
     if (od_res->obj_num > 0) {
         for (int i = 0; i < od_res->obj_num; i++) {
             int obj_class = (int)od_res->result[6 * i];
-            int class_id = checkList(obj_class); //show class in desired_class_list
-
+            if (obj_class == itemList[obj_class].index) {
+                class_id = checkList(obj_class); 
+            }
             if (class_id != -1) {
                 int xmin = (int)(od_res->result[6 * i + 2] * roi_w) + roi_x;
                 int ymin = (int)(od_res->result[6 * i + 3] * roi_h) + roi_y;
@@ -151,7 +154,7 @@ void ODPostProcess(objdetect_res_t *od_res) {
                 OSD.drawRect(CHANNEL, 0, xmin, ymin, xmax, ymax, 3, OSD_COLOR_WHITE);
                 
                 char text_str[20];
-                snprintf(text_str, sizeof(text_str), "%s %d", coco_name_get_by_id(class_id), (int)(od_res->result[6 * i + 1] * 100));
+                snprintf(text_str, sizeof(text_str), "%s %d", itemList[class_id].objectName, (int)(od_res->result[6 * i + 1] * 100));
                 OSD.drawText(CHANNEL, 0, xmin, ymin - 32, text_str, OSD_COLOR_CYAN);
             }
         }

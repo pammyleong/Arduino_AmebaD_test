@@ -55,8 +55,16 @@ void NNObjectDetection::begin(void) {
     vipnn_control(_p_mmf_context->priv, CMD_VIPNN_APPLY, 0);
 }
 
-void NNObjectDetection::end(const MMFModule& module) {
-    mm_module_close(module._p_mmf_context);
+void NNObjectDetection::end(void) {
+    if (_p_mmf_context == NULL) {
+        return;
+    }
+    vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_DISPPOST, (int)NULL);
+    if (mm_module_close(_p_mmf_context) == NULL) {
+        _p_mmf_context = NULL;
+    } else {
+        CAMDBG("Objdet deinit failed\r\n");
+    }
 }
 
 void NNObjectDetection::setDispCallback(void *p, void *img_param) {
