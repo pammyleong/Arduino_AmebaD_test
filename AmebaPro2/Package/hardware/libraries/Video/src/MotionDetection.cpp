@@ -70,7 +70,7 @@ void MotionDetection::end(void) {
     if (MDDeinit(_p_mmf_context) == NULL) {
         _p_mmf_context = NULL;
     } else {
-        CAMDBG("RTSP deinit failed\r\n");
+        CAMDBG("MD deinit failed\r\n");
     }
 }
 

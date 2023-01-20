@@ -156,6 +156,57 @@ void NNFaceRecognition::getResult(void) {
 }
 
 void NNFaceRecognition::setResultCallback(void) {
-
+    
 }
 
+void NNFaceRecognition::registerFace(const char* arg) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    char *regName;
+    regName = (char *)arg;
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_REGISTER_MODE, (int)regName);
+}
+
+void NNFaceRecognition::setRecognitionMode(void) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    printf("enter recognition mode\n\r");
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_RECOGNITION_MODE, 0);
+}
+
+void NNFaceRecognition::loadRegisteredFace(void) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    printf("load feature\n\r");
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_LOAD_FEATURES, 0);
+}
+
+void NNFaceRecognition::saveRegisteredFace(void) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    printf("save feature\n\r");
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_SAVE_FEATURES, 0);
+}
+
+void NNFaceRecognition::resetRegisteredFace(void) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    printf("reset feature\n\r");
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_RESET_FEATURES, 0);
+}
+
+void NNFaceRecognition::setThreshold(const char *score) {
+    if (!facerecog_ctx) {
+        return;
+    }
+    char *regThres;
+    regThres = (char *)score;
+    float threshold = atof(regThres);
+    printf("set face recognition score threshold to %.2f\n\r", (float)threshold / 100.0);
+    mm_module_ctrl(facerecog_ctx, CMD_FRC_SET_THRES100, threshold);
+}

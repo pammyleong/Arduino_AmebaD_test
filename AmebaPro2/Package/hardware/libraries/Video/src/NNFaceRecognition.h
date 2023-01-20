@@ -20,6 +20,13 @@ class NNFaceRecognition:public MMFModule {
 
         void getResult(void);
         void setResultCallback(void);
+        void registerFace(const char* arg);
+        void setRecognitionMode(void);
+        void loadRegisteredFace(void);
+        void saveRegisteredFace(void);
+        void resetRegisteredFace(void);
+        void setThreshold(const char *score);
+        
     private:
         mm_context_t* facerecog_ctx = NULL;
         void* facerecog_siso_ctx = NULL;

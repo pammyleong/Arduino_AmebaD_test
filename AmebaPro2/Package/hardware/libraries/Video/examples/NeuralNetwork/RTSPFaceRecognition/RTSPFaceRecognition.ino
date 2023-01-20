@@ -1,4 +1,11 @@
-// Demo for face recog
+// Demo for Face Recognition
+// Point the camera at the targetted face and use the following commands to register faces,
+// Register face: "RE={Name}"
+// Reset registered face: "RS"
+// Enter Recognition mode: "RC"
+// Save registered faces to flash: "SV"
+// Load saved faces: "LD"
+// Set Threshold: "TH={Threshold}", Threshold value range: 0 -100
 
 #include "WiFi.h"
 #include "StreamIO.h"
@@ -30,13 +37,13 @@ StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
 StreamIO videoStreamerFDFR(1, 1);  // 1 Input Video -> 1 Output Face Recog
 StreamIO videoStreamerRGBFD(1, 1);
 
-char ssid[] = "Aurical_5G";     //  your network SSID (name)
-char pass[] = "wyy170592";  	// your network password
+char ssid[] = "yourNetwork";     //  your network SSID (name)
+char pass[] = "password";  	// your network password
 int status = WL_IDLE_STATUS;    // the Wifi radio's status
 
 void setup() {
     Serial.begin(115200);
-
+    
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to WPA SSID: ");
@@ -92,33 +99,49 @@ void setup() {
     }
     
     Camera.channelBegin(CHANNELNN);
-
-    // called temporary to pass RTSP ch, w and h to CB fn in .c before CB fn is move to .cpp
     OSD.configVideo(CHANNEL, config);
     OSD.begin();
-    
-    // Using UART to reg faces
-    // To be done
-
-    delay(1000);
-    printInfo();
 }
 
 void loop() {
-    // Do nothing
-}
+    if (Serial.available() > 0) {
+        String input = Serial.readString();
+        input.trim();
+        int stringLength = input.length();
+        char* inputName = new char[input.length() + 1];
+        char* inputThreshold = new char[3];
 
-void printInfo(void) {
-    Serial.println("------------------------------");
-    Serial.println("- Summary of Streaming -");
-    Serial.println("------------------------------");
-    Camera.printInfo();
-
-    IPAddress ip = WiFi.localIP();
-
-    Serial.println("- RTSP -");
-    Serial.print("rtsp://");
-    Serial.print(ip);
-    Serial.print(":");
-    rtsp.printInfo();
+        for (int i = 0; i <= stringLength; i++) {
+            if (input[0] == 'R' && input[1] == 'E') {//RE: Register
+                for (int j = 3; j <= stringLength; j++) {
+                    inputName[j-3] = input[j];
+                }
+                facerecog.registerFace(inputName);
+                break;
+            }
+            if (input[0] == 'R' && input[1] == 'S') {//RS:Reset
+                facerecog.resetRegisteredFace();
+                break;
+            }
+            if (input[0] == 'R' && input[1] == 'C') {//RC:Recognition mode
+                facerecog.setRecognitionMode();
+                break;
+            }
+            if (input[0] == 'S') {//SV:Save
+                facerecog.saveRegisteredFace();
+                break;
+            }
+            if (input[0] == 'L') {//LD:Load
+                facerecog.loadRegisteredFace();
+                break;
+            }
+            if (input[0] == 'T') {//TH:Modify Threshold
+                for (int j = 3; j <= 4; j++) {
+                    inputThreshold[j-3] = input[j];
+                }
+                facerecog.setThreshold(inputThreshold);
+                break;
+            }
+        }
+    }
 }

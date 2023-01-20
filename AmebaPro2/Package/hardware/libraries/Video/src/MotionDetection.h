@@ -31,14 +31,10 @@ class MotionDetection:public MMFModule {
         uint8_t cols(void);
 
     private:
-//        static void mdPostProcess(void *md_result);
         md_param_t md_param = {0};
         motion_detect_threshold_t md_thr = {2,3};
         char md_result[MD_MAX_COL * MD_MAX_ROW] = {0};
         void (*md_ResultCB)(char*) = NULL;
-        uint32_t RTSPWidthMD;
-        uint32_t RTSPHeightMD;
-        uint8_t RTSPChannelMD;
 };
 
 #endif
