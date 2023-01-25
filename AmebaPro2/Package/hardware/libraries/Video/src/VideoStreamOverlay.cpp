@@ -65,15 +65,15 @@ uint32_t VideoStreamOverlay::color(uint8_t red, uint8_t green, uint8_t blue, uin
     return (ARGB(alpha, red, green, blue));
 }
 
-void VideoStreamOverlay::drawPoint(int ch, int idx, int xmin, int ymin, int point_width, uint32_t color) {
+void VideoStreamOverlay::drawPoint(int ch, int xmin, int ymin, int point_width, uint32_t color, int idx) {
     canvas_set_point(ch, idx, xmin, ymin, point_width, color);
 }
 
-void VideoStreamOverlay::drawRect(int ch, int idx, int xmin, int ymin, int xmax, int ymax, int line_width, uint32_t color) {
+void VideoStreamOverlay::drawRect(int ch, int xmin, int ymin, int xmax, int ymax, int line_width, uint32_t color, int idx) {
     canvas_set_rect(ch, idx, xmin, ymin, xmax, ymax, line_width, color);
 }
 
-void VideoStreamOverlay::drawText(int ch, int idx, int xmin, int ymin, char *text_string, uint32_t color) {
+void VideoStreamOverlay::drawText(int ch, int xmin, int ymin, char *text_string, uint32_t color, int idx) {
     canvas_set_text(ch, idx, xmin, ymin, text_string, color);
 }
 

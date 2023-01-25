@@ -109,7 +109,7 @@ void ODPostProcess(objdetect_res_t *od_res) {
     int roi_y = (int)(0 * ratio_h);
 
     printf("Total number of obj detected = %d\r\n", od_res->obj_num);
-    OSD.clearAll(CHANNEL, 0);
+    OSD.clearAll(CHANNEL);
 
     if (od_res->obj_num > 0) {
         for (int i = 0; i < od_res->obj_num; i++) {
@@ -133,13 +133,13 @@ void ODPostProcess(objdetect_res_t *od_res) {
                 LIMIT(ymax, 0, im_h)
 
                 printf("%d,c%d:%d %d %d %d\n\r", i, class_id, xmin, ymin, xmax, ymax);
-                OSD.drawRect(CHANNEL, 0, xmin, ymin, xmax, ymax, 3, OSD_COLOR_WHITE);
+                OSD.drawRect(CHANNEL, xmin, ymin, xmax, ymax, 3, OSD_COLOR_WHITE);
                 
                 char text_str[20];
                 snprintf(text_str, sizeof(text_str), "%s %d", itemList[class_id].objectName, (int)(od_res->result[6 * i + 1] * 100));
-                OSD.drawText(CHANNEL, 0, xmin, ymin - 32, text_str, OSD_COLOR_CYAN);
+                OSD.drawText(CHANNEL, xmin, ymin - 32, text_str, OSD_COLOR_CYAN);
             }
         }
     }
-    OSD.update(CHANNEL, 0);
+    OSD.update(CHANNEL);
 }
