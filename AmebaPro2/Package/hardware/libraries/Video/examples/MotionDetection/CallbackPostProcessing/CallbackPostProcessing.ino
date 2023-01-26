@@ -11,7 +11,6 @@
 
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);      // High resolution video for streaming
 VideoSetting configMD(VIDEO_VGA, 10, VIDEO_RGB, 0);     // Low resolution RGB video for motion detection
-
 RTSP rtsp;
 StreamIO videoStreamer(1, 1);
 StreamIO videoStreamerMD(1, 1);
@@ -19,7 +18,7 @@ MotionDetection MD(MDRES, MDRES);
 
 char ssid[] = "yourNetwork";    // your network SSID (name)
 char pass[] = "Password";       // your network password
-int status = WL_IDLE_STATUS;    // the Wifi radio's status
+int status = WL_IDLE_STATUS;
 
 void mdPostProcess(char* md_result) {
     // Motion detection results is expressed as an MDRES x MDRES array
@@ -71,7 +70,6 @@ void setup() {
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to WPA SSID: ");
         Serial.println(ssid);
-        // Connect to WPA/WPA2 network:
         status = WiFi.begin(ssid, pass);
 
         // wait 2 seconds for connection:

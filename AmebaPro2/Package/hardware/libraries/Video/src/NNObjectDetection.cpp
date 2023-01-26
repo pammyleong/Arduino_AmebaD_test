@@ -5,8 +5,10 @@
 extern "C" {
 #endif
 
-#include "img_sample/input_image_640x360x3.h"
+#include "mmf2_module.h"
+#include "module_vipnn.h"
 #include "model_yolo.h"
+#include "nn_utils/class_name.h"
 
 extern int vipnn_control(void *p, int cmd, int arg);
 
@@ -14,18 +16,20 @@ extern int vipnn_control(void *p, int cmd, int arg);
 }
 #endif
 
-#define DEBUG 0
+#undef min
+#undef max
+#include <vector>
 
-#if DEBUG
-#define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
-#else
-#define CAMDBG(fmt, args...)
-#endif
+#define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
 std::vector<ObjectDetectionResult> NNObjectDetection::object_result_vector;
-objdetect_res_t NNObjectDetection::objdet_result = {0};
-void (*NNObjectDetection::OD_user_CB)(objdetect_res_t*);
+float NNObjectDetection::xscale;
+float NNObjectDetection::xoffset;
+float NNObjectDetection::yscale;
+float NNObjectDetection::yoffset;
+uint8_t NNObjectDetection::use_roi;
+
+void (*NNObjectDetection::OD_user_CB)(std::vector<ObjectDetectionResult>);
 
 NNObjectDetection::NNObjectDetection(void) {
 }
@@ -39,9 +43,16 @@ void NNObjectDetection::configVideo(VideoSetting& config) {
     roi_nn.img.height = config._h;
     roi_nn.img.rgb = 0;
     roi_nn.img.roi.xmin = 0;
-    roi_nn.img.roi.ymin = 0;
     roi_nn.img.roi.xmax = config._w;
+    roi_nn.img.roi.ymin = 0;
     roi_nn.img.roi.ymax = config._h;
+}
+
+void NNObjectDetection::configRegionOfInterest(int xmin, int xmax, int ymin, int ymax) {
+    roi_nn.img.roi.xmin = xmin;
+    roi_nn.img.roi.xmax = xmax;
+    roi_nn.img.roi.ymin = ymin;
+    roi_nn.img.roi.ymax = ymax;
 }
 
 void NNObjectDetection::configThreshold(float confidence_threshold, float nms_threshold) {
@@ -56,6 +67,25 @@ void NNObjectDetection::begin(void) {
     if (_p_mmf_context == NULL) {
         printf("NNObjectDetection init failed\r\n");
         return;
+    }
+    if((roi_nn.img.width == 0) || (roi_nn.img.height == 0)) {
+        printf("ERROR: NNFaceDetection video not configured\r\n");
+        return;
+    }
+
+    if ((roi_nn.img.roi.xmin != 0) || (roi_nn.img.roi.xmax != roi_nn.img.width) || (roi_nn.img.roi.ymin != 0) || (roi_nn.img.roi.ymax != roi_nn.img.height)) {
+        use_roi = 1;
+        LIMIT(roi_nn.img.roi.xmin, 0, roi_nn.img.width);
+        LIMIT(roi_nn.img.roi.xmax, 0, roi_nn.img.width);
+        LIMIT(roi_nn.img.roi.ymin, 0, roi_nn.img.height);
+        LIMIT(roi_nn.img.roi.ymax, 0, roi_nn.img.height);
+
+        xscale = (roi_nn.img.roi.xmax - roi_nn.img.roi.xmin) / (float)roi_nn.img.width;
+        xoffset = roi_nn.img.roi.xmin / (float)roi_nn.img.width;
+        yscale = (roi_nn.img.roi.ymax - roi_nn.img.roi.ymin) / (float)roi_nn.img.height;
+        yoffset = roi_nn.img.roi.ymin / (float)roi_nn.img.height;
+    } else {
+        use_roi = 0;
     }
 
     vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_MODEL, (int)&yolov4_tiny);
@@ -74,16 +104,12 @@ void NNObjectDetection::end(void) {
     if (mm_module_close(_p_mmf_context) == NULL) {
         _p_mmf_context = NULL;
     } else {
-        CAMDBG("NNObjectDetection deinit failed\r\n");
+        printf("NNObjectDetection deinit failed\r\n");
     }
 }
 
-void NNObjectDetection::setResultCallback(void (*od_callback)(objdetect_res_t *)) {
+void NNObjectDetection::setResultCallback(void (*od_callback)(std::vector<ObjectDetectionResult>)) {
     OD_user_CB = od_callback;
-}
-
-objdetect_res_t* NNObjectDetection::getResult(void) {
-    return &objdet_result;
 }
 
 uint16_t NNObjectDetection::getResultCount(void) {
@@ -97,46 +123,68 @@ ObjectDetectionResult NNObjectDetection::getResult(uint16_t index) {
     return object_result_vector[index];
 }
 
+std::vector<ObjectDetectionResult> NNObjectDetection::getResult(void) {
+    return object_result_vector;
+}
+
 void NNObjectDetection::ODResultCallback(void *p, void *img_param) {
     (void)img_param;
+    if (p == NULL) {
+        return;
+    }
 
     objdetect_res_t* result = (objdetect_res_t*)p;
+
     object_result_vector.clear();
-    if (object_result_vector.capacity() < (size_t)result->obj_num) {
-        object_result_vector.resize((size_t)result->obj_num);
-    }
+    object_result_vector.resize((size_t)result->obj_num);
     for (int i = 0; i < result->obj_num; i++) {
-        memcpy(&(object_result_vector[i].result), &(result->res[i]), sizeof(detobj_t));
+        if (use_roi) {
+            // Scale result box back to original frame size
+            object_result_vector[i].result.type = result->res[i].type;
+            object_result_vector[i].result.score = result->res[i].score;
+            object_result_vector[i].result.top_x = result->res[i].top_x * xscale + xoffset;
+            object_result_vector[i].result.bot_x = result->res[i].bot_x * xscale + xoffset;
+            object_result_vector[i].result.top_y = result->res[i].top_y * yscale + yoffset;
+            object_result_vector[i].result.bot_y = result->res[i].bot_y * yscale + yoffset;
+
+            LIMIT(object_result_vector[i].result.top_x, 0.00, 1.00);
+            LIMIT(object_result_vector[i].result.bot_x, 0.00, 1.00);
+            LIMIT(object_result_vector[i].result.top_y, 0.00, 1.00);
+            LIMIT(object_result_vector[i].result.bot_y, 0.00, 1.00);
+        } else {
+            memcpy(&(object_result_vector[i].result), &(result->res[i]), sizeof(detobj_t));
+        }
     }
 
-
-    memcpy(&objdet_result, p, sizeof(objdetect_res_t));
     if (OD_user_CB != NULL) {
-        OD_user_CB(&objdet_result);
+        OD_user_CB(object_result_vector);
     }
+}
+
+int ObjectDetectionResult::type(void) {
+    return ((int)(result.type));
 }
 
 const char* ObjectDetectionResult::name(void) {
     return coco_name_get_by_id((int)result.type);
 }
 
-uint8_t ObjectDetectionResult::score(void) {
-    return ((uint8_t)result.score);
+int ObjectDetectionResult::score(void) {
+    return ((int)(result.score * 100));
 }
 
-float ObjectDetectionResult::xmin(void) {
+float ObjectDetectionResult::xMin(void) {
     return result.top_x;
 }
 
-float ObjectDetectionResult::xmax(void) {
+float ObjectDetectionResult::xMax(void) {
     return result.bot_x;
 }
 
-float ObjectDetectionResult::ymin(void) {
+float ObjectDetectionResult::yMin(void) {
     return result.top_y;
 }
 
-float ObjectDetectionResult::ymax(void) {
+float ObjectDetectionResult::yMax(void) {
     return result.bot_y;
 }
-

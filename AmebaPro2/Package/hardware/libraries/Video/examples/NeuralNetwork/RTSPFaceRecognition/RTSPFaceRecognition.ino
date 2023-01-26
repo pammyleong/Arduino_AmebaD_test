@@ -1,11 +1,9 @@
-// Demo for Face Recognition
-// Point the camera at the targetted face and use the following commands to register faces,
-// Register face: "RE={Name}"
-// Reset registered face: "RS"
-// Enter Recognition mode: "RC"
-// Save registered faces to flash: "SV"
-// Load saved faces: "LD"
-// Set Threshold: "TH={Threshold}", Threshold value range: 0 -100
+// Point the camera at a target face and enter the following commands into the serial monitor,
+// Register face:           "REG={Name}"            Ensure that there is only one face detected in frame
+// Exit registration mode:  "EXIT"                  Stop trying to register a face before it is successfully registered
+// Reset registered faces:  "RESET"                 Forget all previously registered faces
+// Backup registered faces to flash:    "BACKUP"    Save registered faces to flash
+// Restore registered faces from flash: "RESTORE"   Load registered faces from flash
 
 #include "WiFi.h"
 #include "StreamIO.h"
@@ -22,57 +20,50 @@
 #define NNWIDTH 576
 #define NNHEIGHT 320
 
-// Default preset configurations for each video channel:
-// Channel 0 : 1920 x 1080 30FPS H264
-// Channel 1 : 1280 x 720  30FPS H264
-// Channel 2 : 1920 x 1080 30FPS MJPEG
-
 VideoSetting config(VIDEO_FHD, 30, VIDEO_H264, 0);
 VideoSetting configNN(NNWIDTH, NNHEIGHT, 10, VIDEO_RGB, 0);
 NNFaceDetection facedet;
 NNFaceRecognition facerecog;
-
 RTSP rtsp;
-StreamIO videoStreamer(1, 1);  // 1 Input Video -> 1 Output RTSP
-StreamIO videoStreamerFDFR(1, 1);  // 1 Input Video -> 1 Output Face Recog
+StreamIO videoStreamer(1, 1);
+StreamIO videoStreamerFDFR(1, 1);
 StreamIO videoStreamerRGBFD(1, 1);
 
-char ssid[] = "yourNetwork";     //  your network SSID (name)
-char pass[] = "password";  	// your network password
-int status = WL_IDLE_STATUS;    // the Wifi radio's status
+char ssid[] = "yourNetwork";    // your network SSID (name)
+char pass[] = "Password";       // your network password
+int status = WL_IDLE_STATUS;
 
 void setup() {
     Serial.begin(115200);
-    
+
     // attempt to connect to Wifi network:
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to WPA SSID: ");
         Serial.println(ssid);
-        // Connect to WPA/WPA2 network:
         status = WiFi.begin(ssid, pass);
 
         // wait 2 seconds for connection:
         delay(2000);
     }
 
-    // Configure camera video channel with video format information
+    // Configure camera video channels with video format information
     Camera.configVideoChannel(CHANNEL, config);
     Camera.configVideoChannel(CHANNELNN, configNN);
     Camera.videoInit();
 
-    // Configure RTSP with identical video format information
+    // Configure RTSP with corresponding video format information
     rtsp.configVideo(config);
     rtsp.begin();
 
-    // Congifure Model 1: Face Detection model
+    // Configure face detection with corresponding video format information
     facedet.configVideo(configNN);
-    facedet.configFaceRecogCascadedMode(1);
+    facedet.configFaceRecogCascadedMode(TRUE);
     facedet.begin();
 
     // Configure Face Recognition model
     facerecog.begin();
+    facerecog.setResultCallback(FRPostProcess);
 
-    // ------------- linker --------------
     // Configure StreamIO object to stream data from video channel to RTSP
     videoStreamer.registerInput(Camera.getStream(CHANNEL));
     videoStreamer.registerOutput(rtsp);
@@ -82,14 +73,14 @@ void setup() {
     // Start data stream from video channel
     Camera.channelBegin(CHANNEL);
 
-    // NN
-    // SISO: Facenet -> FaceRecog
+    // SISO: Face Detection -> Face Recognition
     videoStreamerFDFR.registerInput(facedet);
     videoStreamerFDFR.registerOutput(facerecog);
     if (videoStreamerFDFR.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
-    // SISO: RGB -> Facedet
+
+    // Configure StreamIO object to stream data from RGB video channel to face detection
     videoStreamerRGBFD.registerInput(Camera.getStream(CHANNELNN));
     videoStreamerRGBFD.setStackSize();
     videoStreamerRGBFD.setTaskPriority();
@@ -97,8 +88,10 @@ void setup() {
     if (videoStreamerRGBFD.begin() != 0) {
         Serial.println("StreamIO link start failed");
     }
-    
+    // Start video channel for NN
     Camera.channelBegin(CHANNELNN);
+
+    // Start OSD drawing on RTSP video channel
     OSD.configVideo(CHANNEL, config);
     OSD.begin();
 }
@@ -107,41 +100,57 @@ void loop() {
     if (Serial.available() > 0) {
         String input = Serial.readString();
         input.trim();
-        int stringLength = input.length();
-        char* inputName = new char[input.length() + 1];
-        char* inputThreshold = new char[3];
 
-        for (int i = 0; i <= stringLength; i++) {
-            if (input[0] == 'R' && input[1] == 'E') {//RE: Register
-                for (int j = 3; j <= stringLength; j++) {
-                    inputName[j-3] = input[j];
-                }
-                facerecog.registerFace(inputName);
-                break;
-            }
-            if (input[0] == 'R' && input[1] == 'S') {//RS:Reset
-                facerecog.resetRegisteredFace();
-                break;
-            }
-            if (input[0] == 'R' && input[1] == 'C') {//RC:Recognition mode
-                facerecog.setRecognitionMode();
-                break;
-            }
-            if (input[0] == 'S') {//SV:Save
-                facerecog.saveRegisteredFace();
-                break;
-            }
-            if (input[0] == 'L') {//LD:Load
-                facerecog.loadRegisteredFace();
-                break;
-            }
-            if (input[0] == 'T') {//TH:Modify Threshold
-                for (int j = 3; j <= 4; j++) {
-                    inputThreshold[j-3] = input[j];
-                }
-                facerecog.setThreshold(inputThreshold);
-                break;
-            }
+        if (input.startsWith(String("REG="))){
+            String name = input.substring(4);
+            facerecog.registerFace(name);
+        } else if (input.startsWith(String("EXIT"))) {
+            facerecog.exitRegisterMode();
+        } else if (input.startsWith(String("RESET"))) {
+            facerecog.resetRegisteredFace();
+        } else if (input.startsWith(String("BACKUP"))) {
+            facerecog.backupRegisteredFace();
+        } else if (input.startsWith(String("RESTORE"))) {
+            facerecog.restoreRegisteredFace();
         }
     }
 }
+
+// User callback function for post processing of face recognition results
+void FRPostProcess(std::vector<FaceRecognitionResult> results) {
+    uint16_t im_h = config.height();
+    uint16_t im_w = config.width();
+
+    printf("Total number of faces detected = %d\r\n", results.size());
+    OSD.clearAll(CHANNEL);
+
+    if (results.size() > 0) {
+        for (uint32_t i = 0; i < results.size(); i++) {
+            FaceRecognitionResult item = results[i];
+            // Result coordinates are floats ranging from 0.00 to 1.00
+            // Multiply with RTSP resolution to get coordinates in pixels
+            int xmin = (int)(item.xMin() * im_w);
+            int xmax = (int)(item.xMax() * im_w);
+            int ymin = (int)(item.yMin() * im_h);
+            int ymax = (int)(item.yMax() * im_h);
+
+            uint32_t osd_color;
+            if (String(item.name()) == String("unknown")) {
+                osd_color = OSD_COLOR_RED;
+            } else {
+                osd_color = OSD_COLOR_GREEN;
+            }
+            // Draw boundary box
+            printf("Face %d name %s:\t%d %d %d %d\n\r", i, item.name(), xmin, xmax, ymin, ymax);
+            OSD.drawRect(CHANNEL, xmin, ymin, xmax, ymax, 3, osd_color);
+
+            // Print identification text above boundary box
+            char text_str[40];
+            snprintf(text_str, sizeof(text_str), "Face:%s", item.name());
+            OSD.drawText(CHANNEL, xmin, ymin - OSD.getTextHeight(CHANNEL), text_str, osd_color);
+
+        }
+    }
+    OSD.update(CHANNEL);
+}
+

@@ -8,8 +8,7 @@ extern "C" {
 #include "mmf2_module.h"
 #include "module_vipnn.h"
 #include "model_scrfd.h"
-#include "roi_delta_qp/roi_delta_qp.h"
-#include "osd_render.h"
+//#include "roi_delta_qp/roi_delta_qp.h"
 
 extern int vipnn_control(void *p, int cmd, int arg);
 
@@ -17,75 +16,20 @@ extern int vipnn_control(void *p, int cmd, int arg);
 }
 #endif
 
-#define DEBUG 0
+#undef min
+#undef max
+#include <vector>
 
-#if DEBUG
-#define CAMDBG(fmt, args...) \
-    do {printf("\r\nFunc-[%s]@Line-%d: \r\n" fmt "\r\n", __func__, __LINE__, ## args); } while (0);
-#else
-#define CAMDBG(fmt, args...)
-#endif
-
-#define RTSP_CHANNEL 0
-#define RTSP_HEIGHT 1080
-#define RTSP_WIDTH 1920
 #define LIMIT(x, lower, upper) if(x<lower) x=lower; else if(x>upper) x=upper;
 
-void nnFaceDetectionCB(void *p, void *img_param) {
-	int i = 0;
-	facedetect_res_t *face_res = (facedetect_res_t *)p;
-	nn_data_param_t *im = (nn_data_param_t *)img_param;
+std::vector<FaceDetectionResult> NNFaceDetection::face_result_vector;
+void (*NNFaceDetection::FD_user_CB)(std::vector<FaceDetectionResult>);
 
-	if (!p || !img_param)	{
-		return;
-	}
+NNFaceDetection::NNFaceDetection(void) {
+}
 
-	int im_h = RTSP_HEIGHT;
-	int im_w = RTSP_WIDTH;
-
-	//crop
-	float ratio_w = (float)im_w / (float)im->img.width;
-	float ratio_h = (float)im_h / (float)im->img.height;
-	float ratio = ratio_h < ratio_w ? ratio_h : ratio_w;
-	int roi_w = (int)((im->img.roi.xmax - im->img.roi.xmin) * ratio);
-	int roi_h = (int)((im->img.roi.ymax - im->img.roi.ymin) * ratio);
-	int roi_x = (int)(im->img.roi.xmin * ratio + (im_w - roi_w) / 2);
-	int roi_y = (int)(im->img.roi.ymin * ratio + (im_h - roi_h) / 2);
-
-	roi_delta_qp_set_param(RTSP_CHANNEL, 0, 0, RTSP_WIDTH, RTSP_HEIGHT, ROI_DELTA_QP_MAX);
-
-	printf("object num = %d\r\n", face_res->obj_num);
-	canvas_clean_all(RTSP_CHANNEL, 0);
-	if (face_res->obj_num > 0) {
-		for (i = 0; i < face_res->obj_num; i++) {
-			int obj_class = (int)face_res->result[6 * i ];
-			int class_id = obj_class;
-			if (class_id != -1) {
-				int xmin = (int)(face_res->result[6 * i + 2] * roi_w) + roi_x;
-				int ymin = (int)(face_res->result[6 * i + 3] * roi_h) + roi_y;
-				int xmax = (int)(face_res->result[6 * i + 4] * roi_w) + roi_x;
-				int ymax = (int)(face_res->result[6 * i + 5] * roi_h) + roi_y;
-				LIMIT(xmin, 0, im_w)
-				LIMIT(xmax, 0, im_w)
-				LIMIT(ymin, 0, im_h)
-				LIMIT(ymax, 0, im_h)
-				printf("%d,c%d:%d %d %d %d\n\r", i, class_id, xmin, ymin, xmax, ymax);
-				canvas_set_rect(RTSP_CHANNEL, 0, xmin, ymin, xmax, ymax, 3, COLOR_WHITE);
-				char text_str[20];
-				snprintf(text_str, sizeof(text_str), "%s %d", "face", (int)(face_res->result[6 * i + 1 ] * 100));
-				canvas_set_text(RTSP_CHANNEL, 0, xmin, ymin - 32, text_str, COLOR_CYAN);
-
-				roi_delta_qp_set_param(RTSP_CHANNEL, xmin, ymin, (xmax - xmin), (ymax - ymin), ROI_DELTA_QP_DEFAULT);
-
-				for (int j = 0; j < 5; j++) {
-					int x = (int)(face_res->landmark[i].pos[j].x * roi_w) + roi_x;
-					int y = (int)(face_res->landmark[i].pos[j].y * roi_h) + roi_y;
-					canvas_set_point(RTSP_CHANNEL, 0, x, y, 8, COLOR_RED);
-				}
-			}
-		}
-	}
-	canvas_update(RTSP_CHANNEL, 0);
+NNFaceDetection::~NNFaceDetection(void) {
+    end();
 }
 
 void NNFaceDetection::configVideo(VideoSetting& config) {
@@ -93,8 +37,8 @@ void NNFaceDetection::configVideo(VideoSetting& config) {
     roi_nn.img.height = config._h;
     roi_nn.img.rgb = 0;
     roi_nn.img.roi.xmin = 0;
-    roi_nn.img.roi.ymin = 0;
     roi_nn.img.roi.xmax = config._w;
+    roi_nn.img.roi.ymin = 0;
     roi_nn.img.roi.ymax = config._h;
 }
 
@@ -110,21 +54,19 @@ void NNFaceDetection::begin(void) {
         printf("NNFaceDetection init failed\r\n");
         return;
     }
-
     if((roi_nn.img.width == 0) || (roi_nn.img.height == 0)) {
-        printf("ERROR: NNFaceDetection video not configured\r\n");
+        printf("NNFaceDetection video not configured\r\n");
         return;
     }
 
     vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_MODEL, (int)&scrfd_fwfs);
     vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_IN_PARAMS, (int)&roi_nn);
+    vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_DISPPOST, (int)FDResultCallback);
     if (cascaded_mode) {
         mm_module_ctrl(_p_mmf_context, CMD_VIPNN_SET_OUTPUT, 1);
         mm_module_ctrl(_p_mmf_context, MM_CMD_SET_DATAGROUP, MM_GROUP_START);
         mm_module_ctrl(_p_mmf_context, MM_CMD_SET_QUEUE_LEN, 1);
         mm_module_ctrl(_p_mmf_context, MM_CMD_INIT_QUEUE_ITEMS, MMQI_FLAG_STATIC);
-    } else {
-        vipnn_control(_p_mmf_context->priv, CMD_VIPNN_SET_DISPPOST, (int)nnFaceDetectionCB);
     }
     vipnn_control(_p_mmf_context->priv, CMD_VIPNN_APPLY, 0);
 }
@@ -137,15 +79,83 @@ void NNFaceDetection::end(void) {
     if (mm_module_close(_p_mmf_context) == NULL) {
         _p_mmf_context = NULL;
     } else {
-        CAMDBG("NNFaceDetection deinit failed\r\n");
+        printf("NNFaceDetection deinit failed\r\n");
     }
 }
 
-void NNFaceDetection::setResultCallback(void) {
-
+void NNFaceDetection::setResultCallback(void (*fd_callback)(std::vector<FaceDetectionResult>)) {
+    FD_user_CB = fd_callback;
 }
 
-void NNFaceDetection::getResult(void) {
-
+uint16_t NNFaceDetection::getResultCount(void) {
+    return face_result_vector.size();
 }
 
+FaceDetectionResult NNFaceDetection::getResult(uint16_t index) {
+    if (index >= face_result_vector.size()) {
+        return FaceDetectionResult();
+    }
+    return face_result_vector[index];
+}
+
+std::vector<FaceDetectionResult> NNFaceDetection::getResult(void) {
+    return face_result_vector;
+}
+
+void NNFaceDetection::FDResultCallback(void *p, void *img_param) {
+    (void)img_param;
+    if (p == NULL) {
+        return;
+    }
+
+    facedetect_res_t* result = (facedetect_res_t*)p;
+
+    face_result_vector.clear();
+    face_result_vector.resize((size_t)result->obj_num);
+    for (int i = 0; i < result->obj_num; i++) {
+        memcpy(&(face_result_vector[i].result), &(result->res[i]), sizeof(detobj_t));
+        memcpy(&(face_result_vector[i].landmark), &(result->landmark[i]), sizeof(landmark_t));
+    }
+
+    if (FD_user_CB != NULL) {
+        FD_user_CB(face_result_vector);
+    }
+}
+
+const char* FaceDetectionResult::name(void) {
+    return ("Face");
+}
+
+int FaceDetectionResult::score(void) {
+    return ((int)(result.score * 100));
+}
+
+float FaceDetectionResult::xMin(void) {
+    return result.top_x;
+}
+
+float FaceDetectionResult::xMax(void) {
+    return result.bot_x;
+}
+
+float FaceDetectionResult::yMin(void) {
+    return result.top_y;
+}
+
+float FaceDetectionResult::yMax(void) {
+    return result.bot_y;
+}
+
+float FaceDetectionResult::xFeature(uint8_t index) {
+    if (index >= 5) {
+        return 0;
+    }
+    return landmark.pos[index].x;
+}
+
+float FaceDetectionResult::yFeature(uint8_t index) {
+    if (index >= 5) {
+        return 0;
+    }
+    return landmark.pos[index].y;
+}

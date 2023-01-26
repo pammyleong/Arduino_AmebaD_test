@@ -1,5 +1,5 @@
-#ifndef __NNOBJECTDETECTION_H__
-#define __NNOBJECTDETECTION_H__
+#ifndef __NN_OBJECTDETECTION_H__
+#define __NN_OBJECTDETECTION_H__
 
 #include "VideoStream.h"
 
@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-#include "nn_utils/class_name.h"
 #include "module_vipnn.h"
 
 #ifdef __cplusplus
@@ -21,12 +20,13 @@ extern "C" {
 class ObjectDetectionResult {
     friend class NNObjectDetection;
     public:
+        int type(void);
         const char* name(void);
-        uint8_t score(void);
-        float xmin(void);
-        float xmax(void);
-        float ymin(void);
-        float ymax(void);
+        int score(void);
+        float xMin(void);
+        float xMax(void);
+        float yMin(void);
+        float yMax(void);
 
     private:
         detobj_t result = {0};
@@ -38,22 +38,27 @@ class NNObjectDetection:public MMFModule {
         ~NNObjectDetection(void);
 
         void configVideo(VideoSetting& config);
+        void configRegionOfInterest(int xmin, int xmax, int ymin, int ymax);
         void configThreshold(float confidence_threshold, float nms_threshold);
         void begin(void);
         void end(void);
 
-        void setResultCallback(void (*od_callback)(objdetect_res_t *));
-        objdetect_res_t* getResult(void);
+        void setResultCallback(void (*od_callback)(std::vector<ObjectDetectionResult>));
         uint16_t getResultCount(void);
         ObjectDetectionResult getResult(uint16_t index);
-//        const char* getObjectName(uint8_t id);
+        std::vector<ObjectDetectionResult> getResult(void);
 
     private:
         static void ODResultCallback(void *p, void *img_param);
 
         static std::vector<ObjectDetectionResult> object_result_vector;
-        static objdetect_res_t objdet_result;
-        static void (*OD_user_CB)(objdetect_res_t *);
+        static void (*OD_user_CB)(std::vector<ObjectDetectionResult>);
+
+        static float xscale;
+        static float xoffset;
+        static float yscale;
+        static float yoffset;
+        static uint8_t use_roi;
 
         nn_data_param_t roi_nn = {0};
         float od_confidence_thresh = 0.5;

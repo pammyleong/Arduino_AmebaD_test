@@ -3,15 +3,6 @@
 
 #include "md_api.h"
 #include "VideoStream.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "osd_render.h"
-
-#ifdef __cplusplus
-}
-#endif
 
 class MotionDetection:public MMFModule {
     public:
